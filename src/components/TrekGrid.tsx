@@ -17,11 +17,11 @@ export default function TrekGrid({ title, treks: allTreks, viewAll }: { title: s
     <section className="py-10 lg:py-16">
       <div className="container mx-auto">
         <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
-          <h2 className="font-[family-name:var(--font-heading)] text-2xl lg:text-3xl font-bold text-[#1a1a2e]">{title}</h2>
+          <h2 className="font-[family-name:var(--font-heading)] text-2xl lg:text-3xl font-bold text-[#040921]">{title}</h2>
           <div className="flex gap-1 p-1 bg-gray-100 rounded-xl overflow-x-auto">
             {tabs.map((t, i) => (
               <button key={t.label} onClick={() => setActive(i)}
-                className={`px-4 lg:px-5 py-2 text-sm font-medium rounded-lg whitespace-nowrap transition-all ${i===active?'bg-white text-[#1a1a2e] shadow-sm':'text-gray-500 hover:text-[#1a1a2e]'}`}>{t.label}</button>
+                className={`px-4 lg:px-5 py-2 text-sm font-medium rounded-lg whitespace-nowrap transition-all ${i===active?'bg-white text-[#040921] shadow-sm':'text-gray-500 hover:text-[#040921]'}`}>{t.label}</button>
             ))}
           </div>
         </div>
@@ -29,7 +29,7 @@ export default function TrekGrid({ title, treks: allTreks, viewAll }: { title: s
           {allTreks.filter(tabs[active].filter).slice(0, 8).map(t => <TrekCard key={t.id} trek={t} />)}
         </div>
         {viewAll && <div className="mt-8 text-center">
-          <Link href={viewAll} className="inline-flex items-center gap-2 text-[#359DFC] hover:text-white font-semibold border-2 border-[#359DFC] px-6 lg:px-8 py-3 rounded-full hover:bg-[#359DFC] transition-all">
+          <Link href={viewAll} className="inline-flex items-center gap-2 text-[#afde1e] hover:text-white font-semibold border-2 border-[#afde1e] px-6 lg:px-8 py-3 rounded-full hover:bg-[#afde1e] transition-all">
             View All {title}
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
           </Link>

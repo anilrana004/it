@@ -31,13 +31,13 @@ export default function CustomizedTours() {
     <section className="py-8 lg:py-16 bg-gray-50">
       <div className="container mx-auto">
         <div className="text-center mb-6 lg:mb-8">
-          <p className="text-[#359DFC] font-semibold text-xs lg:text-sm tracking-widest uppercase mb-1">CUSTOMISED TOURS</p>
-          <h2 className="text-xl lg:text-3xl font-bold text-[#1a1a2e]">Get a Customised Tour Package</h2>
+          <p className="text-[#afde1e] font-semibold text-xs lg:text-sm tracking-widest uppercase mb-1">CUSTOMISED TOURS</p>
+          <h2 className="text-xl lg:text-3xl font-bold text-[#040921]">Get a Customised Tour Package</h2>
         </div>
         <div className="flex justify-center gap-2 mb-6">
           {['International', 'India'].map(t => (
             <button key={t} onClick={() => setTab(t)}
-              className={`px-5 py-1.5 rounded-full text-xs lg:text-sm font-medium transition-all ${tab===t?'bg-[#1a1a2e] text-white':'bg-white text-gray-600 border border-gray-200 hover:border-gray-300'}`}>{t}</button>
+              className={`px-5 py-1.5 rounded-full text-xs lg:text-sm font-medium transition-all ${tab===t?'bg-[#040921] text-white':'bg-white text-gray-600 border border-gray-200 hover:border-gray-300'}`}>{t}</button>
           ))}
         </div>
         <div className="overflow-x-auto scrollbar-none -mx-4 px-4 lg:mx-0 lg:px-0">
@@ -48,11 +48,11 @@ export default function CustomizedTours() {
                 <div className="relative h-[280px] lg:h-[320px] overflow-hidden">
                   <img src={d.img} alt={d.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-                  <div className="absolute top-3 left-3 bg-[#359DFC] text-white text-xs font-bold px-2.5 py-1 rounded-full">
+                  <div className="absolute top-3 left-3 bg-[#afde1e] text-gray-900 text-xs font-bold px-2.5 py-1 rounded-full">
                     {d.count}+ Packages
                   </div>
                   <div className="absolute bottom-0 left-0 right-0 p-4">
-                    <h3 className="font-bold text-lg text-white group-hover:text-[#359DFC] transition-colors">{d.name}</h3>
+                    <h3 className="font-bold text-lg text-white group-hover:text-[#afde1e] transition-colors">{d.name}</h3>
                     <div className="flex items-center gap-1 mt-1">
                       <span className="text-white/70 text-xs">Starting Price</span>
                       <span className="text-white font-bold text-base">₹{d.price.toLocaleString()}</span>
@@ -64,7 +64,7 @@ export default function CustomizedTours() {
           </div>
         </div>
         <div className="text-center mt-6">
-          <Link href="/customized" className="text-[#359DFC] text-sm font-semibold hover:text-[#1a7de0] transition-colors">View All Customized Tours &rarr;</Link>
+          <Link href="/customized" className="text-[#afde1e] text-sm font-semibold hover:text-[#8cb818] transition-colors">View All Customized Tours &rarr;</Link>
         </div>
       </div>
     </section>

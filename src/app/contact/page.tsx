@@ -13,22 +13,22 @@ export default function ContactPage() {
       <div className="container mx-auto max-w-5xl">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
           <div>
-            <h2 className="font-[family-name:var(--font-heading)] text-2xl font-bold text-[#1a1a2e] mb-6">Get in Touch</h2>
+            <h2 className="font-[family-name:var(--font-heading)] text-2xl font-bold text-[#040921] mb-6">Get in Touch</h2>
             <div className="space-y-5">
               {[{icon:Phone,l:'Phone',v:'+91 99 99 99 99 99',h:'tel:+919999999999'},{icon:Mail,l:'Email',v:'hello@trekroot.com',h:'mailto:hello@trekroot.com'},{icon:MapPin,l:'Office',v:'New Delhi, India'},{icon:Clock,l:'Working Hours',v:'Mon - Sat: 10:00 AM - 7:00 PM'}].map(item => (
                 <div key={item.l} className="flex items-start gap-4">
-                  <div className="w-10 h-10 bg-[#359DFC]/10 rounded-lg flex items-center justify-center shrink-0 mt-1"><item.icon className="w-5 h-5 text-[#359DFC]" /></div>
-                  <div><p className="text-sm text-gray-500">{item.l}</p>{item.h ? <a href={item.h} className="font-semibold text-gray-900 hover:text-[#359DFC] transition-colors">{item.v}</a> : <p className="font-semibold text-gray-900">{item.v}</p>}</div>
+                  <div className="w-10 h-10 bg-[#afde1e]/10 rounded-lg flex items-center justify-center shrink-0 mt-1"><item.icon className="w-5 h-5 text-[#afde1e]" /></div>
+                  <div><p className="text-sm text-gray-500">{item.l}</p>{item.h ? <a href={item.h} className="font-semibold text-gray-900 hover:text-[#afde1e] transition-colors">{item.v}</a> : <p className="font-semibold text-gray-900">{item.v}</p>}</div>
                 </div>
               ))}
             </div>
           </div>
           <div>
             <form className="space-y-4">
-              <div className="grid grid-cols-2 gap-4"><div><label className="block text-sm font-medium text-gray-700 mb-1">First Name</label><input type="text" className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-[#359DFC] outline-none transition-all" /></div><div><label className="block text-sm font-medium text-gray-700 mb-1">Last Name</label><input type="text" className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-[#359DFC] outline-none transition-all" /></div></div>
-              <div><label className="block text-sm font-medium text-gray-700 mb-1">Email</label><input type="email" className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-[#359DFC] outline-none transition-all" /></div>
-              <div><label className="block text-sm font-medium text-gray-700 mb-1">Message</label><textarea rows={4} className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-[#359DFC] outline-none transition-all resize-none" /></div>
-              <button type="submit" className="w-full bg-[#359DFC] hover:bg-[#1a7de0] text-white font-semibold px-6 py-3 rounded-full transition-all">Send Message</button>
+              <div className="grid grid-cols-2 gap-4"><div><label className="block text-sm font-medium text-gray-700 mb-1">First Name</label><input type="text" className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-[#afde1e] outline-none transition-all" /></div><div><label className="block text-sm font-medium text-gray-700 mb-1">Last Name</label><input type="text" className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-[#afde1e] outline-none transition-all" /></div></div>
+              <div><label className="block text-sm font-medium text-gray-700 mb-1">Email</label><input type="email" className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-[#afde1e] outline-none transition-all" /></div>
+              <div><label className="block text-sm font-medium text-gray-700 mb-1">Message</label><textarea rows={4} className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-[#afde1e] outline-none transition-all resize-none" /></div>
+              <button type="submit" className="w-full bg-[#afde1e] hover:bg-[#8cb818] text-gray-900 font-semibold px-6 py-3 rounded-full transition-all">Send Message</button>
             </form>
           </div>
         </div>

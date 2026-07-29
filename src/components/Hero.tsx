@@ -28,7 +28,7 @@ export default function Hero() {
       {/* Top bar */}
       <div className="relative z-10 flex items-center justify-between px-4 lg:px-8 h-12 lg:h-14">
         <div className="flex items-center gap-2">
-          <div className="w-7 h-7 lg:w-9 lg:h-9 bg-gradient-to-br from-[#359DFC] to-[#29C80F] rounded-lg flex items-center justify-center">
+          <div className="w-7 h-7 lg:w-9 lg:h-9 bg-gradient-to-br from-[#afde1e] to-[#afde1e] rounded-lg flex items-center justify-center">
             <span className="text-white font-bold text-xs lg:text-sm">TR</span>
           </div>
           <span className="font-bold text-white text-sm lg:text-lg hidden sm:block">TrekRoot</span>
@@ -52,7 +52,7 @@ export default function Hero() {
             <p className="text-white/70 font-semibold text-[10px] lg:text-sm tracking-[0.25em] uppercase mb-2">Wander | Travel | Connect | Repeat</p>
             <h1 className="font-[family-name:var(--font-heading)] text-3xl sm:text-4xl lg:text-6xl xl:text-7xl font-bold text-white leading-[1.1] mb-2">
               Book Your Trip to{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#359DFC] to-[#29C80F] transition-all duration-500 block sm:inline text-2xl sm:text-4xl lg:text-6xl xl:text-7xl mt-1 sm:mt-0">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#afde1e] to-[#afde1e] transition-all duration-500 block sm:inline text-2xl sm:text-4xl lg:text-6xl xl:text-7xl mt-1 sm:mt-0">
                 {destinations[destSlide]}
               </span>
             </h1>
@@ -66,23 +66,23 @@ export default function Hero() {
         <div className="bg-white rounded-xl lg:rounded-2xl p-2.5 lg:p-3 shadow-2xl shadow-black/20">
           <div className="flex flex-col lg:flex-row gap-2">
             <div className="lg:flex-1 flex items-center gap-2 px-3 py-2.5 lg:py-3 bg-gray-50 rounded-lg lg:rounded-xl">
-              <MapPin className="w-4 h-4 text-[#359DFC] shrink-0" />
-              <input type="text" placeholder="Where do you want to go?" value={dest} onChange={e=>setDest(e.target.value)}
+              <MapPin className="w-4 h-4 text-[#afde1e] shrink-0" />
+              <input type="text" aria-label="Destination" placeholder="Where do you want to go?" value={dest} onChange={e=>setDest(e.target.value)}
                 className="flex-1 bg-transparent outline-none text-sm text-gray-800 placeholder:text-gray-400" />
               <ChevronDown className="w-4 h-4 text-gray-400 shrink-0 hidden lg:block" />
             </div>
             <div className="lg:flex-1 flex items-center gap-2 px-3 py-2.5 lg:py-3 bg-gray-50 rounded-lg lg:rounded-xl">
-              <Calendar className="w-4 h-4 text-[#359DFC] shrink-0" />
-              <input type="text" placeholder="When — Select Date" value={date} onChange={e=>setDate(e.target.value)}
+              <Calendar className="w-4 h-4 text-[#afde1e] shrink-0" />
+              <input type="text" aria-label="Travel date" placeholder="When — Select Date" value={date} onChange={e=>setDate(e.target.value)}
                 className="flex-1 bg-transparent outline-none text-sm text-gray-800 placeholder:text-gray-400" />
             </div>
             <div className="lg:flex-1 flex items-center gap-2 px-3 py-2.5 lg:py-3 bg-gray-50 rounded-lg lg:rounded-xl">
-              <Users className="w-4 h-4 text-[#359DFC] shrink-0" />
-              <input type="text" placeholder="Travelers" value={pax} onChange={e=>setPax(e.target.value)}
+              <Users className="w-4 h-4 text-[#afde1e] shrink-0" />
+              <input type="text" aria-label="Number of travelers" placeholder="Travelers" value={pax} onChange={e=>setPax(e.target.value)}
                 className="flex-1 bg-transparent outline-none text-sm text-gray-800 placeholder:text-gray-400" />
             </div>
             <Link href="/treks"
-              className="flex items-center justify-center gap-2 bg-[#359DFC] hover:bg-[#1a7de0] text-white font-semibold px-4 lg:px-6 py-2.5 lg:py-3 rounded-lg lg:rounded-xl transition-all shadow-lg shadow-[#359DFC]/30 text-sm whitespace-nowrap shrink-0">
+              className="flex items-center justify-center gap-2 bg-[#afde1e] hover:bg-[#8cb818] text-gray-900 font-semibold px-4 lg:px-6 py-2.5 lg:py-3 rounded-lg lg:rounded-xl transition-all shadow-lg shadow-[#afde1e]/30 text-sm whitespace-nowrap shrink-0">
               <Search className="w-4 h-4" />
               Search
             </Link>

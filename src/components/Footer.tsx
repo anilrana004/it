@@ -145,13 +145,13 @@ export default function Footer() {
   const [openSection, setOpenSection] = useState<number | null>(null);
 
   return (
-    <footer className="bg-[#1a1a2e] text-white pb-[62px] lg:pb-0">
+    <footer className="bg-[#040921] text-white pb-[62px] lg:pb-0">
       <div className="container mx-auto py-8 lg:py-16">
         {/* Mobile */}
         <div className="lg:hidden">
           <div className="flex flex-col items-center mb-6">
             <Link href="/" className="flex items-center gap-2 mb-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-[#359DFC] to-[#29C80F] rounded-lg flex items-center justify-center">
+              <div className="w-8 h-8 bg-gradient-to-br from-[#afde1e] to-[#afde1e] rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-sm">TR</span>
               </div>
               <span className="font-[family-name:var(--font-heading)] font-bold text-lg text-white">TrekRoot</span>
@@ -202,7 +202,7 @@ export default function Footer() {
                   <div className="pb-3 space-y-2 px-1">
                     {s.links.map(l => (
                       <Link key={l.l} href={l.h}
-                        className="block text-sm text-gray-400 hover:text-[#359DFC] transition-colors py-1">
+                        className="block text-sm text-gray-400 hover:text-[#afde1e] transition-colors py-1">
                         {l.l}
                       </Link>
                     ))}
@@ -213,9 +213,9 @@ export default function Footer() {
           </div>
 
           <div className="flex items-center justify-center gap-5 mt-6">
-            <Link href="/privacy-policy" className="text-xs text-gray-400 hover:text-[#359DFC]">Privacy Policy</Link>
+            <Link href="/privacy-policy" className="text-xs text-gray-400 hover:text-[#afde1e]">Privacy Policy</Link>
             <div className="h-3 w-[1px] bg-gray-600" />
-            <Link href="/terms-and-conditions" className="text-xs text-gray-400 hover:text-[#359DFC]">Terms &amp; Conditions</Link>
+            <Link href="/terms-and-conditions" className="text-xs text-gray-400 hover:text-[#afde1e]">Terms &amp; Conditions</Link>
           </div>
           <p className="text-center text-xs text-gray-500 mt-4">c 2015-2026 TrekRoot Pvt. Ltd.</p>
         </div>
@@ -224,7 +224,7 @@ export default function Footer() {
         <div className="hidden lg:block">
           <div className="flex items-center gap-2 mb-10">
             <Link href="/" className="flex items-center gap-2">
-              <div className="w-[38px] h-[38px] bg-gradient-to-br from-[#359DFC] to-[#29C80F] rounded-lg flex items-center justify-center">
+              <div className="w-[38px] h-[38px] bg-gradient-to-br from-[#afde1e] to-[#afde1e] rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-lg">TR</span>
               </div>
               <span className="font-[family-name:var(--font-heading)] font-bold text-xl text-white">TrekRoot</span>
@@ -240,11 +240,11 @@ export default function Footer() {
               </div>
               <div className="flex items-center gap-2 mb-2">
                 <Phone className="w-4 h-4 text-gray-500 shrink-0" />
-                <a href="tel:+919797972175" className="text-xs text-gray-400 hover:text-[#359DFC]">+91-9797 972 175</a>
+                <a href="tel:+919797972175" className="text-xs text-gray-400 hover:text-[#afde1e]">+91-9797 972 175</a>
               </div>
               <div className="flex items-center gap-2 mb-6">
                 <Mail className="w-4 h-4 text-gray-500 shrink-0" />
-                <a href="mailto:contact@trekroot.com" className="text-xs text-gray-400 hover:text-[#359DFC]">contact@trekroot.com</a>
+                <a href="mailto:contact@trekroot.com" className="text-xs text-gray-400 hover:text-[#afde1e]">contact@trekroot.com</a>
               </div>
               <div className="flex flex-wrap gap-2">
                 {socialLinks.map(s => (
@@ -260,7 +260,7 @@ export default function Footer() {
                 <ul className="space-y-2.5">
                   {s.links.map(l => (
                     <li key={l.l}>
-                      <Link href={l.h} className="text-xs text-gray-400 hover:text-[#359DFC] transition-colors">{l.l}</Link>
+                      <Link href={l.h} className="text-xs text-gray-400 hover:text-[#afde1e] transition-colors">{l.l}</Link>
                     </li>
                   ))}
                 </ul>
@@ -271,11 +271,11 @@ export default function Footer() {
           <div className="border-t border-white/10 pt-5 flex items-center justify-between">
             <p className="text-xs text-gray-500">c 2015-2026 TrekRoot Pvt. Ltd.</p>
             <div className="flex items-center gap-4 text-xs text-gray-400">
-              <Link href="/privacy-policy" className="hover:text-[#359DFC]">Privacy Policy</Link>
+              <Link href="/privacy-policy" className="hover:text-[#afde1e]">Privacy Policy</Link>
               <div className="h-4 w-[1px] bg-gray-600" />
-              <Link href="/terms-and-conditions" className="hover:text-[#359DFC]">Terms &amp; Conditions</Link>
+              <Link href="/terms-and-conditions" className="hover:text-[#afde1e]">Terms &amp; Conditions</Link>
               <div className="h-4 w-[1px] bg-gray-600" />
-              <Link href="/payment-policy" className="hover:text-[#359DFC]">Payment Policy</Link>
+              <Link href="/payment-policy" className="hover:text-[#afde1e]">Payment Policy</Link>
             </div>
           </div>
         </div>

@@ -7,7 +7,7 @@ export default function AdminUsers() {
     <div>
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="font-[family-name:var(--font-heading)] text-2xl font-bold text-[#1a1a2e]">Users</h1>
+          <h1 className="font-[family-name:var(--font-heading)] text-2xl font-bold text-[#040921]">Users</h1>
           <p className="text-gray-500 text-sm">{users.length} registered users</p>
         </div>
       </div>

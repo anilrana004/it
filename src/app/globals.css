@@ -1,25 +1,92 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-primary: #359DFC;
-  --color-primary-dark: #1a7de0;
-  --color-secondary: #29C80F;
-  --color-accent: #EA5939;
-  --color-dark: #1a1a2e;
-  --color-dark-2: #16213e;
-  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --color-brand: #afde1e;
+  --color-brand-hover: #8cb818;
+  --color-brand-active: #7aa314;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #212529;
+  --color-text-tertiary: #040921;
+  --color-surface-base: #000000;
+  --color-surface-raised: #f3f6f4;
+  --color-surface-muted: #f9fafb;
+  --color-border-default: #e5e7eb;
+  --color-border-strong: #d1d5db;
+  --color-focus-ring: #afde1e;
+  --color-error: #dc2626;
+  --color-success: #16a34a;
+  --font-sans: 'Poppins', ui-sans-serif, system-ui, sans-serif;
   --font-heading: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+  --text-xs: 10px;
+  --text-sm: 12px;
+  --text-md: 14px;
+  --text-lg: 16px;
+  --text-xl: 18px;
+  --text-2xl: 20px;
+  --text-3xl: 24px;
+  --text-4xl: 26px;
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --space-1: 2px;
+  --space-2: 4px;
+  --space-3: 8px;
+  --space-4: 12px;
+  --space-5: 30px;
 }
 
 :root {
-  --jw-blue: #359DFC;
-  --jw-green: #29C80F;
-  --jw-orange: #EA5939;
-  --jw-dark: #1a1a2e;
+  --jw-brand: #afde1e;
+  --jw-brand-hover: #8cb818;
+  --jw-text-primary: #ffffff;
+  --jw-text-secondary: #212529;
+  --jw-text-tertiary: #040921;
+  --jw-surface-raised: #f3f6f4;
+  --jw-border: #e5e7eb;
+  --jw-focus: #afde1e;
+  --jw-error: #dc2626;
+  --jw-success: #16a34a;
 }
 
 html { scroll-behavior: smooth; }
-body { font-family: var(--font-sans); color: #111827; background: #fff; }
+body { font-family: var(--font-sans); color: var(--jw-text-secondary); background: #fff; line-height: 26px; font-size: 16px; }
+
+/*
+ * Focus-visible: keyboard-only focus ring
+ * All interactive elements must show a visible focus indicator on keyboard navigation.
+ */
+:focus-visible {
+  outline: 2px solid var(--jw-focus);
+  outline-offset: 2px;
+  border-radius: var(--radius-xs);
+}
+
+/* Remove focus ring for mouse users */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/*
+ * Disabled state: all disabled interactive elements
+ */
+:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/*
+ * Reduced motion
+ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
 
 .container { max-width: 1280px; margin: 0 auto; padding: 0 1rem; }
 @media (min-width: 768px) { .container { padding: 0 1.5rem; } }
@@ -33,3 +100,81 @@ body { font-family: var(--font-sans); color: #111827; background: #fff; }
 .animate-bounce-slow { animation: bounce-slow 2s ease-in-out infinite; }
 .safe-area-bottom { padding-bottom: env(safe-area-inset-bottom, 0px); }
 @keyframes shimmer { 0%{background-position:-200% 0} 100%{background-position:200% 0} }
+
+/* ====== Component Tokens ====== */
+
+/*
+ * Button base: applies to all <button> and [role="button"]
+ * Variants: primary (brand fill), secondary (outline), ghost (no border)
+ * States: default, hover, active, focus-visible, disabled, loading
+ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: var(--text-md);
+  line-height: 1;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.15s, opacity 0.15s, box-shadow 0.15s;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.btn:focus-visible { outline: 2px solid var(--jw-focus); outline-offset: 2px; }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
+
+.btn--primary { background: var(--jw-brand); color: var(--jw-text-tertiary); border-radius: var(--radius-sm); }
+.btn--primary:hover:not(:disabled) { background: var(--jw-brand-hover); }
+.btn--primary:active:not(:disabled) { background: var(--color-brand-active); }
+
+.btn--secondary { background: transparent; color: var(--jw-text-secondary); border: 1.5px solid var(--jw-border); border-radius: var(--radius-sm); }
+.btn--secondary:hover:not(:disabled) { border-color: var(--color-border-strong); background: var(--jw-surface-raised); }
+.btn--secondary:active:not(:disabled) { background: var(--color-border-default); }
+
+.btn--ghost { background: transparent; color: var(--jw-text-secondary); border-radius: var(--radius-sm); }
+.btn--ghost:hover:not(:disabled) { background: var(--jw-surface-raised); }
+.btn--ghost:active:not(:disabled) { background: var(--color-border-default); }
+
+.btn--sm { padding: var(--space-2) var(--space-4); font-size: var(--text-xs); }
+.btn--md { padding: var(--space-3) var(--space-5); font-size: var(--text-md); }
+.btn--lg { padding: var(--space-4) var(--space-5); font-size: var(--text-lg); }
+
+/*
+ * Input base
+ * States: default, hover, focus-visible, disabled, error
+ */
+.input {
+  font-family: var(--font-sans);
+  font-size: var(--text-md);
+  line-height: 1.5;
+  padding: var(--space-3) var(--space-4);
+  border: 1.5px solid var(--jw-border);
+  border-radius: var(--radius-sm);
+  background: #fff;
+  color: var(--jw-text-secondary);
+  transition: border-color 0.15s, box-shadow 0.15s;
+  width: 100%;
+  outline: none;
+}
+.input::placeholder { color: #9ca3af; }
+.input:hover { border-color: var(--color-border-strong); }
+.input:focus-visible { border-color: var(--jw-focus); box-shadow: 0 0 0 3px rgba(175, 222, 30, 0.2); }
+.input:disabled { background: var(--jw-surface-raised); opacity: 0.6; }
+.input--error { border-color: var(--jw-error); }
+.input--error:focus-visible { box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.15); }
+
+/*
+ * Link base
+ */
+.link { color: var(--jw-text-tertiary); text-decoration: underline; text-underline-offset: 2px; transition: color 0.15s; }
+.link:hover { color: var(--jw-brand-hover); }
+.link:focus-visible { outline: 2px solid var(--jw-focus); outline-offset: 2px; border-radius: var(--radius-xs); }
+
+/*
+ * Card base
+ */
+.card { background: #fff; border: 1px solid var(--jw-border); border-radius: var(--radius-md); transition: box-shadow 0.15s; }
+.card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }

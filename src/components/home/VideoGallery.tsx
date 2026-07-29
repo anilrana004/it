@@ -29,8 +29,8 @@ export default function VideoGallery() {
     <section className="py-8 lg:py-16 bg-white">
       <div className="container mx-auto">
         <div className="text-center mb-6 lg:mb-8">
-          <p className="text-[#359DFC] font-semibold text-xs lg:text-sm tracking-widest uppercase mb-1">VIDEOS</p>
-          <h2 className="text-xl lg:text-3xl font-bold text-[#1a1a2e]">Memories for Life</h2>
+          <p className="text-[#afde1e] font-semibold text-xs lg:text-sm tracking-widest uppercase mb-1">VIDEOS</p>
+          <h2 className="text-xl lg:text-3xl font-bold text-[#040921]">Memories for Life</h2>
           <p className="text-gray-500 text-xs lg:text-sm mt-1">50+ Videos from our travelers</p>
         </div>
         <div className="grid grid-cols-4 lg:grid-cols-6 gap-2 lg:gap-3 mb-8 lg:mb-10">
@@ -39,7 +39,7 @@ export default function VideoGallery() {
               <img src={v.thumb} alt={v.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
               <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors flex items-center justify-center">
                 <div className="w-8 h-8 lg:w-10 lg:h-10 bg-white/90 rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                  <svg className="w-3.5 h-3.5 lg:w-5 lg:h-5 text-[#1a1a2e] ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                  <svg className="w-3.5 h-3.5 lg:w-5 lg:h-5 text-[#040921] ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                 </div>
               </div>
             </div>
@@ -51,7 +51,7 @@ export default function VideoGallery() {
               <div className="aspect-square rounded-xl overflow-hidden mb-2">
                 <img src={t.img} alt={t.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
               </div>
-              <h3 className="text-[11px] lg:text-sm font-semibold text-gray-800 line-clamp-2 group-hover:text-[#359DFC] transition-colors">{t.name}</h3>
+              <h3 className="text-[11px] lg:text-sm font-semibold text-gray-800 line-clamp-2 group-hover:text-[#afde1e] transition-colors">{t.name}</h3>
               <div className="flex items-center justify-center gap-1 text-[10px] lg:text-xs text-gray-500 mt-1">
                 <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />{t.rating} Rating
               </div>
@@ -60,7 +60,7 @@ export default function VideoGallery() {
         </div>
         {!showAll && popularTrips.length > 4 && (
           <div className="text-center mt-5">
-            <button onClick={() => setShowAll(true)} className="text-[#359DFC] text-sm font-semibold hover:text-[#1a7de0] transition-colors">View All Videos &rarr;</button>
+            <button onClick={() => setShowAll(true)} className="text-[#afde1e] text-sm font-semibold hover:text-[#8cb818] transition-colors">View All Videos &rarr;</button>
           </div>
         )}
       </div>

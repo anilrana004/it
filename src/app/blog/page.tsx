@@ -22,7 +22,7 @@ export default function BlogPage() {
           {blogs.map((b,i) => (
             <Link key={i} href={b.h} className="group bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-lg transition-all">
               <div className="relative h-48 overflow-hidden"><img src={b.img} alt={b.t} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" /></div>
-              <div className="p-5"><div className="flex items-center gap-3 text-xs text-gray-500 mb-2"><span className="flex items-center gap-1"><Calendar className="w-3 h-3" />{b.d}</span><span className="flex items-center gap-1"><Clock className="w-3 h-3" />{b.r}</span></div><h3 className="font-semibold text-gray-900 leading-snug line-clamp-3 group-hover:text-[#359DFC] transition-colors">{b.t}</h3></div>
+              <div className="p-5"><div className="flex items-center gap-3 text-xs text-gray-500 mb-2"><span className="flex items-center gap-1"><Calendar className="w-3 h-3" />{b.d}</span><span className="flex items-center gap-1"><Clock className="w-3 h-3" />{b.r}</span></div><h3 className="font-semibold text-gray-900 leading-snug line-clamp-3 group-hover:text-[#afde1e] transition-colors">{b.t}</h3></div>
             </Link>
           ))}
         </div>

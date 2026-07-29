@@ -20,7 +20,7 @@ export default function TrekCard({ trek }: { trek: Trek }) {
         {trek.badge && (
           <div className="absolute top-0 left-0">
             <div className="relative">
-              <div className="bg-[#EA5939] text-white text-[9px] font-bold px-6 py-1 -rotate-45 -translate-x-[18px] translate-y-[14px] text-center w-24 shadow-md">
+              <div className="bg-[#afde1e] text-gray-900 text-[9px] font-bold px-6 py-1 -rotate-45 -translate-x-[18px] translate-y-[14px] text-center w-24 shadow-md">
                 {trek.badge}
               </div>
             </div>
@@ -29,7 +29,7 @@ export default function TrekCard({ trek }: { trek: Trek }) {
 
         {/* Top right badges */}
         <div className="absolute top-2 right-2 flex flex-col gap-1 items-end">
-          {trek.type === 'yatra' && <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#EA5939] text-white shadow-sm">Yatra</span>}
+          {trek.type === 'yatra' && <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#afde1e] text-gray-900 shadow-sm">Yatra</span>}
           <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-white/90 text-gray-800 shadow-sm">{trek.duration}</span>
         </div>
 
@@ -48,7 +48,7 @@ export default function TrekCard({ trek }: { trek: Trek }) {
           <Clock className="w-3 h-3" />
           <span>{trek.duration}</span>
         </div>
-        <h3 className="font-bold text-sm lg:text-base text-gray-900 leading-snug line-clamp-2 group-hover:text-[#359DFC] transition-colors mb-1.5">{trek.title}</h3>
+        <h3 className="font-bold text-sm lg:text-base text-gray-900 leading-snug line-clamp-2 group-hover:text-[#afde1e] transition-colors mb-1.5">{trek.title}</h3>
         
         {/* Rating */}
         <div className="flex items-center gap-1 mb-2">

@@ -3,7 +3,7 @@ export default function DifficultyBadge({ difficulty }: { difficulty: string }) 
   const idx = levels.indexOf(difficulty);
   const pct = idx >= 0 ? ((idx + 1) / levels.length) * 100 : 50;
 
-  const colors = idx <= 1 ? 'bg-[#29C80F]' : idx === 2 ? 'bg-[#F5A623]' : 'bg-[#EA5939]';
+  const colors = idx <= 1 ? 'bg-[#afde1e]' : idx === 2 ? 'bg-[#F5A623]' : 'bg-[#afde1e]';
 
   return (
     <div className="flex items-center gap-3">

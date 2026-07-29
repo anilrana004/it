@@ -2,7 +2,7 @@ export default function PrivacyPage() {
   return (
     <div className="pt-20 lg:pt-28 pb-12 lg:pb-20">
       <div className="container mx-auto max-w-3xl px-4">
-        <h1 className="font-[family-name:var(--font-heading)] text-3xl font-bold text-[#1a1a2e] mb-6">Privacy Policy</h1>
+        <h1 className="font-[family-name:var(--font-heading)] text-3xl font-bold text-[#040921] mb-6">Privacy Policy</h1>
         <div className="text-gray-700 text-sm space-y-4">
           <p>At TrekRoot, we take your privacy seriously. This policy outlines how we collect, use, and protect your personal information.</p>
           <h3 className="font-bold text-gray-900 text-lg">Information We Collect</h3>

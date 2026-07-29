@@ -33,7 +33,7 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
       <div className="pt-28 pb-20 text-center">
         <div className="container mx-auto">
           <h1 className="text-2xl font-bold text-gray-900 mb-4">Blog Post Not Found</h1>
-          <Link href="/blog" className="text-[#359DFC] hover:underline">Back to Blog</Link>
+          <Link href="/blog" className="text-[#afde1e] hover:underline">Back to Blog</Link>
         </div>
       </div>
     );
@@ -42,7 +42,7 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
   return (
     <div className="pt-20 lg:pt-28 pb-12 lg:pb-20">
       <article className="container mx-auto max-w-3xl px-4">
-        <Link href="/blog" className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-[#359DFC] mb-6 transition-colors">
+        <Link href="/blog" className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-[#afde1e] mb-6 transition-colors">
           <ArrowLeft className="w-4 h-4" /> Back to Blog
         </Link>
 
@@ -56,7 +56,7 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
           <span>· {post.author}</span>
         </div>
 
-        <h1 className="font-[family-name:var(--font-heading)] text-2xl lg:text-4xl font-bold text-[#1a1a2e] mb-6 leading-tight">{post.title}</h1>
+        <h1 className="font-[family-name:var(--font-heading)] text-2xl lg:text-4xl font-bold text-[#040921] mb-6 leading-tight">{post.title}</h1>
 
         <div className="prose prose-sm lg:prose-base max-w-none text-gray-700 leading-relaxed space-y-4">
           {post.content.split('\n\n').map((p, i) => (
@@ -65,8 +65,8 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
         </div>
 
         <div className="border-t border-gray-100 mt-8 pt-6 flex items-center justify-between">
-          <Link href="/blog" className="text-sm text-[#359DFC] hover:underline">&larr; More Blogs</Link>
-          <Link href="/treks" className="text-sm bg-[#359DFC] text-white px-6 py-2.5 rounded-full hover:bg-[#1a7de0] transition-all">Explore Treks</Link>
+          <Link href="/blog" className="text-sm text-[#afde1e] hover:underline">&larr; More Blogs</Link>
+          <Link href="/treks" className="text-sm bg-[#afde1e] text-gray-900 px-6 py-2.5 rounded-full hover:bg-[#8cb818] transition-all">Explore Treks</Link>
         </div>
       </article>
     </div>

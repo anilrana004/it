@@ -33,15 +33,15 @@ export default function HimalayanTreks() {
       <div className="container mx-auto">
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-6 lg:mb-8">
           <div>
-            <p className="text-[#359DFC] font-semibold text-xs lg:text-sm tracking-widest uppercase mb-1">HIMALAYAN TREKS</p>
-            <h2 className="text-xl lg:text-3xl font-bold text-[#1a1a2e]">Himalayan Treks</h2>
+            <p className="text-[#afde1e] font-semibold text-xs lg:text-sm tracking-widest uppercase mb-1">HIMALAYAN TREKS</p>
+            <h2 className="text-xl lg:text-3xl font-bold text-[#040921]">Himalayan Treks</h2>
           </div>
-          <Link href="/treks" className="text-[#359DFC] text-sm font-semibold hover:text-[#1a7de0] whitespace-nowrap">View All Himalayan Treks &rarr;</Link>
+          <Link href="/treks" className="text-[#afde1e] text-sm font-semibold hover:text-[#8cb818] whitespace-nowrap">View All Himalayan Treks &rarr;</Link>
         </div>
         <div className="flex gap-2 overflow-x-auto scrollbar-none pb-2 -mx-4 px-4 lg:mx-0 lg:px-0 mb-6">
           {seasons.map(s => (
             <button key={s} onClick={() => setSeason(s)}
-              className={`shrink-0 px-5 py-1.5 rounded-full text-xs lg:text-sm font-medium transition-all ${season===s?'bg-[#1a1a2e] text-white':'bg-white text-gray-600 border border-gray-200 hover:border-gray-300'}`}>{s}</button>
+              className={`shrink-0 px-5 py-1.5 rounded-full text-xs lg:text-sm font-medium transition-all ${season===s?'bg-[#040921] text-white':'bg-white text-gray-600 border border-gray-200 hover:border-gray-300'}`}>{s}</button>
           ))}
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
@@ -54,13 +54,13 @@ export default function HimalayanTreks() {
               </div>
               <div className="p-3 lg:p-4">
                 <div className="flex items-center gap-1 text-gray-500 text-[10px] lg:text-xs mb-1"><MapPin className="w-3 h-3" />{t.loc}</div>
-                <h3 className="font-semibold text-sm lg:text-base text-gray-900 group-hover:text-[#359DFC] transition-colors line-clamp-1">{t.title}</h3>
+                <h3 className="font-semibold text-sm lg:text-base text-gray-900 group-hover:text-[#afde1e] transition-colors line-clamp-1">{t.title}</h3>
                 <div className="flex items-center gap-2 text-[11px] lg:text-xs text-gray-500 mt-1 mb-2">
                   <Clock className="w-3 h-3" />{t.dur}<span className="text-gray-300">|</span>
                   <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />{t.rating} ({t.rev})
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-[#EA5939] font-bold text-sm lg:text-base">₹{t.price.toLocaleString()}</span>
+                  <span className="text-[#afde1e] font-bold text-sm lg:text-base">₹{t.price.toLocaleString()}</span>
                   <span className="text-gray-400 text-xs line-through">₹{t.origPrice.toLocaleString()}</span>
                   <span className="ml-auto bg-green-100 text-green-700 text-[10px] font-bold px-1.5 py-0.5 rounded">{Math.round((1-t.price/t.origPrice)*100)}% OFF</span>
                 </div>

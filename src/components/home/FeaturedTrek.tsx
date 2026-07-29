@@ -13,13 +13,13 @@ const featured = {
   originalPrice: 11999,
   img: 'https://images.unsplash.com/photo-1585409677983-0f6c41ca9c3b?w=800&h=600&fit=crop',
   badge: 'Trek of the Week',
-  gradient: 'from-[#359DFC] to-[#29C80F]',
+  gradient: 'from-[#afde1e] to-[#afde1e]',
   href: '/treks/valley-of-flowers',
 };
 
 export default function FeaturedTrek() {
   return (
-    <section className="py-8 lg:py-16 bg-gradient-to-br from-[#1a1a2e] to-[#16213e] overflow-hidden">
+    <section className="py-8 lg:py-16 bg-gradient-to-br from-[#040921] to-[#040921] overflow-hidden">
       <div className="container mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* Left - Image */}
@@ -27,18 +27,18 @@ export default function FeaturedTrek() {
             <img src={featured.img} alt={featured.title} className="w-full h-64 lg:h-[420px] object-cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
             <div className="absolute top-4 left-4">
-              <span className="bg-[#29C80F] text-white text-xs font-bold px-3 py-1.5 rounded-full uppercase">{featured.badge}</span>
+              <span className="bg-[#afde1e] text-gray-900 text-xs font-bold px-3 py-1.5 rounded-full uppercase">{featured.badge}</span>
             </div>
           </div>
           {/* Right - Content */}
           <div className="text-white">
-            <p className="text-[#359DFC] font-semibold text-xs lg:text-sm tracking-widest uppercase mb-2">Featured Trek</p>
+            <p className="text-[#afde1e] font-semibold text-xs lg:text-sm tracking-widest uppercase mb-2">Featured Trek</p>
             <h2 className="font-[family-name:var(--font-heading)] text-2xl lg:text-4xl xl:text-5xl font-bold mb-2 leading-tight">{featured.title}</h2>
             <p className="text-white/60 text-sm lg:text-lg mb-4">{featured.subtitle}</p>
             <div className="flex flex-wrap items-center gap-4 mb-5 text-white/80 text-sm">
-              <span className="flex items-center gap-1.5"><MapPin className="w-4 h-4 text-[#359DFC]" />{featured.location}</span>
-              <span className="flex items-center gap-1.5"><Clock className="w-4 h-4 text-[#359DFC]" />{featured.duration}</span>
-              <span className="flex items-center gap-1.5"><TrendingUp className="w-4 h-4 text-[#29C80F]" />{featured.maxAltitude}</span>
+              <span className="flex items-center gap-1.5"><MapPin className="w-4 h-4 text-[#afde1e]" />{featured.location}</span>
+              <span className="flex items-center gap-1.5"><Clock className="w-4 h-4 text-[#afde1e]" />{featured.duration}</span>
+              <span className="flex items-center gap-1.5"><TrendingUp className="w-4 h-4 text-[#afde1e]" />{featured.maxAltitude}</span>
             </div>
             <div className="flex items-center gap-2 mb-6">
               <div className="flex items-center gap-0.5">
@@ -52,10 +52,10 @@ export default function FeaturedTrek() {
             <div className="flex items-center gap-3 mb-6">
               <span className="text-3xl font-bold text-white">₹{featured.price.toLocaleString()}</span>
               <span className="text-white/40 text-sm line-through">₹{featured.originalPrice.toLocaleString()}</span>
-              <span className="bg-[#29C80F]/20 text-[#29C80F] text-xs font-bold px-2 py-1 rounded-full">{Math.round((1-featured.price/featured.originalPrice)*100)}% OFF</span>
+              <span className="bg-[#afde1e]/20 text-[#afde1e] text-xs font-bold px-2 py-1 rounded-full">{Math.round((1-featured.price/featured.originalPrice)*100)}% OFF</span>
             </div>
             <Link href={featured.href}
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-[#359DFC] to-[#29C80F] hover:opacity-90 text-white font-semibold px-6 py-3 rounded-full transition-all shadow-lg shadow-[#359DFC]/25">
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-[#afde1e] to-[#afde1e] hover:opacity-90 text-white font-semibold px-6 py-3 rounded-full transition-all shadow-lg shadow-[#afde1e]/25">
               Book Now <ChevronRight className="w-4 h-4" />
             </Link>
           </div>

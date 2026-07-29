@@ -30,10 +30,10 @@ export default function AdminSidebar() {
       {open && <div className="fixed inset-0 bg-black/30 z-30 lg:hidden" onClick={() => setOpen(false)} />}
 
       {/* Sidebar */}
-      <aside className={`fixed lg:sticky top-0 left-0 z-40 h-screen w-64 bg-[#1a1a2e] text-white transition-transform duration-300 ${open ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
+      <aside className={`fixed lg:sticky top-0 left-0 z-40 h-screen w-64 bg-[#040921] text-white transition-transform duration-300 ${open ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
         <div className="p-5 border-b border-white/10">
           <Link href="/admin-360f71bc8e5da924" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-[#359DFC] to-[#29C80F] rounded-lg flex items-center justify-center">
+            <div className="w-8 h-8 bg-gradient-to-br from-[#afde1e] to-[#afde1e] rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-sm">TR</span>
             </div>
             <span className="font-bold text-lg">Admin Panel</span>
@@ -45,7 +45,7 @@ export default function AdminSidebar() {
             const active = item.href === '/admin-360f71bc8e5da924' ? path === '/admin-360f71bc8e5da924' : path.startsWith(item.href);
             return (
               <Link key={item.href} href={item.href} onClick={() => setOpen(false)}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all ${active ? 'bg-[#359DFC] text-white font-semibold' : 'text-gray-300 hover:bg-white/5'}`}>
+                className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all ${active ? 'bg-[#afde1e] text-gray-900 font-semibold' : 'text-gray-300 hover:bg-white/5'}`}>
                 <item.icon className="w-5 h-5" />
                 {item.label}
               </Link>

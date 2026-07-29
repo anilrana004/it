@@ -15,8 +15,8 @@ export default function TopDestinations() {
     <section className="py-8 lg:py-16 bg-gray-50">
       <div className="container mx-auto">
         <div className="text-center mb-8 lg:mb-10">
-          <p className="text-[#359DFC] font-semibold text-xs lg:text-sm tracking-widest uppercase mb-1">TOP DESTINATIONS</p>
-          <h2 className="font-[family-name:var(--font-heading)] text-2xl lg:text-3xl font-bold text-[#1a1a2e] mb-2">Most Popular Treks</h2>
+          <p className="text-[#afde1e] font-semibold text-xs lg:text-sm tracking-widest uppercase mb-1">TOP DESTINATIONS</p>
+          <h2 className="font-[family-name:var(--font-heading)] text-2xl lg:text-3xl font-bold text-[#040921] mb-2">Most Popular Treks</h2>
           <p className="text-gray-500 text-sm">Trusted by thousands of adventurers</p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
@@ -25,7 +25,7 @@ export default function TopDestinations() {
               <div className="relative h-40 lg:h-48 overflow-hidden">
                 <img src={d.img} alt={d.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-                <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-xs font-bold px-2.5 py-1 rounded-full text-[#359DFC]">
+                <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-xs font-bold px-2.5 py-1 rounded-full text-[#afde1e]">
                   {d.state}
                 </div>
                 <div className="absolute bottom-0 left-0 right-0 p-4">
@@ -38,8 +38,8 @@ export default function TopDestinations() {
                   <span className="flex items-center gap-1"><Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />{d.rating}</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-[#EA5939] font-bold text-base">₹{d.price.toLocaleString()}</span>
-                  <span className="text-xs text-[#359DFC] font-semibold group-hover:underline">View Details →</span>
+                  <span className="text-[#afde1e] font-bold text-base">₹{d.price.toLocaleString()}</span>
+                  <span className="text-xs text-[#afde1e] font-semibold group-hover:underline">View Details →</span>
                 </div>
               </div>
             </Link>
