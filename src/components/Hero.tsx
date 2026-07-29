@@ -10,23 +10,23 @@ import {
 import { treks } from '@/lib/data';
 
 const mobBanners = [
-  { image: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_350,c_fill,g_auto/&q=80', title: 'Explore the Himalayas', subtitle: "Trek through the world's most breathtaking ranges", cta: 'Explore Treks', cat: 'trek' },
-  { image: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_350,c_fill,g_auto/&q=80', title: 'Sacred Yatras', subtitle: 'Journey to ancient temples in the mountains', cta: 'Explore Yatras', cat: 'yatra' },
-  { image: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_350,c_fill,g_auto/&q=80', title: 'International Adventures', subtitle: 'Nepal, Bali, Thailand, Bhutan & beyond', cta: 'Explore Global', cat: 'international' },
-  { image: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_350,c_fill,g_auto/&q=80', title: 'Winter Wonderland', subtitle: 'Snow treks, frozen lakes & starry nights', cta: 'Winter Treks', cat: 'trek' },
+  { image: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_350,c_fill,g_auto/&q=80', title: 'Uttarakhand Treks', subtitle: 'Chopta · Kedarkantha · Valley of Flowers & more', cta: 'Explore Treks', cat: 'trek' },
+  { image: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_350,c_fill,g_auto/&q=80', title: 'Sacred Yatras', subtitle: 'Kedarnath · Do Dham · Char Dham · Panch Kedar', cta: 'Explore Yatras', cat: 'yatra' },
+  { image: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_350,c_fill,g_auto/&q=80', title: 'Himachal Adventures', subtitle: 'Hampta Pass · Triund · Bhrigu Lake & more', cta: 'Explore Himachal', cat: 'trek' },
+  { image: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_350,c_fill,g_auto/&q=80', title: 'International Expeditions', subtitle: 'EBC · Annapurna · Nepal Backpacking Circuit', cta: 'Explore Global', cat: 'international' },
 ];
 
 const catItems = [
-  { n: 'Bucket List', h: '/bucket-list-sale', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_300,h_300,c_fill,g_auto/&q=80' },
-  { n: 'Long Weekend', h: '/treks?difficulty=easy', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_300,h_300,c_fill,g_auto/&q=80' },
-  { n: 'International', h: '/treks?region=nepal', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_300,h_300,c_fill,g_auto/&q=80' },
-  { n: 'Treks', h: '/treks', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_300,h_300,c_fill,g_auto/&q=80' },
-  { n: 'Yatras', h: '/yatra', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_300,h_300,c_fill,g_auto/&q=80' },
-  { n: 'Ladakh', h: '/treks?region=ladakh', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_300,h_300,c_fill,g_auto/&q=80' },
-  { n: 'Biking', h: '/treks', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_300,h_300,c_fill,g_auto/&q=80' },
-  { n: 'All Girls', h: '/treks', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_300,h_300,c_fill,g_auto/&q=80' },
-  { n: 'Honeymoon', h: '/treks', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_300,h_300,c_fill,g_auto/&q=80' },
-  { n: 'Spiti', h: '/treks?region=himachal', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_300,h_300,c_fill,g_auto/&q=80' },
+  { n: 'Uttarakhand Treks', h: '/treks?region=uttarakhand', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_300,h_300,c_fill,g_auto/&q=80' },
+  { n: 'Himachal Treks', h: '/treks?region=himachal', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_300,h_300,c_fill,g_auto/&q=80' },
+  { n: 'Char Dham Yatra', h: '/yatra', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_300,h_300,c_fill,g_auto/&q=80' },
+  { n: 'Kedarnath Yatra', h: '/yatra/kedarnath-yatra', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_300,h_300,c_fill,g_auto/&q=80' },
+  { n: 'Everest Base Camp', h: '/treks/everest-base-camp', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_300,h_300,c_fill,g_auto/&q=80' },
+  { n: 'Nepal', h: '/treks?region=nepal', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_300,h_300,c_fill,g_auto/&q=80' },
+  { n: 'Chopta Tungnath', h: '/treks/chopta-tungnath', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_300,h_300,c_fill,g_auto/&q=80' },
+  { n: 'Hampta Pass', h: '/treks/hampta-pass', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_300,h_300,c_fill,g_auto/&q=80' },
+  { n: 'Triund Trek', h: '/treks/mcleodganj-trek', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_300,h_300,c_fill,g_auto/&q=80' },
+  { n: 'Valley of Flowers', h: '/treks/valley-of-flowers', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_300,h_300,c_fill,g_auto/&q=80' },
 ];
 
 const collabItems = [
@@ -41,11 +41,11 @@ const deskSlides = [
   { id: 'valley-of-flowers', name: 'Valley of Flowers Trek', sub: 'UNESCO Himalayan Paradise — Alpine meadows, rare flora & stunning snow-capped vistas', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_1920,h_960,c_fill,g_auto/', featureImg: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_800,h_1000,c_fill,g_auto/', t: 'trek', rating: '4.8', duration: '6D/5N', difficulty: 'Moderate', altitude: '14,107 ft', distance: '38 km', reviews: '8k+', season: 'Jul–Sep', group: '6–15' },
   { id: 'kedarkantha', name: 'Kedarkantha Trek', sub: 'Winter Wonderland — Snow-trailed summit with 360° Himalayan panoramas', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_1920,h_960,c_fill,g_auto/', featureImg: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_800,h_1000,c_fill,g_auto/', t: 'trek', rating: '4.9', duration: '5D/4N', difficulty: 'Easy-Moderate', altitude: '12,500 ft', distance: '22 km', reviews: '10k+', season: 'Dec–Apr', group: '6–15' },
   { id: 'kedarnath-yatra', name: 'Kedarnath Yatra', sub: 'Sacred Pilgrimage — One of the 12 Jyotirlingas in the Char Dham circuit', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_1920,h_960,c_fill,g_auto/', featureImg: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_800,h_1000,c_fill,g_auto/', t: 'yatra', rating: '4.8', duration: '6D/5N', difficulty: 'Moderate', altitude: '11,755 ft', distance: '16 km', reviews: '12k+', season: 'May–Oct', group: '10–30' },
-  { id: 'annapurna-base-camp', name: 'Annapurna Base Camp', sub: 'Nepal\'s Classic — Trek into the Annapurna Sanctuary amphitheatre', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_1920,h_960,c_fill,g_auto/', featureImg: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_800,h_1000,c_fill,g_auto/', t: 'trek', rating: '4.9', duration: '8D/7N', difficulty: 'Moderate', altitude: '13,550 ft', distance: '90 km', reviews: '15k+', season: 'Mar–May,Sep–Nov', group: '4–12' },
+  { id: 'everest-base-camp', name: 'Everest Base Camp Trek', sub: 'Ultimate Himalayan Dream — Trek to the foot of the world\'s highest peak', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_1920,h_960,c_fill,g_auto/', featureImg: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_800,h_1000,c_fill,g_auto/', t: 'trek', rating: '4.9', duration: '14D/13N', difficulty: 'Moderate', altitude: '17,598 ft', distance: '130 km', reviews: '20k+', season: 'Mar–May,Oct–Nov', group: '4–12' },
   { id: 'hampta-pass', name: 'Hampta Pass Trek', sub: 'Cross-over Adventure — Lush green Kullu meets barren Spiti valley', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_1920,h_960,c_fill,g_auto/', featureImg: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_800,h_1000,c_fill,g_auto/', t: 'trek', rating: '4.7', duration: '5D/4N', difficulty: 'Moderate', altitude: '14,100 ft', distance: '26 km', reviews: '8k+', season: 'Jun–Oct', group: '6–14' },
 ];
 
-const destinations = ['Zanskar', 'Thailand', 'Bali', 'Ladakh', 'Spiti', 'Tawang', 'Bhutan'];
+const destinations = ['Kedarkantha', 'Valley of Flowers', 'Everest Base Camp', 'Hampta Pass', 'Chopta Tungnath', 'Kedarnath', 'Triund', 'Annapurna'];
 
 export default function Hero() {
   const router = useRouter();
@@ -490,7 +490,7 @@ export default function Hero() {
                   <Mountain className="w-8 h-8 mx-auto text-gray-300 mb-2" />
                   <p className="text-sm text-gray-400">Type to search or select a category below</p>
                   <div className="flex flex-wrap justify-center gap-1.5 mt-4">
-                    {['Valley of Flowers', 'Kedarkantha', 'Everest', 'Hampta Pass', 'Kedarnath', 'Triund'].map(tag => (
+                    {['Kedarkantha', 'Valley of Flowers', 'Everest', 'Hampta Pass', 'Kedarnath', 'Triund', 'Chopta', 'Annapurna'].map(tag => (
                       <button key={tag} type="button" onClick={() => { setSearchQuery(tag); setSearchIdx(-1); searchRef.current?.focus(); }}
                         className="text-xs bg-gray-100 hover:bg-[#ffaf21]/10 hover:text-[#b87800] text-gray-500 px-3 py-1.5 rounded-full transition-colors">
                         {tag}

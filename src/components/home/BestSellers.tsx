@@ -3,35 +3,37 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { Star, Clock, MapPin, Zap } from 'lucide-react';
 
-const tabs = ['Bucket List Sale', 'Backpacking International', 'Biking Treks'];
+const tabs = ['Top Treks', 'Yatras & Pilgrimages', 'International Adventures'];
 
-const bucketList = [
-  { title: 'Tawang Bike Trip and Backpacking Expedition', loc: 'Guwahati to Guwahati', dur: '8N/9D', price: 41000, origPrice: 0, rating: '4.8', rev: '10k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks', badge: 'Bestseller' },
-  { title: 'Meghalaya Kaziranga Backpacking Trip - Forests, Falls & Safari (6N/7D)', loc: 'Guwahati to Guwahati', dur: '6N/7D', price: 28000, origPrice: 0, rating: '4.8', rev: '10k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks', badge: '' },
-  { title: 'All Girls Meghalaya Kaziranga Backpacking Trip - Scenic Trails (6N/7D)', loc: 'Guwahati to Guwahati', dur: '6N/7D', price: 28000, origPrice: 0, rating: '4.8', rev: '10k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks', badge: 'Bestseller' },
-  { title: 'Kashmir Autumn Trip - 6N/7D Group Tour', loc: 'Srinagar to Srinagar', dur: '6N/7D', price: 30000, origPrice: 0, rating: '4.8', rev: '10k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks', badge: 'New' },
+const topTreks = [
+  { title: 'Valley of Flowers Trek', loc: 'Joshimath → Rishikesh', dur: '6D/5N', price: 8999, origPrice: 11999, rating: '4.8', rev: '8k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/valley-of-flowers', badge: 'Bestseller' },
+  { title: 'Kedarkantha Winter Trek', loc: 'Sankri → Dehradun', dur: '5D/4N', price: 6999, origPrice: 8999, rating: '4.9', rev: '10k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/kedarkantha', badge: '' },
+  { title: 'Hampta Pass Trek', loc: 'Manali → Manali', dur: '5D/4N', price: 8499, origPrice: 10999, rating: '4.7', rev: '8k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/hampta-pass', badge: '' },
+  { title: 'Chopta Tungnath Trek', loc: 'Rishikesh → Rishikesh', dur: '4D/3N', price: 5999, origPrice: 7999, rating: '4.7', rev: '6k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/chopta-tungnath', badge: 'New' },
 ];
 
-const backpackingIntl = [
-  { title: 'Thailand - Phuket Krabi Group Tour with Full Moon Party (6N/7D)', loc: 'Phuket to Phuket', dur: '6N/7D', price: 53500, origPrice: 57000, rating: '4.8', rev: '10k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/nepal-backpacking', badge: 'New' },
-  { title: 'Bhutan Bike and Backpacking | 8 Days Bhutan Bike Tour', loc: 'Bagdogra to Bagdogra', dur: '7N/8D', price: 45000, origPrice: 0, rating: '4.8', rev: '10k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks', badge: '' },
-  { title: 'Bali with Gili Island Group Tour - Ubud, Nusa Penida & Kuta (7N/8D)', loc: 'Bali Airport to Bali Airport', dur: '7N/8D', price: 53500, origPrice: 57000, rating: '4.8', rev: '10k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks', badge: '' },
-  { title: 'Bhutan Tour with Phobjikha Valley - 8 Days', loc: 'Bagdogra to Siliguri', dur: '7N/8D', price: 45000, origPrice: 0, rating: '4.8', rev: '10k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks', badge: '' },
+const yatras = [
+  { title: 'Kedarnath Yatra', loc: 'Rishikesh → Rishikesh', dur: '6D/5N', price: 9999, origPrice: 12999, rating: '4.8', rev: '12k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/yatra/kedarnath-yatra', badge: 'Popular' },
+  { title: 'Do Dham Yatra', loc: 'Rishikesh → Rishikesh', dur: '7D/6N', price: 14999, origPrice: 18999, rating: '4.8', rev: '8k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/yatra/do-dham', badge: 'Pilgrimage' },
+  { title: 'Char Dham Yatra', loc: 'Rishikesh → Rishikesh', dur: '12D/11N', price: 24999, origPrice: 29999, rating: '4.9', rev: '6k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/yatra/char-dham', badge: 'Ultimate' },
+  { title: 'Panch Kedar Yatra', loc: 'Rishikesh → Rishikesh', dur: '10D/9N', price: 19999, origPrice: 25999, rating: '4.8', rev: '5k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/yatra/panch-kedar', badge: 'Sacred' },
 ];
 
-const bikingTreks = [
-  { title: 'Spiti Valley Bike and Backpacking Trip', loc: 'Delhi to Delhi', dur: '9N/10D', price: 25000, origPrice: 0, rating: '4.8', rev: '8k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/hampta-pass', badge: '' },
-  { title: 'Leh Ladakh Bike Trip From Srinagar with Hanle & Umling La', loc: 'Srinagar to Leh', dur: '11N/12D', price: 45000, origPrice: 0, rating: '4.9', rev: '10k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/everest-base-camp', badge: '' },
+const international = [
+  { title: 'Everest Base Camp Trek', loc: 'Lukla → Lukla', dur: '13D/12N', price: 74999, origPrice: 89999, rating: '4.9', rev: '20k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/everest-base-camp', badge: 'Bucket List' },
+  { title: 'Annapurna Base Camp Trek', loc: 'Pokhara → Pokhara', dur: '8D/7N', price: 34999, origPrice: 42999, rating: '4.9', rev: '15k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/annapurna-base-camp', badge: 'Classic' },
+  { title: 'Nepal Backpacking Circuit', loc: 'Kathmandu → Kathmandu', dur: '10D/9N', price: 34999, origPrice: 42999, rating: '4.8', rev: '6k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/nepal-backpacking', badge: '' },
+  { title: 'Annapurna Sanctuary Trek', loc: 'Pokhara → Pokhara', dur: '10D/9N', price: 42999, origPrice: 52999, rating: '4.8', rev: '12k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/annapurna-base-camp', badge: 'Premium' },
 ];
 
-const data: Record<string, typeof bucketList> = {
-  'Bucket List Sale': bucketList,
-  'Backpacking International': backpackingIntl,
-  'Biking Treks': bikingTreks,
+const data: Record<string, typeof topTreks> = {
+  'Top Treks': topTreks,
+  'Yatras & Pilgrimages': yatras,
+  'International Adventures': international,
 };
 
 export default function BestSellers() {
-  const [activeTab, setActiveTab] = useState('Bucket List Sale');
+  const [activeTab, setActiveTab] = useState('Top Treks');
   const items = data[activeTab] || [];
   return (
     <section className="py-8 lg:py-16 bg-white">

@@ -11,12 +11,12 @@ interface BannerItem {
 }
 
 const defaultBanners: BannerItem[] = [
-  { src: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/treks/nepal-backpacking', title: 'Bali with Gili Islands', subtitle: '7N/8D Group Tour', badge: 'UPTO ₹3,500 OFF', discount: 'Limited Period' },
-  { src: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/treks', title: 'Thailand - Phuket Krabi', subtitle: 'Full Moon Party Edition', badge: 'UPTO ₹3,500 OFF', discount: 'Book Now' },
-  { src: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/treks', title: 'Bucket List Sale', subtitle: 'Handpicked trips at best prices', badge: 'UPTO 40% OFF', discount: 'Sale Active' },
-  { src: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/bucket-list-sale', title: 'Tawang Bike Expedition', subtitle: 'North East India Adventure', badge: 'Bestseller', discount: '8N/9D' },
-  { src: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/treks', title: 'All Girls Trip', subtitle: 'Travel with your soul squad', badge: 'New', discount: 'Safe & Fun' },
-  { src: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/treks/everest-base-camp', title: 'Everest Base Camp', subtitle: 'The trek of a lifetime', badge: 'Bucket List', discount: '13D/12N' },
+  { src: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/treks/valley-of-flowers', title: 'Valley of Flowers Trek', subtitle: 'UNESCO Himalayan Paradise — 6D/5N', badge: 'Best Seller', discount: '₹8,999' },
+  { src: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/treks/kedarkantha', title: 'Kedarkantha Winter Trek', subtitle: 'India\'s #1 winter trek — 5D/4N', badge: 'Winter Special', discount: '₹6,999' },
+  { src: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/treks/hampta-pass', title: 'Hampta Pass — Valley Crossing', subtitle: 'Lush Kullu meets barren Spiti — 5D/4N', badge: 'Adventure', discount: '₹8,499' },
+  { src: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/treks/everest-base-camp', title: 'Everest Base Camp', subtitle: 'The trek of a lifetime — 13D/12N', badge: 'Bucket List', discount: '₹74,999' },
+  { src: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/yatra/kedarnath-yatra', title: 'Kedarnath Yatra', subtitle: 'Sacred pilgrimage — 6D/5N', badge: 'Yatra', discount: '₹9,999' },
+  { src: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/bucket-list-sale', title: 'Bucket List Sale — UPTO 40% OFF', subtitle: 'Limited period deals on handpicked treks', badge: 'Sale Active', discount: 'Grab Your Deal' },
 ];
 
 export default function Banners({ items = defaultBanners }: { items?: BannerItem[] }) {

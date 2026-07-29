@@ -3,30 +3,37 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { Star, Clock, MapPin } from 'lucide-react';
 
-const seasons = ['Monsoon Treks', 'Autumn Treks', 'Winter Treks'];
+const seasons = ['Uttarakhand Treks', 'Himachal Treks', 'Yatras'];
 
 const all: Record<string, { title: string; loc: string; dur: string; price: number; origPrice: number; rating: string; rev: string; type: string; img: string; href: string }[]> = {
-  'Monsoon Treks': [
+  'Uttarakhand Treks': [
     { title: 'Valley of Flowers Trek', loc: 'Joshimath → Rishikesh', dur: '6D/5N', price: 8999, origPrice: 11999, rating: '4.8', rev: '8k+', type: 'Easy', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/valley-of-flowers' },
-    { title: 'Hampta Pass Trek', loc: 'Manali → Manali', dur: '5D/4N', price: 8499, origPrice: 10999, rating: '4.7', rev: '8k+', type: 'Moderate', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/hampta-pass' },
-    { title: 'Rupin Pass Trek', loc: 'Shimla → Dehradun', dur: '7D/6N', price: 11999, origPrice: 14999, rating: '4.8', rev: '6k+', type: 'Moderate-Difficult', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/rupin-pass' },
-  ],
-  'Autumn Treks': [
-    { title: 'Annapurna Base Camp', loc: 'Pokhara → Pokhara', dur: '8D/7N', price: 34999, origPrice: 42999, rating: '4.9', rev: '15k+', type: 'Moderate', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/annapurna-base-camp' },
-    { title: 'Everest Base Camp', loc: 'Lukla → Lukla', dur: '13D/12N', price: 74999, origPrice: 89999, rating: '4.9', rev: '20k+', type: 'Difficult', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/everest-base-camp' },
+    { title: 'Kedarkantha Trek', loc: 'Sankri → Dehradun', dur: '5D/4N', price: 6999, origPrice: 8999, rating: '4.9', rev: '10k+', type: 'Easy to Moderate', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/kedarkantha' },
+    { title: 'Chopta Tungnath Trek', loc: 'Rishikesh → Rishikesh', dur: '4D/3N', price: 5999, origPrice: 7999, rating: '4.7', rev: '6k+', type: 'Easy to Moderate', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/chopta-tungnath' },
     { title: 'Har Ki Dun Trek', loc: 'Dehradun → Dehradun', dur: '6D/5N', price: 8999, origPrice: 10999, rating: '4.8', rev: '5k+', type: 'Moderate', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/har-ki-dun' },
-  ],
-  'Winter Treks': [
-    { title: 'Kedarkantha Trek', loc: 'Sankri → Dehradun', dur: '5D/4N', price: 6999, origPrice: 8999, rating: '4.9', rev: '10k+', type: 'Moderate', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/kedarkantha' },
     { title: 'Kuari Pass Trek', loc: 'Rishikesh → Rishikesh', dur: '6D/5N', price: 9999, origPrice: 11999, rating: '4.8', rev: '7k+', type: 'Moderate', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/kuari-pass' },
     { title: 'Dayara Bugyal Trek', loc: 'Rishikesh → Rishikesh', dur: '5D/4N', price: 6999, origPrice: 8999, rating: '4.7', rev: '6k+', type: 'Easy', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/dayara-bugyal' },
+  ],
+  'Himachal Treks': [
+    { title: 'Hampta Pass Trek', loc: 'Manali → Manali', dur: '5D/4N', price: 8499, origPrice: 10999, rating: '4.7', rev: '8k+', type: 'Moderate', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/hampta-pass' },
+    { title: 'Triund Trek', loc: 'Mcleodganj → Mcleodganj', dur: '3D/2N', price: 2499, origPrice: 3999, rating: '4.6', rev: '15k+', type: 'Easy', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/mcleodganj-trek' },
+    { title: 'Bhrigu Lake Trek', loc: 'Manali → Manali', dur: '3D/2N', price: 4999, origPrice: 6499, rating: '4.6', rev: '6k+', type: 'Easy to Moderate', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/bhrigu-lake' },
+    { title: 'Kheerganga Trek', loc: 'Kasol → Kasol', dur: '3D/2N', price: 3499, origPrice: 4999, rating: '4.5', rev: '8k+', type: 'Easy', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/kheerganga' },
+    { title: 'Beas Kund Trek', loc: 'Manali → Manali', dur: '4D/3N', price: 5999, origPrice: 7999, rating: '4.6', rev: '5k+', type: 'Easy to Moderate', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/beas-kund' },
+    { title: 'Sar Pass Trek', loc: 'Kasol → Kasol', dur: '5D/4N', price: 6999, origPrice: 8999, rating: '4.7', rev: '5k+', type: 'Moderate', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/sar-pass' },
+  ],
+  'Yatras': [
+    { title: 'Kedarnath Yatra', loc: 'Rishikesh → Rishikesh', dur: '6D/5N', price: 9999, origPrice: 12999, rating: '4.8', rev: '12k+', type: 'Moderate', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/yatra/kedarnath-yatra' },
+    { title: 'Do Dham Yatra', loc: 'Rishikesh → Rishikesh', dur: '7D/6N', price: 14999, origPrice: 18999, rating: '4.8', rev: '8k+', type: 'Moderate', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/yatra/do-dham' },
+    { title: 'Char Dham Yatra', loc: 'Rishikesh → Rishikesh', dur: '12D/11N', price: 24999, origPrice: 29999, rating: '4.9', rev: '6k+', type: 'Difficult', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/yatra/char-dham' },
+    { title: 'Panch Kedar Yatra', loc: 'Rishikesh → Rishikesh', dur: '10D/9N', price: 19999, origPrice: 25999, rating: '4.8', rev: '5k+', type: 'Moderate-Difficult', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/yatra/panch-kedar' },
   ],
 };
 
 const diffColors: Record<string, string> = { 'Easy': 'bg-green-500', 'Easy to Moderate': 'bg-green-400', 'Moderate': 'bg-yellow-500', 'Moderate-Difficult': 'bg-orange-500', 'Difficult': 'bg-red-500' };
 
 export default function HimalayanTreks() {
-  const [season, setSeason] = useState('Monsoon Treks');
+  const [season, setSeason] = useState('Uttarakhand Treks');
   const items = all[season] || [];
   return (
     <section className="py-8 lg:py-16 bg-gray-50">

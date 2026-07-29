@@ -15,9 +15,13 @@ const trending = [
   { title: 'Triund Trek', loc: 'Mcleodganj → Mcleodganj', dur: '3D/2N', price: 2499, rating: '4.6', rev: '15k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/mcleodganj-trek', tag: 'Weekend' },
   { title: 'Chopta Tungnath', loc: 'Rishikesh → Rishikesh', dur: '4D/3N', price: 5999, rating: '4.7', rev: '7k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/chopta-tungnath', tag: 'Trekking' },
   { title: 'Har Ki Dun Trek', loc: 'Dehradun → Dehradun', dur: '6D/5N', price: 8999, rating: '4.8', rev: '5k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/har-ki-dun', tag: 'Trekking' },
-  { title: 'Badrinath Yatra', loc: 'Rishikesh → Rishikesh', dur: '5D/4N', price: 7999, rating: '4.8', rev: '10k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/yatra/badrinath-yatra', tag: 'Yatra' },
+  { title: 'Do Dham Yatra', loc: 'Rishikesh → Rishikesh', dur: '7D/6N', price: 14999, rating: '4.8', rev: '8k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/yatra/do-dham', tag: 'Yatra' },
   { title: 'Dayara Bugyal Trek', loc: 'Rishikesh → Rishikesh', dur: '5D/4N', price: 6999, rating: '4.7', rev: '6k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/dayara-bugyal', tag: 'Trekking' },
   { title: 'Bhrigu Lake Trek', loc: 'Manali → Manali', dur: '3D/2N', price: 4999, rating: '4.6', rev: '6k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/bhrigu-lake', tag: 'Weekend' },
+  { title: 'Kheerganga Trek', loc: 'Kasol → Kasol', dur: '3D/2N', price: 3499, rating: '4.5', rev: '8k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/kheerganga', tag: 'Weekend' },
+  { title: 'Nepal Backpacking Circuit', loc: 'Kathmandu → Kathmandu', dur: '10D/9N', price: 34999, rating: '4.8', rev: '6k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/nepal-backpacking', tag: 'International' },
+  { title: 'Char Dham Yatra', loc: 'Rishikesh → Rishikesh', dur: '12D/11N', price: 24999, rating: '4.9', rev: '6k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/yatra/char-dham', tag: 'Yatra' },
+  { title: 'Kuari Pass Trek', loc: 'Rishikesh → Rishikesh', dur: '6D/5N', price: 9999, rating: '4.8', rev: '7k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/kuari-pass', tag: 'Trekking' },
 ];
 
 export default function TrendingPage() {

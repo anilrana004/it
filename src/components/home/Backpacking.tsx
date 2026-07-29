@@ -3,24 +3,30 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { Star, Clock, MapPin } from 'lucide-react';
 
-const regions = ['International', 'Ladakh Zanskar', 'Spiti Valley'];
+const regions = ['Uttarakhand', 'Himachal', 'International'];
 
 const data: Record<string, { title: string; loc: string; dur: string; price: number; origPrice: number; rating: string; rev: string; img: string; href: string; badge?: string }[]> = {
+  'Uttarakhand': [
+    { title: 'Rishikesh — River Rafting & Yoga Retreat', loc: 'Rishikesh', dur: '4D/3N', price: 4999, origPrice: 6999, rating: '4.7', rev: '10k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks', badge: 'Popular' },
+    { title: 'Auli — Skiing & Snow Adventure', loc: 'Auli', dur: '5D/4N', price: 8999, origPrice: 11999, rating: '4.8', rev: '6k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks', badge: 'Winter' },
+    { title: 'Munsiyari — Panoramic Himalayan Views', loc: 'Munsiyari', dur: '4D/3N', price: 6999, origPrice: 8999, rating: '4.7', rev: '5k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks', badge: '' },
+    { title: 'Jim Corbett — Wildlife Safari', loc: 'Jim Corbett', dur: '3D/2N', price: 5999, origPrice: 7999, rating: '4.6', rev: '8k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks', badge: 'Safari' },
+    { title: 'Jageshwar Nainital — Temple Trails', loc: 'Nainital', dur: '3D/2N', price: 3999, origPrice: 5499, rating: '4.5', rev: '6k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks', badge: '' },
+    { title: 'Chakrata — Offbeat Weekend Escape', loc: 'Chakrata', dur: '3D/2N', price: 4499, origPrice: 5999, rating: '4.6', rev: '4k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks', badge: 'Offbeat' },
+  ],
+  'Himachal': [
+    { title: 'Manali — Adventures in the Mountains', loc: 'Manali', dur: '4D/3N', price: 5999, origPrice: 7999, rating: '4.7', rev: '12k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/hampta-pass', badge: 'Popular' },
+    { title: 'Kasol — Parvati Valley Backpacking', loc: 'Kasol', dur: '4D/3N', price: 4999, origPrice: 6999, rating: '4.6', rev: '8k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/kheerganga', badge: '' },
+    { title: 'Dharamshala McLeod Ganj — Tibetan Culture', loc: 'Dharamshala', dur: '4D/3N', price: 5499, origPrice: 7499, rating: '4.7', rev: '8k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/mcleodganj-trek', badge: '' },
+    { title: 'Bir Billing — Paragliding Capital', loc: 'Bir', dur: '3D/2N', price: 3999, origPrice: 5499, rating: '4.8', rev: '10k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks', badge: 'Adventure' },
+    { title: 'Shimla — Queen of Hills', loc: 'Shimla', dur: '3D/2N', price: 4499, origPrice: 5999, rating: '4.5', rev: '10k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks', badge: '' },
+    { title: 'Spiti Valley — Summer Expedition', loc: 'Spiti', dur: '8D/7N', price: 15999, origPrice: 19999, rating: '4.8', rev: '6k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/hampta-pass', badge: 'Expedition' },
+  ],
   'International': [
-    { title: 'Thailand - Phuket Krabi Group Tour with Full Moon Party (6N/7D)', loc: 'Phuket to Phuket', dur: '6N/7D', price: 53500, origPrice: 57000, rating: '4.8', rev: '10k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/nepal-backpacking', badge: 'New' },
-    { title: 'Bhutan Bike and Backpacking | 8 Days Bhutan Bike Tour', loc: 'Bagdogra to Bagdogra', dur: '7N/8D', price: 45000, origPrice: 0, rating: '4.8', rev: '10k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks' },
-    { title: 'Bali with Gili Island Group Tour - Ubud, Nusa Penida & Kuta (7N/8D)', loc: 'Bali Airport to Bali Airport', dur: '7N/8D', price: 53500, origPrice: 57000, rating: '4.8', rev: '10k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks' },
-    { title: 'Bhutan Tour with Phobjikha Valley - 8 Days', loc: 'Bagdogra to Siliguri', dur: '7N/8D', price: 45000, origPrice: 0, rating: '4.8', rev: '10k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks' },
-  ],
-  'Ladakh Zanskar': [
-    { title: 'Zanskar Valley Backpacking Trip | 8 Days Delhi to Delhi Tour', loc: 'Delhi to Delhi', dur: '7N/8D', price: 25000, origPrice: 28000, rating: '4.8', rev: '10k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/bali-pass' },
-    { title: 'Leh Ladakh Bike Trip From Srinagar with Hanle & Umling La', loc: 'Srinagar to Leh', dur: '11N/12D', price: 45000, origPrice: 0, rating: '4.9', rev: '10k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/everest-base-camp' },
-    { title: 'Zanskar Valley Expedition', loc: 'Leh to Leh', dur: '8N/9D', price: 32000, origPrice: 0, rating: '4.8', rev: '8k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/bali-pass' },
-  ],
-  'Spiti Valley': [
-    { title: 'Spiti Valley Bike and Backpacking Trip', loc: 'Delhi to Delhi', dur: '9N/10D', price: 25000, origPrice: 0, rating: '4.8', rev: '8k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/hampta-pass' },
-    { title: 'Road Trip to Spiti Valley', loc: 'Delhi to Delhi', dur: '8N/9D', price: 22000, origPrice: 0, rating: '4.8', rev: '8k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/hampta-pass' },
-    { title: 'All Girls Road Trip to Spiti Valley', loc: 'Delhi to Delhi', dur: '8N/9D', price: 24000, origPrice: 0, rating: '4.8', rev: '6k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/hampta-pass' },
+    { title: 'Kathmandu Valley Tour', loc: 'Kathmandu', dur: '5D/4N', price: 18999, origPrice: 23999, rating: '4.7', rev: '8k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/kathmandu-tour', badge: 'Cultural' },
+    { title: 'Pokhara — Lakeside Paradise', loc: 'Pokhara', dur: '4D/3N', price: 15999, origPrice: 19999, rating: '4.8', rev: '6k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/pokhara-tour', badge: '' },
+    { title: 'Chitwan — Jungle Safari', loc: 'Chitwan', dur: '4D/3N', price: 21999, origPrice: 27999, rating: '4.7', rev: '5k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/chitwan-safari', badge: 'Wildlife' },
+    { title: 'Nepal Backpacking Circuit', loc: 'Kathmandu', dur: '10D/9N', price: 34999, origPrice: 42999, rating: '4.8', rev: '6k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/nepal-backpacking', badge: 'Best Value' },
   ],
 };
 

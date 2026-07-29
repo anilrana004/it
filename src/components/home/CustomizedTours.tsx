@@ -3,25 +3,25 @@ import { useState } from 'react';
 import Link from 'next/link';
 
 const international = [
-  { name: 'Bali', count: 22, price: 39000, img: 'https://images.unsplash.com/photo-1539367628448-4bc5c9d171c8?w=390&h=500&fit=crop', href: '/customized' },
-  { name: 'Thailand', count: 15, price: 25000, img: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=390&h=500&fit=crop', href: '/customized' },
-  { name: 'Bhutan', count: 9, price: 29000, img: 'https://images.unsplash.com/photo-1540979388789-6cee28a1cdc9?w=390&h=500&fit=crop', href: '/customized' },
-  { name: 'Vietnam', count: 16, price: 35500, img: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=390&h=500&fit=crop', href: '/customized' },
-  { name: 'Dubai', count: 10, price: 26000, img: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=390&h=500&fit=crop', href: '/customized' },
-  { name: 'Sri Lanka', count: 4, price: 28500, img: 'https://images.unsplash.com/photo-1499393611497-423fa3c5cd50?w=390&h=500&fit=crop', href: '/customized' },
-  { name: 'Nepal', count: 4, price: 18500, img: 'https://images.unsplash.com/photo-1543429257-3eb0b65d9c10?w=390&h=500&fit=crop', href: '/customized' },
-  { name: 'Maldives', count: 21, price: 75000, img: 'https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=390&h=500&fit=crop', href: '/customized' },
+  { name: 'Nepal', count: 16, price: 18500, img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_390,h_500,c_fill,g_auto/', href: '/treks/kathmandu-tour' },
+  { name: 'Everest Base Camp', count: 8, price: 74999, img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_390,h_500,c_fill,g_auto/', href: '/treks/everest-base-camp' },
+  { name: 'Annapurna', count: 10, price: 34999, img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_390,h_500,c_fill,g_auto/', href: '/treks/annapurna-base-camp' },
+  { name: 'Pokhara', count: 6, price: 15999, img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_390,h_500,c_fill,g_auto/', href: '/treks/pokhara-tour' },
+  { name: 'Chitwan', count: 4, price: 21999, img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_390,h_500,c_fill,g_auto/', href: '/treks/chitwan-safari' },
+  { name: 'Nepal Circuit', count: 5, price: 34999, img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_390,h_500,c_fill,g_auto/', href: '/treks/nepal-backpacking' },
+  { name: 'Kathmandu Valley', count: 7, price: 18999, img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_390,h_500,c_fill,g_auto/', href: '/treks/kathmandu-tour' },
+  { name: 'EBC Premium', count: 3, price: 94999, img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_390,h_500,c_fill,g_auto/', href: '/treks/everest-base-camp' },
 ];
 
 const india = [
-  { name: 'Ladakh', count: 18, price: 15000, img: 'https://images.unsplash.com/photo-1486911278844-a81c5267e227?w=390&h=500&fit=crop', href: '/treks/bali-pass' },
-  { name: 'Himachal Pradesh', count: 22, price: 8500, img: 'https://images.unsplash.com/photo-1586350977770-2598f1b6b7c8?w=390&h=500&fit=crop', href: '/treks/hampta-pass' },
-  { name: 'Uttarakhand', count: 16, price: 7000, img: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=390&h=500&fit=crop', href: '/treks/valley-of-flowers' },
-  { name: 'Meghalaya', count: 8, price: 12000, img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=390&h=500&fit=crop', href: '/treks' },
-  { name: 'Arunachal Pradesh', count: 6, price: 18000, img: 'https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=390&h=500&fit=crop', href: '/treks' },
-  { name: 'Goa', count: 12, price: 12000, img: 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=390&h=500&fit=crop', href: '/treks' },
-  { name: 'Kerala', count: 14, price: 11000, img: 'https://images.unsplash.com/photo-1503435980610-a51f3ddfee50?w=390&h=500&fit=crop', href: '/treks' },
-  { name: 'Rajasthan', count: 10, price: 14000, img: 'https://images.unsplash.com/photo-1477587458883-47145ed94245?w=390&h=500&fit=crop', href: '/treks' },
+  { name: 'Uttarakhand Treks', count: 22, price: 7000, img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_390,h_500,c_fill,g_auto/', href: '/treks/valley-of-flowers' },
+  { name: 'Himachal Treks', count: 18, price: 8500, img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_390,h_500,c_fill,g_auto/', href: '/treks/hampta-pass' },
+  { name: 'Kedarnath Yatra', count: 12, price: 9999, img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_390,h_500,c_fill,g_auto/', href: '/yatra/kedarnath-yatra' },
+  { name: 'Char Dham Yatra', count: 8, price: 24999, img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_390,h_500,c_fill,g_auto/', href: '/yatra/char-dham' },
+  { name: 'Rishikesh', count: 10, price: 4999, img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_390,h_500,c_fill,g_auto/', href: '/treks' },
+  { name: 'Manali', count: 14, price: 5999, img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_390,h_500,c_fill,g_auto/', href: '/treks/hampta-pass' },
+  { name: 'Do Dham Yatra', count: 6, price: 14999, img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_390,h_500,c_fill,g_auto/', href: '/yatra/do-dham' },
+  { name: 'Spiti Valley', count: 5, price: 15999, img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_390,h_500,c_fill,g_auto/', href: '/treks/hampta-pass' },
 ];
 
 export default function CustomizedTours() {
