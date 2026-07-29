@@ -101,8 +101,15 @@ export default function Header() {
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const headerRef = useRef<HTMLDivElement>(null);
 
+  const [mobileYellow, setMobileYellow] = useState(1);
+
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > window.innerHeight * 0.4);
+    const onScroll = () => {
+      const vh = window.innerHeight;
+      const y = window.scrollY;
+      const intensity = Math.max(0, Math.min(1, 1 - (y - vh * 0.5) / (vh * 0.5)));
+      setMobileYellow(intensity);
+    };
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
@@ -215,16 +222,17 @@ export default function Header() {
       </header>
 
       {/* Mobile Header */}
-      <header className={`fixed left-0 top-0 z-50 w-full transition-all duration-300 lg:hidden ${scrolled ? 'bg-white/95 backdrop-blur-md shadow-sm' : 'bg-[#ffaf21]'}`}>
+      <header className={`fixed left-0 top-0 z-50 w-full transition-all duration-300 lg:hidden ${mobileYellow < 0.01 ? 'bg-white/95 backdrop-blur-md shadow-sm' : ''}`}
+        style={mobileYellow >= 0.01 ? { backgroundColor: `rgba(255, 175, 33, ${mobileYellow})`, backdropFilter: 'blur(4px)' } : {}}>
         <div className="flex items-center justify-between h-14 px-4">
           <Link href="/" className="flex items-center gap-2">
             <img src="https://res.cloudinary.com/pg8uhzw0/image/upload/v1785363638/l_kceoj5.png" alt="TrekRoot" className="h-8 w-auto" />
           </Link>
           <div className="flex items-center gap-2">
-            <button type="button" aria-label="Search" className={`p-2 transition-colors ${scrolled ? 'text-gray-500' : 'text-[#7a5500]'}`}>
+            <button type="button" aria-label="Search" className="p-2 transition-colors" style={{ color: `rgba(122, 85, 0, ${0.3 + 0.7 * mobileYellow})` }}>
               <Search className="w-5 h-5" />
             </button>
-            <button type="button" onClick={() => setIsOpen(!isOpen)} aria-label={isOpen ? 'Close menu' : 'Open menu'} aria-expanded={isOpen} className={`p-2 transition-colors ${scrolled ? 'text-gray-700' : 'text-[#7a5500]'}`}>
+            <button type="button" onClick={() => setIsOpen(!isOpen)} aria-label={isOpen ? 'Close menu' : 'Open menu'} aria-expanded={isOpen} className="p-2 transition-colors" style={{ color: `rgba(55, 65, 81, ${0.2 + 0.8 * (1 - mobileYellow)})` }}>
               {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
           </div>
