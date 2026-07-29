@@ -1,7 +1,9 @@
 'use client';
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import Link from 'next/link';
-import { Menu, X, Phone, Search, ChevronDown, User, Sparkles } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { Menu, X, Phone, Search, ChevronDown, User, Sparkles, Mountain, SunMedium, ArrowRight } from 'lucide-react';
+import { treks } from '@/lib/data';
 
 const navItems = [
   {
@@ -113,6 +115,43 @@ export default function Header() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  const [mobSearch, setMobSearch] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchIdx, setSearchIdx] = useState(-1);
+  const searchRef = useRef<HTMLInputElement>(null);
+  const searchListRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
+
+  const searchItems = useMemo(() =>
+    treks.map(t => ({ id: t.id, title: t.title, sub: t.subtitle, type: t.type as 'trek' | 'yatra' })),
+  []);
+
+  const searchResults = useMemo(() => {
+    if (!searchQuery.trim()) return [];
+    const q = searchQuery.toLowerCase();
+    return searchItems.filter(s => s.title.toLowerCase().includes(q) || s.sub.toLowerCase().includes(q));
+  }, [searchQuery, searchItems]);
+
+  const goSearch = (id: string, type: string) => {
+    setMobSearch(false);
+    setSearchQuery('');
+    router.push(`/${type === 'yatra' ? 'yatra' : 'treks'}/${id}`);
+  };
+
+  const handleSearchKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'ArrowDown') { e.preventDefault(); setSearchIdx(i => Math.min(i + 1, searchResults.length - 1)); }
+    if (e.key === 'ArrowUp') { e.preventDefault(); setSearchIdx(i => Math.max(i - 1, -1)); }
+    if (e.key === 'Enter' && searchIdx >= 0 && searchResults[searchIdx]) { goSearch(searchResults[searchIdx].id, searchResults[searchIdx].type); }
+    if (e.key === 'Escape') { setMobSearch(false); setSearchQuery(''); }
+  };
+
+  useEffect(() => {
+    if (searchIdx >= 0 && searchListRef.current) {
+      const el = searchListRef.current.children[searchIdx] as HTMLElement;
+      el?.scrollIntoView({ block: 'nearest' });
+    }
+  }, [searchIdx]);
+
   const closeDropdown = useCallback(() => setOpenDropdown(null), []);
 
   const handleMouseEnter = useCallback((label: string) => {
@@ -220,7 +259,7 @@ export default function Header() {
       </header>
 
       {/* Mobile Header */}
-      <header className="fixed left-0 top-0 z-50 w-full lg:hidden"
+      <header className={`fixed left-0 top-0 w-full lg:hidden ${isOpen ? 'z-[70]' : 'z-50'}`}
         style={{
           background: `rgb(${255}, ${Math.round(175 + 80 * (1 - mobileYellow))}, ${Math.round(33 + 222 * (1 - mobileYellow))})`,
           backdropFilter: 'blur(4px)',
@@ -228,11 +267,11 @@ export default function Header() {
           boxShadow: mobileYellow < 0.5 ? 'none' : '0 1px 3px rgba(0,0,0,0.08)',
         }}>
         <div className="flex items-center justify-between h-14 px-4">
-          <Link href="/" className="flex items-center gap-2">
+          <Link href="/" className="flex items-center gap-2" onClick={() => { if (isOpen) setIsOpen(false); }}>
             <img src="https://res.cloudinary.com/pg8uhzw0/image/upload/v1785363638/l_kceoj5.png" alt="TrekRoot" className="h-8 w-auto" />
           </Link>
           <div className="flex items-center gap-2">
-            <button type="button" aria-label="Search" className="p-2" style={{ color: `rgb(${100 + 7 * (1 - mobileYellow)}, ${70 + 44 * (1 - mobileYellow)}, ${128 * (1 - mobileYellow)})` }}>
+            <button type="button" aria-label="Search" onClick={() => setMobSearch(true)} className="p-2" style={{ color: `rgb(${100 + 7 * (1 - mobileYellow)}, ${70 + 44 * (1 - mobileYellow)}, ${128 * (1 - mobileYellow)})` }}>
               <Search className="w-5 h-5" />
             </button>
             <button type="button" onClick={() => setIsOpen(!isOpen)} aria-label={isOpen ? 'Close menu' : 'Open menu'} aria-expanded={isOpen} className="p-2" style={{ color: `rgb(${100 + 7 * (1 - mobileYellow)}, ${70 + 44 * (1 - mobileYellow)}, ${128 * (1 - mobileYellow)})` }}>
@@ -244,7 +283,12 @@ export default function Header() {
 
       {/* Mobile Drawer */}
       {isOpen && (
-        <div role="dialog" aria-modal="true" aria-label="Mobile navigation" className="fixed inset-0 z-[60] bg-white lg:hidden flex flex-col pt-14">
+        <div role="dialog" aria-modal="true" aria-label="Mobile navigation" className="fixed inset-x-0 top-0 bottom-0 z-[60] bg-white lg:hidden flex flex-col">
+          <div className="h-14 flex items-center justify-end px-4 border-b border-gray-100">
+            <button type="button" onClick={() => setIsOpen(false)} aria-label="Close menu" className="p-2 text-gray-700 hover:text-gray-900">
+              <X className="w-6 h-6" />
+            </button>
+          </div>
           <div className="flex-1 overflow-y-auto pb-8">
             <div className="p-4 space-y-0.5">
               {navItems.map((item: any) => (
@@ -352,6 +396,69 @@ export default function Header() {
                 className="flex items-center justify-center gap-2 border-2 border-gray-200 text-gray-700 font-semibold px-6 py-3 rounded-full w-full">
                 <Phone className="w-4 h-4" /> +91 97 97 97 21 75
               </a>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Mobile Search Overlay */}
+      {mobSearch && (
+        <div className="fixed inset-0 z-[100] flex items-start justify-center pt-[15vh] bg-black/60 backdrop-blur-sm lg:hidden"
+          onClick={e => { if (e.target === e.currentTarget) { setMobSearch(false); setSearchQuery(''); } }}>
+          <div className="w-full max-w-lg mx-4 bg-white rounded-2xl shadow-2xl shadow-black/30 overflow-hidden">
+            <div className="flex items-center gap-2 px-4 py-3 border-b border-gray-100">
+              <Search className="w-5 h-5 text-[#ffaf21] shrink-0" />
+              <input ref={searchRef} type="text" autoComplete="off" aria-label="Search treks & yatras"
+                placeholder="Search treks, yatras, destinations..."
+                value={searchQuery} onChange={e => { setSearchQuery(e.target.value); setSearchIdx(-1); }}
+                onKeyDown={handleSearchKeyDown}
+                className="flex-1 bg-transparent outline-none text-base text-gray-800 placeholder:text-gray-400" />
+              <button type="button" onClick={() => { setMobSearch(false); setSearchQuery(''); }}
+                className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition-colors">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <div ref={searchListRef} className="max-h-[50vh] overflow-y-auto py-2">
+              {searchQuery.trim() && searchResults.length === 0 && (
+                <div className="px-5 py-8 text-center">
+                  <Search className="w-8 h-8 mx-auto text-gray-300 mb-2" />
+                  <p className="text-sm text-gray-400">No results found for &ldquo;{searchQuery}&rdquo;</p>
+                  <p className="text-xs text-gray-300 mt-1">Try a different search term</p>
+                </div>
+              )}
+              {!searchQuery.trim() && (
+                <div className="px-5 py-8 text-center">
+                  <Mountain className="w-8 h-8 mx-auto text-gray-300 mb-2" />
+                  <p className="text-sm text-gray-400">Type to search treks & yatras</p>
+                  <div className="flex flex-wrap justify-center gap-1.5 mt-4">
+                    {['Valley of Flowers', 'Kedarkantha', 'Everest', 'Hampta Pass', 'Kedarnath', 'Triund'].map(tag => (
+                      <button key={tag} type="button" onClick={() => { setSearchQuery(tag); setSearchIdx(-1); searchRef.current?.focus(); }}
+                        className="text-xs bg-gray-100 hover:bg-[#ffaf21]/10 hover:text-[#b87800] text-gray-500 px-3 py-1.5 rounded-full transition-colors">
+                        {tag}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+              {searchResults.map((s, i) => (
+                <button key={s.id} type="button" onClick={() => goSearch(s.id, s.type)}
+                  onMouseEnter={() => setSearchIdx(i)}
+                  className={`w-full flex items-center gap-3 px-5 py-3 text-left transition-colors ${i === searchIdx ? 'bg-[#ffaf21]/10' : 'hover:bg-gray-50'}`}>
+                  <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${s.type === 'yatra' ? 'bg-orange-100 text-orange-600' : 'bg-emerald-100 text-emerald-600'}`}>
+                    {s.type === 'yatra' ? <SunMedium className="w-5 h-5" /> : <Mountain className="w-5 h-5" />}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="text-sm font-semibold text-gray-900 truncate">{s.title}</div>
+                    <div className="text-xs text-gray-400 truncate">{s.sub}</div>
+                  </div>
+                  <div className="flex items-center gap-1 shrink-0">
+                    <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${s.type === 'yatra' ? 'bg-orange-100 text-orange-600' : 'bg-emerald-100 text-emerald-600'}`}>
+                      {s.type === 'yatra' ? 'Yatra' : 'Trek'}
+                    </span>
+                    <ArrowRight className="w-4 h-4 text-gray-300" />
+                  </div>
+                </button>
+              ))}
             </div>
           </div>
         </div>
