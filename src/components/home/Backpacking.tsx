@@ -45,24 +45,22 @@ export default function Backpacking() {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
           {items.map(t => (
-            <Link key={t.title} href={t.href} className="group rounded-xl overflow-hidden transition-all">
-              <div className="relative h-40 lg:h-44 overflow-hidden">
-                <img src={t.img} alt={t.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-                {t.badge && <span className="absolute top-3 left-3 bg-[#ffaf21] text-gray-900 text-[10px] font-bold px-2 py-0.5 rounded uppercase">{t.badge}</span>}
-              </div>
-              <div className="p-3 lg:p-4">
-                <div className="flex items-center gap-1 text-gray-500 text-[10px] lg:text-xs mb-1"><MapPin className="w-3 h-3" />{t.loc}</div>
-                <h3 className="font-semibold text-sm lg:text-base text-gray-900 group-hover:text-[#ffaf21] transition-colors line-clamp-2">{t.title}</h3>
-                <div className="flex items-center gap-2 text-[11px] lg:text-xs text-gray-500 mt-1 mb-2">
-                  <Clock className="w-3 h-3" />{t.dur}<span className="text-gray-300">|</span>
+            <Link key={t.title} href={t.href} className="group rounded-xl overflow-hidden transition-all relative aspect-[4/5]">
+              <img src={t.img} alt={t.title} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+              {t.badge && <span className="absolute top-3 left-3 bg-[#ffaf21] text-gray-900 text-[10px] font-bold px-2 py-0.5 rounded uppercase">{t.badge}</span>}
+              <div className="absolute bottom-0 left-0 right-0 p-3 lg:p-4">
+                <div className="flex items-center gap-1 text-white/70 text-[10px] lg:text-xs mb-1"><MapPin className="w-3 h-3" />{t.loc}</div>
+                <h3 className="font-semibold text-sm lg:text-base text-white group-hover:text-[#ffaf21] transition-colors line-clamp-2">{t.title}</h3>
+                <div className="flex items-center gap-2 text-[11px] lg:text-xs text-white/60 mt-1 mb-2">
+                  <Clock className="w-3 h-3" />{t.dur}<span className="text-white/20">|</span>
                   <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />{t.rating} ({t.rev})
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-[#ffaf21] font-bold text-sm lg:text-base">₹{t.price.toLocaleString()}</span>
-                  {t.origPrice > 0 && <span className="text-gray-400 text-xs line-through">₹{t.origPrice.toLocaleString()}</span>}
+                  {t.origPrice > 0 && <span className="text-white/50 text-xs line-through">₹{t.origPrice.toLocaleString()}</span>}
                 </div>
-                <span className="inline-block mt-1.5 text-[10px] text-blue-600 font-semibold bg-blue-50 px-2 py-0.5 rounded">Book Now, Pay Later</span>
+                <span className="inline-block mt-1.5 text-[10px] text-blue-300 font-semibold bg-blue-900/40 backdrop-blur-sm px-2 py-0.5 rounded">Book Now, Pay Later</span>
               </div>
             </Link>
           ))}

@@ -24,7 +24,6 @@ export default function BucketListSalePage() {
   const [cat, setCat] = useState('All Deals');
   return (
     <div className="pt-24 lg:pt-28 pb-12 lg:pb-20">
-      {/* Hero Banner */}
       <section className="bg-gradient-to-r from-[#ffaf21] via-[#d49400] to-[#b87d00] py-10 lg:py-16 mb-8 lg:mb-12">
         <div className="container mx-auto text-center">
           <div className="flex items-center justify-center gap-3 mb-3">
@@ -40,7 +39,6 @@ export default function BucketListSalePage() {
       </section>
 
       <div className="container mx-auto">
-        {/* Filters */}
         <div className="flex gap-2 overflow-x-auto scrollbar-none pb-2 -mx-4 px-4 lg:mx-0 lg:px-0 mb-6">
           {categories.map(c => (
             <button key={c} onClick={() => setCat(c)}
@@ -48,7 +46,6 @@ export default function BucketListSalePage() {
           ))}
         </div>
 
-        {/* Stats */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           {[
             { v: '12', l: 'Active Deals' },
@@ -63,27 +60,25 @@ export default function BucketListSalePage() {
           ))}
         </div>
 
-        {/* Deals Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
           {deals.map(t => (
-            <Link key={t.title} href={t.href} className="group rounded-xl overflow-hidden transition-all">
-              <div className="relative h-40 lg:h-44 overflow-hidden">
-                <img src={t.img} alt={t.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                <div className="absolute top-3 left-3 bg-[#ffaf21] text-gray-900 text-[10px] lg:text-xs font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
-                  <Tag className="w-3 h-3" />{t.badge}
-                </div>
+            <Link key={t.title} href={t.href} className="group rounded-xl overflow-hidden transition-all relative aspect-[4/5]">
+              <img src={t.img} alt={t.title} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+              <div className="absolute top-3 left-3 bg-[#ffaf21] text-gray-900 text-[10px] lg:text-xs font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
+                <Tag className="w-3 h-3" />{t.badge}
               </div>
-              <div className="p-3 lg:p-4">
-                <div className="flex items-center gap-1 text-gray-500 text-[10px] lg:text-xs mb-1"><MapPin className="w-3 h-3" />{t.loc}</div>
-                <h3 className="font-semibold text-sm lg:text-base text-gray-900 group-hover:text-[#ffaf21] transition-colors line-clamp-1">{t.title}</h3>
-                <div className="flex items-center gap-2 text-[11px] lg:text-xs text-gray-500 mt-1 mb-2">
-                  <Clock className="w-3 h-3" />{t.dur}<span className="text-gray-300">|</span>
+              <div className="absolute bottom-0 left-0 right-0 p-3 lg:p-4">
+                <div className="flex items-center gap-1 text-white/70 text-[10px] lg:text-xs mb-1"><MapPin className="w-3 h-3" />{t.loc}</div>
+                <h3 className="font-semibold text-sm lg:text-base text-white group-hover:text-[#ffaf21] transition-colors line-clamp-1">{t.title}</h3>
+                <div className="flex items-center gap-2 text-[11px] lg:text-xs text-white/60 mt-1 mb-2">
+                  <Clock className="w-3 h-3" />{t.dur}<span className="text-white/20">|</span>
                   <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />{t.rating} ({t.rev})
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-[#ffaf21] font-bold text-sm lg:text-base">₹{t.price.toLocaleString()}</span>
-                  <span className="text-gray-400 text-xs line-through">₹{t.origPrice.toLocaleString()}</span>
-                  <span className="ml-auto bg-red-100 text-red-600 text-[10px] font-bold px-1.5 py-0.5 rounded animate-pulse">{t.badge}</span>
+                  <span className="text-white/50 text-xs line-through">₹{t.origPrice.toLocaleString()}</span>
+                  <span className="ml-auto bg-red-500/80 text-white text-[10px] font-bold px-1.5 py-0.5 rounded animate-pulse">{t.badge}</span>
                 </div>
               </div>
             </Link>
