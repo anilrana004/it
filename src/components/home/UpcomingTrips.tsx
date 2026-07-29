@@ -6,16 +6,21 @@ import { Star, Clock, MapPin } from 'lucide-react';
 const filters = ['Domestic', 'International', 'All Months'];
 
 const trips = [
-  { date: '5-10 Sep 2026', origin: 'Delhi', dest: 'Valley of Flowers', title: 'Valley of Flowers Trek', dur: '6D/5N', price: 8999, origPrice: 11999, rating: '4.8', reviews: '8k+', badge: 'New', img: 'https://images.unsplash.com/photo-1585409677983-0f6c41ca9c3b?w=420&h=280&fit=crop', href: '/treks/valley-of-flowers' },
-  { date: '12-16 Sep 2026', origin: 'Dehradun', dest: 'Kedarkantha', title: 'Kedarkantha Trek', dur: '5D/4N', price: 6999, origPrice: 8999, rating: '4.9', reviews: '10k+', badge: '', img: 'https://images.unsplash.com/photo-1486911278844-a81c5267e227?w=420&h=280&fit=crop', href: '/treks/kedarkantha' },
-  { date: '18-22 Sep 2026', origin: 'Manali', dest: 'Hampta Pass', title: 'Hampta Pass Trek', dur: '5D/4N', price: 8499, origPrice: 10999, rating: '4.7', reviews: '8k+', badge: '', img: 'https://images.unsplash.com/photo-1586350977770-2598f1b6b7c8?w=420&h=280&fit=crop', href: '/treks/hampta-pass' },
-  { date: '25-30 Sep 2026', origin: 'Pokhara', dest: 'ABC', title: 'Annapurna Base Camp Trek', dur: '8D/7N', price: 34999, origPrice: 42999, rating: '4.9', reviews: '15k+', badge: '', img: 'https://images.unsplash.com/photo-1540979388789-6cee28a1cdc9?w=420&h=280&fit=crop', href: '/treks/annapurna-base-camp' },
-  { date: '3-8 Oct 2026', origin: 'Rishikesh', dest: 'Kedarnath', title: 'Kedarnath Yatra', dur: '6D/5N', price: 9999, origPrice: 12999, rating: '4.8', reviews: '12k+', badge: '', img: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=420&h=280&fit=crop', href: '/yatra/kedarnath-yatra' },
-  { date: '5-17 Oct 2026', origin: 'Kathmandu', dest: 'EBC', title: 'Everest Base Camp Trek', dur: '13D/12N', price: 74999, origPrice: 89999, rating: '4.9', reviews: '20k+', badge: '', img: 'https://images.unsplash.com/photo-1486911278844-a81c5267e227?w=420&h=280&fit=crop', href: '/treks/everest-base-camp' },
+  { date: '5-10 Sep 2026', origin: 'Delhi', dest: 'Valley of Flowers', title: 'Valley of Flowers Trek', dur: '6D/5N', price: 8999, origPrice: 11999, rating: '4.8', reviews: '8k+', badge: 'New', img: 'https://images.unsplash.com/photo-1585409677983-0f6c41ca9c3b?w=420&h=280&fit=crop', href: '/treks/valley-of-flowers', type: 'domestic' },
+  { date: '12-16 Sep 2026', origin: 'Dehradun', dest: 'Kedarkantha', title: 'Kedarkantha Trek', dur: '5D/4N', price: 6999, origPrice: 8999, rating: '4.9', reviews: '10k+', badge: '', img: 'https://images.unsplash.com/photo-1486911278844-a81c5267e227?w=420&h=280&fit=crop', href: '/treks/kedarkantha', type: 'domestic' },
+  { date: '18-22 Sep 2026', origin: 'Manali', dest: 'Hampta Pass', title: 'Hampta Pass Trek', dur: '5D/4N', price: 8499, origPrice: 10999, rating: '4.7', reviews: '8k+', badge: '', img: 'https://images.unsplash.com/photo-1586350977770-2598f1b6b7c8?w=420&h=280&fit=crop', href: '/treks/hampta-pass', type: 'domestic' },
+  { date: '25-30 Sep 2026', origin: 'Pokhara', dest: 'ABC', title: 'Annapurna Base Camp Trek', dur: '8D/7N', price: 34999, origPrice: 42999, rating: '4.9', reviews: '15k+', badge: '', img: 'https://images.unsplash.com/photo-1540979388789-6cee28a1cdc9?w=420&h=280&fit=crop', href: '/treks/annapurna-base-camp', type: 'international' },
+  { date: '3-8 Oct 2026', origin: 'Rishikesh', dest: 'Kedarnath', title: 'Kedarnath Yatra', dur: '6D/5N', price: 9999, origPrice: 12999, rating: '4.8', reviews: '12k+', badge: '', img: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=420&h=280&fit=crop', href: '/yatra/kedarnath-yatra', type: 'domestic' },
+  { date: '5-17 Oct 2026', origin: 'Kathmandu', dest: 'EBC', title: 'Everest Base Camp Trek', dur: '13D/12N', price: 74999, origPrice: 89999, rating: '4.9', reviews: '20k+', badge: '', img: 'https://images.unsplash.com/photo-1486911278844-a81c5267e227?w=420&h=280&fit=crop', href: '/treks/everest-base-camp', type: 'international' },
+  { date: '10-15 Nov 2026', origin: 'Kathmandu', dest: 'ABC', title: 'Annapurna Sanctuary Trek', dur: '10D/9N', price: 42999, origPrice: 52999, rating: '4.8', reviews: '12k+', badge: 'Popular', img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=420&h=280&fit=crop', href: '/treks/annapurna-base-camp', type: 'international' },
+  { date: '20-25 Nov 2026', origin: 'Delhi', dest: 'Chopta', title: 'Tungnath Chandrashila Trek', dur: '4D/3N', price: 5999, origPrice: 7999, rating: '4.7', reviews: '6k+', badge: 'Trending', img: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=420&h=280&fit=crop', href: '/treks/valley-of-flowers', type: 'domestic' },
 ];
 
 export default function UpcomingTrips() {
   const [activeFilter, setActiveFilter] = useState('Domestic');
+  const filteredTrips = activeFilter === 'All Months'
+    ? trips
+    : trips.filter(t => t.type === activeFilter.toLowerCase());
   return (
     <section className="py-8 lg:py-16 bg-gray-50">
       <div className="container mx-auto">
@@ -33,7 +38,7 @@ export default function UpcomingTrips() {
           ))}
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
-          {trips.map(t => (
+          {filteredTrips.map(t => (
             <Link key={t.title} href={t.href} className="group bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-lg transition-all">
               <div className="relative h-44 lg:h-48 overflow-hidden">
                 <img src={t.img} alt={t.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
