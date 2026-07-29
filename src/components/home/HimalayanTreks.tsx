@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import { useState } from 'react';
 import Link from 'next/link';
 import { Star, Clock, MapPin } from 'lucide-react';
@@ -7,19 +7,19 @@ const seasons = ['Monsoon Treks', 'Autumn Treks', 'Winter Treks'];
 
 const all: Record<string, { title: string; loc: string; dur: string; price: number; origPrice: number; rating: string; rev: string; type: string; img: string; href: string }[]> = {
   'Monsoon Treks': [
-    { title: 'Valley of Flowers Trek', loc: 'Joshimath → Rishikesh', dur: '6D/5N', price: 8999, origPrice: 11999, rating: '4.8', rev: '8k+', type: 'Easy', img: 'https://images.unsplash.com/photo-1585409677983-0f6c41ca9c3b?w=420&h=280&fit=crop', href: '/treks/valley-of-flowers' },
-    { title: 'Hampta Pass Trek', loc: 'Manali → Manali', dur: '5D/4N', price: 8499, origPrice: 10999, rating: '4.7', rev: '8k+', type: 'Moderate', img: 'https://images.unsplash.com/photo-1586350977770-2598f1b6b7c8?w=420&h=280&fit=crop', href: '/treks/hampta-pass' },
-    { title: 'Rupin Pass Trek', loc: 'Shimla → Dehradun', dur: '7D/6N', price: 11999, origPrice: 14999, rating: '4.8', rev: '6k+', type: 'Moderate-Difficult', img: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=420&h=280&fit=crop', href: '/treks/rupin-pass' },
+    { title: 'Valley of Flowers Trek', loc: 'Joshimath → Rishikesh', dur: '6D/5N', price: 8999, origPrice: 11999, rating: '4.8', rev: '8k+', type: 'Easy', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/valley-of-flowers' },
+    { title: 'Hampta Pass Trek', loc: 'Manali → Manali', dur: '5D/4N', price: 8499, origPrice: 10999, rating: '4.7', rev: '8k+', type: 'Moderate', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/hampta-pass' },
+    { title: 'Rupin Pass Trek', loc: 'Shimla → Dehradun', dur: '7D/6N', price: 11999, origPrice: 14999, rating: '4.8', rev: '6k+', type: 'Moderate-Difficult', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/rupin-pass' },
   ],
   'Autumn Treks': [
-    { title: 'Annapurna Base Camp', loc: 'Pokhara → Pokhara', dur: '8D/7N', price: 34999, origPrice: 42999, rating: '4.9', rev: '15k+', type: 'Moderate', img: 'https://images.unsplash.com/photo-1486911278844-a81c5267e227?w=420&h=280&fit=crop', href: '/treks/annapurna-base-camp' },
-    { title: 'Everest Base Camp', loc: 'Lukla → Lukla', dur: '13D/12N', price: 74999, origPrice: 89999, rating: '4.9', rev: '20k+', type: 'Difficult', img: 'https://images.unsplash.com/photo-1540979388789-6cee28a1cdc9?w=420&h=280&fit=crop', href: '/treks/everest-base-camp' },
-    { title: 'Har Ki Dun Trek', loc: 'Dehradun → Dehradun', dur: '6D/5N', price: 8999, origPrice: 10999, rating: '4.8', rev: '5k+', type: 'Moderate', img: 'https://images.unsplash.com/photo-1586350977770-2598f1b6b7c8?w=420&h=280&fit=crop', href: '/treks/har-ki-dun' },
+    { title: 'Annapurna Base Camp', loc: 'Pokhara → Pokhara', dur: '8D/7N', price: 34999, origPrice: 42999, rating: '4.9', rev: '15k+', type: 'Moderate', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/annapurna-base-camp' },
+    { title: 'Everest Base Camp', loc: 'Lukla → Lukla', dur: '13D/12N', price: 74999, origPrice: 89999, rating: '4.9', rev: '20k+', type: 'Difficult', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/everest-base-camp' },
+    { title: 'Har Ki Dun Trek', loc: 'Dehradun → Dehradun', dur: '6D/5N', price: 8999, origPrice: 10999, rating: '4.8', rev: '5k+', type: 'Moderate', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/har-ki-dun' },
   ],
   'Winter Treks': [
-    { title: 'Kedarkantha Trek', loc: 'Sankri → Dehradun', dur: '5D/4N', price: 6999, origPrice: 8999, rating: '4.9', rev: '10k+', type: 'Moderate', img: 'https://images.unsplash.com/photo-1486911278844-a81c5267e227?w=420&h=280&fit=crop', href: '/treks/kedarkantha' },
-    { title: 'Kuari Pass Trek', loc: 'Rishikesh → Rishikesh', dur: '6D/5N', price: 9999, origPrice: 11999, rating: '4.8', rev: '7k+', type: 'Moderate', img: 'https://images.unsplash.com/photo-1454496522488-7a8e488e8606?w=420&h=280&fit=crop', href: '/treks/kuari-pass' },
-    { title: 'Dayara Bugyal Trek', loc: 'Rishikesh → Rishikesh', dur: '5D/4N', price: 6999, origPrice: 8999, rating: '4.7', rev: '6k+', type: 'Easy', img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=420&h=280&fit=crop', href: '/treks/dayara-bugyal' },
+    { title: 'Kedarkantha Trek', loc: 'Sankri → Dehradun', dur: '5D/4N', price: 6999, origPrice: 8999, rating: '4.9', rev: '10k+', type: 'Moderate', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/kedarkantha' },
+    { title: 'Kuari Pass Trek', loc: 'Rishikesh → Rishikesh', dur: '6D/5N', price: 9999, origPrice: 11999, rating: '4.8', rev: '7k+', type: 'Moderate', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/kuari-pass' },
+    { title: 'Dayara Bugyal Trek', loc: 'Rishikesh → Rishikesh', dur: '5D/4N', price: 6999, origPrice: 8999, rating: '4.7', rev: '6k+', type: 'Easy', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/dayara-bugyal' },
   ],
 };
 

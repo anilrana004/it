@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -10,23 +10,23 @@ import {
 import { treks } from '@/lib/data';
 
 const mobBanners = [
-  { image: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=600&h=350&fit=crop&q=80', title: 'Explore the Himalayas', subtitle: "Trek through the world's most breathtaking ranges", cta: 'Explore Treks', href: '/treks' },
-  { image: 'https://images.unsplash.com/photo-1551632811-561732d1e306?w=600&h=350&fit=crop&q=80', title: 'Sacred Yatras', subtitle: 'Journey to ancient temples in the mountains', cta: 'Explore Yatras', href: '/yatra' },
-  { image: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=600&h=350&fit=crop&q=80', title: 'International Adventures', subtitle: 'Nepal, Bali, Thailand, Bhutan & beyond', cta: 'Explore Global', href: '/treks?region=nepal' },
-  { image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=350&fit=crop&q=80', title: 'Winter Wonderland', subtitle: 'Snow treks, frozen lakes & starry nights', cta: 'Winter Treks', href: '/treks?difficulty=easy' },
+  { image: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_350,c_fill,g_auto/&q=80', title: 'Explore the Himalayas', subtitle: "Trek through the world's most breathtaking ranges", cta: 'Explore Treks', href: '/treks' },
+  { image: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_350,c_fill,g_auto/&q=80', title: 'Sacred Yatras', subtitle: 'Journey to ancient temples in the mountains', cta: 'Explore Yatras', href: '/yatra' },
+  { image: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_350,c_fill,g_auto/&q=80', title: 'International Adventures', subtitle: 'Nepal, Bali, Thailand, Bhutan & beyond', cta: 'Explore Global', href: '/treks?region=nepal' },
+  { image: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_350,c_fill,g_auto/&q=80', title: 'Winter Wonderland', subtitle: 'Snow treks, frozen lakes & starry nights', cta: 'Winter Treks', href: '/treks?difficulty=easy' },
 ];
 
 const catItems = [
-  { n: 'Bucket List', h: '/bucket-list-sale', img: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=300&h=300&fit=crop&q=80' },
-  { n: 'Long Weekend', h: '/treks?difficulty=easy', img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=300&h=300&fit=crop&q=80' },
-  { n: 'International', h: '/treks?region=nepal', img: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=300&h=300&fit=crop&q=80' },
-  { n: 'Treks', h: '/treks', img: 'https://images.unsplash.com/photo-1551632811-561732d1e306?w=300&h=300&fit=crop&q=80' },
-  { n: 'Yatras', h: '/yatra', img: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=300&h=300&fit=crop&q=80' },
-  { n: 'Ladakh', h: '/treks?region=ladakh', img: 'https://images.unsplash.com/photo-1486911278844-a81c5267e227?w=300&h=300&fit=crop&q=80' },
-  { n: 'Biking', h: '/treks', img: 'https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=300&h=300&fit=crop&q=80' },
-  { n: 'All Girls', h: '/treks', img: 'https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?w=300&h=300&fit=crop&q=80' },
-  { n: 'Honeymoon', h: '/treks', img: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=300&h=300&fit=crop&q=80' },
-  { n: 'Spiti', h: '/treks?region=himachal', img: 'https://images.unsplash.com/photo-1586350977770-2598f1b6b7c8?w=300&h=300&fit=crop&q=80' },
+  { n: 'Bucket List', h: '/bucket-list-sale', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_300,h_300,c_fill,g_auto/&q=80' },
+  { n: 'Long Weekend', h: '/treks?difficulty=easy', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_300,h_300,c_fill,g_auto/&q=80' },
+  { n: 'International', h: '/treks?region=nepal', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_300,h_300,c_fill,g_auto/&q=80' },
+  { n: 'Treks', h: '/treks', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_300,h_300,c_fill,g_auto/&q=80' },
+  { n: 'Yatras', h: '/yatra', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_300,h_300,c_fill,g_auto/&q=80' },
+  { n: 'Ladakh', h: '/treks?region=ladakh', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_300,h_300,c_fill,g_auto/&q=80' },
+  { n: 'Biking', h: '/treks', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_300,h_300,c_fill,g_auto/&q=80' },
+  { n: 'All Girls', h: '/treks', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_300,h_300,c_fill,g_auto/&q=80' },
+  { n: 'Honeymoon', h: '/treks', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_300,h_300,c_fill,g_auto/&q=80' },
+  { n: 'Spiti', h: '/treks?region=himachal', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_300,h_300,c_fill,g_auto/&q=80' },
 ];
 
 const collabItems = [
@@ -38,11 +38,11 @@ const collabItems = [
 ];
 
 const deskSlides = [
-  { id: 'valley-of-flowers', name: 'Valley of Flowers Trek', sub: 'UNESCO Himalayan Paradise — Alpine meadows, rare flora & stunning snow-capped vistas', img: 'https://images.unsplash.com/photo-1585409677983-0f6c41ca9c3b?w=1920&h=960&fit=crop', featureImg: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=1000&fit=crop', t: 'trek', rating: '4.8', duration: '6D/5N', difficulty: 'Moderate', altitude: '14,107 ft', distance: '38 km', reviews: '8k+', season: 'Jul–Sep', group: '6–15' },
-  { id: 'kedarkantha', name: 'Kedarkantha Trek', sub: 'Winter Wonderland — Snow-trailed summit with 360° Himalayan panoramas', img: 'https://images.unsplash.com/photo-1486911278844-a81c5267e227?w=1920&h=960&fit=crop', featureImg: 'https://images.unsplash.com/photo-1454496522488-7a8e488e8606?w=800&h=1000&fit=crop', t: 'trek', rating: '4.9', duration: '5D/4N', difficulty: 'Easy-Moderate', altitude: '12,500 ft', distance: '22 km', reviews: '10k+', season: 'Dec–Apr', group: '6–15' },
-  { id: 'kedarnath-yatra', name: 'Kedarnath Yatra', sub: 'Sacred Pilgrimage — One of the 12 Jyotirlingas in the Char Dham circuit', img: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1920&h=960&fit=crop', featureImg: 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=800&h=1000&fit=crop', t: 'yatra', rating: '4.8', duration: '6D/5N', difficulty: 'Moderate', altitude: '11,755 ft', distance: '16 km', reviews: '12k+', season: 'May–Oct', group: '10–30' },
-  { id: 'annapurna-base-camp', name: 'Annapurna Base Camp', sub: 'Nepal\'s Classic — Trek into the Annapurna Sanctuary amphitheatre', img: 'https://images.unsplash.com/photo-1540979388789-6cee28a1cdc9?w=1920&h=960&fit=crop', featureImg: 'https://images.unsplash.com/photo-1551632811-561732d1e306?w=800&h=1000&fit=crop', t: 'trek', rating: '4.9', duration: '8D/7N', difficulty: 'Moderate', altitude: '13,550 ft', distance: '90 km', reviews: '15k+', season: 'Mar–May,Sep–Nov', group: '4–12' },
-  { id: 'hampta-pass', name: 'Hampta Pass Trek', sub: 'Cross-over Adventure — Lush green Kullu meets barren Spiti valley', img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&h=960&fit=crop', featureImg: 'https://images.unsplash.com/photo-1586350977770-2598f1b6b7c8?w=800&h=1000&fit=crop', t: 'trek', rating: '4.7', duration: '5D/4N', difficulty: 'Moderate', altitude: '14,100 ft', distance: '26 km', reviews: '8k+', season: 'Jun–Oct', group: '6–14' },
+  { id: 'valley-of-flowers', name: 'Valley of Flowers Trek', sub: 'UNESCO Himalayan Paradise — Alpine meadows, rare flora & stunning snow-capped vistas', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_1920,h_960,c_fill,g_auto/', featureImg: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_800,h_1000,c_fill,g_auto/', t: 'trek', rating: '4.8', duration: '6D/5N', difficulty: 'Moderate', altitude: '14,107 ft', distance: '38 km', reviews: '8k+', season: 'Jul–Sep', group: '6–15' },
+  { id: 'kedarkantha', name: 'Kedarkantha Trek', sub: 'Winter Wonderland — Snow-trailed summit with 360° Himalayan panoramas', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_1920,h_960,c_fill,g_auto/', featureImg: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_800,h_1000,c_fill,g_auto/', t: 'trek', rating: '4.9', duration: '5D/4N', difficulty: 'Easy-Moderate', altitude: '12,500 ft', distance: '22 km', reviews: '10k+', season: 'Dec–Apr', group: '6–15' },
+  { id: 'kedarnath-yatra', name: 'Kedarnath Yatra', sub: 'Sacred Pilgrimage — One of the 12 Jyotirlingas in the Char Dham circuit', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_1920,h_960,c_fill,g_auto/', featureImg: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_800,h_1000,c_fill,g_auto/', t: 'yatra', rating: '4.8', duration: '6D/5N', difficulty: 'Moderate', altitude: '11,755 ft', distance: '16 km', reviews: '12k+', season: 'May–Oct', group: '10–30' },
+  { id: 'annapurna-base-camp', name: 'Annapurna Base Camp', sub: 'Nepal\'s Classic — Trek into the Annapurna Sanctuary amphitheatre', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_1920,h_960,c_fill,g_auto/', featureImg: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_800,h_1000,c_fill,g_auto/', t: 'trek', rating: '4.9', duration: '8D/7N', difficulty: 'Moderate', altitude: '13,550 ft', distance: '90 km', reviews: '15k+', season: 'Mar–May,Sep–Nov', group: '4–12' },
+  { id: 'hampta-pass', name: 'Hampta Pass Trek', sub: 'Cross-over Adventure — Lush green Kullu meets barren Spiti valley', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_1920,h_960,c_fill,g_auto/', featureImg: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_800,h_1000,c_fill,g_auto/', t: 'trek', rating: '4.7', duration: '5D/4N', difficulty: 'Moderate', altitude: '14,100 ft', distance: '26 km', reviews: '8k+', season: 'Jun–Oct', group: '6–14' },
 ];
 
 const destinations = ['Zanskar', 'Thailand', 'Bali', 'Ladakh', 'Spiti', 'Tawang', 'Bhutan'];

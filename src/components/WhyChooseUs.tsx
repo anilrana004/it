@@ -1,10 +1,10 @@
-import { Shield, Award, Heart, Users } from 'lucide-react';
+﻿import { Shield, Award, Heart, Users } from 'lucide-react';
 
 const features = [
-  { title: 'Trusted Experience', desc: 'We don\'t just organize trips—we create experiences backed by expertise and thousands of successful departures.', img: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=420&h=280&fit=crop' },
-  { title: 'Safety First', desc: 'Every itinerary is designed with safety and responsible operations at its core so you can travel worry-free.', img: 'https://images.unsplash.com/photo-1585409677983-0f6c41ca9c3b?w=420&h=280&fit=crop' },
-  { title: 'Award-Winning Excellence', desc: 'Our commitment to quality has earned recognition from industry leaders and our travelers.', img: 'https://images.unsplash.com/photo-1486911278844-a81c5267e227?w=420&h=280&fit=crop' },
-  { title: 'More Than Just Travel', desc: 'TrekRoot is a community where strangers become friends and every trip creates lifelong stories.', img: 'https://images.unsplash.com/photo-1551632811-561732d1e306?w=420&h=280&fit=crop' },
+  { title: 'Trusted Experience', desc: 'We don\'t just organize trips—we create experiences backed by expertise and thousands of successful departures.', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/' },
+  { title: 'Safety First', desc: 'Every itinerary is designed with safety and responsible operations at its core so you can travel worry-free.', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/' },
+  { title: 'Award-Winning Excellence', desc: 'Our commitment to quality has earned recognition from industry leaders and our travelers.', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/' },
+  { title: 'More Than Just Travel', desc: 'TrekRoot is a community where strangers become friends and every trip creates lifelong stories.', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/' },
 ];
 
 export default function WhyChooseUs() {

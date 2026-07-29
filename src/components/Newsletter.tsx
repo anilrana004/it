@@ -1,9 +1,9 @@
-'use client';
+﻿'use client';
 export default function Newsletter() {
   return (
     <section className="py-12 lg:py-20 relative overflow-hidden">
       <div className="absolute inset-0">
-        <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1920&h=800&fit=crop" alt="" className="w-full h-full object-cover" />
+        <img src="https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_1920,h_800,c_fill,g_auto/" alt="" className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-[#000000]/80" />
       </div>
       <div className="container mx-auto relative z-10 text-center">

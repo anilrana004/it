@@ -1,21 +1,21 @@
-'use client';
+﻿'use client';
 import { useRef, useState, useCallback, useEffect } from 'react';
 import Link from 'next/link';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const categories = [
-  { n: 'Bucket List', h: '/bucket-list-sale', img: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=300&h=300&fit=crop&q=80' },
-  { n: 'Long Weekend', h: '/treks?difficulty=easy', img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=300&h=300&fit=crop&q=80' },
-  { n: 'International', h: '/treks?region=nepal', img: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=300&h=300&fit=crop&q=80' },
-  { n: 'Ladakh', h: '/treks?region=ladakh', img: 'https://images.unsplash.com/photo-1486911278844-a81c5267e227?w=300&h=300&fit=crop&q=80' },
-  { n: 'Spiti', h: '/treks?region=himachal', img: 'https://images.unsplash.com/photo-1586350977770-2598f1b6b7c8?w=300&h=300&fit=crop&q=80' },
-  { n: 'Treks', h: '/treks', img: 'https://images.unsplash.com/photo-1551632811-561732d1e306?w=300&h=300&fit=crop&q=80' },
-  { n: 'New Launches', h: '/treks', img: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=300&h=300&fit=crop&q=80' },
-  { n: 'India', h: '/treks', img: 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=300&h=300&fit=crop&q=80' },
-  { n: 'Honeymoon', h: '/treks', img: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=300&h=300&fit=crop&q=80' },
-  { n: 'Zanskar', h: '/treks/bali-pass', img: 'https://images.unsplash.com/photo-1540979388789-6cee28a1cdc9?w=300&h=300&fit=crop&q=80' },
-  { n: 'Biking', h: '/treks', img: 'https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=300&h=300&fit=crop&q=80' },
-  { n: 'All Girls', h: '/treks', img: 'https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?w=300&h=300&fit=crop&q=80' },
+  { n: 'Bucket List', h: '/bucket-list-sale', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_300,h_300,c_fill,g_auto/' },
+  { n: 'Long Weekend', h: '/treks?difficulty=easy', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_300,h_300,c_fill,g_auto/' },
+  { n: 'International', h: '/treks?region=nepal', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_300,h_300,c_fill,g_auto/' },
+  { n: 'Ladakh', h: '/treks?region=ladakh', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_300,h_300,c_fill,g_auto/' },
+  { n: 'Spiti', h: '/treks?region=himachal', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_300,h_300,c_fill,g_auto/' },
+  { n: 'Treks', h: '/treks', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_300,h_300,c_fill,g_auto/' },
+  { n: 'New Launches', h: '/treks', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_300,h_300,c_fill,g_auto/' },
+  { n: 'India', h: '/treks', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_300,h_300,c_fill,g_auto/' },
+  { n: 'Honeymoon', h: '/treks', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_300,h_300,c_fill,g_auto/' },
+  { n: 'Zanskar', h: '/treks/bali-pass', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_300,h_300,c_fill,g_auto/' },
+  { n: 'Biking', h: '/treks', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_300,h_300,c_fill,g_auto/' },
+  { n: 'All Girls', h: '/treks', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_300,h_300,c_fill,g_auto/' },
 ];
 
 export default function Categories() {

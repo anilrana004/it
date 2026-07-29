@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import { useState } from 'react';
 import Link from 'next/link';
 import { Gift, ArrowRight, Check, Copy, Heart } from 'lucide-react';
@@ -21,7 +21,7 @@ export default function GiftCardsPage() {
     <div className="pt-20 lg:pt-28 pb-12 lg:pb-20">
       {/* Hero */}
       <section className="relative h-[35vh] min-h-[220px] overflow-hidden mb-8">
-        <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1920&h=500&fit=crop" alt="Gift Cards" className="w-full h-full object-cover" />
+        <img src="https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_1920,h_500,c_fill,g_auto/" alt="Gift Cards" className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/30 flex items-center">
           <div className="container mx-auto px-4">
             <h1 className="font-[family-name:var(--font-heading)] text-3xl lg:text-5xl font-bold text-white mb-2">Travel Gift Cards</h1>

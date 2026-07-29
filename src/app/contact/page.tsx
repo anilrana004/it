@@ -1,11 +1,11 @@
-import Link from 'next/link';
+﻿import Link from 'next/link';
 import { Phone, Mail, MapPin, Clock } from 'lucide-react';
 
 export default function ContactPage() {
   return (
     <div className="pt-24 lg:pt-28 pb-12 lg:pb-20">
       <section className="relative h-[30vh] min-h-[220px] overflow-hidden mb-10">
-        <img src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1920&h=500&fit=crop" alt="Contact" className="w-full h-full object-cover" />
+        <img src="https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_1920,h_500,c_fill,g_auto/" alt="Contact" className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/30 flex items-center">
           <div className="container mx-auto"><h1 className="font-[family-name:var(--font-heading)] text-3xl lg:text-5xl font-bold text-white mb-2">Contact Us</h1><p className="text-gray-200 text-lg">We&apos;d love to hear from you</p></div>
         </div>

@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -58,10 +58,10 @@ const packingData = {
 };
 
 const gearRentals = [
-  { name: 'Trekking Shoes', icon: Footprints, price: '1,000', img: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=200&h=200&fit=crop&q=80' },
-  { name: 'Down Jacket', icon: MountainSnow, price: '1,000', img: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=200&h=200&fit=crop&q=80' },
-  { name: 'Trekking Pole', icon: Trees, price: '250', img: 'https://images.unsplash.com/photo-1633627427605-2e12ed5d9901?w=200&h=200&fit=crop&q=80' },
-  { name: 'Poncho', icon: SunSnow, price: '250', img: 'https://images.unsplash.com/photo-1603808033192-082d6919d3e1?w=200&h=200&fit=crop&q=80' },
+  { name: 'Trekking Shoes', icon: Footprints, price: '1,000', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_200,h_200,c_fill,g_auto/' },
+  { name: 'Down Jacket', icon: MountainSnow, price: '1,000', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_200,h_200,c_fill,g_auto/' },
+  { name: 'Trekking Pole', icon: Trees, price: '250', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_200,h_200,c_fill,g_auto/' },
+  { name: 'Poncho', icon: SunSnow, price: '250', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_200,h_200,c_fill,g_auto/' },
 ];
 
 const sampleTestimonials = [
@@ -99,20 +99,20 @@ const diffBg: Record<string, string> = {
 
 const sectionBannerPairs = [
   [
-    { img: 'https://images.unsplash.com/photo-1539367628448-4bc5c9d171c8?w=600&h=350&fit=crop&q=80', badge: 'Best Seller', badgeIcon: Award, title: 'Bali with Gili Islands', subtitle: '7N/8D · Beach & Volcano Trek', promo: 'UPTO ₹3,500 OFF', href: '/booking' },
-    { img: 'https://images.unsplash.com/photo-1540979388789-6cee28a1cdc9?w=600&h=350&fit=crop&q=80', badge: 'Bucket List', badgeIcon: Flag, title: 'Everest Base Camp', subtitle: '13D/12N · The trek of a lifetime', promo: 'Starting ₹74,999', href: '/treks/everest-base-camp' },
+    { img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_600,h_350,c_fill,g_auto/', badge: 'Best Seller', badgeIcon: Award, title: 'Bali with Gili Islands', subtitle: '7N/8D · Beach & Volcano Trek', promo: 'UPTO ₹3,500 OFF', href: '/booking' },
+    { img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_600,h_350,c_fill,g_auto/', badge: 'Bucket List', badgeIcon: Flag, title: 'Everest Base Camp', subtitle: '13D/12N · The trek of a lifetime', promo: 'Starting ₹74,999', href: '/treks/everest-base-camp' },
   ],
   [
-    { img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=350&fit=crop&q=80', badge: 'Winter Sale', badgeIcon: Tag, title: 'Bucket List Sale', subtitle: 'Handpicked treks at best prices', promo: 'UPTO 40% OFF', href: '/treks' },
-    { img: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=600&h=350&fit=crop&q=80', badge: 'New Launch', badgeIcon: Sparkles, title: 'Thailand - Phuket Krabi', subtitle: 'Full Moon Party Edition', promo: 'UPTO ₹3,500 OFF', href: '/treks' },
+    { img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_600,h_350,c_fill,g_auto/', badge: 'Winter Sale', badgeIcon: Tag, title: 'Bucket List Sale', subtitle: 'Handpicked treks at best prices', promo: 'UPTO 40% OFF', href: '/treks' },
+    { img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_600,h_350,c_fill,g_auto/', badge: 'New Launch', badgeIcon: Sparkles, title: 'Thailand - Phuket Krabi', subtitle: 'Full Moon Party Edition', promo: 'UPTO ₹3,500 OFF', href: '/treks' },
   ],
   [
-    { img: 'https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=600&h=350&fit=crop&q=80', badge: 'Expedition', badgeIcon: Flag, title: 'Tawang Bike Expedition', subtitle: 'North East India · 8N/9D', promo: 'Bestseller', href: '/bucket-list-sale' },
-    { img: 'https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?w=600&h=350&fit=crop&q=80', badge: 'Squad Goals', badgeIcon: Heart, title: 'All Girls Trip', subtitle: 'Travel with your soul squad', promo: 'Safe & Fun', href: '/treks' },
+    { img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_600,h_350,c_fill,g_auto/', badge: 'Expedition', badgeIcon: Flag, title: 'Tawang Bike Expedition', subtitle: 'North East India · 8N/9D', promo: 'Bestseller', href: '/bucket-list-sale' },
+    { img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_600,h_350,c_fill,g_auto/', badge: 'Squad Goals', badgeIcon: Heart, title: 'All Girls Trip', subtitle: 'Travel with your soul squad', promo: 'Safe & Fun', href: '/treks' },
   ],
   [
-    { img: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=600&h=350&fit=crop&q=80', badge: 'Gift Cards', badgeIcon: Gift, title: 'Give the Gift of Adventure', subtitle: 'Valid on all treks & yatras', promo: 'Perfect for loved ones', href: '/travel-gift-cards' },
-    { img: 'https://images.unsplash.com/photo-1551632811-561732d1e306?w=600&h=350&fit=crop&q=80', badge: 'Group Offer', badgeIcon: Users, title: 'Group Discounts Up to 20%', subtitle: 'Groups of 4+ save big', promo: 'Bigger Group = Bigger Savings', href: '/corporate' },
+    { img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_600,h_350,c_fill,g_auto/', badge: 'Gift Cards', badgeIcon: Gift, title: 'Give the Gift of Adventure', subtitle: 'Valid on all treks & yatras', promo: 'Perfect for loved ones', href: '/travel-gift-cards' },
+    { img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_600,h_350,c_fill,g_auto/', badge: 'Group Offer', badgeIcon: Users, title: 'Group Discounts Up to 20%', subtitle: 'Groups of 4+ save big', promo: 'Bigger Group = Bigger Savings', href: '/corporate' },
   ],
 ];
 

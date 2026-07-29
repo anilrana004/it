@@ -1,4 +1,4 @@
-import Link from 'next/link';
+﻿import Link from 'next/link';
 import { ArrowRight, Tag, Sparkles } from 'lucide-react';
 
 interface BannerItem {
@@ -11,12 +11,12 @@ interface BannerItem {
 }
 
 const defaultBanners: BannerItem[] = [
-  { src: 'https://images.unsplash.com/photo-1539367628448-4bc5c9d171c8?w=1200&h=500&fit=crop&q=80', href: '/treks/nepal-backpacking', title: 'Bali with Gili Islands', subtitle: '7N/8D Group Tour', badge: 'UPTO ₹3,500 OFF', discount: 'Limited Period' },
-  { src: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1200&h=500&fit=crop&q=80', href: '/treks', title: 'Thailand - Phuket Krabi', subtitle: 'Full Moon Party Edition', badge: 'UPTO ₹3,500 OFF', discount: 'Book Now' },
-  { src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&h=500&fit=crop&q=80', href: '/treks', title: 'Bucket List Sale', subtitle: 'Handpicked trips at best prices', badge: 'UPTO 40% OFF', discount: 'Sale Active' },
-  { src: 'https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=1200&h=500&fit=crop&q=80', href: '/bucket-list-sale', title: 'Tawang Bike Expedition', subtitle: 'North East India Adventure', badge: 'Bestseller', discount: '8N/9D' },
-  { src: 'https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?w=1200&h=500&fit=crop&q=80', href: '/treks', title: 'All Girls Trip', subtitle: 'Travel with your soul squad', badge: 'New', discount: 'Safe & Fun' },
-  { src: 'https://images.unsplash.com/photo-1540979388789-6cee28a1cdc9?w=1200&h=500&fit=crop&q=80', href: '/treks/everest-base-camp', title: 'Everest Base Camp', subtitle: 'The trek of a lifetime', badge: 'Bucket List', discount: '13D/12N' },
+  { src: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/treks/nepal-backpacking', title: 'Bali with Gili Islands', subtitle: '7N/8D Group Tour', badge: 'UPTO ₹3,500 OFF', discount: 'Limited Period' },
+  { src: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/treks', title: 'Thailand - Phuket Krabi', subtitle: 'Full Moon Party Edition', badge: 'UPTO ₹3,500 OFF', discount: 'Book Now' },
+  { src: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/treks', title: 'Bucket List Sale', subtitle: 'Handpicked trips at best prices', badge: 'UPTO 40% OFF', discount: 'Sale Active' },
+  { src: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/bucket-list-sale', title: 'Tawang Bike Expedition', subtitle: 'North East India Adventure', badge: 'Bestseller', discount: '8N/9D' },
+  { src: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/treks', title: 'All Girls Trip', subtitle: 'Travel with your soul squad', badge: 'New', discount: 'Safe & Fun' },
+  { src: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/treks/everest-base-camp', title: 'Everest Base Camp', subtitle: 'The trek of a lifetime', badge: 'Bucket List', discount: '13D/12N' },
 ];
 
 export default function Banners({ items = defaultBanners }: { items?: BannerItem[] }) {

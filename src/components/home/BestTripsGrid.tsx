@@ -1,11 +1,11 @@
-import Link from 'next/link';
+﻿import Link from 'next/link';
 import { Star, MapPin } from 'lucide-react';
 
 const trips = [
-  { title: 'Valley of Flowers Trek', loc: 'Joshimath, Uttarakhand', rating: '4.8', rev: '8k+', img: 'https://images.unsplash.com/photo-1585409677983-0f6c41ca9c3b?w=600&h=400&fit=crop', href: '/treks/valley-of-flowers', badge: 'UNESCO Site' },
-  { title: 'Kedarkantha Trek', loc: 'Sankri, Uttarakhand', rating: '4.9', rev: '10k+', img: 'https://images.unsplash.com/photo-1486911278844-a81c5267e227?w=600&h=400&fit=crop', href: '/treks/kedarkantha', badge: 'Winter Special' },
-  { title: 'Everest Base Camp Trek', loc: 'Lukla, Nepal', rating: '4.9', rev: '20k+', img: 'https://images.unsplash.com/photo-1540979388789-6cee28a1cdc9?w=600&h=400&fit=crop', href: '/treks/everest-base-camp', badge: 'Bucket List' },
-  { title: 'Hampta Pass Trek', loc: 'Manali, Himachal', rating: '4.7', rev: '8k+', img: 'https://images.unsplash.com/photo-1586350977770-2598f1b6b7c8?w=600&h=400&fit=crop', href: '/treks/hampta-pass', badge: 'Valley Cross' },
+  { title: 'Valley of Flowers Trek', loc: 'Joshimath, Uttarakhand', rating: '4.8', rev: '8k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/valley-of-flowers', badge: 'UNESCO Site' },
+  { title: 'Kedarkantha Trek', loc: 'Sankri, Uttarakhand', rating: '4.9', rev: '10k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/kedarkantha', badge: 'Winter Special' },
+  { title: 'Everest Base Camp Trek', loc: 'Lukla, Nepal', rating: '4.9', rev: '20k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/everest-base-camp', badge: 'Bucket List' },
+  { title: 'Hampta Pass Trek', loc: 'Manali, Himachal', rating: '4.7', rev: '8k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/hampta-pass', badge: 'Valley Cross' },
 ];
 
 export default function BestTripsGrid() {

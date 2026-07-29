@@ -1,4 +1,4 @@
-import Link from 'next/link';
+﻿import Link from 'next/link';
 import { Building2, Users, Heart, Briefcase, Star, ArrowRight, CheckCircle2 } from 'lucide-react';
 
 export default function CorporatePage() {
@@ -62,7 +62,7 @@ export default function CorporatePage() {
               </ul>
             </div>
             <div className="relative rounded-xl overflow-hidden h-64 lg:h-80">
-              <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&h=400&fit=crop" alt="Corporate team" className="w-full h-full object-cover" />
+              <img src="https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/" alt="Corporate team" className="w-full h-full object-cover" />
             </div>
           </div>
         </div>

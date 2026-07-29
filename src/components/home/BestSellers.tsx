@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import { useState } from 'react';
 import Link from 'next/link';
 import { Star, Clock, MapPin, Zap } from 'lucide-react';
@@ -6,22 +6,22 @@ import { Star, Clock, MapPin, Zap } from 'lucide-react';
 const tabs = ['Bucket List Sale', 'Backpacking International', 'Biking Treks'];
 
 const bucketList = [
-  { title: 'Tawang Bike Trip and Backpacking Expedition', loc: 'Guwahati to Guwahati', dur: '8N/9D', price: 41000, origPrice: 0, rating: '4.8', rev: '10k+', img: 'https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=420&h=280&fit=crop', href: '/treks', badge: 'Bestseller' },
-  { title: 'Meghalaya Kaziranga Backpacking Trip - Forests, Falls & Safari (6N/7D)', loc: 'Guwahati to Guwahati', dur: '6N/7D', price: 28000, origPrice: 0, rating: '4.8', rev: '10k+', img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=420&h=280&fit=crop', href: '/treks', badge: '' },
-  { title: 'All Girls Meghalaya Kaziranga Backpacking Trip - Scenic Trails (6N/7D)', loc: 'Guwahati to Guwahati', dur: '6N/7D', price: 28000, origPrice: 0, rating: '4.8', rev: '10k+', img: 'https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?w=420&h=280&fit=crop', href: '/treks', badge: 'Bestseller' },
-  { title: 'Kashmir Autumn Trip - 6N/7D Group Tour', loc: 'Srinagar to Srinagar', dur: '6N/7D', price: 30000, origPrice: 0, rating: '4.8', rev: '10k+', img: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=420&h=280&fit=crop', href: '/treks', badge: 'New' },
+  { title: 'Tawang Bike Trip and Backpacking Expedition', loc: 'Guwahati to Guwahati', dur: '8N/9D', price: 41000, origPrice: 0, rating: '4.8', rev: '10k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks', badge: 'Bestseller' },
+  { title: 'Meghalaya Kaziranga Backpacking Trip - Forests, Falls & Safari (6N/7D)', loc: 'Guwahati to Guwahati', dur: '6N/7D', price: 28000, origPrice: 0, rating: '4.8', rev: '10k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks', badge: '' },
+  { title: 'All Girls Meghalaya Kaziranga Backpacking Trip - Scenic Trails (6N/7D)', loc: 'Guwahati to Guwahati', dur: '6N/7D', price: 28000, origPrice: 0, rating: '4.8', rev: '10k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks', badge: 'Bestseller' },
+  { title: 'Kashmir Autumn Trip - 6N/7D Group Tour', loc: 'Srinagar to Srinagar', dur: '6N/7D', price: 30000, origPrice: 0, rating: '4.8', rev: '10k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks', badge: 'New' },
 ];
 
 const backpackingIntl = [
-  { title: 'Thailand - Phuket Krabi Group Tour with Full Moon Party (6N/7D)', loc: 'Phuket to Phuket', dur: '6N/7D', price: 53500, origPrice: 57000, rating: '4.8', rev: '10k+', img: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=420&h=280&fit=crop', href: '/treks/nepal-backpacking', badge: 'New' },
-  { title: 'Bhutan Bike and Backpacking | 8 Days Bhutan Bike Tour', loc: 'Bagdogra to Bagdogra', dur: '7N/8D', price: 45000, origPrice: 0, rating: '4.8', rev: '10k+', img: 'https://images.unsplash.com/photo-1540979388789-6cee28a1cdc9?w=420&h=280&fit=crop', href: '/treks', badge: '' },
-  { title: 'Bali with Gili Island Group Tour - Ubud, Nusa Penida & Kuta (7N/8D)', loc: 'Bali Airport to Bali Airport', dur: '7N/8D', price: 53500, origPrice: 57000, rating: '4.8', rev: '10k+', img: 'https://images.unsplash.com/photo-1539367628448-4bc5c9d171c8?w=420&h=280&fit=crop', href: '/treks', badge: '' },
-  { title: 'Bhutan Tour with Phobjikha Valley - 8 Days', loc: 'Bagdogra to Siliguri', dur: '7N/8D', price: 45000, origPrice: 0, rating: '4.8', rev: '10k+', img: 'https://images.unsplash.com/photo-1543429257-3eb0b65d9c10?w=420&h=280&fit=crop', href: '/treks', badge: '' },
+  { title: 'Thailand - Phuket Krabi Group Tour with Full Moon Party (6N/7D)', loc: 'Phuket to Phuket', dur: '6N/7D', price: 53500, origPrice: 57000, rating: '4.8', rev: '10k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/nepal-backpacking', badge: 'New' },
+  { title: 'Bhutan Bike and Backpacking | 8 Days Bhutan Bike Tour', loc: 'Bagdogra to Bagdogra', dur: '7N/8D', price: 45000, origPrice: 0, rating: '4.8', rev: '10k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks', badge: '' },
+  { title: 'Bali with Gili Island Group Tour - Ubud, Nusa Penida & Kuta (7N/8D)', loc: 'Bali Airport to Bali Airport', dur: '7N/8D', price: 53500, origPrice: 57000, rating: '4.8', rev: '10k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks', badge: '' },
+  { title: 'Bhutan Tour with Phobjikha Valley - 8 Days', loc: 'Bagdogra to Siliguri', dur: '7N/8D', price: 45000, origPrice: 0, rating: '4.8', rev: '10k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks', badge: '' },
 ];
 
 const bikingTreks = [
-  { title: 'Spiti Valley Bike and Backpacking Trip', loc: 'Delhi to Delhi', dur: '9N/10D', price: 25000, origPrice: 0, rating: '4.8', rev: '8k+', img: 'https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=420&h=280&fit=crop', href: '/treks/hampta-pass', badge: '' },
-  { title: 'Leh Ladakh Bike Trip From Srinagar with Hanle & Umling La', loc: 'Srinagar to Leh', dur: '11N/12D', price: 45000, origPrice: 0, rating: '4.9', rev: '10k+', img: 'https://images.unsplash.com/photo-1486911278844-a81c5267e227?w=420&h=280&fit=crop', href: '/treks/everest-base-camp', badge: '' },
+  { title: 'Spiti Valley Bike and Backpacking Trip', loc: 'Delhi to Delhi', dur: '9N/10D', price: 25000, origPrice: 0, rating: '4.8', rev: '8k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/hampta-pass', badge: '' },
+  { title: 'Leh Ladakh Bike Trip From Srinagar with Hanle & Umling La', loc: 'Srinagar to Leh', dur: '11N/12D', price: 45000, origPrice: 0, rating: '4.9', rev: '10k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/everest-base-camp', badge: '' },
 ];
 
 const data: Record<string, typeof bucketList> = {

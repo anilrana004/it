@@ -1,10 +1,10 @@
-import Link from 'next/link';
+﻿import Link from 'next/link';
 
 export default function Regions() {
   const regions = [
-    { n: 'Uttarakhand', img: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=400&h=500&fit=crop', desc: 'Valley of Flowers, Kedarkantha, Chopta, Dayara, Rupin Pass & more', href: '/treks?region=uttarakhand', count: '13 Treks & Yatras' },
-    { n: 'Himachal Pradesh', img: 'https://images.unsplash.com/photo-1586350977770-2598f1b6b7c8?w=400&h=500&fit=crop', desc: 'Hampta Pass, Triund, Kheerganga, Beas Kund, Bhrigu Lake & more', href: '/treks?region=himachal', count: '6 Treks' },
-    { n: 'Nepal', img: 'https://images.unsplash.com/photo-1486911278844-a81c5267e227?w=400&h=500&fit=crop', desc: 'Everest Base Camp, Annapurna Base Camp, Kathmandu Tour, Chitwan Safari & more', href: '/treks?region=nepal', count: '5 Treks & Tours' },
+    { n: 'Uttarakhand', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_400,h_500,c_fill,g_auto/', desc: 'Valley of Flowers, Kedarkantha, Chopta, Dayara, Rupin Pass & more', href: '/treks?region=uttarakhand', count: '13 Treks & Yatras' },
+    { n: 'Himachal Pradesh', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_400,h_500,c_fill,g_auto/', desc: 'Hampta Pass, Triund, Kheerganga, Beas Kund, Bhrigu Lake & more', href: '/treks?region=himachal', count: '6 Treks' },
+    { n: 'Nepal', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_400,h_500,c_fill,g_auto/', desc: 'Everest Base Camp, Annapurna Base Camp, Kathmandu Tour, Chitwan Safari & more', href: '/treks?region=nepal', count: '5 Treks & Tours' },
   ];
 
   return (

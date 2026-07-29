@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import { useState } from 'react';
 import Link from 'next/link';
 import { Star, Clock, MapPin, TrendingUp, Flame } from 'lucide-react';
@@ -6,18 +6,18 @@ import { Star, Clock, MapPin, TrendingUp, Flame } from 'lucide-react';
 const filters = ['All Trending', 'Trekking', 'Yatra', 'International', 'Weekend'];
 
 const trending = [
-  { title: 'Valley of Flowers Trek', loc: 'Joshimath → Rishikesh', dur: '6D/5N', price: 8999, rating: '4.8', rev: '8k+', img: 'https://images.unsplash.com/photo-1585409677983-0f6c41ca9c3b?w=420&h=280&fit=crop', href: '/treks/valley-of-flowers', tag: 'Trekking' },
-  { title: 'Kedarkantha Trek', loc: 'Sankri → Dehradun', dur: '5D/4N', price: 6999, rating: '4.9', rev: '10k+', img: 'https://images.unsplash.com/photo-1486911278844-a81c5267e227?w=420&h=280&fit=crop', href: '/treks/kedarkantha', tag: 'Trekking' },
-  { title: 'Everest Base Camp', loc: 'Lukla → Lukla', dur: '13D/12N', price: 74999, rating: '4.9', rev: '20k+', img: 'https://images.unsplash.com/photo-1540979388789-6cee28a1cdc9?w=420&h=280&fit=crop', href: '/treks/everest-base-camp', tag: 'International' },
-  { title: 'Annapurna Base Camp', loc: 'Pokhara → Pokhara', dur: '8D/7N', price: 34999, rating: '4.9', rev: '15k+', img: 'https://images.unsplash.com/photo-1486911278844-a81c5267e227?w=420&h=280&fit=crop', href: '/treks/annapurna-base-camp', tag: 'International' },
-  { title: 'Hampta Pass Trek', loc: 'Manali → Manali', dur: '5D/4N', price: 8499, rating: '4.7', rev: '8k+', img: 'https://images.unsplash.com/photo-1586350977770-2598f1b6b7c8?w=420&h=280&fit=crop', href: '/treks/hampta-pass', tag: 'Trekking' },
-  { title: 'Kedarnath Yatra', loc: 'Rishikesh → Rishikesh', dur: '6D/5N', price: 9999, rating: '4.8', rev: '12k+', img: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=420&h=280&fit=crop', href: '/yatra/kedarnath-yatra', tag: 'Yatra' },
-  { title: 'Triund Trek', loc: 'Mcleodganj → Mcleodganj', dur: '3D/2N', price: 2499, rating: '4.6', rev: '15k+', img: 'https://images.unsplash.com/photo-1551632811-561732d1e306?w=420&h=280&fit=crop', href: '/treks/mcleodganj-trek', tag: 'Weekend' },
-  { title: 'Chopta Tungnath', loc: 'Rishikesh → Rishikesh', dur: '4D/3N', price: 5999, rating: '4.7', rev: '7k+', img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=420&h=280&fit=crop', href: '/treks/chopta-tungnath', tag: 'Trekking' },
-  { title: 'Har Ki Dun Trek', loc: 'Dehradun → Dehradun', dur: '6D/5N', price: 8999, rating: '4.8', rev: '5k+', img: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=420&h=280&fit=crop', href: '/treks/har-ki-dun', tag: 'Trekking' },
-  { title: 'Badrinath Yatra', loc: 'Rishikesh → Rishikesh', dur: '5D/4N', price: 7999, rating: '4.8', rev: '10k+', img: 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=420&h=280&fit=crop', href: '/yatra/badrinath-yatra', tag: 'Yatra' },
-  { title: 'Dayara Bugyal Trek', loc: 'Rishikesh → Rishikesh', dur: '5D/4N', price: 6999, rating: '4.7', rev: '6k+', img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=420&h=280&fit=crop', href: '/treks/dayara-bugyal', tag: 'Trekking' },
-  { title: 'Bhrigu Lake Trek', loc: 'Manali → Manali', dur: '3D/2N', price: 4999, rating: '4.6', rev: '6k+', img: 'https://images.unsplash.com/photo-1586350977770-2598f1b6b7c8?w=420&h=280&fit=crop', href: '/treks/bhrigu-lake', tag: 'Weekend' },
+  { title: 'Valley of Flowers Trek', loc: 'Joshimath → Rishikesh', dur: '6D/5N', price: 8999, rating: '4.8', rev: '8k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/valley-of-flowers', tag: 'Trekking' },
+  { title: 'Kedarkantha Trek', loc: 'Sankri → Dehradun', dur: '5D/4N', price: 6999, rating: '4.9', rev: '10k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/kedarkantha', tag: 'Trekking' },
+  { title: 'Everest Base Camp', loc: 'Lukla → Lukla', dur: '13D/12N', price: 74999, rating: '4.9', rev: '20k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/everest-base-camp', tag: 'International' },
+  { title: 'Annapurna Base Camp', loc: 'Pokhara → Pokhara', dur: '8D/7N', price: 34999, rating: '4.9', rev: '15k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/annapurna-base-camp', tag: 'International' },
+  { title: 'Hampta Pass Trek', loc: 'Manali → Manali', dur: '5D/4N', price: 8499, rating: '4.7', rev: '8k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/hampta-pass', tag: 'Trekking' },
+  { title: 'Kedarnath Yatra', loc: 'Rishikesh → Rishikesh', dur: '6D/5N', price: 9999, rating: '4.8', rev: '12k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/yatra/kedarnath-yatra', tag: 'Yatra' },
+  { title: 'Triund Trek', loc: 'Mcleodganj → Mcleodganj', dur: '3D/2N', price: 2499, rating: '4.6', rev: '15k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/mcleodganj-trek', tag: 'Weekend' },
+  { title: 'Chopta Tungnath', loc: 'Rishikesh → Rishikesh', dur: '4D/3N', price: 5999, rating: '4.7', rev: '7k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/chopta-tungnath', tag: 'Trekking' },
+  { title: 'Har Ki Dun Trek', loc: 'Dehradun → Dehradun', dur: '6D/5N', price: 8999, rating: '4.8', rev: '5k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/har-ki-dun', tag: 'Trekking' },
+  { title: 'Badrinath Yatra', loc: 'Rishikesh → Rishikesh', dur: '5D/4N', price: 7999, rating: '4.8', rev: '10k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/yatra/badrinath-yatra', tag: 'Yatra' },
+  { title: 'Dayara Bugyal Trek', loc: 'Rishikesh → Rishikesh', dur: '5D/4N', price: 6999, rating: '4.7', rev: '6k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/dayara-bugyal', tag: 'Trekking' },
+  { title: 'Bhrigu Lake Trek', loc: 'Manali → Manali', dur: '3D/2N', price: 4999, rating: '4.6', rev: '6k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/bhrigu-lake', tag: 'Weekend' },
 ];
 
 export default function TrendingPage() {
