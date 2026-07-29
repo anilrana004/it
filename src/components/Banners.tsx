@@ -1,19 +1,49 @@
 import Link from 'next/link';
+import { ArrowRight, Tag, Sparkles } from 'lucide-react';
 
-const defaultImages = [
-  { src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=300&fit=crop&q=80', href: '/bucket-list-sale' },
-  { src: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=800&h=300&fit=crop&q=80', href: '/treks?region=nepal' },
-  { src: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&h=300&fit=crop&q=80', href: '/treks' },
+interface BannerItem {
+  src: string;
+  href: string;
+  title?: string;
+  subtitle?: string;
+  badge?: string;
+  discount?: string;
+}
+
+const defaultBanners: BannerItem[] = [
+  { src: 'https://images.unsplash.com/photo-1539367628448-4bc5c9d171c8?w=1200&h=500&fit=crop&q=80', href: '/treks/nepal-backpacking', title: 'Bali with Gili Islands', subtitle: '7N/8D Group Tour', badge: 'UPTO ₹3,500 OFF', discount: 'Limited Period' },
+  { src: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1200&h=500&fit=crop&q=80', href: '/treks', title: 'Thailand - Phuket Krabi', subtitle: 'Full Moon Party Edition', badge: 'UPTO ₹3,500 OFF', discount: 'Book Now' },
+  { src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&h=500&fit=crop&q=80', href: '/treks', title: 'Bucket List Sale', subtitle: 'Handpicked trips at best prices', badge: 'UPTO 40% OFF', discount: 'Sale Active' },
+  { src: 'https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=1200&h=500&fit=crop&q=80', href: '/bucket-list-sale', title: 'Tawang Bike Expedition', subtitle: 'North East India Adventure', badge: 'Bestseller', discount: '8N/9D' },
+  { src: 'https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?w=1200&h=500&fit=crop&q=80', href: '/treks', title: 'All Girls Trip', subtitle: 'Travel with your soul squad', badge: 'New', discount: 'Safe & Fun' },
+  { src: 'https://images.unsplash.com/photo-1540979388789-6cee28a1cdc9?w=1200&h=500&fit=crop&q=80', href: '/treks/everest-base-camp', title: 'Everest Base Camp', subtitle: 'The trek of a lifetime', badge: 'Bucket List', discount: '13D/12N' },
 ];
 
-export default function Banners({ images = defaultImages }: { images?: { src: string; href: string }[] }) {
+export default function Banners({ items = defaultBanners }: { items?: BannerItem[] }) {
   return (
-    <section className="py-2 lg:py-4 bg-white">
+    <section className="py-3 lg:py-5 bg-white">
       <div className="container mx-auto">
-        <div className="flex gap-3 overflow-x-auto scrollbar-none -mx-4 px-4 lg:mx-0 lg:px-0 snap-x snap-mandatory scroll-smooth">
-          {images.map((img, i) => (
-            <Link key={i} href={img.href} className="shrink-0 w-[85vw] lg:w-full snap-start">
-              <img src={img.src} alt="" className="w-full h-32 lg:h-48 object-cover rounded-xl" />
+        <div className="flex gap-3 lg:gap-4 overflow-x-auto scrollbar-none -mx-4 px-4 lg:mx-0 lg:px-0 snap-x snap-mandatory scroll-smooth" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+          {items.map((b, i) => (
+            <Link key={i} href={b.href}
+              className="group relative shrink-0 w-[80vw] lg:w-[400px] snap-start rounded-xl overflow-hidden">
+              <div className="aspect-[16/7] lg:aspect-[16/7] overflow-hidden">
+                <img src={b.src} alt={b.title || ''} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+              </div>
+              <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-transparent" />
+              {b.badge && (
+                <div className="absolute top-3 left-3 flex items-center gap-1 bg-[#ffaf21]/90 text-black text-[10px] lg:text-xs font-bold px-2.5 py-1 rounded-full">
+                  <Tag className="w-3 h-3" />{b.badge}
+                </div>
+              )}
+              <div className="absolute bottom-0 left-0 right-0 p-3 lg:p-5">
+                {b.title && <h3 className="text-white font-bold text-sm lg:text-xl drop-shadow-sm">{b.title}</h3>}
+                {b.subtitle && <p className="text-white/80 text-[10px] lg:text-sm mt-0.5">{b.subtitle}</p>}
+                <div className="flex items-center gap-2 mt-1.5 lg:mt-2">
+                  <span className="text-[#ffaf21] text-[10px] lg:text-xs font-semibold">{b.discount}</span>
+                  <ArrowRight className="w-3 h-3 lg:w-4 lg:h-4 text-white/60 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </div>
             </Link>
           ))}
         </div>

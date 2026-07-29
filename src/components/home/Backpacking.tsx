@@ -62,6 +62,7 @@ export default function Backpacking() {
                   <span className="text-[#ffaf21] font-bold text-sm lg:text-base">₹{t.price.toLocaleString()}</span>
                   {t.origPrice > 0 && <span className="text-gray-400 text-xs line-through">₹{t.origPrice.toLocaleString()}</span>}
                 </div>
+                <span className="inline-block mt-1.5 text-[10px] text-blue-600 font-semibold bg-blue-50 px-2 py-0.5 rounded">Book Now, Pay Later</span>
               </div>
             </Link>
           ))}

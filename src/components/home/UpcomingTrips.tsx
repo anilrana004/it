@@ -56,6 +56,7 @@ export default function UpcomingTrips() {
                   <span className="text-gray-400 text-xs line-through">₹{t.origPrice.toLocaleString()}</span>
                   <span className="ml-auto bg-green-100 text-green-700 text-[10px] font-bold px-1.5 py-0.5 rounded">{Math.round((1-t.price/t.origPrice)*100)}% OFF</span>
                 </div>
+                <span className="inline-block mt-1.5 text-[10px] text-blue-600 font-semibold bg-blue-50 px-2 py-0.5 rounded">Book Now, Pay Later</span>
               </div>
             </Link>
           ))}

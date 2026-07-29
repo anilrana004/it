@@ -1,7 +1,7 @@
 'use client';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import Link from 'next/link';
-import { Menu, X, Phone, Search, ChevronDown, User } from 'lucide-react';
+import { Menu, X, Phone, Search, ChevronDown, User, Sparkles } from 'lucide-react';
 
 const navItems = [
   {
@@ -79,13 +79,12 @@ const mobileLinkSections = [
   },
 ];
 
-function Dropdown({ items, isOpen, onClose }: { items: { l: string; h: string }[]; isOpen: boolean; onClose?: () => void }) {
-  if (!isOpen) return null;
+function Dropdown({ items, onClose }: { items: { l: string; h: string }[]; onClose: () => void }) {
   return (
     <div className="absolute top-full left-0 mt-1 bg-white rounded-xl shadow-xl border border-gray-100 py-2 min-w-[220px] z-50" role="menu">
       {items.map(item => (
         <Link key={item.l} href={item.h} onClick={onClose} role="menuitem"
-          className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 hover:text-[#ffaf21] transition-colors focus-visible:outline-2 focus-visible:outline-[#ffaf21] focus-visible:outline-offset-[-2px]">
+          className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 hover:text-[#ffaf21] transition-colors">
           {item.l}
         </Link>
       ))}
@@ -98,83 +97,115 @@ export default function Header() {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState<string[]>([]);
   const [mobileAccordion, setMobileAccordion] = useState<number | null>(null);
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
+
+  const closeDropdown = useCallback(() => setOpenDropdown(null), []);
+
+  const handleMouseEnter = useCallback((label: string) => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    setOpenDropdown(label);
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    closeTimer.current = setTimeout(() => setOpenDropdown(null), 150);
+  }, []);
 
   useEffect(() => {
-    const handleClick = (e: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (headerRef.current && !headerRef.current.contains(e.target as Node)) {
         setOpenDropdown(null);
       }
     };
-    const handleEscape = (e: KeyboardEvent) => { if (e.key === 'Escape') setOpenDropdown(null); };
-    document.addEventListener('mousedown', handleClick);
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') { setOpenDropdown(null); setIsOpen(false); }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
     document.addEventListener('keydown', handleEscape);
-    return () => { document.removeEventListener('mousedown', handleClick); document.removeEventListener('keydown', handleEscape); };
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleEscape);
+      if (closeTimer.current) clearTimeout(closeTimer.current);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [isOpen]);
+
+  const closeMobile = useCallback(() => { setIsOpen(false); setMobileOpen([]); }, []);
+
+  const toggleMobileSubmenu = useCallback((label: string) => {
+    setMobileOpen(prev => prev.includes(label) ? prev.filter(l => l !== label) : [...prev, label]);
   }, []);
 
   return (
-    <>
+    <div ref={headerRef}>
       {/* Desktop Header */}
       <header className="fixed left-0 top-0 z-50 hidden w-full bg-white shadow-sm lg:block">
-        <div className="container mx-auto flex h-16 2xl:h-[90px] items-center gap-4 2xl:gap-10 px-4">
+        <div className="flex h-16 items-center justify-between gap-4 px-6 xl:px-10">
           <Link href="/" className="shrink-0">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 2xl:w-10 2xl:h-10 bg-gradient-to-br from-[#ffaf21] to-[#ffaf21] rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm 2xl:text-base">TR</span>
+            <div className="flex items-center gap-2.5">
+              <div className="w-9 h-9 bg-[#ffaf21] rounded-lg flex items-center justify-center shadow-sm">
+                <span className="text-black font-bold text-sm">TR</span>
               </div>
-              <span className="font-[family-name:var(--font-heading)] font-bold text-xl 2xl:text-2xl text-[#000000] tracking-tight">TrekRoot</span>
+              <span className="font-bold text-xl text-black tracking-tight">TrekRoot</span>
             </div>
           </Link>
 
-          <nav ref={dropdownRef} className="relative flex grow items-center justify-center text-gray-700">
+          <nav className="flex items-center justify-center gap-0.5">
             {navItems.map((item: any) => (
-              <div key={item.label} className="relative group/nav mx-0.5"
-                onMouseEnter={() => item.dropdown && setOpenDropdown(item.label)}
-                onMouseLeave={() => setOpenDropdown(null)}>
+              <div key={item.label}
+                className="relative"
+                onMouseEnter={() => item.dropdown && handleMouseEnter(item.label)}
+                onMouseLeave={handleMouseLeave}>
                 {item.sale ? (
                   <Link href={item.href}
-                    className="relative mx-0.5 inline-flex items-center gap-1 px-3 xl:px-4 py-2 text-sm font-semibold text-green-600 rounded-lg hover:bg-green-50 transition-colors overflow-hidden">
-                    <span className="relative z-10">{item.label}</span>
-                    <span className="absolute inset-0 rounded-lg" style={{
-                      background: 'conic-gradient(from 0deg, transparent, transparent, #22c55e40, transparent, transparent)',
-                    }} />
+                    className="inline-flex items-center gap-1.5 px-4 py-1.5 text-sm font-bold text-white bg-gradient-to-r from-orange-500 to-rose-500 rounded-full hover:from-orange-600 hover:to-rose-600 transition-all duration-300 shadow-lg shadow-orange-500/25 animate-pulse">
+                    <Sparkles className="w-3.5 h-3.5" />
+                    {item.label}
                   </Link>
                 ) : item.dropdown ? (
                   <button type="button"
                     onClick={() => setOpenDropdown(openDropdown === item.label ? null : item.label)}
-                    onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setOpenDropdown(openDropdown === item.label ? null : item.label); } }}
                     aria-expanded={openDropdown === item.label} aria-haspopup="true"
-                    className="mx-0.5 inline-flex items-center gap-1 px-3 xl:px-4 py-2 text-sm font-medium rounded-lg hover:bg-gray-50 hover:text-[#ffaf21] transition-colors">
+                    className="inline-flex items-center gap-1 px-3 xl:px-4 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-50 hover:text-[#ffaf21] transition-colors">
                     {item.label}
-                    <ChevronDown className={`w-3.5 h-3.5 transition-transform ${openDropdown === item.label ? 'rotate-180' : ''}`} />
+                    <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${openDropdown === item.label ? 'rotate-180' : ''}`} />
                   </button>
                 ) : (
                   <Link href={item.href}
-                    className="mx-0.5 inline-flex items-center gap-1 px-3 xl:px-4 py-2 text-sm font-medium rounded-lg hover:bg-gray-50 hover:text-[#ffaf21] transition-colors">
+                    className="inline-flex items-center gap-1 px-3 xl:px-4 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-50 hover:text-[#ffaf21] transition-colors">
                     {item.label}
                   </Link>
                 )}
-                {item.dropdown && <Dropdown items={item.dropdown} isOpen={openDropdown === item.label} />}
+                {item.dropdown && openDropdown === item.label && (
+                  <div onMouseEnter={() => { if (closeTimer.current) clearTimeout(closeTimer.current); setOpenDropdown(item.label); }}
+                    onMouseLeave={handleMouseLeave}>
+                    <Dropdown items={item.dropdown} onClose={() => { closeDropdown(); }} />
+                  </div>
+                )}
               </div>
             ))}
           </nav>
 
-          <div className="flex shrink-0 items-center gap-2 2xl:gap-3">
+          <div className="flex shrink-0 items-center gap-2.5">
             <a href="tel:+919797972175"
-              className="hidden xl:flex items-center gap-2 text-sm font-medium text-gray-700 hover:text-[#ffaf21] px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors">
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
-              <span>Call Us</span>
+              className="flex items-center gap-2 text-sm font-medium text-gray-700 hover:text-[#ffaf21] px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors">
+              <Phone className="w-4 h-4" /> Call Us
             </a>
-            <a href="tel:+919797972175" className="xl:hidden p-2 text-gray-500 hover:text-[#ffaf21] rounded-lg hover:bg-gray-50 transition-colors">
-              <Phone className="w-4 h-4" />
-            </a>
-            <button type="button" aria-label="Search" className="p-2.5 bg-[#ffaf21] text-gray-900 rounded-full hover:bg-[#d49400] transition-colors shadow-sm">
+            <button type="button" aria-label="Search" className="w-9 h-9 flex items-center justify-center bg-[#ffaf21] text-black rounded-full hover:bg-[#d49400] transition-colors shadow-sm">
               <Search className="w-4 h-4" />
             </button>
             <Link href="/login"
               className="flex items-center gap-2 text-sm font-medium text-gray-700 hover:text-[#ffaf21] px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors">
               <User className="w-4 h-4" />
-              <span className="hidden xl:inline">Login</span>
+              <span>Login</span>
             </Link>
           </div>
         </div>
@@ -184,10 +215,10 @@ export default function Header() {
       <header className="fixed left-0 top-0 z-50 w-full bg-white/95 backdrop-blur-md shadow-sm lg:hidden">
         <div className="flex items-center justify-between h-14 px-4">
           <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-[#ffaf21] to-[#ffaf21] rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">TR</span>
+            <div className="w-8 h-8 bg-[#ffaf21] rounded-lg flex items-center justify-center">
+              <span className="text-black font-bold text-sm">TR</span>
             </div>
-            <span className="font-[family-name:var(--font-heading)] font-bold text-lg text-[#000000]">TrekRoot</span>
+            <span className="font-[family-name:var(--font-heading)] font-bold text-lg text-black">TrekRoot</span>
           </Link>
           <div className="flex items-center gap-2">
             <button type="button" aria-label="Search" className="p-2 text-gray-500">
@@ -203,23 +234,22 @@ export default function Header() {
       {/* Mobile Drawer */}
       {isOpen && (
         <div role="dialog" aria-modal="true" aria-label="Mobile navigation" className="fixed inset-0 z-[60] bg-white lg:hidden flex flex-col pt-14">
-          <div className="flex-1 overflow-y-auto">
-            {/* Main nav items */}
+          <div className="flex-1 overflow-y-auto pb-8">
             <div className="p-4 space-y-0.5">
               {navItems.map((item: any) => (
                 <div key={item.label}>
                   {item.dropdown ? (
                     <div>
-                      <button type="button" onClick={() => setMobileOpen(prev => prev.includes(item.label) ? prev.filter(l => l !== item.label) : [...prev, item.label])}
+                      <button type="button" onClick={() => toggleMobileSubmenu(item.label)}
                         aria-expanded={mobileOpen.includes(item.label)}
                         className="w-full flex items-center justify-between px-4 py-3.5 text-sm font-medium text-gray-800 rounded-xl hover:bg-gray-50 transition-colors">
                         {item.label}
-                        <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform ${mobileOpen.includes(item.label) ? 'rotate-180' : ''}`} />
+                        <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${mobileOpen.includes(item.label) ? 'rotate-180' : ''}`} />
                       </button>
                       {mobileOpen.includes(item.label) && (
                         <div className="ml-4 pl-3 border-l-2 border-gray-100 space-y-0.5 mb-1">
                           {item.dropdown.map((sub: any) => (
-                            <Link key={sub.l} href={sub.h} onClick={() => { setIsOpen(false); setMobileOpen([]) }}
+                            <Link key={sub.l} href={sub.h} onClick={closeMobile}
                               className="block px-4 py-2.5 text-sm text-gray-600 hover:bg-gray-50 rounded-lg transition-colors">
                               {sub.l}
                             </Link>
@@ -228,12 +258,12 @@ export default function Header() {
                       )}
                     </div>
                   ) : item.sale ? (
-                    <Link href={item.href} onClick={() => { setIsOpen(false); setMobileOpen([]) }}
-                      className="block px-4 py-3.5 text-sm font-semibold text-green-600 hover:bg-green-50 rounded-xl transition-colors">
-                      {item.label}
+                    <Link href={item.href} onClick={closeMobile}
+                      className="flex items-center gap-2 px-4 py-3 text-sm font-bold text-white bg-gradient-to-r from-orange-500 to-rose-500 rounded-full mx-4 my-2 shadow-lg shadow-orange-500/25">
+                      <Sparkles className="w-4 h-4" /> {item.label}
                     </Link>
                   ) : (
-                    <Link href={item.href} onClick={() => { setIsOpen(false); setMobileOpen([]) }}
+                    <Link href={item.href} onClick={closeMobile}
                       className="block px-4 py-3.5 text-sm font-medium text-gray-800 hover:bg-gray-50 rounded-xl transition-colors">
                       {item.label}
                     </Link>
@@ -242,7 +272,6 @@ export default function Header() {
               ))}
             </div>
 
-            {/* Contact info */}
             <div className="px-4 mt-2">
               <div className="bg-blue-50/50 rounded-xl p-4 space-y-3">
                 <p className="text-sm font-semibold text-gray-900">Contact Us</p>
@@ -261,7 +290,6 @@ export default function Header() {
               </div>
             </div>
 
-            {/* Quick Links accordion sections */}
             <div className="px-4 mt-4 space-y-0.5">
               {mobileLinkSections.map((s, i) => (
                 <div key={s.title} className="border-b border-gray-100">
@@ -269,12 +297,12 @@ export default function Header() {
                     aria-expanded={mobileAccordion === i}
                     className="w-full flex items-center justify-between py-3.5 px-1 text-sm font-semibold text-gray-800">
                     {s.title}
-                    <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform ${mobileAccordion === i ? 'rotate-180' : ''}`} />
+                    <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${mobileAccordion === i ? 'rotate-180' : ''}`} />
                   </button>
                   {mobileAccordion === i && (
                     <div className="pb-3 space-y-1 px-1">
                       {s.links.map(l => (
-                        <Link key={l.l} href={l.h} onClick={() => setIsOpen(false)}
+                        <Link key={l.l} href={l.h} onClick={closeMobile}
                           className="block text-sm text-gray-500 hover:text-[#ffaf21] py-1.5">
                           {l.l}
                         </Link>
@@ -285,7 +313,6 @@ export default function Header() {
               ))}
             </div>
 
-            {/* Social icons */}
             <div className="px-4 mt-6 mb-4">
               <div className="flex flex-wrap items-center justify-center gap-3">
                 {[
@@ -305,9 +332,9 @@ export default function Header() {
               </div>
             </div>
 
-            <div className="px-4 mt-4 space-y-3 pb-6">
-              <Link href="/login" onClick={() => setIsOpen(false)}
-                className="flex items-center justify-center gap-2 bg-[#ffaf21] text-gray-900 font-semibold px-6 py-3 rounded-full w-full">
+            <div className="px-4 mt-4 space-y-3">
+              <Link href="/login" onClick={closeMobile}
+                className="flex items-center justify-center gap-2 bg-[#ffaf21] text-black font-semibold px-6 py-3 rounded-full w-full">
                 <User className="w-4 h-4" /> Login / Sign Up
               </Link>
               <a href="tel:+919797972175"
@@ -318,6 +345,6 @@ export default function Header() {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }
