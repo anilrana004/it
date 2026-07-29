@@ -65,20 +65,20 @@ const gearRentals = [
 ];
 
 const sampleTestimonials = [
-  { name: 'Rahul Sharma', city: 'Delhi', text: 'Best trekking experience of my life! The team was incredibly supportive and the views from the summit were absolutely breathtaking. Would recommend to everyone.' },
-  { name: 'Anjali Patel', city: 'Ahmedabad', text: 'The organisation was flawless. From the pickup to the drop, everything was handled professionally. The guides knew the terrain like the back of their hand.' },
-  { name: 'Vikram Singh', city: 'Jaipur', text: 'I was nervous about my first high-altitude trek but the acclimatisation plan was perfect. The camp food was surprisingly delicious and the camaraderie was unmatched.' },
-  { name: 'Priya Deshmukh', city: 'Pune', text: 'Crossing the pass at sunrise was a spiritual experience. The snow-capped peaks, the silence, the crisp air — nothing compares. TrekRoot made it happen seamlessly.' },
-  { name: 'Arun Nair', city: 'Kochi', text: 'Coming from Kerala, I was worried about the cold but the gear they provided was top-notch. The guides made sure everyone was comfortable and safe throughout.' },
-  { name: 'Neha Gupta', city: 'Lucknow', text: 'The campsites were chosen perfectly — each one had a view that left us speechless. The stargazing at night was the cherry on top. Unforgettable trip!' },
-  { name: 'Siddharth Rao', city: 'Hyderabad', text: 'I have done multiple treks with TrekRoot and every single time they exceed expectations. The attention to detail, the safety protocols, the energy — superb!' },
-  { name: 'Kavita Joshi', city: 'Mumbai', text: 'The booking process was smooth, the team was responsive, and the trek itself was magical. The waterfalls, the meadows, the lake — it felt like a dream.' },
-  { name: 'Amit Thakur', city: 'Chandigarh', text: 'As a solo traveller I was a bit anxious, but the group was so welcoming. Made friends for life and the trek leader was amazing. Will definitely book again.' },
-  { name: 'Deepa Menon', city: 'Bengaluru', text: 'The fitness training tips they shared before the trek were incredibly useful. I felt well-prepared and the sense of achievement after summiting was indescribable.' },
-  { name: 'Rajesh Patil', city: 'Nashik', text: 'Value for money is insane. The quality of tents, sleeping bags, meals, and guidance at this price point is unheard of. TrekRoot is setting new standards.' },
-  { name: 'Swati Agarwal', city: 'Kolkata', text: 'The sunrise from the summit was worth every step. The team captured beautiful photos and videos that we will cherish forever. Thank you TrekRoot for this memory.' },
-  { name: 'Manoj Tiwari', city: 'Varanasi', text: 'I had never camped before this trek. The team made it so easy and comfortable. The bonfire nights and group singing were absolutely delightful.' },
-  { name: 'Pooja Mishra', city: 'Bhopal', text: 'The eco-conscious approach of TrekRoot impressed me. They genuinely care about the mountains and leave no trace. It feels good to trek responsibly.' },
+  { name: 'Rahul Sharma', city: 'Delhi', platform: 'Google', text: 'Best trekking experience of my life! The team was incredibly supportive and the views from the summit were absolutely breathtaking. Would recommend to everyone.' },
+  { name: 'Anjali Patel', city: 'Ahmedabad', platform: 'TripAdvisor', text: 'The organisation was flawless. From the pickup to the drop, everything was handled professionally. The guides knew the terrain like the back of their hand.' },
+  { name: 'Vikram Singh', city: 'Jaipur', platform: 'Google', text: 'I was nervous about my first high-altitude trek but the acclimatisation plan was perfect. The camp food was surprisingly delicious and the camaraderie was unmatched.' },
+  { name: 'Priya Deshmukh', city: 'Pune', platform: 'TripAdvisor', text: 'Crossing the pass at sunrise was a spiritual experience. The snow-capped peaks, the silence, the crisp air — nothing compares. TrekRoot made it happen seamlessly.' },
+  { name: 'Arun Nair', city: 'Kochi', platform: 'Google', text: 'Coming from Kerala, I was worried about the cold but the gear they provided was top-notch. The guides made sure everyone was comfortable and safe throughout.' },
+  { name: 'Neha Gupta', city: 'Lucknow', platform: 'TripAdvisor', text: 'The campsites were chosen perfectly — each one had a view that left us speechless. The stargazing at night was the cherry on top. Unforgettable trip!' },
+  { name: 'Siddharth Rao', city: 'Hyderabad', platform: 'Google', text: 'I have done multiple treks with TrekRoot and every single time they exceed expectations. The attention to detail, the safety protocols, the energy — superb!' },
+  { name: 'Kavita Joshi', city: 'Mumbai', platform: 'TripAdvisor', text: 'The booking process was smooth, the team was responsive, and the trek itself was magical. The waterfalls, the meadows, the lake — it felt like a dream.' },
+  { name: 'Amit Thakur', city: 'Chandigarh', platform: 'Google', text: 'As a solo traveller I was a bit anxious, but the group was so welcoming. Made friends for life and the trek leader was amazing. Will definitely book again.' },
+  { name: 'Deepa Menon', city: 'Bengaluru', platform: 'TripAdvisor', text: 'The fitness training tips they shared before the trek were incredibly useful. I felt well-prepared and the sense of achievement after summiting was indescribable.' },
+  { name: 'Rajesh Patil', city: 'Nashik', platform: 'Google', text: 'Value for money is insane. The quality of tents, sleeping bags, meals, and guidance at this price point is unheard of. TrekRoot is setting new standards.' },
+  { name: 'Swati Agarwal', city: 'Kolkata', platform: 'TripAdvisor', text: 'The sunrise from the summit was worth every step. The team captured beautiful photos and videos that we will cherish forever. Thank you TrekRoot for this memory.' },
+  { name: 'Manoj Tiwari', city: 'Varanasi', platform: 'Google', text: 'I had never camped before this trek. The team made it so easy and comfortable. The bonfire nights and group singing were absolutely delightful.' },
+  { name: 'Pooja Mishra', city: 'Bhopal', platform: 'TripAdvisor', text: 'The eco-conscious approach of TrekRoot impressed me. They genuinely care about the mountains and leave no trace. It feels good to trek responsibly.' },
 ];
 
 const difficultyColors: Record<string, string> = {
@@ -878,49 +878,95 @@ export default function TrekDetailContent({ trek, type }: { trek: Trek; type: 't
 
             {/* --- REVIEWS --- */}
             <section>
-              <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-8">
-                <div className="flex items-center gap-3">
-                  <div className="w-1 h-8 rounded-full" style={{ backgroundColor: accent }} />
+              <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-6 lg:mb-10">
+                <div className="flex items-start gap-3">
+                  <div className="w-1 h-10 rounded-full shrink-0 mt-0.5" style={{ backgroundColor: accent }} />
                   <div>
                     <p className="text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: accent }}>REVIEWS</p>
-                    <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 mt-0.5">What our Clients Say About Us</h2>
-                    <div className="flex items-center gap-3 mt-2">
-                      <div className="flex items-center gap-1">
-                        <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                        <span className="font-bold text-gray-900 text-sm">4.8</span>
+                    <h2 className="text-2xl lg:text-4xl font-bold text-gray-900 mt-1">What our Clients Say About Us</h2>
+                    <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-3">
+                      <div className="flex items-center gap-1.5">
+                        <div className="flex">
+                          {[1,2,3,4,5].map(s => (
+                            <Star key={s} className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />
+                          ))}
+                        </div>
+                        <span className="font-bold text-gray-900 text-base">4.8</span>
                         <span className="text-gray-400 text-xs">Rating</span>
                       </div>
-                      <span className="text-gray-200">|</span>
-                      <span className="text-gray-500 text-xs font-medium">10,000+ Verified Reviews</span>
+                      <span className="text-gray-200 hidden sm:inline">|</span>
+                      <span className="text-gray-500 text-sm font-medium">
+                        <span className="font-bold text-gray-700">10,000+</span> Verified Reviews
+                      </span>
                     </div>
                   </div>
                 </div>
+                <Link href="/reviews"
+                  className="hidden lg:inline-flex items-center gap-1.5 text-sm font-semibold text-gray-600 hover:text-[#ffaf21] transition-colors shrink-0">
+                  See all reviews <ArrowRight className="w-4 h-4" />
+                </Link>
               </div>
-              <div ref={scrollRef} className="flex gap-4 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] pb-2 cursor-grab active:cursor-grabbing"
-                onMouseEnter={() => { if (intervalRef.current) clearInterval(intervalRef.current) }}
-                onMouseLeave={() => { startAutoScroll() }}>
-                {[...sampleTestimonials, ...sampleTestimonials].map((t, i) => (
-                  <div key={i} className="min-w-[280px] lg:min-w-[340px] bg-white rounded-xl border border-gray-100/80 shadow-sm p-5 shrink-0 select-none"
-                    style={{ animationDelay: `${i * 0.05}s` }}>
-                    <div className="flex items-center justify-between mb-3">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm" style={{ backgroundColor: accent }}>
-                          {t.name.split(' ').map(n => n[0]).join('')}
+
+              {/* Carousel wrapper with edge fade */}
+              <div className="relative">
+                {/* Gradient edge masks */}
+                <div className="pointer-events-none absolute inset-y-0 left-0 w-16 lg:w-24 z-10 bg-gradient-to-r from-[#f8fafb] to-transparent" />
+                <div className="pointer-events-none absolute inset-y-0 right-0 w-16 lg:w-24 z-10 bg-gradient-to-l from-[#f8fafb] to-transparent" />
+
+                <div ref={scrollRef}
+                  className="flex gap-4 lg:gap-6 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] py-2 lg:py-4 cursor-grab active:cursor-grabbing scroll-smooth"
+                  onMouseEnter={() => { if (intervalRef.current) clearInterval(intervalRef.current) }}
+                  onMouseLeave={() => { startAutoScroll() }}>
+                  {[...sampleTestimonials, ...sampleTestimonials].map((t, i) => (
+                    <div key={i}
+                      className="min-w-[280px] lg:min-w-[380px] bg-white rounded-2xl border border-gray-100/80 shadow-sm hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 p-5 lg:p-7 shrink-0 select-none group">
+                      {/* Top: avatar + name + platform */}
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="flex items-center gap-3">
+                          <div className="relative">
+                            <div className="w-11 h-11 lg:w-12 lg:h-12 rounded-full flex items-center justify-center text-white font-bold text-sm lg:text-base shadow-sm"
+                              style={{ backgroundColor: accent }}>
+                              {t.name.split(' ').map(n => n[0]).join('')}
+                            </div>
+                            <div className="absolute -bottom-0.5 -right-0.5 w-4 h-4 bg-white rounded-full flex items-center justify-center shadow-[0_1px_3px_rgba(0,0,0,0.12)]">
+                              <svg viewBox="0 0 24 24" className="w-2.5 h-2.5 fill-blue-500"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                            </div>
+                          </div>
+                          <div>
+                            <p className="font-semibold text-sm lg:text-[15px] text-gray-900 whitespace-nowrap">{t.name}</p>
+                            <p className="text-xs text-gray-400 flex items-center gap-1">
+                              <MapPin className="w-3 h-3 inline" />
+                              {t.city}
+                            </p>
+                          </div>
                         </div>
-                        <div>
-                          <p className="font-semibold text-sm text-gray-900 whitespace-nowrap">{t.name}</p>
-                          <p className="text-xs text-gray-400">{t.city}</p>
+                        <div className="text-right shrink-0">
+                          <div className="flex items-center gap-0.5 mb-0.5 justify-end">
+                            {[1,2,3,4,5].map(s => (
+                              <Star key={s} className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+                            ))}
+                          </div>
+                          <span className="text-[10px] font-medium text-gray-400 bg-gray-50 px-2 py-0.5 rounded-full">{t.platform}</span>
                         </div>
                       </div>
-                      <div className="flex items-center gap-0.5">
-                        {[1,2,3,4,5].map(s => (
-                          <Star key={s} className="w-3 h-3 fill-yellow-400 text-yellow-400" />
-                        ))}
+                      {/* Quote text */}
+                      <div className="relative">
+                        <svg className="absolute -top-1 -left-1 w-6 h-6 lg:w-7 lg:h-7 text-[#ffaf21]/10" viewBox="0 0 24 24" fill="currentColor"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10H14.017zM0 21v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151C7.563 6.068 6 8.789 6 11h4v10H0z"/></svg>
+                        <p className="text-sm lg:text-[15px] text-gray-500 leading-relaxed pl-5 lg:pl-6 line-clamp-3 group-hover:line-clamp-none transition-all duration-300">
+                          &ldquo;{t.text}&rdquo;
+                        </p>
                       </div>
                     </div>
-                    <p className="text-sm text-gray-500 leading-relaxed">&ldquo;{t.text}&rdquo;</p>
-                  </div>
-                ))}
+                  ))}
+                </div>
+              </div>
+
+              {/* Mobile "See all reviews" link */}
+              <div className="flex justify-center mt-6 lg:hidden">
+                <Link href="/reviews"
+                  className="inline-flex items-center gap-1.5 text-sm font-semibold text-gray-600 hover:text-[#ffaf21] transition-colors">
+                  See all reviews <ArrowRight className="w-4 h-4" />
+                </Link>
               </div>
             </section>
 
