@@ -477,7 +477,7 @@ export default function Hero() {
                 </button>
               ))}
             </div>
-            <div ref={searchListRef} className="max-h-[50vh] overflow-y-auto py-2">
+            <div ref={searchListRef} className="max-h-[55vh] overflow-y-auto py-2">
               {searchQuery.trim() && searchResults.length === 0 && (
                 <div className="px-5 py-8 text-center">
                   <Search className="w-8 h-8 mx-auto text-gray-300 mb-2" />
@@ -488,7 +488,7 @@ export default function Hero() {
               {!searchQuery.trim() && searchCategory === 'all' && (
                 <div className="px-5 py-8 text-center">
                   <Mountain className="w-8 h-8 mx-auto text-gray-300 mb-2" />
-                  <p className="text-sm text-gray-400">Type to search or select a category</p>
+                  <p className="text-sm text-gray-400">Type to search or select a category below</p>
                   <div className="flex flex-wrap justify-center gap-1.5 mt-4">
                     {['Valley of Flowers', 'Kedarkantha', 'Everest', 'Hampta Pass', 'Kedarnath', 'Triund'].map(tag => (
                       <button key={tag} type="button" onClick={() => { setSearchQuery(tag); setSearchIdx(-1); searchRef.current?.focus(); }}
@@ -499,7 +499,46 @@ export default function Hero() {
                   </div>
                 </div>
               )}
-              {searchResults.length > 0 && searchResults.map((s, i) => (
+              {/* Browse mode: show grid of cards when a category is selected with no search query */}
+              {!searchQuery.trim() && searchCategory !== 'all' && (
+                <div className="px-3 py-1">
+                  <p className="text-xs text-gray-400 font-medium px-1 mb-2 uppercase tracking-wider">
+                    {searchCategory === 'trek' ? 'All Treks' : searchCategory === 'yatra' ? 'All Yatras' : 'International Adventures'}
+                  </p>
+                  <div className="grid grid-cols-2 gap-2">
+                    {treks
+                      .filter(t => searchCategory === 'international' ? t.region === 'nepal' : t.type === searchCategory)
+                      .slice(0, 12)
+                      .map(t => (
+                        <Link key={t.id} href={`/${t.type === 'yatra' ? 'yatra' : 'treks'}/${t.id}`}
+                          onClick={() => { setShowSearch(false); setSearchQuery(''); }}
+                          className="group relative rounded-xl overflow-hidden aspect-[4/5]">
+                          <img src={t.images[0]} alt={t.title} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                          <div className="absolute top-2 left-2">
+                            <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${t.type === 'yatra' ? 'bg-[#ffaf21] text-gray-900' : 'bg-emerald-500/80 text-white'}`}>
+                              {t.type === 'yatra' ? 'Yatra' : 'Trek'}
+                            </span>
+                          </div>
+                          <div className="absolute bottom-0 left-0 right-0 p-2">
+                            <h4 className="text-white text-[11px] font-semibold leading-tight line-clamp-2">{t.title}</h4>
+                            <div className="flex items-center gap-1 text-[10px] text-white/60 mt-0.5">
+                              <span>{t.duration}</span>
+                              <span className="text-white/30">·</span>
+                              <span>₹{Math.min(...t.pricing.map(p => p.price)).toLocaleString()}</span>
+                            </div>
+                          </div>
+                        </Link>
+                    ))}
+                  </div>
+                  <Link href={searchCategory === 'yatra' ? '/yatra' : '/treks'}
+                    onClick={() => { setShowSearch(false); setSearchQuery(''); }}
+                    className="block text-center text-xs text-[#ffaf21] font-semibold py-3 hover:underline">
+                    View All {searchCategory === 'trek' ? 'Treks' : searchCategory === 'yatra' ? 'Yatras' : 'International'} →
+                  </Link>
+                </div>
+              )}
+              {searchQuery.trim() && searchResults.length > 0 && searchResults.map((s, i) => (
                 <button key={s.id} type="button" onClick={() => goSearch(s.id, s.type)}
                   onMouseEnter={() => setSearchIdx(i)}
                   className={`w-full flex items-center gap-3 px-5 py-3 text-left transition-colors ${i === searchIdx ? 'bg-[#ffaf21]/10' : 'hover:bg-gray-50'}`}>
