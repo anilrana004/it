@@ -69,7 +69,7 @@ export const treks: Trek[] = [
     rating: "4.8",
     reviewCount: "8k+",
     images: [
-      "https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_1200,h_600,c_fill,g_auto/",
+      "https://res.cloudinary.com/pg8uhzw0/image/upload/v1785367489/pexels-unaizat97-8673607_anl07u.jpg",
       "https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_1200,h_600,c_fill,g_auto/",
       "https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_1200,h_600,c_fill,g_auto/",
     ],

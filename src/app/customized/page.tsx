@@ -16,7 +16,7 @@ const indiaPkg = [
   { name: 'Himachal', count: 16, img: 'https://images.unsplash.com/photo-1586350977770-2598f1b6b7c8?w=600&h=400&fit=crop', price: 2499, href: '/treks?region=himachal' },
   { name: 'Char Dham Yatra', count: 12, img: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=600&h=400&fit=crop', price: 34999, href: '/yatra/char-dham' },
   { name: 'Kedarnath Yatra', count: 8, img: 'https://images.unsplash.com/photo-1486911278844-a81c5267e227?w=600&h=400&fit=crop', price: 9999, href: '/yatra/kedarnath-yatra' },
-  { name: 'Valley of Flowers', count: 6, img: 'https://images.unsplash.com/photo-1585409677983-0f6c41ca9c3b?w=600&h=400&fit=crop', price: 8999, href: '/treks/valley-of-flowers' },
+  { name: 'Valley of Flowers', count: 6, img: 'https://res.cloudinary.com/pg8uhzw0/image/upload/f_auto,q_auto,w_600,h_400,c_fill,g_auto/v1785367489/pexels-unaizat97-8673607_anl07u.jpg', price: 8999, href: '/treks/valley-of-flowers' },
   { name: 'Kedarkantha Trek', count: 5, img: 'https://images.unsplash.com/photo-1454496522488-7a8e488e8606?w=600&h=400&fit=crop', price: 6999, href: '/treks/kedarkantha' },
   { name: 'Spiti Valley', count: 8, img: 'https://images.unsplash.com/photo-1486911278844-a81c5267e227?w=600&h=400&fit=crop', price: 9999, href: '/treks?region=himachal' },
   { name: 'Kasol & Parvati', count: 6, img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=400&fit=crop', price: 2999, href: '/treks/kheerganga' },

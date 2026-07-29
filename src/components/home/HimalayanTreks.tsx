@@ -7,7 +7,7 @@ const seasons = ['Uttarakhand Treks', 'Himachal Treks', 'Yatras'];
 
 const all: Record<string, { title: string; loc: string; dur: string; price: number; origPrice: number; rating: string; rev: string; type: string; img: string; href: string }[]> = {
   'Uttarakhand Treks': [
-    { title: 'Valley of Flowers Trek', loc: 'Joshimath → Rishikesh', dur: '6D/5N', price: 8999, origPrice: 11999, rating: '4.8', rev: '8k+', type: 'Easy', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/valley-of-flowers' },
+    { title: 'Valley of Flowers Trek', loc: 'Joshimath → Rishikesh', dur: '6D/5N', price: 8999, origPrice: 11999, rating: '4.8', rev: '8k+', type: 'Easy', img: 'https://res.cloudinary.com/pg8uhzw0/image/upload/f_auto,q_auto,w_420,h_280,c_fill,g_auto/v1785367489/pexels-unaizat97-8673607_anl07u.jpg', href: '/treks/valley-of-flowers' },
     { title: 'Kedarkantha Trek', loc: 'Sankri → Dehradun', dur: '5D/4N', price: 6999, origPrice: 8999, rating: '4.9', rev: '10k+', type: 'Easy to Moderate', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/kedarkantha' },
     { title: 'Chopta Tungnath Trek', loc: 'Rishikesh → Rishikesh', dur: '4D/3N', price: 5999, origPrice: 7999, rating: '4.7', rev: '6k+', type: 'Easy to Moderate', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/chopta-tungnath' },
     { title: 'Har Ki Dun Trek', loc: 'Dehradun → Dehradun', dur: '6D/5N', price: 8999, origPrice: 10999, rating: '4.8', rev: '5k+', type: 'Moderate', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/har-ki-dun' },
