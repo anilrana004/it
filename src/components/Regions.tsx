@@ -11,7 +11,7 @@ export default function Regions() {
     <section className="py-10 lg:py-16 bg-gray-50">
       <div className="container mx-auto">
         <div className="text-center mb-8">
-          <h2 className="font-[family-name:var(--font-heading)] text-2xl lg:text-3xl font-bold text-[#040921] mb-2">Explore by Region</h2>
+          <h2 className="font-[family-name:var(--font-heading)] text-2xl lg:text-3xl font-bold text-[#000000] mb-2">Explore by Region</h2>
           <p className="text-gray-500 text-sm">Choose your adventure from the Himalayas</p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -20,7 +20,7 @@ export default function Regions() {
               <img src={r.img} alt={r.n} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 p-6 lg:p-8">
-                <span className="text-xs font-bold text-[#afde1e] bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full inline-block mb-2">{r.count}</span>
+                <span className="text-xs font-bold text-[#ffaf21] bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full inline-block mb-2">{r.count}</span>
                 <h3 className="font-[family-name:var(--font-heading)] text-2xl lg:text-3xl font-bold text-white">{r.n}</h3>
                 <p className="text-white/70 text-sm mt-1">{r.desc}</p>
               </div>

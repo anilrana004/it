@@ -10,10 +10,10 @@ export default function AdminTreks() {
     <div>
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="font-[family-name:var(--font-heading)] text-2xl font-bold text-[#040921]">Manage Treks</h1>
+          <h1 className="font-[family-name:var(--font-heading)] text-2xl font-bold text-[#000000]">Manage Treks</h1>
           <p className="text-gray-500 text-sm">{items.length} treks & yatras</p>
         </div>
-        <button className="flex items-center gap-2 bg-[#afde1e] text-gray-900 text-sm font-semibold px-4 py-2.5 rounded-full hover:bg-[#8cb818] transition-all">
+        <button className="flex items-center gap-2 bg-[#ffaf21] text-gray-900 text-sm font-semibold px-4 py-2.5 rounded-full hover:bg-[#d49400] transition-all">
           <Plus className="w-4 h-4" /> Add New
         </button>
       </div>
@@ -42,7 +42,7 @@ export default function AdminTreks() {
                   <td className="p-4 font-semibold">₹{Math.min(...t.pricing.map(p=>p.price)).toLocaleString()}</td>
                   <td className="p-4">
                     <div className="flex items-center gap-1">
-                      <Link href={`/treks/${t.id}`} className="p-1.5 text-gray-400 hover:text-[#afde1e]"><Eye className="w-4 h-4" /></Link>
+                      <Link href={`/treks/${t.id}`} className="p-1.5 text-gray-400 hover:text-[#ffaf21]"><Eye className="w-4 h-4" /></Link>
                       <button className="p-1.5 text-gray-400 hover:text-green-500"><Pencil className="w-4 h-4" /></button>
                       <button className="p-1.5 text-gray-400 hover:text-red-500"><Trash2 className="w-4 h-4" /></button>
                     </div>

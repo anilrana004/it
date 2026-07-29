@@ -25,7 +25,7 @@ export default function FAQ() {
     <section className="py-10 lg:py-16 bg-gray-50">
       <div className="container mx-auto max-w-3xl">
         <div className="text-center mb-8">
-          <h2 className="text-2xl lg:text-3xl font-bold text-[#040921] mb-2">Have any Doubts</h2>
+          <h2 className="text-2xl lg:text-3xl font-bold text-[#000000] mb-2">Have any Doubts</h2>
           <p className="text-gray-500 text-sm">Find answers to commonly asked questions</p>
         </div>
         <div className="space-y-3">

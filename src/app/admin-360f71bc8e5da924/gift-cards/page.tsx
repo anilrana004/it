@@ -28,11 +28,11 @@ export default function AdminGiftCards() {
     <div>
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="font-[family-name:var(--font-heading)] text-2xl font-bold text-[#040921]">Gift Cards</h1>
+          <h1 className="font-[family-name:var(--font-heading)] text-2xl font-bold text-[#000000]">Gift Cards</h1>
           <p className="text-gray-500 text-sm">{cards.length} gift cards issued</p>
         </div>
         <button onClick={() => setShowForm(!showForm)}
-          className="flex items-center gap-2 bg-[#afde1e] text-gray-900 text-sm font-semibold px-4 py-2.5 rounded-full hover:bg-[#8cb818] transition-all">
+          className="flex items-center gap-2 bg-[#ffaf21] text-gray-900 text-sm font-semibold px-4 py-2.5 rounded-full hover:bg-[#d49400] transition-all">
           <Plus className="w-4 h-4" /> Issue Gift Card
         </button>
       </div>
@@ -41,13 +41,13 @@ export default function AdminGiftCards() {
         <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 lg:p-6 mb-6 space-y-4">
           <h3 className="font-bold text-lg">Issue New Gift Card</h3>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <div><label className="block text-sm font-medium text-gray-700 mb-1">Amount (₹)</label><input type="number" required min={500} value={form.amount} onChange={e => setForm(f=>({...f,amount:parseInt(e.target.value)}))} className="w-full px-4 py-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#afde1e] text-sm" /></div>
-            <div><label className="block text-sm font-medium text-gray-700 mb-1">Recipient Name</label><input type="text" required value={form.recipientName} onChange={e => setForm(f=>({...f,recipientName:e.target.value}))} className="w-full px-4 py-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#afde1e] text-sm" /></div>
-            <div><label className="block text-sm font-medium text-gray-700 mb-1">Recipient Email</label><input type="email" required value={form.recipientEmail} onChange={e => setForm(f=>({...f,recipientEmail:e.target.value}))} className="w-full px-4 py-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#afde1e] text-sm" /></div>
-            <div><label className="block text-sm font-medium text-gray-700 mb-1">Message (optional)</label><input type="text" value={form.message} onChange={e => setForm(f=>({...f,message:e.target.value}))} className="w-full px-4 py-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#afde1e] text-sm" /></div>
+            <div><label className="block text-sm font-medium text-gray-700 mb-1">Amount (₹)</label><input type="number" required min={500} value={form.amount} onChange={e => setForm(f=>({...f,amount:parseInt(e.target.value)}))} className="w-full px-4 py-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#ffaf21] text-sm" /></div>
+            <div><label className="block text-sm font-medium text-gray-700 mb-1">Recipient Name</label><input type="text" required value={form.recipientName} onChange={e => setForm(f=>({...f,recipientName:e.target.value}))} className="w-full px-4 py-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#ffaf21] text-sm" /></div>
+            <div><label className="block text-sm font-medium text-gray-700 mb-1">Recipient Email</label><input type="email" required value={form.recipientEmail} onChange={e => setForm(f=>({...f,recipientEmail:e.target.value}))} className="w-full px-4 py-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#ffaf21] text-sm" /></div>
+            <div><label className="block text-sm font-medium text-gray-700 mb-1">Message (optional)</label><input type="text" value={form.message} onChange={e => setForm(f=>({...f,message:e.target.value}))} className="w-full px-4 py-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#ffaf21] text-sm" /></div>
           </div>
           <div className="flex gap-3">
-            <button type="submit" className="bg-[#afde1e] text-gray-900 font-semibold px-6 py-2.5 rounded-full text-sm hover:bg-[#8cb818]">Issue Card</button>
+            <button type="submit" className="bg-[#ffaf21] text-gray-900 font-semibold px-6 py-2.5 rounded-full text-sm hover:bg-[#d49400]">Issue Card</button>
             <button type="button" onClick={() => setShowForm(false)} className="border border-gray-200 text-gray-700 font-semibold px-6 py-2.5 rounded-full text-sm hover:bg-gray-50">Cancel</button>
           </div>
         </form>
@@ -69,7 +69,7 @@ export default function AdminGiftCards() {
             <tbody>
               {cards.map(c => (
                 <tr key={c.id} className="border-b border-gray-50 hover:bg-gray-50/50">
-                  <td className="p-4 font-mono font-semibold text-[#afde1e] flex items-center gap-2">{c.code} <button onClick={() => navigator.clipboard.writeText(c.code)} className="text-gray-400 hover:text-[#afde1e]"><Copy className="w-3.5 h-3.5" /></button></td>
+                  <td className="p-4 font-mono font-semibold text-[#ffaf21] flex items-center gap-2">{c.code} <button onClick={() => navigator.clipboard.writeText(c.code)} className="text-gray-400 hover:text-[#ffaf21]"><Copy className="w-3.5 h-3.5" /></button></td>
                   <td className="p-4 text-gray-600">{c.recipientName}<br /><span className="text-xs text-gray-400">{c.recipientEmail}</span></td>
                   <td className="p-4 font-semibold">₹{c.amount.toLocaleString()}</td>
                   <td className="p-4 text-gray-600">₹{c.balance.toLocaleString()}</td>

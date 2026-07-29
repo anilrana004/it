@@ -22,13 +22,13 @@ export default function AdminBookings() {
     <div>
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="font-[family-name:var(--font-heading)] text-2xl font-bold text-[#040921]">Bookings</h1>
+          <h1 className="font-[family-name:var(--font-heading)] text-2xl font-bold text-[#000000]">Bookings</h1>
           <p className="text-gray-500 text-sm">{b.length} total bookings</p>
         </div>
         <div className="relative">
           <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
           <input type="text" placeholder="Search..." value={search} onChange={e => setSearch(e.target.value)}
-            className="pl-9 pr-4 py-2 rounded-xl border border-gray-200 text-sm outline-none focus:border-[#afde1e] w-48 lg:w-64" />
+            className="pl-9 pr-4 py-2 rounded-xl border border-gray-200 text-sm outline-none focus:border-[#ffaf21] w-48 lg:w-64" />
         </div>
       </div>
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
@@ -56,7 +56,7 @@ export default function AdminBookings() {
                     <div className="text-xs text-gray-400">{book.phone}</div>
                   </td>
                   <td className="p-4 text-gray-600">{book.trekTitle}</td>
-                  <td className="p-4"><span className="text-xs font-semibold text-[#afde1e]">{book.package}</span></td>
+                  <td className="p-4"><span className="text-xs font-semibold text-[#ffaf21]">{book.package}</span></td>
                   <td className="p-4 text-gray-600">{book.persons}</td>
                   <td className="p-4 text-gray-600">{book.date}</td>
                   <td className="p-4 font-semibold">₹{book.amount.toLocaleString()}</td>

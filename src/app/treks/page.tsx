@@ -11,7 +11,7 @@ export default async function TreksPage(props: { searchParams?: Promise<{ region
     <div className="pt-24 lg:pt-28 pb-12 lg:pb-20">
       <div className="container mx-auto">
         <div className="mb-8">
-          <h1 className="font-[family-name:var(--font-heading)] text-3xl lg:text-4xl font-bold text-[#040921] mb-2">
+          <h1 className="font-[family-name:var(--font-heading)] text-3xl lg:text-4xl font-bold text-[#000000] mb-2">
             {sp?.region ? `${sp.region.charAt(0).toUpperCase()+sp.region.slice(1)} Treks` : sp?.difficulty ? `${sp.difficulty} Treks` : 'All Treks'}
           </h1>
           <p className="text-gray-600">Explore our curated collection of Himalayan treks</p>

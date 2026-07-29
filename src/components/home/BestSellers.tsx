@@ -48,10 +48,10 @@ export default function BestSellers() {
         </div>
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-6">
           <div>
-            <p className="text-[#afde1e] font-semibold text-xs lg:text-sm tracking-widest uppercase mb-1">BEST SELLERS</p>
-            <h2 className="text-xl lg:text-3xl font-bold text-[#040921]">Our Best Selling Trips</h2>
+            <p className="text-[#ffaf21] font-semibold text-xs lg:text-sm tracking-widest uppercase mb-1">BEST SELLERS</p>
+            <h2 className="text-xl lg:text-3xl font-bold text-[#000000]">Our Best Selling Trips</h2>
           </div>
-          <Link href="/treks" className="text-[#afde1e] text-sm font-semibold hover:text-[#8cb818] whitespace-nowrap">View All Best Sellers &rarr;</Link>
+          <Link href="/treks" className="text-[#ffaf21] text-sm font-semibold hover:text-[#d49400] whitespace-nowrap">View All Best Sellers &rarr;</Link>
         </div>
         <div className="flex gap-2 overflow-x-auto scrollbar-none pb-2 -mx-4 px-4 lg:mx-0 lg:px-0 mb-6">
           {tabs.map(t => (
@@ -64,17 +64,17 @@ export default function BestSellers() {
             <Link key={t.title} href={t.href} className="group bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-lg transition-all">
               <div className="relative h-32 lg:h-44 overflow-hidden">
                 <img src={t.img} alt={t.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                {t.badge && <span className="absolute top-2 left-2 bg-[#afde1e] text-gray-900 text-[10px] font-bold px-1.5 py-0.5 rounded uppercase">{t.badge}</span>}
+                {t.badge && <span className="absolute top-2 left-2 bg-[#ffaf21] text-gray-900 text-[10px] font-bold px-1.5 py-0.5 rounded uppercase">{t.badge}</span>}
               </div>
               <div className="p-3 lg:p-4">
                 <div className="flex items-center gap-1 text-gray-500 text-[10px] lg:text-xs mb-1"><MapPin className="w-3 h-3" />{t.loc}</div>
-                <h3 className="font-semibold text-xs lg:text-base text-gray-900 group-hover:text-[#afde1e] transition-colors line-clamp-2">{t.title}</h3>
+                <h3 className="font-semibold text-xs lg:text-base text-gray-900 group-hover:text-[#ffaf21] transition-colors line-clamp-2">{t.title}</h3>
                 <div className="flex items-center gap-2 text-[11px] lg:text-xs text-gray-500 mt-1 mb-2">
                   <Clock className="w-3 h-3" />{t.dur}<span className="text-gray-300">|</span>
                   <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />{t.rating} ({t.rev})
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-[#afde1e] font-bold text-sm lg:text-base">₹{t.price.toLocaleString()}</span>
+                  <span className="text-[#ffaf21] font-bold text-sm lg:text-base">₹{t.price.toLocaleString()}</span>
                   {t.origPrice > 0 && <span className="text-gray-400 text-xs line-through">₹{t.origPrice.toLocaleString()}</span>}
                 </div>
               </div>

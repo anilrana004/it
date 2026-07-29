@@ -2,7 +2,7 @@ export default function TermsPage() {
   return (
     <div className="pt-20 lg:pt-28 pb-12 lg:pb-20">
       <div className="container mx-auto max-w-3xl px-4">
-        <h1 className="font-[family-name:var(--font-heading)] text-3xl font-bold text-[#040921] mb-6">Terms & Conditions</h1>
+        <h1 className="font-[family-name:var(--font-heading)] text-3xl font-bold text-[#000000] mb-6">Terms & Conditions</h1>
         <div className="text-gray-700 text-sm space-y-4">
           <p>By booking a trip with TrekRoot, you agree to the following terms and conditions.</p>
           <h3 className="font-bold text-gray-900 text-lg">Booking Confirmation</h3>

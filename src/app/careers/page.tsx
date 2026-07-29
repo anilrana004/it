@@ -23,7 +23,7 @@ export default function CareersPage() {
             </div>
           ))}
         </div>
-        <h2 className="font-[family-name:var(--font-heading)] text-2xl font-bold text-[#040921] text-center mb-6">Current Openings</h2>
+        <h2 className="font-[family-name:var(--font-heading)] text-2xl font-bold text-[#000000] text-center mb-6">Current Openings</h2>
         <div className="space-y-3">
           {['Operations Executive', 'Freelance Trip Lead', 'Corporate Sales', 'Full Stack Developer', 'Talent & Culture Manager'].map(job => (
             <div key={job} className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 flex items-center justify-between">
@@ -31,7 +31,7 @@ export default function CareersPage() {
                 <h3 className="font-semibold text-gray-900 text-sm">{job}</h3>
                 <p className="text-xs text-gray-500">Full Time · Remote</p>
               </div>
-              <button className="bg-[#afde1e] text-gray-900 text-xs font-semibold px-5 py-2 rounded-full hover:bg-[#8cb818] transition-all">Apply Now</button>
+              <button className="bg-[#ffaf21] text-gray-900 text-xs font-semibold px-5 py-2 rounded-full hover:bg-[#d49400] transition-all">Apply Now</button>
             </div>
           ))}
         </div>

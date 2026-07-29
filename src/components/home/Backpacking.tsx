@@ -32,15 +32,15 @@ export default function Backpacking() {
       <div className="container mx-auto">
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-6 lg:mb-8">
           <div>
-            <p className="text-[#afde1e] font-semibold text-xs lg:text-sm tracking-widest uppercase mb-1">BACKPACKING</p>
-            <h2 className="text-xl lg:text-3xl font-bold text-[#040921]">Backpacking Destinations</h2>
+            <p className="text-[#ffaf21] font-semibold text-xs lg:text-sm tracking-widest uppercase mb-1">BACKPACKING</p>
+            <h2 className="text-xl lg:text-3xl font-bold text-[#000000]">Backpacking Destinations</h2>
           </div>
-          <Link href="/treks" className="text-[#afde1e] text-sm font-semibold hover:text-[#8cb818] whitespace-nowrap">View All Backpacking &rarr;</Link>
+          <Link href="/treks" className="text-[#ffaf21] text-sm font-semibold hover:text-[#d49400] whitespace-nowrap">View All Backpacking &rarr;</Link>
         </div>
         <div className="flex gap-2 overflow-x-auto scrollbar-none pb-2 -mx-4 px-4 lg:mx-0 lg:px-0 mb-6">
           {regions.map(r => (
             <button key={r} onClick={() => setRegion(r)}
-              className={`shrink-0 px-5 py-1.5 rounded-full text-xs lg:text-sm font-medium transition-all ${region===r?'bg-[#040921] text-white':'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}>{r}</button>
+              className={`shrink-0 px-5 py-1.5 rounded-full text-xs lg:text-sm font-medium transition-all ${region===r?'bg-[#000000] text-white':'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}>{r}</button>
           ))}
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
@@ -49,17 +49,17 @@ export default function Backpacking() {
               <div className="relative h-40 lg:h-44 overflow-hidden">
                 <img src={t.img} alt={t.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-                {t.badge && <span className="absolute top-3 left-3 bg-[#afde1e] text-gray-900 text-[10px] font-bold px-2 py-0.5 rounded uppercase">{t.badge}</span>}
+                {t.badge && <span className="absolute top-3 left-3 bg-[#ffaf21] text-gray-900 text-[10px] font-bold px-2 py-0.5 rounded uppercase">{t.badge}</span>}
               </div>
               <div className="p-3 lg:p-4">
                 <div className="flex items-center gap-1 text-gray-500 text-[10px] lg:text-xs mb-1"><MapPin className="w-3 h-3" />{t.loc}</div>
-                <h3 className="font-semibold text-sm lg:text-base text-gray-900 group-hover:text-[#afde1e] transition-colors line-clamp-2">{t.title}</h3>
+                <h3 className="font-semibold text-sm lg:text-base text-gray-900 group-hover:text-[#ffaf21] transition-colors line-clamp-2">{t.title}</h3>
                 <div className="flex items-center gap-2 text-[11px] lg:text-xs text-gray-500 mt-1 mb-2">
                   <Clock className="w-3 h-3" />{t.dur}<span className="text-gray-300">|</span>
                   <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />{t.rating} ({t.rev})
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-[#afde1e] font-bold text-sm lg:text-base">₹{t.price.toLocaleString()}</span>
+                  <span className="text-[#ffaf21] font-bold text-sm lg:text-base">₹{t.price.toLocaleString()}</span>
                   {t.origPrice > 0 && <span className="text-gray-400 text-xs line-through">₹{t.origPrice.toLocaleString()}</span>}
                 </div>
               </div>

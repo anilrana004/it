@@ -109,7 +109,7 @@ const howToReachData = [
 
 export default function TrekDetailContent({ trek, type }: { trek: Trek; type: 'trek' | 'yatra' }) {
   const isTrek = type === 'trek';
-  const accent = '#afde1e';
+  const accent = '#ffaf21';
   const badgeText = isTrek ? 'Trek' : 'Yatra';
   const backHref = isTrek ? '/treks' : '/yatra';
   const similarType = isTrek ? 'trek' : 'yatra';
@@ -243,8 +243,8 @@ export default function TrekDetailContent({ trek, type }: { trek: Trek; type: 't
                       </div>
                       <p className="text-white/40 text-[11px] mt-0.5">per person + 5% GST</p>
                     </div>
-                    <div className="bg-[#afde1e]/20 rounded-full px-3 py-1.5">
-                      <p className="text-[11px] text-[#afde1e] font-bold">Save ₹{((trek.pricing[0]?.originalPrice || minPrice + 2000) - minPrice).toLocaleString()}</p>
+                    <div className="bg-[#ffaf21]/20 rounded-full px-3 py-1.5">
+                      <p className="text-[11px] text-[#ffaf21] font-bold">Save ₹{((trek.pricing[0]?.originalPrice || minPrice + 2000) - minPrice).toLocaleString()}</p>
                     </div>
                   </div>
                   <div className="flex gap-2">
@@ -533,9 +533,9 @@ export default function TrekDetailContent({ trek, type }: { trek: Trek; type: 't
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {trek.pricing.map((pkg, i) => (
-                  <div key={pkg.name} className={`relative bg-white rounded-2xl border shadow-sm transition-all duration-300 hover:shadow-md ${i === 1 ? 'border-[#afde1e]/30 ring-1 ring-[#afde1e]/20 scale-[1.02]' : 'border-gray-100/80'}`}>
+                  <div key={pkg.name} className={`relative bg-white rounded-2xl border shadow-sm transition-all duration-300 hover:shadow-md ${i === 1 ? 'border-[#ffaf21]/30 ring-1 ring-[#ffaf21]/20 scale-[1.02]' : 'border-gray-100/80'}`}>
                     {i === 1 && (
-                      <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[#afde1e] to-[#afde1e] text-white text-[10px] font-bold px-4 py-1 rounded-full shadow-lg whitespace-nowrap flex items-center gap-1">
+                      <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[#ffaf21] to-[#ffaf21] text-white text-[10px] font-bold px-4 py-1 rounded-full shadow-lg whitespace-nowrap flex items-center gap-1">
                         <Sparkles className="w-3 h-3" /> Most Popular
                       </div>
                     )}
@@ -672,7 +672,7 @@ export default function TrekDetailContent({ trek, type }: { trek: Trek; type: 't
                       )}
                     </div>
                     <p className="text-gray-400 text-xs mt-1">per person + 5% GST</p>
-                    <div className="inline-flex items-center gap-1.5 mt-2 bg-[#afde1e]/10 text-[#afde1e] text-xs font-bold px-3 py-1 rounded-full">
+                    <div className="inline-flex items-center gap-1.5 mt-2 bg-[#ffaf21]/10 text-[#ffaf21] text-xs font-bold px-3 py-1 rounded-full">
                       <Sparkles className="w-3 h-3" /> Save ₹{((trek.pricing[0]?.originalPrice || minPrice + 2000) - minPrice).toLocaleString()}
                     </div>
                   </div>
@@ -681,7 +681,7 @@ export default function TrekDetailContent({ trek, type }: { trek: Trek; type: 't
                     <div>
                       <label className="block text-xs font-semibold text-gray-500 mb-1.5 tracking-wide">Pickup Location</label>
                       <select value={pickup} onChange={e => setPickup(e.target.value)}
-                        className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm outline-none focus:border-[#afde1e] focus:ring-2 focus:ring-[#afde1e]/20 bg-white transition-all">
+                        className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm outline-none focus:border-[#ffaf21] focus:ring-2 focus:ring-[#ffaf21]/20 bg-white transition-all">
                         <option>Dehradun</option>
                         <option>Sankri</option>
                       </select>
@@ -765,7 +765,7 @@ export default function TrekDetailContent({ trek, type }: { trek: Trek; type: 't
                   ].map((item, i) => (
                     <div key={i} className="flex items-start gap-3">
                       <div className="w-9 h-9 rounded-lg bg-white/10 flex items-center justify-center shrink-0">
-                        <item.icon className="w-4 h-4" style={{ color: '#afde1e' }} />
+                        <item.icon className="w-4 h-4" style={{ color: '#ffaf21' }} />
                       </div>
                       <div className="min-w-0">
                         <h4 className="text-sm font-semibold text-white">{item.label}</h4>

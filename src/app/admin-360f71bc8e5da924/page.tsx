@@ -18,10 +18,10 @@ export default function AdminDashboard() {
     <div>
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="font-[family-name:var(--font-heading)] text-2xl lg:text-3xl font-bold text-[#040921]">Dashboard</h1>
+          <h1 className="font-[family-name:var(--font-heading)] text-2xl lg:text-3xl font-bold text-[#000000]">Dashboard</h1>
           <p className="text-gray-500 text-sm">Welcome to TrekRoot Admin Panel</p>
         </div>
-        <Link href="/" className="text-sm text-[#afde1e] hover:underline hidden lg:block">View Site &rarr;</Link>
+        <Link href="/" className="text-sm text-[#ffaf21] hover:underline hidden lg:block">View Site &rarr;</Link>
       </div>
 
       {/* Stats cards */}
@@ -31,7 +31,7 @@ export default function AdminDashboard() {
             <div className={`w-10 h-10 ${s.color} rounded-xl flex items-center justify-center mb-3`}>
               <s.icon className="w-5 h-5 text-white" />
             </div>
-            <p className="text-2xl lg:text-3xl font-bold text-[#040921]">{s.value}</p>
+            <p className="text-2xl lg:text-3xl font-bold text-[#000000]">{s.value}</p>
             <p className="text-xs lg:text-sm text-gray-500 mt-0.5">{s.label}</p>
           </Link>
         ))}
@@ -40,8 +40,8 @@ export default function AdminDashboard() {
       {/* Recent bookings */}
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 lg:p-6 mb-6">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="font-bold text-lg text-[#040921]">Recent Bookings</h2>
-          <Link href="/admin-360f71bc8e5da924/bookings" className="text-sm text-[#afde1e] hover:underline flex items-center gap-1">View All <ArrowRight className="w-3 h-3" /></Link>
+          <h2 className="font-bold text-lg text-[#000000]">Recent Bookings</h2>
+          <Link href="/admin-360f71bc8e5da924/bookings" className="text-sm text-[#ffaf21] hover:underline flex items-center gap-1">View All <ArrowRight className="w-3 h-3" /></Link>
         </div>
         {bookings.length === 0 ? (
           <div className="text-center py-8 text-gray-400 text-sm">No bookings yet</div>
@@ -59,7 +59,7 @@ export default function AdminDashboard() {
 
       {/* Quick Actions */}
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 lg:p-6">
-        <h2 className="font-bold text-lg text-[#040921] mb-4">Quick Actions</h2>
+        <h2 className="font-bold text-lg text-[#000000] mb-4">Quick Actions</h2>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
           {[
             { l: 'Add Trek', h: '/admin-360f71bc8e5da924/treks', icon: MapPin },
@@ -67,8 +67,8 @@ export default function AdminDashboard() {
             { l: 'New Blog Post', h: '/admin-360f71bc8e5da924/blog', icon: MessageSquare },
             { l: 'Manage Gift Cards', h: '/admin-360f71bc8e5da924/gift-cards', icon: Gift },
           ].map(a => (
-            <Link key={a.l} href={a.h} className="flex items-center gap-3 p-3 lg:p-4 bg-gray-50 rounded-xl hover:bg-[#afde1e]/5 hover:border-[#afde1e]/20 border border-transparent transition-all">
-              <div className="w-9 h-9 bg-[#afde1e]/10 rounded-lg flex items-center justify-center"><a.icon className="w-4 h-4 text-[#afde1e]" /></div>
+            <Link key={a.l} href={a.h} className="flex items-center gap-3 p-3 lg:p-4 bg-gray-50 rounded-xl hover:bg-[#ffaf21]/5 hover:border-[#ffaf21]/20 border border-transparent transition-all">
+              <div className="w-9 h-9 bg-[#ffaf21]/10 rounded-lg flex items-center justify-center"><a.icon className="w-4 h-4 text-[#ffaf21]" /></div>
               <span className="text-sm font-medium text-gray-700">{a.l}</span>
             </Link>
           ))}

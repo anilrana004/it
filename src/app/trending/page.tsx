@@ -26,10 +26,10 @@ export default function TrendingPage() {
   return (
     <div className="pt-24 lg:pt-28 pb-12 lg:pb-20">
       {/* Hero */}
-      <section className="bg-gradient-to-r from-[#040921] to-[#040921] py-10 lg:py-16 mb-8 lg:mb-12">
+      <section className="bg-gradient-to-r from-[#000000] to-[#000000] py-10 lg:py-16 mb-8 lg:mb-12">
         <div className="container mx-auto text-center">
           <div className="flex items-center justify-center gap-3 mb-3">
-            <Flame className="w-6 h-6 lg:w-8 lg:h-8 text-[#afde1e]" />
+            <Flame className="w-6 h-6 lg:w-8 lg:h-8 text-[#ffaf21]" />
             <h1 className="font-[family-name:var(--font-heading)] text-3xl lg:text-5xl font-bold text-white">Trending Destinations</h1>
           </div>
           <p className="text-white/70 text-sm lg:text-lg max-w-xl mx-auto">Discover the most popular adventures our travelers are raving about right now</p>
@@ -41,7 +41,7 @@ export default function TrendingPage() {
         <div className="flex gap-2 overflow-x-auto scrollbar-none pb-2 -mx-4 px-4 lg:mx-0 lg:px-0 mb-6">
           {filters.map(f => (
             <button key={f} onClick={() => setFilter(f)}
-              className={`shrink-0 px-5 py-1.5 rounded-full text-xs lg:text-sm font-medium transition-all ${filter===f?'bg-[#040921] text-white':'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}>{f}</button>
+              className={`shrink-0 px-5 py-1.5 rounded-full text-xs lg:text-sm font-medium transition-all ${filter===f?'bg-[#000000] text-white':'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}>{f}</button>
           ))}
         </div>
 
@@ -51,20 +51,20 @@ export default function TrendingPage() {
             <Link key={t.title} href={t.href} className="group bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-lg transition-all">
               <div className="relative h-40 lg:h-44 overflow-hidden">
                 <img src={t.img} alt={t.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm text-[10px] font-bold px-2 py-1 rounded-full text-[#afde1e] flex items-center gap-1">
+                <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm text-[10px] font-bold px-2 py-1 rounded-full text-[#ffaf21] flex items-center gap-1">
                   <TrendingUp className="w-3 h-3" /> {t.tag}
                 </div>
               </div>
               <div className="p-3 lg:p-4">
                 <div className="flex items-center gap-1 text-gray-500 text-[10px] lg:text-xs mb-1"><MapPin className="w-3 h-3" />{t.loc}</div>
-                <h3 className="font-semibold text-sm lg:text-base text-gray-900 group-hover:text-[#afde1e] transition-colors line-clamp-1">{t.title}</h3>
+                <h3 className="font-semibold text-sm lg:text-base text-gray-900 group-hover:text-[#ffaf21] transition-colors line-clamp-1">{t.title}</h3>
                 <div className="flex items-center gap-2 text-[11px] lg:text-xs text-gray-500 mt-1 mb-2">
                   <Clock className="w-3 h-3" />{t.dur}<span className="text-gray-300">|</span>
                   <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />{t.rating} ({t.rev})
                 </div>
                 <div className="flex items-center">
-                  <span className="text-[#afde1e] font-bold text-sm lg:text-base">₹{t.price.toLocaleString()}</span>
-                  <span className="ml-auto bg-blue-50 text-[#afde1e] text-[10px] font-semibold px-2 py-0.5 rounded-full">Trending</span>
+                  <span className="text-[#ffaf21] font-bold text-sm lg:text-base">₹{t.price.toLocaleString()}</span>
+                  <span className="ml-auto bg-blue-50 text-[#ffaf21] text-[10px] font-semibold px-2 py-0.5 rounded-full">Trending</span>
                 </div>
               </div>
             </Link>

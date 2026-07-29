@@ -17,13 +17,13 @@ export default function Reviews() {
     <section className="py-8 lg:py-16 bg-gray-50">
       <div className="container mx-auto max-w-5xl">
         <div className="text-center mb-6 lg:mb-8">
-          <p className="text-[#afde1e] font-semibold text-xs lg:text-sm tracking-[0.25em] uppercase mb-1">REVIEWS</p>
-          <h2 className="text-xl lg:text-3xl font-bold text-[#040921]">What our Clients Say About Us</h2>
+          <p className="text-[#ffaf21] font-semibold text-xs lg:text-sm tracking-[0.25em] uppercase mb-1">REVIEWS</p>
+          <h2 className="text-xl lg:text-3xl font-bold text-[#000000]">What our Clients Say About Us</h2>
           <div className="flex items-center justify-center gap-3 mt-2">
             <div className="flex items-center gap-0.5">
               {[...Array(5)].map((_,i) => <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />)}
             </div>
-            <span className="text-lg font-bold text-[#040921]">4.8 Rating</span>
+            <span className="text-lg font-bold text-[#000000]">4.8 Rating</span>
             <span className="text-gray-400 text-sm">10,000+ Verified Reviews</span>
           </div>
         </div>
@@ -41,7 +41,7 @@ export default function Reviews() {
                 </div>
               </div>
               <p className="text-gray-600 text-sm lg:text-base leading-relaxed mb-3 line-clamp-4">&ldquo;{r.text}&rdquo;</p>
-              <a href="#" className="inline-flex items-center gap-1 text-xs lg:text-sm text-[#afde1e] hover:text-[#8cb818] font-medium">
+              <a href="#" className="inline-flex items-center gap-1 text-xs lg:text-sm text-[#ffaf21] hover:text-[#d49400] font-medium">
                 Read more
               </a>
             </div>
@@ -50,8 +50,8 @@ export default function Reviews() {
                 <div className="relative rounded-xl overflow-hidden mb-2">
                   <img src={r.tripImg} alt={r.trip} className="w-full h-40 lg:h-52 object-cover group-hover:scale-105 transition-transform duration-300" />
                 </div>
-                <p className="text-xs lg:text-sm font-semibold text-gray-800 group-hover:text-[#afde1e] transition-colors">{r.trip}</p>
-                <span className="text-[11px] lg:text-xs text-[#afde1e] font-medium">Try Yourself &rarr;</span>
+                <p className="text-xs lg:text-sm font-semibold text-gray-800 group-hover:text-[#ffaf21] transition-colors">{r.trip}</p>
+                <span className="text-[11px] lg:text-xs text-[#ffaf21] font-medium">Try Yourself &rarr;</span>
               </Link>
             </div>
           </div>
@@ -60,7 +60,7 @@ export default function Reviews() {
         <div className="flex items-center justify-center gap-3 mt-5 lg:mt-6">
           {reviews.map((_, i) => (
             <button key={i} onClick={() => setCur(i)}
-              className={`h-2 rounded-full transition-all ${i===cur?'bg-[#afde1e] w-8':'bg-gray-300 w-2'}`} />
+              className={`h-2 rounded-full transition-all ${i===cur?'bg-[#ffaf21] w-8':'bg-gray-300 w-2'}`} />
           ))}
         </div>
       </div>

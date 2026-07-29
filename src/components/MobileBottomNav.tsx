@@ -20,9 +20,9 @@ export default function MobileBottomNav() {
           const active = i.href === '/' ? path === '/' : path.startsWith(i.href);
           return (
             <Link key={i.label} href={i.href}
-              className={`flex flex-col items-center justify-center gap-0.5 w-full h-full transition-colors relative ${active ? 'text-[#afde1e]' : 'text-gray-400 hover:text-gray-600'}`}>
-              {active && <span className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-0.5 bg-[#afde1e] rounded-full" />}
-              <i.icon className={`w-[22px] h-[22px] ${active ? 'fill-[#afde1e]/15' : ''}`} />
+              className={`flex flex-col items-center justify-center gap-0.5 w-full h-full transition-colors relative ${active ? 'text-[#ffaf21]' : 'text-gray-400 hover:text-gray-600'}`}>
+              {active && <span className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-0.5 bg-[#ffaf21] rounded-full" />}
+              <i.icon className={`w-[22px] h-[22px] ${active ? 'fill-[#ffaf21]/15' : ''}`} />
               <span className={`text-[10px] ${active ? 'font-bold' : 'font-medium'}`}>{i.label}</span>
             </Link>
           );
