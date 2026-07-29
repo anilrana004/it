@@ -150,12 +150,7 @@ export default function Header() {
       <header className="fixed left-0 top-0 z-50 hidden w-full bg-white shadow-sm lg:block">
         <div className="flex h-16 items-center justify-between gap-4 px-6 xl:px-10">
           <Link href="/" className="shrink-0">
-            <div className="flex items-center gap-2.5">
-              <div className="w-9 h-9 bg-[#ffaf21] rounded-lg flex items-center justify-center shadow-sm">
-                <span className="text-black font-bold text-sm">TR</span>
-              </div>
-              <span className="font-bold text-xl text-black tracking-tight">TrekRoot</span>
-            </div>
+            <img src="https://res.cloudinary.com/pg8uhzw0/image/upload/v1785363638/l_kceoj5.png" alt="TrekRoot" className="h-9 w-auto" />
           </Link>
 
           <nav className="flex items-center justify-center gap-0.5">
@@ -215,10 +210,7 @@ export default function Header() {
       <header className="fixed left-0 top-0 z-50 w-full bg-white/95 backdrop-blur-md shadow-sm lg:hidden">
         <div className="flex items-center justify-between h-14 px-4">
           <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-[#ffaf21] rounded-lg flex items-center justify-center">
-              <span className="text-black font-bold text-sm">TR</span>
-            </div>
-            <span className="font-[family-name:var(--font-heading)] font-bold text-lg text-black">TrekRoot</span>
+            <img src="https://res.cloudinary.com/pg8uhzw0/image/upload/v1785363638/l_kceoj5.png" alt="TrekRoot" className="h-8 w-auto" />
           </Link>
           <div className="flex items-center gap-2">
             <button type="button" aria-label="Search" className="p-2 text-gray-500">

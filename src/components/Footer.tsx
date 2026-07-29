@@ -150,11 +150,8 @@ export default function Footer() {
         {/* Mobile */}
         <div className="lg:hidden">
           <div className="flex flex-col items-center mb-6">
-            <Link href="/" className="flex items-center gap-2 mb-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-[#ffaf21] to-[#ffaf21] rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">TR</span>
-              </div>
-              <span className="font-[family-name:var(--font-heading)] font-bold text-lg text-white">TrekRoot</span>
+            <Link href="/" className="flex items-center justify-center mb-2">
+              <img src="https://res.cloudinary.com/pg8uhzw0/image/upload/v1785363638/l_kceoj5.png" alt="TrekRoot" className="h-9 w-auto" />
             </Link>
             <p className="text-gray-400 text-xs text-center">India&apos;s #1 Social Travel Community</p>
           </div>
@@ -224,10 +221,7 @@ export default function Footer() {
         <div className="hidden lg:block">
           <div className="flex items-center gap-2 mb-10">
             <Link href="/" className="flex items-center gap-2">
-              <div className="w-[38px] h-[38px] bg-gradient-to-br from-[#ffaf21] to-[#ffaf21] rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-lg">TR</span>
-              </div>
-              <span className="font-[family-name:var(--font-heading)] font-bold text-xl text-white">TrekRoot</span>
+              <img src="https://res.cloudinary.com/pg8uhzw0/image/upload/v1785363638/l_kceoj5.png" alt="TrekRoot" className="h-9 w-auto" />
             </Link>
             <span className="text-gray-400 text-sm ml-2">#wravelerforlife</span>
           </div>

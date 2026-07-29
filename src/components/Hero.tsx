@@ -179,10 +179,7 @@ export default function Hero() {
       {/* Top bar */}
       <div className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between px-10 h-14">
         <div className="flex items-center gap-2">
-          <div className="w-9 h-9 bg-gradient-to-br from-[#ffaf21] to-[#ffaf21] rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-sm">TR</span>
-          </div>
-          <span className="font-bold text-white text-lg">TrekRoot</span>
+          <img src="https://res.cloudinary.com/pg8uhzw0/image/upload/v1785363638/l_kceoj5.png" alt="TrekRoot" className="h-9 w-auto" />
         </div>
         <div className="flex items-center gap-4 text-white/60 text-xs">
           <a href="tel:+919797972175" className="flex items-center gap-1.5 hover:text-white transition-colors">
