@@ -97,17 +97,15 @@ export default function Header() {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState<string[]>([]);
   const [mobileAccordion, setMobileAccordion] = useState<number | null>(null);
-  const [scrolled, setScrolled] = useState(false);
+  const [mobileYellow, setMobileYellow] = useState(1);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const headerRef = useRef<HTMLDivElement>(null);
-
-  const [mobileYellow, setMobileYellow] = useState(1);
 
   useEffect(() => {
     const onScroll = () => {
       const vh = window.innerHeight;
       const y = window.scrollY;
-      const intensity = Math.max(0, Math.min(1, 1 - (y - vh * 0.5) / (vh * 0.5)));
+      const intensity = Math.max(0, Math.min(1, 1 - (y - vh * 0.8) / (vh * 0.8)));
       setMobileYellow(intensity);
     };
     onScroll();
@@ -222,17 +220,22 @@ export default function Header() {
       </header>
 
       {/* Mobile Header */}
-      <header className={`fixed left-0 top-0 z-50 w-full transition-all duration-300 lg:hidden ${mobileYellow < 0.01 ? 'bg-white/95 backdrop-blur-md shadow-sm' : ''}`}
-        style={mobileYellow >= 0.01 ? { backgroundColor: `rgba(255, 175, 33, ${mobileYellow})`, backdropFilter: 'blur(4px)' } : {}}>
+      <header className="fixed left-0 top-0 z-50 w-full lg:hidden"
+        style={{
+          background: `rgb(${255}, ${Math.round(175 + 80 * (1 - mobileYellow))}, ${Math.round(33 + 222 * (1 - mobileYellow))})`,
+          backdropFilter: 'blur(4px)',
+          WebkitBackdropFilter: 'blur(4px)',
+          boxShadow: mobileYellow < 0.5 ? 'none' : '0 1px 3px rgba(0,0,0,0.08)',
+        }}>
         <div className="flex items-center justify-between h-14 px-4">
           <Link href="/" className="flex items-center gap-2">
             <img src="https://res.cloudinary.com/pg8uhzw0/image/upload/v1785363638/l_kceoj5.png" alt="TrekRoot" className="h-8 w-auto" />
           </Link>
           <div className="flex items-center gap-2">
-            <button type="button" aria-label="Search" className="p-2 transition-colors" style={{ color: `rgba(122, 85, 0, ${0.3 + 0.7 * mobileYellow})` }}>
+            <button type="button" aria-label="Search" className="p-2" style={{ color: `rgb(${100 + 7 * (1 - mobileYellow)}, ${70 + 44 * (1 - mobileYellow)}, ${128 * (1 - mobileYellow)})` }}>
               <Search className="w-5 h-5" />
             </button>
-            <button type="button" onClick={() => setIsOpen(!isOpen)} aria-label={isOpen ? 'Close menu' : 'Open menu'} aria-expanded={isOpen} className="p-2 transition-colors" style={{ color: `rgba(55, 65, 81, ${0.2 + 0.8 * (1 - mobileYellow)})` }}>
+            <button type="button" onClick={() => setIsOpen(!isOpen)} aria-label={isOpen ? 'Close menu' : 'Open menu'} aria-expanded={isOpen} className="p-2" style={{ color: `rgb(${100 + 7 * (1 - mobileYellow)}, ${70 + 44 * (1 - mobileYellow)}, ${128 * (1 - mobileYellow)})` }}>
               {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
           </div>
