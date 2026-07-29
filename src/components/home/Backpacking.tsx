@@ -2,35 +2,31 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { Star, Clock, MapPin } from 'lucide-react';
-import { backpackingDestinations } from '@/lib/backpacking-destinations';
 
-const regions = [
-  { key: 'uttarakhand', label: 'Uttarakhand' },
-  { key: 'himachal', label: 'Himachal Pradesh' },
-];
+const regions = ['International', 'Ladakh Zanskar', 'Spiti Valley'];
 
-const trips = (region: string) =>
-  backpackingDestinations
-    .filter(d => d.region === region)
-    .slice(0, 6)
-    .map(d => ({
-      title: d.title,
-      loc: d.location,
-      dur: d.duration,
-      price: d.price,
-      origPrice: Math.round(d.price * 1.35),
-      rating: d.rating,
-      rev: d.reviewCount,
-      type: d.bestSeason.includes('Easy') ? 'Easy' : 'Moderate',
-      img: d.images[0],
-      href: `/treks?region=${d.region}`,
-    }));
-
-const diffColors: Record<string, string> = { Easy: 'bg-green-500', 'Easy to Moderate': 'bg-green-400', Moderate: 'bg-yellow-500', 'Moderate-Difficult': 'bg-orange-500', Difficult: 'bg-red-500' };
+const data: Record<string, { title: string; loc: string; dur: string; price: number; origPrice: number; rating: string; rev: string; img: string; href: string; badge?: string }[]> = {
+  'International': [
+    { title: 'Thailand - Phuket Krabi Group Tour with Full Moon Party (6N/7D)', loc: 'Phuket to Phuket', dur: '6N/7D', price: 53500, origPrice: 57000, rating: '4.8', rev: '10k+', img: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=420&h=280&fit=crop', href: '/backpacking-trips/international/thailand/full-moon-party-group-tour', badge: 'New' },
+    { title: 'Bhutan Bike and Backpacking | 8 Days Bhutan Bike Tour', loc: 'Bagdogra to Bagdogra', dur: '7N/8D', price: 45000, origPrice: 0, rating: '4.8', rev: '10k+', img: 'https://images.unsplash.com/photo-1540979388789-6cee28a1cdc9?w=420&h=280&fit=crop', href: '/backpacking-trips/international/bhutan/bhutan-bike-tour' },
+    { title: 'Bali with Gili Island Group Tour - Ubud, Nusa Penida & Kuta (7N/8D)', loc: 'Bali Airport to Bali Airport', dur: '7N/8D', price: 53500, origPrice: 57000, rating: '4.8', rev: '10k+', img: 'https://images.unsplash.com/photo-1539367628448-4bc5c9d171c8?w=420&h=280&fit=crop', href: '/backpacking-trips/international/bali/bali-with-gili-island-group-tour-7n-8d' },
+    { title: 'Bhutan Tour with Phobjikha Valley - 8 Days', loc: 'Bagdogra to Siliguri', dur: '7N/8D', price: 45000, origPrice: 0, rating: '4.8', rev: '10k+', img: 'https://images.unsplash.com/photo-1543429257-3eb0b65d9c10?w=420&h=280&fit=crop', href: '/backpacking-trips/international/bhutan/8-days-bhutan-group-tour' },
+  ],
+  'Ladakh Zanskar': [
+    { title: 'Zanskar Valley Backpacking Trip | 8 Days Delhi to Delhi Tour', loc: 'Delhi to Delhi', dur: '7N/8D', price: 25000, origPrice: 28000, rating: '4.8', rev: '10k+', img: 'https://images.unsplash.com/photo-1486911278844-a81c5267e227?w=420&h=280&fit=crop', href: '/backpacking-trips/india/ladakh/zanskar-valley-backpacking-trip-delhi-to-delhi' },
+    { title: 'Leh Ladakh Bike Trip From Srinagar with Hanle & Umling La', loc: 'Srinagar to Leh', dur: '11N/12D', price: 45000, origPrice: 0, rating: '4.9', rev: '10k+', img: 'https://images.unsplash.com/photo-1486911278844-a81c5267e227?w=420&h=280&fit=crop', href: '/backpacking-trips/india/ladakh/leh-ladakh-bike-trip-from-srinagar-with-hanle-and-umling-la' },
+    { title: 'Zanskar Valley Expedition', loc: 'Leh to Leh', dur: '8N/9D', price: 32000, origPrice: 0, rating: '4.8', rev: '8k+', img: 'https://images.unsplash.com/photo-1540979388789-6cee28a1cdc9?w=420&h=280&fit=crop', href: '/backpacking-trips/india/ladakh/zanskar-valley-expedition' },
+  ],
+  'Spiti Valley': [
+    { title: 'Spiti Valley Bike and Backpacking Trip', loc: 'Delhi to Delhi', dur: '9N/10D', price: 25000, origPrice: 0, rating: '4.8', rev: '8k+', img: 'https://images.unsplash.com/photo-1586350977770-2598f1b6b7c8?w=420&h=280&fit=crop', href: '/backpacking-trips/india/himachal-pradesh/spiti-valley-bike-and-backpacking-trip' },
+    { title: 'Road Trip to Spiti Valley', loc: 'Delhi to Delhi', dur: '8N/9D', price: 22000, origPrice: 0, rating: '4.8', rev: '8k+', img: 'https://images.unsplash.com/photo-1586350977770-2598f1b6b7c8?w=420&h=280&fit=crop', href: '/backpacking-trips/india/himachal-pradesh/road-trip-to-spiti-valley' },
+    { title: 'All Girls Road Trip to Spiti Valley', loc: 'Delhi to Delhi', dur: '8N/9D', price: 24000, origPrice: 0, rating: '4.8', rev: '6k+', img: 'https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?w=420&h=280&fit=crop', href: '/backpacking-trips/india/himachal-pradesh/all-girls-road-trip-to-spiti-valley' },
+  ],
+};
 
 export default function Backpacking() {
-  const [region, setRegion] = useState('uttarakhand');
-  const items = trips(region);
+  const [region, setRegion] = useState('International');
+  const items = data[region] || [];
   return (
     <section className="py-8 lg:py-16 bg-white">
       <div className="container mx-auto">
@@ -43,8 +39,8 @@ export default function Backpacking() {
         </div>
         <div className="flex gap-2 overflow-x-auto scrollbar-none pb-2 -mx-4 px-4 lg:mx-0 lg:px-0 mb-6">
           {regions.map(r => (
-            <button key={r.key} onClick={() => setRegion(r.key)}
-              className={`shrink-0 px-5 py-1.5 rounded-full text-xs lg:text-sm font-medium transition-all ${region===r.key?'bg-[#1a1a2e] text-white':'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}>{r.label}</button>
+            <button key={r} onClick={() => setRegion(r)}
+              className={`shrink-0 px-5 py-1.5 rounded-full text-xs lg:text-sm font-medium transition-all ${region===r?'bg-[#1a1a2e] text-white':'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}>{r}</button>
           ))}
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
@@ -53,19 +49,18 @@ export default function Backpacking() {
               <div className="relative h-40 lg:h-44 overflow-hidden">
                 <img src={t.img} alt={t.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-                <span className={`absolute top-3 left-3 text-[10px] font-bold px-2 py-0.5 rounded-full text-white ${diffColors[t.type] || 'bg-gray-500'}`}>{t.type}</span>
+                {t.badge && <span className="absolute top-3 left-3 bg-[#EA5939] text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase">{t.badge}</span>}
               </div>
               <div className="p-3 lg:p-4">
                 <div className="flex items-center gap-1 text-gray-500 text-[10px] lg:text-xs mb-1"><MapPin className="w-3 h-3" />{t.loc}</div>
-                <h3 className="font-semibold text-sm lg:text-base text-gray-900 group-hover:text-[#359DFC] transition-colors line-clamp-1">{t.title}</h3>
+                <h3 className="font-semibold text-sm lg:text-base text-gray-900 group-hover:text-[#359DFC] transition-colors line-clamp-2">{t.title}</h3>
                 <div className="flex items-center gap-2 text-[11px] lg:text-xs text-gray-500 mt-1 mb-2">
                   <Clock className="w-3 h-3" />{t.dur}<span className="text-gray-300">|</span>
                   <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />{t.rating} ({t.rev})
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-[#EA5939] font-bold text-sm lg:text-base">₹{t.price.toLocaleString()}</span>
-                  <span className="text-gray-400 text-xs line-through">₹{t.origPrice.toLocaleString()}</span>
-                  <span className="ml-auto bg-green-100 text-green-700 text-[10px] font-bold px-1.5 py-0.5 rounded">{Math.round((1-t.price/t.origPrice)*100)}% OFF</span>
+                  {t.origPrice > 0 && <span className="text-gray-400 text-xs line-through">₹{t.origPrice.toLocaleString()}</span>}
                 </div>
               </div>
             </Link>

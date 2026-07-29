@@ -1,11 +1,30 @@
+'use client';
+import { useState } from 'react';
 import Link from 'next/link';
+import { Star } from 'lucide-react';
+
+const videos = Array.from({length: 22}, (_, i) => ({
+  thumb: ['https://images.unsplash.com/photo-1585409677983-0f6c41ca9c3b','https://images.unsplash.com/photo-1486911278844-a81c5267e227','https://images.unsplash.com/photo-1586350977770-2598f1b6b7c8','https://images.unsplash.com/photo-1469474968028-56623f02e42e','https://images.unsplash.com/photo-1551632811-561732d1e306','https://images.unsplash.com/photo-1540979388789-6cee28a1cdc9','https://images.unsplash.com/photo-1506905925346-21bda4d32df4','https://images.unsplash.com/photo-1524492412937-b28074a5d7da','https://images.unsplash.com/photo-1454496522488-7a8e488e8606','https://images.unsplash.com/photo-1543429257-3eb0b65d9c10'][i % 10],
+  title: ['Valley of Flowers','Kedarkantha Summit','Hampta Pass','Kedarnath Yatra','Triund Trek','Everest Base Camp','Chopta Tungnath','Badrinath Yatra','Spiti Valley','Nepal Yatra'][i % 10],
+  id: `v${i}`
+}));
+
+const popularTrips = [
+  { name: 'Bhutan Bike and Backpacking | 8 Days Bhutan Bike Tour', rating: '4.8', rev: '8k+', img: 'https://images.unsplash.com/photo-1540979388789-6cee28a1cdc9?w=500&h=500&fit=crop', href: '/backpacking-trips/international/bhutan/bhutan-bike-tour' },
+  { name: 'Spiti Valley Bike and Backpacking Trip', rating: '4.8', rev: '8k+', img: 'https://images.unsplash.com/photo-1586350977770-2598f1b6b7c8?w=500&h=500&fit=crop', href: '/backpacking-trips/india/himachal-pradesh/spiti-valley-bike-and-backpacking-trip' },
+  { name: 'Bali with Gili Island Group Tour - Ubud, Nusa Penida & Kuta (7N/8D)', rating: '4.8', rev: '8k+', img: 'https://images.unsplash.com/photo-1539367628448-4bc5c9d171c8?w=500&h=500&fit=crop', href: '/backpacking-trips/international/bali/bali-with-gili-island-group-tour-7n-8d' },
+  { name: 'Valley of Flowers Trek', rating: '4.8', rev: '8k+', img: 'https://images.unsplash.com/photo-1585409677983-0f6c41ca9c3b?w=500&h=500&fit=crop', href: '/treks/india/uttarakhand/valley-of-flowers-trek' },
+  { name: 'Thailand - Phuket Krabi Group Tour with Full Moon Party (6N/7D)', rating: '4.8', rev: '8k+', img: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=500&h=500&fit=crop', href: '/backpacking-trips/international/thailand/full-moon-party-group-tour' },
+  { name: 'Leh Ladakh Bike Trip From Srinagar with Hanle & Umling La', rating: '4.8', rev: '8k+', img: 'https://images.unsplash.com/photo-1486911278844-a81c5267e227?w=500&h=500&fit=crop', href: '/backpacking-trips/india/ladakh/leh-ladakh-bike-trip-from-srinagar-with-hanle-and-umling-la' },
+  { name: 'Road Trip to Spiti Valley', rating: '4.8', rev: '8k+', img: 'https://images.unsplash.com/photo-1586350977770-2598f1b6b7c8?w=500&h=500&fit=crop', href: '/backpacking-trips/india/himachal-pradesh/road-trip-to-spiti-valley' },
+  { name: 'Leh to Leh Bike Trip with Hanle Umling La Tso Moriri', rating: '4.8', rev: '8k+', img: 'https://images.unsplash.com/photo-1486911278844-a81c5267e227?w=500&h=500&fit=crop', href: '/backpacking-trips/india/ladakh/leh-ladakh-9-days-backpacking-tour' },
+  { name: 'Zanskar Valley Expedition', rating: '4.8', rev: '8k+', img: 'https://images.unsplash.com/photo-1540979388789-6cee28a1cdc9?w=500&h=500&fit=crop', href: '/backpacking-trips/india/ladakh/zanskar-valley-expedition' },
+  { name: 'Hampta Pass Trek', rating: '4.8', rev: '8k+', img: 'https://images.unsplash.com/photo-1586350977770-2598f1b6b7c8?w=500&h=500&fit=crop', href: '/treks/india/himachal-pradesh/hampta-pass-trek' },
+];
 
 export default function VideoGallery() {
-  const videos = Array.from({length: 22}, (_, i) => ({
-    thumb: `https://images.unsplash.com/photo-${['1585409677983-0f6c41ca9c3b','1486911278844-a81c5267e227','1586350977770-2598f1b6b7c8','1469474968028-56623f02e42e','1551632811-561732d1e306','1540979388789-6cee28a1cdc9','1506905925346-21bda4d32df4','1524492412937-b28074a5d7da','1454496522488-7a8e488e8606','1543429257-3eb0b65d9c10'][i % 10]}?w=420&h=280&fit=crop`,
-    title: ['Valley of Flowers','Kedarkantha Summit','Hampta Pass','Kedarnath Yatra','Triund Trek','Everest Base Camp','Chopta Tungnath','Badrinath Yatra','Spiti Valley','Nepal Yatra'][i % 10],
-    id: `v${i}`
-  }));
+  const [showAll, setShowAll] = useState(false);
+  const visible = showAll ? popularTrips : popularTrips.slice(0, 4);
   return (
     <section className="py-8 lg:py-16 bg-white">
       <div className="container mx-auto">
@@ -14,7 +33,7 @@ export default function VideoGallery() {
           <h2 className="text-xl lg:text-3xl font-bold text-[#1a1a2e]">Memories for Life</h2>
           <p className="text-gray-500 text-xs lg:text-sm mt-1">50+ Videos from our travelers</p>
         </div>
-        <div className="grid grid-cols-4 lg:grid-cols-6 gap-2 lg:gap-3">
+        <div className="grid grid-cols-4 lg:grid-cols-6 gap-2 lg:gap-3 mb-8 lg:mb-10">
           {videos.map(v => (
             <div key={v.id} className="group relative rounded-lg overflow-hidden cursor-pointer aspect-[3/2]">
               <img src={v.thumb} alt={v.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
@@ -26,9 +45,24 @@ export default function VideoGallery() {
             </div>
           ))}
         </div>
-        <div className="text-center mt-5">
-          <Link href="/blog" className="text-[#359DFC] text-sm font-semibold hover:text-[#1a7de0] transition-colors">View All Videos &rarr;</Link>
+        <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 lg:gap-4">
+          {visible.map(t => (
+            <Link key={t.name} href={t.href} className="group text-center">
+              <div className="aspect-square rounded-xl overflow-hidden mb-2">
+                <img src={t.img} alt={t.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+              </div>
+              <h3 className="text-[11px] lg:text-sm font-semibold text-gray-800 line-clamp-2 group-hover:text-[#359DFC] transition-colors">{t.name}</h3>
+              <div className="flex items-center justify-center gap-1 text-[10px] lg:text-xs text-gray-500 mt-1">
+                <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />{t.rating} Rating
+              </div>
+            </Link>
+          ))}
         </div>
+        {!showAll && popularTrips.length > 4 && (
+          <div className="text-center mt-5">
+            <button onClick={() => setShowAll(true)} className="text-[#359DFC] text-sm font-semibold hover:text-[#1a7de0] transition-colors">View All Videos &rarr;</button>
+          </div>
+        )}
       </div>
     </section>
   );
