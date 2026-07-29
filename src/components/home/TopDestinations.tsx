@@ -1,0 +1,51 @@
+import Link from 'next/link';
+import { MapPin, Star, Clock } from 'lucide-react';
+
+const destinations = [
+  { name: 'Valley of Flowers', state: 'Uttarakhand', rating: '4.8', dur: '6D/5N', price: 8999, img: 'https://images.unsplash.com/photo-1585409677983-0f6c41ca9c3b?w=400&h=250&fit=crop', href: '/treks/valley-of-flowers' },
+  { name: 'Kedarkantha', state: 'Uttarakhand', rating: '4.9', dur: '5D/4N', price: 6999, img: 'https://images.unsplash.com/photo-1486911278844-a81c5267e227?w=400&h=250&fit=crop', href: '/treks/kedarkantha' },
+  { name: 'Hampta Pass', state: 'Himachal Pradesh', rating: '4.7', dur: '5D/4N', price: 8499, img: 'https://images.unsplash.com/photo-1586350977770-2598f1b6b7c8?w=400&h=250&fit=crop', href: '/treks/hampta-pass' },
+  { name: 'Chopta Tungnath', state: 'Uttarakhand', rating: '4.7', dur: '4D/3N', price: 5999, img: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=400&h=250&fit=crop', href: '/treks/chopta-tungnath' },
+  { name: 'Everest Base Camp', state: 'Nepal', rating: '4.9', dur: '13D/12N', price: 74999, img: 'https://images.unsplash.com/photo-1540979388789-6cee28a1cdc9?w=400&h=250&fit=crop', href: '/treks/everest-base-camp' },
+  { name: 'Kedarnath Yatra', state: 'Uttarakhand', rating: '4.8', dur: '6D/5N', price: 9999, img: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=400&h=250&fit=crop', href: '/yatra/kedarnath-yatra' },
+];
+
+export default function TopDestinations() {
+  return (
+    <section className="py-8 lg:py-16 bg-gray-50">
+      <div className="container mx-auto">
+        <div className="text-center mb-8 lg:mb-10">
+          <p className="text-[#359DFC] font-semibold text-xs lg:text-sm tracking-widest uppercase mb-1">TOP DESTINATIONS</p>
+          <h2 className="font-[family-name:var(--font-heading)] text-2xl lg:text-3xl font-bold text-[#1a1a2e] mb-2">Most Popular Treks</h2>
+          <p className="text-gray-500 text-sm">Trusted by thousands of adventurers</p>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
+          {destinations.map(d => (
+            <Link key={d.name} href={d.href} className="group bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-xl transition-all duration-300">
+              <div className="relative h-40 lg:h-48 overflow-hidden">
+                <img src={d.img} alt={d.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-xs font-bold px-2.5 py-1 rounded-full text-[#359DFC]">
+                  {d.state}
+                </div>
+                <div className="absolute bottom-0 left-0 right-0 p-4">
+                  <h3 className="font-bold text-white text-base lg:text-lg">{d.name}</h3>
+                </div>
+              </div>
+              <div className="p-4">
+                <div className="flex items-center gap-3 text-gray-500 text-xs mb-2">
+                  <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{d.dur}</span>
+                  <span className="flex items-center gap-1"><Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />{d.rating}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-[#EA5939] font-bold text-base">₹{d.price.toLocaleString()}</span>
+                  <span className="text-xs text-[#359DFC] font-semibold group-hover:underline">View Details →</span>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}

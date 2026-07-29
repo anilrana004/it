@@ -1,0 +1,153 @@
+'use client';
+import { useState } from 'react';
+import { Check, ArrowRight, Shield } from 'lucide-react';
+import type { Trek } from '@/lib/data';
+
+export default function BookingSection({ trek }: { trek: Trek }) {
+  const [step, setStep] = useState(1);
+  const [form, setForm] = useState({ name: '', email: '', phone: '', persons: '1', date: '', pkg: 'Standard', payment: 'deposit', notes: '' });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (step < 3) { setStep(s => s + 1); return; }
+    const msg = `Booking Request - ${trek.title}
+Package: ${form.pkg}
+Persons: ${form.persons}
+Date: ${form.date}
+Payment: ${form.payment === 'deposit' ? 'Advance Deposit' : 'Full Payment'}
+Name: ${form.name}
+Phone: ${form.phone}`;
+    window.open(`https://wa.me/919999999999?text=${encodeURIComponent(msg)}`, '_blank');
+  };
+
+  return (
+    <div className="max-w-4xl mx-auto">
+      {/* Steps */}
+      <div className="flex items-center justify-center gap-2 mb-8">
+        {['Trip Details', 'Contact Info', 'Confirm'].map((s, i) => (
+          <div key={s} className="flex items-center gap-2">
+            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${step > i+1 ? 'bg-[#29C80F] text-white' : step === i+1 ? 'bg-[#359DFC] text-white' : 'bg-gray-100 text-gray-400'}`}>
+              {step > i+1 ? <Check className="w-4 h-4" /> : i+1}
+            </div>
+            <span className={`text-xs font-medium hidden sm:inline ${step === i+1 ? 'text-[#359DFC]' : 'text-gray-400'}`}>{s}</span>
+            {i < 2 && <div className="w-8 lg:w-12 h-0.5 bg-gray-200" />}
+          </div>
+        ))}
+      </div>
+
+      <form onSubmit={handleSubmit} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 lg:p-8">
+        {step === 1 && (
+          <div className="space-y-5">
+            <h3 className="font-bold text-xl text-[#1a1a2e] mb-4">Select Your Package</h3>
+            <div className="grid grid-cols-3 gap-3">
+              {trek.pricing.map(p => (
+                <button key={p.name} type="button" onClick={() => setForm(f => ({...f, pkg: p.name}))}
+                  className={`p-4 rounded-xl border-2 text-center transition-all ${form.pkg===p.name ? 'border-[#359DFC] bg-[#359DFC]/5' : 'border-gray-100 hover:border-gray-200'}`}>
+                  <div className="font-bold text-sm text-[#1a1a2e]">{p.name}</div>
+                  <div className="text-lg font-bold text-[#359DFC]">₹{p.price.toLocaleString()}</div>
+                  <div className="text-xs text-gray-400 mt-1">Deposit ₹{p.deposit.toLocaleString()}</div>
+                </button>
+              ))}
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Travel Date</label>
+                <input type="date" required value={form.date} onChange={e => setForm(f => ({...f, date: e.target.value}))}
+                  className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-[#359DFC] focus:ring-2 focus:ring-[#359DFC]/20 outline-none transition-all" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Number of Persons</label>
+                <select value={form.persons} onChange={e => setForm(f => ({...f, persons: e.target.value}))}
+                  className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-[#359DFC] focus:ring-2 focus:ring-[#359DFC]/20 outline-none transition-all">
+                  {[1,2,3,4,5,6,7,8,9,10].map(n => <option key={n} value={n}>{n} Person{n>1?'s':''}</option>)}
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Payment Mode</label>
+              <div className="flex gap-3">
+                {[
+                  { v: 'deposit', l: 'Advance Deposit', d: `Pay ₹${trek.pricing.find(p=>p.name===form.pkg)?.deposit.toLocaleString() || '0'} now` },
+                  { v: 'full', l: 'Full Payment', d: 'Pay entire amount & save 5%' },
+                  { v: 'half', l: '50% Now, 50% Later', d: 'Split payment option' },
+                ].map(o => (
+                  <button key={o.v} type="button" onClick={() => setForm(f => ({...f, payment: o.v}))}
+                    className={`flex-1 p-3 rounded-xl border-2 text-center transition-all ${form.payment===o.v ? 'border-[#359DFC] bg-[#359DFC]/5' : 'border-gray-100 hover:border-gray-200'}`}>
+                    <div className="font-semibold text-xs">{o.l}</div>
+                    <div className="text-[10px] text-gray-500 mt-0.5">{o.d}</div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {step === 2 && (
+          <div className="space-y-5">
+            <h3 className="font-bold text-xl text-[#1a1a2e] mb-4">Your Contact Details</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                <input type="text" required value={form.name} onChange={e => setForm(f => ({...f, name: e.target.value}))}
+                  className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-[#359DFC] focus:ring-2 focus:ring-[#359DFC]/20 outline-none transition-all" placeholder="Your full name" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                <input type="email" required value={form.email} onChange={e => setForm(f => ({...f, email: e.target.value}))}
+                  className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-[#359DFC] focus:ring-2 focus:ring-[#359DFC]/20 outline-none transition-all" placeholder="email@example.com" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                <input type="tel" required value={form.phone} onChange={e => setForm(f => ({...f, phone: e.target.value}))}
+                  className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-[#359DFC] focus:ring-2 focus:ring-[#359DFC]/20 outline-none transition-all" placeholder="+91 98765 43210" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Special Requirements</label>
+                <input type="text" value={form.notes} onChange={e => setForm(f => ({...f, notes: e.target.value}))}
+                  className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-[#359DFC] focus:ring-2 focus:ring-[#359DFC]/20 outline-none transition-all" placeholder="Dietary needs, health conditions..." />
+              </div>
+            </div>
+
+            <div className="bg-[#359DFC]/5 rounded-xl p-4 flex items-start gap-3">
+              <Shield className="w-5 h-5 text-[#359DFC] shrink-0 mt-0.5" />
+              <div className="text-xs text-gray-600">Your information is secure. We will contact you within 24 hours to confirm your booking and process the payment.</div>
+            </div>
+          </div>
+        )}
+
+        {step === 3 && (
+          <div className="space-y-5">
+            <h3 className="font-bold text-xl text-[#1a1a2e] mb-4">Confirm Your Booking</h3>
+            <div className="bg-gray-50 rounded-xl p-6 space-y-3">
+              <div className="flex justify-between text-sm"><span className="text-gray-500">Trek</span><span className="font-semibold">{trek.title}</span></div>
+              <div className="flex justify-between text-sm"><span className="text-gray-500">Package</span><span className="font-semibold">{form.pkg}</span></div>
+              <div className="flex justify-between text-sm"><span className="text-gray-500">Date</span><span className="font-semibold">{form.date}</span></div>
+              <div className="flex justify-between text-sm"><span className="text-gray-500">Persons</span><span className="font-semibold">{form.persons}</span></div>
+              <div className="flex justify-between text-sm"><span className="text-gray-500">Name</span><span className="font-semibold">{form.name}</span></div>
+              <div className="flex justify-between text-sm"><span className="text-gray-500">Phone</span><span className="font-semibold">{form.phone}</span></div>
+              <hr className="border-gray-200" />
+              {(() => {
+                const pkg = trek.pricing.find(p => p.name === form.pkg);
+                const total = pkg ? pkg.price * parseInt(form.persons) : 0;
+                const deposit = pkg ? pkg.deposit * parseInt(form.persons) : 0;
+                return (<>
+                  <div className="flex justify-between text-sm"><span className="text-gray-500">Total Amount</span><span className="font-bold text-lg">₹ {total.toLocaleString()}</span></div>
+                  <div className="flex justify-between text-sm"><span className="text-gray-500">{form.payment === 'deposit' ? 'Advance Deposit' : form.payment === 'full' ? 'Full Payment' : '50% Payment'}</span><span className="font-semibold text-[#359DFC]">₹ {form.payment === 'deposit' ? deposit.toLocaleString() : form.payment === 'full' ? total.toLocaleString() : Math.ceil(total/2).toLocaleString()}</span></div>
+                </>);
+              })()}
+            </div>
+          </div>
+        )}
+
+        <div className="flex gap-3 mt-8">
+          {step > 1 && <button type="button" onClick={() => setStep(s => s-1)} className="px-6 py-3 rounded-full border-2 border-gray-200 text-gray-700 font-semibold text-sm hover:border-gray-300 transition-all">Back</button>}
+          <button type="submit" className={`flex-1 flex items-center justify-center gap-2 font-semibold px-6 py-3 rounded-full transition-all text-sm ${step===3?'bg-[#29C80F] hover:bg-[#22a80d] text-white':'bg-[#359DFC] hover:bg-[#1a7de0] text-white'}`}>
+            {step === 1 ? 'Continue to Contact' : step === 2 ? 'Review Booking' : 'Confirm & Send to WhatsApp'} <ArrowRight className="w-4 h-4" />
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+}
