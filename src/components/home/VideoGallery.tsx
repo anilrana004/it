@@ -10,16 +10,16 @@ const videos = Array.from({length: 22}, (_, i) => ({
 }));
 
 const popularTrips = [
-  { name: 'Bhutan Bike and Backpacking | 8 Days Bhutan Bike Tour', rating: '4.8', rev: '8k+', img: 'https://images.unsplash.com/photo-1540979388789-6cee28a1cdc9?w=500&h=500&fit=crop', href: '/backpacking-trips/international/bhutan/bhutan-bike-tour' },
-  { name: 'Spiti Valley Bike and Backpacking Trip', rating: '4.8', rev: '8k+', img: 'https://images.unsplash.com/photo-1586350977770-2598f1b6b7c8?w=500&h=500&fit=crop', href: '/backpacking-trips/india/himachal-pradesh/spiti-valley-bike-and-backpacking-trip' },
-  { name: 'Bali with Gili Island Group Tour - Ubud, Nusa Penida & Kuta (7N/8D)', rating: '4.8', rev: '8k+', img: 'https://images.unsplash.com/photo-1539367628448-4bc5c9d171c8?w=500&h=500&fit=crop', href: '/backpacking-trips/international/bali/bali-with-gili-island-group-tour-7n-8d' },
-  { name: 'Valley of Flowers Trek', rating: '4.8', rev: '8k+', img: 'https://images.unsplash.com/photo-1585409677983-0f6c41ca9c3b?w=500&h=500&fit=crop', href: '/treks/india/uttarakhand/valley-of-flowers-trek' },
-  { name: 'Thailand - Phuket Krabi Group Tour with Full Moon Party (6N/7D)', rating: '4.8', rev: '8k+', img: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=500&h=500&fit=crop', href: '/backpacking-trips/international/thailand/full-moon-party-group-tour' },
-  { name: 'Leh Ladakh Bike Trip From Srinagar with Hanle & Umling La', rating: '4.8', rev: '8k+', img: 'https://images.unsplash.com/photo-1486911278844-a81c5267e227?w=500&h=500&fit=crop', href: '/backpacking-trips/india/ladakh/leh-ladakh-bike-trip-from-srinagar-with-hanle-and-umling-la' },
-  { name: 'Road Trip to Spiti Valley', rating: '4.8', rev: '8k+', img: 'https://images.unsplash.com/photo-1586350977770-2598f1b6b7c8?w=500&h=500&fit=crop', href: '/backpacking-trips/india/himachal-pradesh/road-trip-to-spiti-valley' },
-  { name: 'Leh to Leh Bike Trip with Hanle Umling La Tso Moriri', rating: '4.8', rev: '8k+', img: 'https://images.unsplash.com/photo-1486911278844-a81c5267e227?w=500&h=500&fit=crop', href: '/backpacking-trips/india/ladakh/leh-ladakh-9-days-backpacking-tour' },
-  { name: 'Zanskar Valley Expedition', rating: '4.8', rev: '8k+', img: 'https://images.unsplash.com/photo-1540979388789-6cee28a1cdc9?w=500&h=500&fit=crop', href: '/backpacking-trips/india/ladakh/zanskar-valley-expedition' },
-  { name: 'Hampta Pass Trek', rating: '4.8', rev: '8k+', img: 'https://images.unsplash.com/photo-1586350977770-2598f1b6b7c8?w=500&h=500&fit=crop', href: '/treks/india/himachal-pradesh/hampta-pass-trek' },
+  { name: 'Bhutan Bike and Backpacking | 8 Days Bhutan Bike Tour', rating: '4.8', rev: '8k+', img: 'https://images.unsplash.com/photo-1540979388789-6cee28a1cdc9?w=500&h=500&fit=crop', href: '/treks' },
+  { name: 'Spiti Valley Bike and Backpacking Trip', rating: '4.8', rev: '8k+', img: 'https://images.unsplash.com/photo-1586350977770-2598f1b6b7c8?w=500&h=500&fit=crop', href: '/treks/hampta-pass' },
+  { name: 'Bali with Gili Island Group Tour - Ubud, Nusa Penida & Kuta (7N/8D)', rating: '4.8', rev: '8k+', img: 'https://images.unsplash.com/photo-1539367628448-4bc5c9d171c8?w=500&h=500&fit=crop', href: '/treks' },
+  { name: 'Valley of Flowers Trek', rating: '4.8', rev: '8k+', img: 'https://images.unsplash.com/photo-1585409677983-0f6c41ca9c3b?w=500&h=500&fit=crop', href: '/treks/valley-of-flowers' },
+  { name: 'Thailand - Phuket Krabi Group Tour with Full Moon Party (6N/7D)', rating: '4.8', rev: '8k+', img: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=500&h=500&fit=crop', href: '/treks/nepal-backpacking' },
+  { name: 'Leh Ladakh Bike Trip From Srinagar with Hanle & Umling La', rating: '4.8', rev: '8k+', img: 'https://images.unsplash.com/photo-1486911278844-a81c5267e227?w=500&h=500&fit=crop', href: '/treks/everest-base-camp' },
+  { name: 'Road Trip to Spiti Valley', rating: '4.8', rev: '8k+', img: 'https://images.unsplash.com/photo-1586350977770-2598f1b6b7c8?w=500&h=500&fit=crop', href: '/treks/hampta-pass' },
+  { name: 'Leh to Leh Bike Trip with Hanle Umling La Tso Moriri', rating: '4.8', rev: '8k+', img: 'https://images.unsplash.com/photo-1486911278844-a81c5267e227?w=500&h=500&fit=crop', href: '/treks/everest-base-camp' },
+  { name: 'Zanskar Valley Expedition', rating: '4.8', rev: '8k+', img: 'https://images.unsplash.com/photo-1540979388789-6cee28a1cdc9?w=500&h=500&fit=crop', href: '/treks/bali-pass' },
+  { name: 'Hampta Pass Trek', rating: '4.8', rev: '8k+', img: 'https://images.unsplash.com/photo-1586350977770-2598f1b6b7c8?w=500&h=500&fit=crop', href: '/treks/hampta-pass' },
 ];
 
 export default function VideoGallery() {

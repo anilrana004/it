@@ -9,9 +9,9 @@ const categories = [
   { n: 'Treks', h: '/treks', img: 'https://images.unsplash.com/photo-1551632811-561732d1e306?w=300&h=300&fit=crop&q=80' },
   { n: 'New Launches', h: '/treks', img: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=300&h=300&fit=crop&q=80' },
   { n: 'India', h: '/treks', img: 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=300&h=300&fit=crop&q=80' },
-  { n: 'Honeymoon', h: '/honeymoon', img: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=300&h=300&fit=crop&q=80' },
-  { n: 'Zanskar', h: '/treks?region=ladakh', img: 'https://images.unsplash.com/photo-1540979388789-6cee28a1cdc9?w=300&h=300&fit=crop&q=80' },
-  { n: 'Biking', h: '/biking', img: 'https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=300&h=300&fit=crop&q=80' },
+  { n: 'Honeymoon', h: '/treks', img: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=300&h=300&fit=crop&q=80' },
+  { n: 'Zanskar', h: '/treks/bali-pass', img: 'https://images.unsplash.com/photo-1540979388789-6cee28a1cdc9?w=300&h=300&fit=crop&q=80' },
+  { n: 'Biking', h: '/treks', img: 'https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=300&h=300&fit=crop&q=80' },
   { n: 'All Girls', h: '/treks', img: 'https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?w=300&h=300&fit=crop&q=80' },
 ];
 
