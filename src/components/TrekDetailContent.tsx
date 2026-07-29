@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { MapPin, Clock, Star, ChevronLeft, Check, Shield, Users, TrendingUp, Thermometer, Calendar, Luggage, Info, Ban, ArrowRight, ChevronDown, Phone, Mail, Navigation, Mountain, Heart, Award, ChefHat, Bed, Minus, Plus, Car, Bus, Plane, ExternalLink } from 'lucide-react';
 import type { Trek } from '@/lib/data';
 import Gallery from '@/components/Gallery';
@@ -135,8 +136,17 @@ export default function TrekDetailContent({ trek, type }: { trek: Trek; type: 't
   const [pickup, setPickup] = useState('Dehradun');
   const [navVisible, setNavVisible] = useState(false);
   const mainRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
   const minPrice = Math.min(...trek.pricing.map(p => p.price));
+  const bookNow = (pkg?: string) => {
+    const params = pkg ? `?pkg=${encodeURIComponent(pkg)}` : '';
+    router.push(`/booking/${trek.id}${params}`);
+  };
+  const enquireNow = () => {
+    const msg = `Hi! I'm interested in ${trek.title} (${trek.duration}). Please share more details.`;
+    window.open(`https://wa.me/919999999999?text=${encodeURIComponent(msg)}`, '_blank');
+  };
   const totalPersons = men + women;
   const pricePerPerson = minPrice;
   const total = totalPersons * pricePerPerson;
@@ -635,7 +645,7 @@ export default function TrekDetailContent({ trek, type }: { trek: Trek; type: 't
                           <span className="text-xs font-semibold text-[#29C80F] bg-green-50 px-2.5 py-1 rounded-full">Available</span>
                         </td>
                         <td className="px-4 py-3 text-right">
-                          <button className="text-xs font-semibold px-4 py-1.5 rounded-full text-white transition-all hover:opacity-90" style={{ backgroundColor: accent }}>
+                          <button onClick={() => bookNow(pkg.name)} className="text-xs font-semibold px-4 py-1.5 rounded-full text-white transition-all hover:opacity-90" style={{ backgroundColor: accent }}>
                             Book Now
                           </button>
                         </td>
@@ -789,10 +799,10 @@ export default function TrekDetailContent({ trek, type }: { trek: Trek; type: 't
                     </div>
                   )}
 
-                  <button className="w-full flex items-center justify-center gap-2 text-white font-semibold text-sm py-3.5 rounded-full transition-all shadow-sm hover:opacity-90" style={{ backgroundColor: accent }}>
+                  <button onClick={() => bookNow()} className="w-full flex items-center justify-center gap-2 text-white font-semibold text-sm py-3.5 rounded-full transition-all shadow-sm hover:opacity-90" style={{ backgroundColor: accent }}>
                     Book Now <ArrowRight className="w-4 h-4" />
                   </button>
-                  <button className="w-full flex items-center justify-center gap-2 border-2 border-gray-200 text-gray-700 font-semibold text-sm py-3 rounded-full mt-2 hover:border-gray-300 transition-all">
+                  <button onClick={enquireNow} className="w-full flex items-center justify-center gap-2 border-2 border-gray-200 text-gray-700 font-semibold text-sm py-3 rounded-full mt-2 hover:border-gray-300 transition-all">
                     Enquire Now
                   </button>
                 </div>
@@ -847,7 +857,7 @@ export default function TrekDetailContent({ trek, type }: { trek: Trek; type: 't
             <a href="tel:+919999999999" className="border-2 border-gray-200 text-gray-700 font-semibold px-4 py-2.5 rounded-full text-sm hover:border-gray-300 transition-all">
               <Phone className="w-4 h-4" />
             </a>
-            <button onClick={() => scrollToSection('departures')} className="text-white font-semibold px-6 py-2.5 rounded-full text-sm transition-all shadow-sm hover:opacity-90" style={{ backgroundColor: accent }}>
+            <button onClick={() => bookNow()} className="text-white font-semibold px-6 py-2.5 rounded-full text-sm transition-all shadow-sm hover:opacity-90" style={{ backgroundColor: accent }}>
               Book Now
             </button>
           </div>

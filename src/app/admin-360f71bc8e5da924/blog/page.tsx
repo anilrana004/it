@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { getBlogPosts, addBlogPost } from '@/lib/admin/store';
+import { getBlogPosts, addBlogPost, deleteBlogPost } from '@/lib/admin/store';
 import { FileText, Plus, Trash2 } from 'lucide-react';
 
 export default function AdminBlog() {
@@ -70,7 +70,7 @@ export default function AdminBlog() {
                   <td className="p-4 text-gray-600">{p.category}</td>
                   <td className="p-4"><span className={`text-xs font-semibold px-2 py-1 rounded-full ${p.published ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}>{p.published ? 'Published' : 'Draft'}</span></td>
                   <td className="p-4 text-gray-500 text-xs">{new Date(p.createdAt).toLocaleDateString()}</td>
-                  <td className="p-4"><button className="p-1.5 text-gray-400 hover:text-red-500"><Trash2 className="w-4 h-4" /></button></td>
+                  <td className="p-4"><button onClick={() => { deleteBlogPost(p.id); setPosts([...getBlogPosts()]); }} className="p-1.5 text-gray-400 hover:text-red-500"><Trash2 className="w-4 h-4" /></button></td>
                 </tr>
               ))}
               {posts.length === 0 && <tr><td colSpan={6} className="p-8 text-center text-gray-400">No blog posts yet</td></tr>}

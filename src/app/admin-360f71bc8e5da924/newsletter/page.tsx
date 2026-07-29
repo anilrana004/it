@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { subscribers, addSubscriber } from '@/lib/admin/store';
+import { subscribers, addSubscriber, removeSubscriber } from '@/lib/admin/store';
 import { Mail, Plus, Trash2 } from 'lucide-react';
 
 export default function AdminNewsletter() {
@@ -36,6 +36,7 @@ export default function AdminNewsletter() {
                 <th className="p-4 font-semibold text-gray-600">Email</th>
                 <th className="p-4 font-semibold text-gray-600">Subscribed</th>
                 <th className="p-4 font-semibold text-gray-600">Status</th>
+                <th className="p-4 font-semibold text-gray-600">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -44,6 +45,7 @@ export default function AdminNewsletter() {
                   <td className="p-4 font-medium text-gray-800">{s.email}</td>
                   <td className="p-4 text-gray-500 text-xs">{new Date(s.subscribedAt).toLocaleDateString()}</td>
                   <td className="p-4"><span className={`text-xs font-semibold px-2 py-1 rounded-full ${s.active ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>{s.active ? 'Active' : 'Unsubscribed'}</span></td>
+                  <td className="p-4"><button onClick={() => { removeSubscriber(s.id); setSubs([...subscribers]); }} className="p-1.5 text-gray-400 hover:text-red-500"><Trash2 className="w-4 h-4" /></button></td>
                 </tr>
               ))}
               {subs.length === 0 && <tr><td colSpan={3} className="p-8 text-center text-gray-400">No subscribers yet</td></tr>}
