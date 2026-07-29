@@ -44,7 +44,7 @@ export default function CustomizedTours() {
           <div className="flex gap-4 pb-2 w-max lg:w-full lg:grid lg:grid-cols-4">
             {items.map(d => (
               <Link key={d.name} href={d.href}
-                className="group relative w-[220px] lg:w-auto rounded-2xl overflow-hidden shrink-0 bg-white border border-gray-100 shadow-sm hover:shadow-lg transition-all">
+                className="group relative w-[220px] lg:w-auto rounded-2xl overflow-hidden shrink-0 transition-all">
                 <div className="relative h-[280px] lg:h-[320px] overflow-hidden">
                   <img src={d.img} alt={d.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />

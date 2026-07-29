@@ -19,7 +19,7 @@ export default function SimilarTreks({ currentId, type }: { currentId: string; t
         {similar.map(t => {
           const minPrice = Math.min(...t.pricing.map(p => p.price));
           return (
-            <Link key={t.id} href={`/${type === 'yatra' ? 'yatra' : 'treks'}/${t.id}`} className="group bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-lg transition-all">
+            <Link key={t.id} href={`/${type === 'yatra' ? 'yatra' : 'treks'}/${t.id}`} className="group rounded-2xl overflow-hidden transition-all">
               <div className="relative h-48 overflow-hidden">
                 <img src={t.images[0]} alt={t.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />

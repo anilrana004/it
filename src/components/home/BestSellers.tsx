@@ -61,7 +61,7 @@ export default function BestSellers() {
         </div>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-6">
           {items.slice(0,4).map(t => (
-            <Link key={t.title} href={t.href} className="group bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-lg transition-all">
+            <Link key={t.title} href={t.href} className="group rounded-xl overflow-hidden transition-all">
               <div className="relative h-32 lg:h-44 overflow-hidden">
                 <img src={t.img} alt={t.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 {t.badge && <span className="absolute top-2 left-2 bg-[#ffaf21] text-gray-900 text-[10px] font-bold px-1.5 py-0.5 rounded uppercase">{t.badge}</span>}

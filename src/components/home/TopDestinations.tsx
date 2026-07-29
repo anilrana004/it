@@ -21,7 +21,7 @@ export default function TopDestinations() {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
           {destinations.map(d => (
-            <Link key={d.name} href={d.href} className="group bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-xl transition-all duration-300">
+            <Link key={d.name} href={d.href} className="group rounded-2xl overflow-hidden transition-all duration-300">
               <div className="relative h-40 lg:h-48 overflow-hidden">
                 <img src={d.img} alt={d.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />

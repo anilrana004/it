@@ -72,7 +72,7 @@ export default function CustomizedPage() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-6">
             {indiaPkg.map(d => (
-              <Link key={d.name} href={d.href} className="group bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-lg transition-all">
+              <Link key={d.name} href={d.href} className="group rounded-2xl overflow-hidden transition-all">
                 <div className="relative h-36 lg:h-40 overflow-hidden">
                   <img src={d.img} alt={d.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 </div>

@@ -66,7 +66,7 @@ export default function BucketListSalePage() {
         {/* Deals Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
           {deals.map(t => (
-            <Link key={t.title} href={t.href} className="group bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-lg transition-all">
+            <Link key={t.title} href={t.href} className="group rounded-xl overflow-hidden transition-all">
               <div className="relative h-40 lg:h-44 overflow-hidden">
                 <img src={t.img} alt={t.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 <div className="absolute top-3 left-3 bg-[#ffaf21] text-gray-900 text-[10px] lg:text-xs font-bold px-2.5 py-1 rounded-full flex items-center gap-1">

@@ -9,7 +9,7 @@ export default function TrekCard({ trek }: { trek: Trek }) {
   const originalPrice = eco?.originalPrice;
 
   return (
-    <Link href={`/treks/${trek.id}`} className="group block bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300">
+    <Link href={`/treks/${trek.id}`} className="group block rounded-2xl overflow-hidden transition-all duration-300">
       {/* Image with badges */}
       <div className="relative overflow-hidden aspect-[3/4]">
         <img src={trek.images[0]} alt={trek.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />

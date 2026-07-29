@@ -17,7 +17,7 @@ export default function YatraSection() {
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6">
           {yatras.map(t => (
-            <Link key={t.id} href={`/yatra/${t.id}`} className="group block bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300">
+            <Link key={t.id} href={`/yatra/${t.id}`} className="group block rounded-2xl overflow-hidden transition-all duration-300">
               <div className="relative overflow-hidden aspect-[3/4]">
                 <img src={t.images[0]} alt={t.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 <div className="absolute top-3 left-3"><span className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-[#ffaf21] text-gray-900">Yatra</span></div>
