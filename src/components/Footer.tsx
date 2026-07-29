@@ -145,7 +145,7 @@ export default function Footer() {
   const [openSection, setOpenSection] = useState<number | null>(null);
 
   return (
-    <footer className="bg-[#ffaf21] text-gray-900 pb-[62px] lg:pb-0">
+    <footer className="bg-white text-gray-900 pb-[62px] lg:pb-0">
       <div className="container mx-auto py-8 lg:py-16">
         {/* Mobile */}
         <div className="lg:hidden">
@@ -153,10 +153,10 @@ export default function Footer() {
             <Link href="/" className="flex items-center justify-center mb-2">
               <img src="https://res.cloudinary.com/pg8uhzw0/image/upload/v1785363638/l_kceoj5.png" alt="TrekRoot" className="h-9 w-auto" />
             </Link>
-            <p className="text-gray-600 text-xs text-center">India&apos;s #1 Social Travel Community</p>
+            <p className="text-gray-500 text-xs text-center">India&apos;s #1 Social Travel Community</p>
           </div>
 
-          <div className="bg-black/5 rounded-xl p-4 mb-5 space-y-3">
+          <div className="bg-gray-50 border border-gray-100 rounded-xl p-4 mb-5 space-y-3">
             <p className="text-sm font-semibold text-gray-900">Contact Us</p>
             <div className="flex items-start gap-2">
               <MapPin className="w-4 h-4 text-gray-500 shrink-0 mt-0.5" />
@@ -189,7 +189,7 @@ export default function Footer() {
 
           <div className="space-y-0.5">
             {sections.map((s, i) => (
-              <div key={s.title} className="border-b border-[#d49400]/30">
+              <div key={s.title} className="border-b border-gray-100">
                 <button onClick={() => setOpenSection(openSection === i ? null : i)}
                   className="w-full flex items-center justify-between py-3.5 px-1 text-sm font-semibold text-gray-900">
                   {s.title}
@@ -199,7 +199,7 @@ export default function Footer() {
                   <div className="pb-3 space-y-2 px-1">
                     {s.links.map(l => (
                       <Link key={l.l} href={l.h}
-                        className="block text-sm text-gray-700 hover:text-gray-900 transition-colors py-1">
+                        className="block text-sm text-gray-600 hover:text-[#ffaf21] transition-colors py-1">
                         {l.l}
                       </Link>
                     ))}
@@ -210,9 +210,9 @@ export default function Footer() {
           </div>
 
           <div className="flex items-center justify-center gap-5 mt-6">
-            <Link href="/privacy-policy" className="text-xs text-gray-600 hover:text-gray-900">Privacy Policy</Link>
-            <div className="h-3 w-[1px] bg-[#d49400]/50" />
-            <Link href="/terms-and-conditions" className="text-xs text-gray-600 hover:text-gray-900">Terms &amp; Conditions</Link>
+            <Link href="/privacy-policy" className="text-xs text-gray-500 hover:text-[#ffaf21]">Privacy Policy</Link>
+            <div className="h-3 w-[1px] bg-gray-300" />
+            <Link href="/terms-and-conditions" className="text-xs text-gray-500 hover:text-[#ffaf21]">Terms &amp; Conditions</Link>
           </div>
           <p className="text-center text-xs text-gray-500 mt-4">c 2015-2026 TrekRoot Pvt. Ltd.</p>
         </div>
@@ -223,7 +223,7 @@ export default function Footer() {
             <Link href="/" className="flex items-center gap-2">
               <img src="https://res.cloudinary.com/pg8uhzw0/image/upload/v1785363638/l_kceoj5.png" alt="TrekRoot" className="h-9 w-auto" />
             </Link>
-            <span className="text-gray-600 text-sm ml-2">#wravelerforlife</span>
+            <span className="text-gray-500 text-sm ml-2">#wravelerforlife</span>
           </div>
 
           <div className="grid grid-cols-5 gap-8 mb-12">
@@ -234,11 +234,11 @@ export default function Footer() {
               </div>
               <div className="flex items-center gap-2 mb-2">
                 <Phone className="w-4 h-4 text-gray-500 shrink-0" />
-                <a href="tel:+919797972175" className="text-xs text-gray-700 hover:text-gray-900">+91-9797 972 175</a>
+                <a href="tel:+919797972175" className="text-xs text-gray-600 hover:text-[#ffaf21]">+91-9797 972 175</a>
               </div>
               <div className="flex items-center gap-2 mb-6">
                 <Mail className="w-4 h-4 text-gray-500 shrink-0" />
-                <a href="mailto:contact@trekroot.com" className="text-xs text-gray-700 hover:text-gray-900">contact@trekroot.com</a>
+                <a href="mailto:contact@trekroot.com" className="text-xs text-gray-600 hover:text-[#ffaf21]">contact@trekroot.com</a>
               </div>
               <div className="flex flex-wrap gap-2">
                 {socialLinks.map(s => (
@@ -254,7 +254,7 @@ export default function Footer() {
                 <ul className="space-y-2.5">
                   {s.links.map(l => (
                     <li key={l.l}>
-                      <Link href={l.h} className="text-xs text-gray-700 hover:text-gray-900 transition-colors">{l.l}</Link>
+                      <Link href={l.h} className="text-xs text-gray-600 hover:text-[#ffaf21] transition-colors">{l.l}</Link>
                     </li>
                   ))}
                 </ul>
@@ -262,14 +262,14 @@ export default function Footer() {
             ))}
           </div>
 
-          <div className="border-t border-[#d49400]/30 pt-5 flex items-center justify-between">
-            <p className="text-xs text-gray-500">c 2015-2026 TrekRoot Pvt. Ltd.</p>
+          <div className="border-t border-gray-100 pt-5 flex items-center justify-between">
+            <p className="text-xs text-gray-400">c 2015-2026 TrekRoot Pvt. Ltd.</p>
             <div className="flex items-center gap-4 text-xs text-gray-600">
-              <Link href="/privacy-policy" className="hover:text-gray-900">Privacy Policy</Link>
-              <div className="h-4 w-[1px] bg-[#d49400]/50" />
-              <Link href="/terms-and-conditions" className="hover:text-gray-900">Terms &amp; Conditions</Link>
-              <div className="h-4 w-[1px] bg-[#d49400]/50" />
-              <Link href="/payment-policy" className="hover:text-gray-900">Payment Policy</Link>
+              <Link href="/privacy-policy" className="hover:text-[#ffaf21]">Privacy Policy</Link>
+              <div className="h-4 w-[1px] bg-gray-300" />
+              <Link href="/terms-and-conditions" className="hover:text-[#ffaf21]">Terms &amp; Conditions</Link>
+              <div className="h-4 w-[1px] bg-gray-300" />
+              <Link href="/payment-policy" className="hover:text-[#ffaf21]">Payment Policy</Link>
             </div>
           </div>
         </div>
