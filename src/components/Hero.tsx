@@ -10,10 +10,10 @@ import {
 import { treks } from '@/lib/data';
 
 const mobBanners = [
-  { image: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_350,c_fill,g_auto/&q=80', title: 'Explore the Himalayas', subtitle: "Trek through the world's most breathtaking ranges", cta: 'Explore Treks', href: '/treks' },
-  { image: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_350,c_fill,g_auto/&q=80', title: 'Sacred Yatras', subtitle: 'Journey to ancient temples in the mountains', cta: 'Explore Yatras', href: '/yatra' },
-  { image: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_350,c_fill,g_auto/&q=80', title: 'International Adventures', subtitle: 'Nepal, Bali, Thailand, Bhutan & beyond', cta: 'Explore Global', href: '/treks?region=nepal' },
-  { image: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_350,c_fill,g_auto/&q=80', title: 'Winter Wonderland', subtitle: 'Snow treks, frozen lakes & starry nights', cta: 'Winter Treks', href: '/treks?difficulty=easy' },
+  { image: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_350,c_fill,g_auto/&q=80', title: 'Explore the Himalayas', subtitle: "Trek through the world's most breathtaking ranges", cta: 'Explore Treks', cat: 'trek' },
+  { image: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_350,c_fill,g_auto/&q=80', title: 'Sacred Yatras', subtitle: 'Journey to ancient temples in the mountains', cta: 'Explore Yatras', cat: 'yatra' },
+  { image: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_350,c_fill,g_auto/&q=80', title: 'International Adventures', subtitle: 'Nepal, Bali, Thailand, Bhutan & beyond', cta: 'Explore Global', cat: 'international' },
+  { image: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_350,c_fill,g_auto/&q=80', title: 'Winter Wonderland', subtitle: 'Snow treks, frozen lakes & starry nights', cta: 'Winter Treks', cat: 'trek' },
 ];
 
 const catItems = [
@@ -61,19 +61,21 @@ export default function Hero() {
   const [showSearch, setShowSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchIdx, setSearchIdx] = useState(-1);
+  const [searchCategory, setSearchCategory] = useState<'all' | 'trek' | 'yatra' | 'international'>('all');
   const searchRef = useRef<HTMLInputElement>(null);
   const searchListRef = useRef<HTMLDivElement>(null);
 
   const searchItems = useMemo(() =>
-    treks.map(t => ({ id: t.id, title: t.title, type: t.type, sub: t.subtitle })), []);
+    treks.map(t => ({ id: t.id, title: t.title, type: t.type, sub: t.subtitle, region: t.region })), []);
 
   const searchResults = useMemo(() => {
+    let items = searchItems;
+    if (searchCategory === 'international') items = items.filter(s => s.region === 'nepal');
+    else if (searchCategory !== 'all') items = items.filter(s => s.type === searchCategory);
     const q = searchQuery.toLowerCase().trim();
-    if (!q) return [];
-    return searchItems.filter(s =>
-      s.title.toLowerCase().includes(q) || s.sub.toLowerCase().includes(q)
-    ).slice(0, 8);
-  }, [searchQuery, searchItems]);
+    if (q) items = items.filter(s => s.title.toLowerCase().includes(q) || s.sub.toLowerCase().includes(q));
+    return items.slice(0, 12);
+  }, [searchQuery, searchItems, searchCategory]);
 
   const goSearch = useCallback((id: string, type: string) => {
     setShowSearch(false);
@@ -383,10 +385,10 @@ export default function Hero() {
                 <div className="absolute bottom-0 left-0 right-0 p-4">
                   <h2 className="text-white font-bold text-lg leading-tight mb-1">{slide.title}</h2>
                   <p className="text-white/70 text-xs mb-3 max-w-md">{slide.subtitle}</p>
-                  <Link href={slide.href}
+                  <button type="button" onClick={() => { setSearchCategory(slide.cat as any); setSearchQuery(''); setSearchIdx(-1); setShowSearch(true); }}
                     className="inline-flex items-center gap-1.5 bg-[#ffaf21] hover:bg-[#d49400] text-gray-900 font-semibold text-xs px-4 py-2 rounded-full transition-all active:scale-95">
                     {slide.cta}<ArrowRight className="w-3.5 h-3.5" />
-                  </Link>
+                  </button>
                 </div>
               </div>
             ))}
@@ -462,6 +464,19 @@ export default function Hero() {
                 <X className="w-5 h-5" />
               </button>
             </div>
+            <div className="flex gap-1.5 px-4 py-2 border-b border-gray-100 overflow-x-auto" style={{ scrollbarWidth: 'none' }}>
+              {[
+                { key: 'all', label: 'All' },
+                { key: 'trek', label: 'Treks' },
+                { key: 'yatra', label: 'Yatras' },
+                { key: 'international', label: 'International' },
+              ].map(c => (
+                <button key={c.key} type="button" onClick={() => { setSearchCategory(c.key as any); setSearchIdx(-1); }}
+                  className={`shrink-0 px-3 py-1 rounded-full text-xs font-medium transition-all ${searchCategory === c.key ? 'bg-[#ffaf21] text-gray-900' : 'bg-gray-100 text-gray-500 hover:bg-gray-200'}`}>
+                  {c.label}
+                </button>
+              ))}
+            </div>
             <div ref={searchListRef} className="max-h-[50vh] overflow-y-auto py-2">
               {searchQuery.trim() && searchResults.length === 0 && (
                 <div className="px-5 py-8 text-center">
@@ -470,10 +485,10 @@ export default function Hero() {
                   <p className="text-xs text-gray-300 mt-1">Try a different search term</p>
                 </div>
               )}
-              {!searchQuery.trim() && (
+              {!searchQuery.trim() && searchCategory === 'all' && (
                 <div className="px-5 py-8 text-center">
                   <Mountain className="w-8 h-8 mx-auto text-gray-300 mb-2" />
-                  <p className="text-sm text-gray-400">Type to search treks & yatras</p>
+                  <p className="text-sm text-gray-400">Type to search or select a category</p>
                   <div className="flex flex-wrap justify-center gap-1.5 mt-4">
                     {['Valley of Flowers', 'Kedarkantha', 'Everest', 'Hampta Pass', 'Kedarnath', 'Triund'].map(tag => (
                       <button key={tag} type="button" onClick={() => { setSearchQuery(tag); setSearchIdx(-1); searchRef.current?.focus(); }}
@@ -484,7 +499,7 @@ export default function Hero() {
                   </div>
                 </div>
               )}
-              {searchResults.map((s, i) => (
+              {searchResults.length > 0 && searchResults.map((s, i) => (
                 <button key={s.id} type="button" onClick={() => goSearch(s.id, s.type)}
                   onMouseEnter={() => setSearchIdx(i)}
                   className={`w-full flex items-center gap-3 px-5 py-3 text-left transition-colors ${i === searchIdx ? 'bg-[#ffaf21]/10' : 'hover:bg-gray-50'}`}>
