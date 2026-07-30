@@ -1,5 +1,14 @@
 ﻿import Link from 'next/link';
-import { Building2, Users, Heart, Briefcase, Star, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { Building2, Users, Heart, Briefcase, Star, ArrowRight, CheckCircle2, MapPin, Clock } from 'lucide-react';
+
+const corpPkgs = [
+  { name: 'Kedarkantha Winter Trek', loc: 'Uttarakhand', dur: '5D/4N', price: 6999, capacity: '10-50 pax', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/kedarkantha', badge: 'Best for Teams' },
+  { name: 'Hampta Pass Trek', loc: 'Himachal', dur: '5D/4N', price: 8499, capacity: '10-40 pax', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/hampta-pass', badge: 'Popular' },
+  { name: 'Valley of Flowers Trek', loc: 'Uttarakhand', dur: '6D/5N', price: 8999, capacity: '10-30 pax', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/valley-of-flowers', badge: 'UNESCO' },
+  { name: 'Chopta Tungnath Trek', loc: 'Uttarakhand', dur: '4D/3N', price: 5999, capacity: '10-60 pax', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/chopta-tungnath', badge: 'Easy Access' },
+  { name: 'Triund & Mcleodganj', loc: 'Himachal', dur: '3D/2N', price: 2499, capacity: '10-100 pax', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/mcleodganj-trek', badge: 'Large Groups' },
+  { name: 'Kedarnath Yatra', loc: 'Uttarakhand', dur: '6D/5N', price: 9999, capacity: '10-50 pax', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/yatra/kedarnath-yatra', badge: 'Spiritual' },
+];
 
 export default function CorporatePage() {
   return (
@@ -64,6 +73,37 @@ export default function CorporatePage() {
             <div className="relative rounded-xl overflow-hidden h-64 lg:h-80">
               <img src="https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/" alt="Corporate team" className="w-full h-full object-cover" />
             </div>
+          </div>
+        </div>
+
+        {/* Corporate Packages */}
+        <div className="mb-12 lg:mb-20">
+          <div className="text-center mb-8">
+            <h2 className="font-[family-name:var(--font-heading)] text-2xl lg:text-3xl font-bold text-[#000000] mb-2">Corporate Trek Packages</h2>
+            <p className="text-gray-500 text-sm">Handpicked Himalayan treks perfect for corporate groups & team offsites</p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
+            {corpPkgs.map(p => (
+              <Link key={p.name} href={p.href} className="group bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-lg transition-all">
+                <div className="relative h-40 lg:h-44 overflow-hidden">
+                  <img src={p.img} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  {p.badge && <span className="absolute top-3 left-3 bg-[#ffaf21] text-gray-900 text-[10px] font-bold px-2.5 py-1 rounded-full">{p.badge}</span>}
+                </div>
+                <div className="p-4">
+                  <div className="flex items-center gap-1 text-xs text-gray-500 mb-1">
+                    <MapPin className="w-3 h-3" />{p.loc} · <Clock className="w-3 h-3" />{p.dur}
+                  </div>
+                  <h3 className="font-bold text-base lg:text-lg text-[#000000] group-hover:text-[#ffaf21] transition-colors">{p.name}</h3>
+                  <div className="flex items-center justify-between mt-2">
+                    <div>
+                      <span className="text-[#ffaf21] font-bold text-base">₹{p.price.toLocaleString()}</span>
+                      <span className="text-gray-400 text-xs ml-1">/person</span>
+                    </div>
+                    <span className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-blue-50 text-blue-600">{p.capacity}</span>
+                  </div>
+                </div>
+              </Link>
+            ))}
           </div>
         </div>
 
