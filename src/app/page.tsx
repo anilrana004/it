@@ -44,7 +44,7 @@ const banners = {
   ],
   trek: [
     { src: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/treks', title: 'Trek the Himalayas', subtitle: 'Valley of Flowers · Kedarkantha · Hampta Pass · Chopta & 18+ more', badge: 'Himalayas', discount: 'View All Treks' },
-    { src: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/treks/kedarkantha', title: 'Kedarkantha — Winter Wonderland', subtitle: 'India\'s most popular winter trek with 360° Himalayan panoramas', badge: 'Winter Special', discount: '5D/4N' },
+    { src: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', desktopSrc: 'https://res.cloudinary.com/pg8uhzw0/image/upload/v1785399843/pexels-sanket-barik-2808574-7846473_efonvw.jpg', href: '/treks/kedarkantha', title: 'Kedarkantha — Winter Wonderland', subtitle: 'India\'s most popular winter trek with 360° Himalayan panoramas', badge: 'Winter Special', discount: '5D/4N' },
     { src: 'https://res.cloudinary.com/pg8uhzw0/image/upload/f_auto,q_auto,w_1200,h_500,c_fill,g_auto/v1785367489/pexels-unaizat97-8673607_anl07u.jpg', href: '/treks/valley-of-flowers', title: 'Valley of Flowers — Blooming Paradise', subtitle: 'UNESCO World Heritage — alpine meadows, rare flora, snow-capped vistas', badge: 'Monsoon Magic', discount: '6D/5N' },
   ],
   community: [

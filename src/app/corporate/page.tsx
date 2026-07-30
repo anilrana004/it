@@ -1,5 +1,8 @@
-﻿import Link from 'next/link';
-import { Building2, Users, Heart, Briefcase, Star, ArrowRight, CheckCircle2, MapPin, Clock } from 'lucide-react';
+﻿'use client';
+
+import Link from 'next/link';
+import { Building2, Users, Heart, Briefcase, Star, ArrowRight, CheckCircle2, MapPin, Clock, Phone, Mail, Send } from 'lucide-react';
+import { useState, FormEvent } from 'react';
 
 const corpPkgs = [
   { name: 'Kedarkantha Winter Trek', loc: 'Uttarakhand', dur: '5D/4N', price: 6999, capacity: '10-50 pax', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/kedarkantha', badge: 'Best for Teams' },
@@ -11,6 +14,30 @@ const corpPkgs = [
 ];
 
 export default function CorporatePage() {
+  const [form, setForm] = useState({ name: '', email: '', phone: '', company: '', groupSize: '', preferredTrek: '', date: '', message: '' });
+  const [submitted, setSubmitted] = useState(false);
+  const [sending, setSending] = useState(false);
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    setSending(true);
+    try {
+      const res = await fetch('/api/contacts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: `${form.name} (${form.company}, ${form.groupSize} pax)`,
+          email: form.email,
+          phone: form.phone,
+          message: `Trek: ${form.preferredTrek || 'Not specified'}\nPreferred Dates: ${form.date || 'Not specified'}\nMessage: ${form.message}`,
+        }),
+      });
+      if (res.ok) setSubmitted(true);
+    } finally {
+      setSending(false);
+    }
+  };
+
   return (
     <div className="pt-24 lg:pt-28 pb-12 lg:pb-20">
       {/* Hero */}
@@ -128,6 +155,95 @@ export default function CorporatePage() {
             <Star className="w-8 h-8 text-yellow-300 mx-auto mb-3 fill-yellow-300" />
             <p className="text-sm lg:text-lg leading-relaxed italic mb-4">&ldquo;TrekRoot organized an incredible team-building trek for our 45-member team. From seamless logistics to expert guides, everything was perfect. Our team came back more connected and motivated than ever.&rdquo;</p>
             <p className="font-bold text-sm">- HR Director, Leading Tech Company</p>
+          </div>
+        </div>
+
+        {/* Inquiry Form */}
+        <div className="mb-12 lg:mb-20" id="inquiry">
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12">
+            <div className="lg:col-span-2">
+              <h2 className="font-[family-name:var(--font-heading)] text-2xl lg:text-3xl font-bold text-[#000000] mb-2">Request a Quote</h2>
+              <p className="text-gray-500 text-sm mb-6">Tell us about your team&apos;s requirements and we&apos;ll create the perfect corporate adventure package.</p>
+              <div className="space-y-4">
+                {[
+                  { icon: Phone, l: 'Call Us', v: '+91 99 99 99 99 99', h: 'tel:+919999999999' },
+                  { icon: Mail, l: 'Email', v: 'corporate@trekroot.com', h: 'mailto:corporate@trekroot.com' },
+                ].map(item => (
+                  <div key={item.l} className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-[#ffaf21]/10 rounded-lg flex items-center justify-center shrink-0"><item.icon className="w-5 h-5 text-[#ffaf21]" /></div>
+                    <div><p className="text-xs text-gray-400">{item.l}</p><a href={item.h} className="font-semibold text-sm text-gray-900 hover:text-[#ffaf21] transition-colors">{item.v}</a></div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="lg:col-span-3">
+              {submitted ? (
+                <div className="bg-green-50 border border-green-200 rounded-2xl p-8 text-center">
+                  <CheckCircle2 className="w-12 h-12 text-green-500 mx-auto mb-3" />
+                  <h3 className="font-bold text-lg text-green-800 mb-1">Thank You!</h3>
+                  <p className="text-sm text-green-600">Your inquiry has been received. Our corporate team will reach out within 24 hours.</p>
+                </div>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Your Name *</label>
+                      <input type="text" required value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+                        className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-[#ffaf21] outline-none transition-all" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Company Name</label>
+                      <input type="text" value={form.company} onChange={e => setForm(f => ({ ...f, company: e.target.value }))}
+                        className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-[#ffaf21] outline-none transition-all" />
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Email *</label>
+                      <input type="email" required value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
+                        className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-[#ffaf21] outline-none transition-all" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+                      <input type="tel" value={form.phone} onChange={e => setForm(f => ({ ...f, phone: e.target.value }))}
+                        className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-[#ffaf21] outline-none transition-all" />
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Group Size</label>
+                      <select value={form.groupSize} onChange={e => setForm(f => ({ ...f, groupSize: e.target.value }))}
+                        className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-[#ffaf21] outline-none transition-all bg-white">
+                        <option value="">Select...</option>
+                        {['10-20', '21-40', '41-60', '61-80', '81-100', '100+'].map(s => <option key={s}>{s}</option>)}
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Preferred Trek</label>
+                      <select value={form.preferredTrek} onChange={e => setForm(f => ({ ...f, preferredTrek: e.target.value }))}
+                        className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-[#ffaf21] outline-none transition-all bg-white">
+                        <option value="">Not decided yet</option>
+                        {corpPkgs.map(p => <option key={p.name}>{p.name}</option>)}
+                      </select>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Preferred Dates</label>
+                    <input type="text" placeholder="e.g. March 2027 or 15-20 April 2027" value={form.date} onChange={e => setForm(f => ({ ...f, date: e.target.value }))}
+                      className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-[#ffaf21] outline-none transition-all" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Special Requirements</label>
+                    <textarea rows={3} value={form.message} onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
+                      className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-[#ffaf21] outline-none transition-all resize-none" />
+                  </div>
+                  <button type="submit" disabled={sending}
+                    className="w-full bg-[#ffaf21] hover:bg-[#d49400] disabled:bg-gray-300 text-gray-900 font-semibold px-6 py-3 rounded-full transition-all text-sm flex items-center justify-center gap-2">
+                    {sending ? 'Sending...' : <><Send className="w-4 h-4" /> Send Inquiry</>}
+                  </button>
+                </form>
+              )}
+            </div>
           </div>
         </div>
 

@@ -4,16 +4,16 @@ import { MapPin, Star, Clock, CheckCircle2, ArrowRight, Globe, Plane } from 'luc
 const cloud = 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/';
 
 const treks = [
-  { name: 'Everest Base Camp Trek', loc: 'Nepal', dur: '13D/12N', price: 74999, diff: 'Difficult', img: `${cloud}https://images.unsplash.com/photo-1540979388789-6cee28a1cdc9`, href: '/treks/everest-base-camp' },
-  { name: 'Annapurna Base Camp Trek', loc: 'Nepal', dur: '8D/7N', price: 34999, diff: 'Moderate', img: `${cloud}https://images.unsplash.com/photo-1486911278844-a81c5267e227`, href: '/treks/annapurna-base-camp' },
-  { name: 'Annapurna Sanctuary Trek', loc: 'Nepal', dur: '10D/9N', price: 42999, diff: 'Moderate', img: `${cloud}https://images.unsplash.com/photo-1469474968028-56623f02e42e`, href: '/treks/annapurna-base-camp' },
-  { name: 'Nepal Backpacking Circuit', loc: 'Nepal', dur: '10D/9N', price: 34999, diff: 'Moderate', img: `${cloud}https://images.unsplash.com/photo-1543429257-3eb0b65d9c10`, href: '/treks/nepal-backpacking' },
+  { name: 'Everest Base Camp Trek', loc: 'Nepal', dur: '13D/12N', price: 74999, diff: 'Difficult', img: cloud, href: '/treks/everest-base-camp' },
+  { name: 'Annapurna Base Camp Trek', loc: 'Nepal', dur: '8D/7N', price: 34999, diff: 'Moderate', img: cloud, href: '/treks/annapurna-base-camp' },
+  { name: 'Annapurna Sanctuary Trek', loc: 'Nepal', dur: '10D/9N', price: 42999, diff: 'Moderate', img: cloud, href: '/treks/annapurna-base-camp' },
+  { name: 'Nepal Backpacking Circuit', loc: 'Nepal', dur: '10D/9N', price: 34999, diff: 'Moderate', img: cloud, href: '/treks/nepal-backpacking' },
 ];
 
 const tours = [
-  { name: 'Kathmandu Valley Tour', loc: 'Nepal', dur: '5D/4N', price: 18999, diff: 'Easy', img: `${cloud}https://images.unsplash.com/photo-1524492412937-b28074a5d7da`, href: '/treks/kathmandu-tour' },
-  { name: 'Pokhara Lake City', loc: 'Nepal', dur: '4D/3N', price: 15999, diff: 'Easy', img: `${cloud}https://images.unsplash.com/photo-1551632811-561732d1e306`, href: '/treks/pokhara-tour' },
-  { name: 'Chitwan Jungle Safari', loc: 'Nepal', dur: '4D/3N', price: 21999, diff: 'Easy', img: `${cloud}https://images.unsplash.com/photo-1549366021-9f761d450616`, href: '/treks/chitwan-safari' },
+  { name: 'Kathmandu Valley Tour', loc: 'Nepal', dur: '5D/4N', price: 18999, diff: 'Easy', img: cloud, href: '/treks/kathmandu-tour' },
+  { name: 'Pokhara Lake City', loc: 'Nepal', dur: '4D/3N', price: 15999, diff: 'Easy', img: cloud, href: '/treks/pokhara-tour' },
+  { name: 'Chitwan Jungle Safari', loc: 'Nepal', dur: '4D/3N', price: 21999, diff: 'Easy', img: cloud, href: '/treks/chitwan-safari' },
 ];
 
 const whyNepal = [

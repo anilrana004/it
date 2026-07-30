@@ -8,6 +8,7 @@ interface BannerItem {
   subtitle?: string;
   badge?: string;
   discount?: string;
+  desktopSrc?: string;
 }
 
 const defaultBanners: BannerItem[] = [
@@ -28,8 +29,20 @@ export default function Banners({ items = defaultBanners }: { items?: BannerItem
           {items.map((b, i) => (
             <Link key={i} href={b.href}
               className="group relative shrink-0 w-[75vw] lg:w-[380px] snap-start rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-              <div className="aspect-[16/9] lg:aspect-[16/7] overflow-hidden">
-                <img src={b.src} alt={b.title || ''} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+              {b.desktopSrc && (
+                <style>{`
+                  @media (min-width: 1024px) {
+                    [data-banner="${i}"] {
+                      background-image: url(${b.desktopSrc}) !important;
+                    }
+                  }
+                `}</style>
+              )}
+              <div className="aspect-[16/9] lg:aspect-[16/7] overflow-hidden relative">
+                <div data-banner={i}
+                  className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+                  style={{ backgroundImage: `url(${b.src})` }}
+                />
               </div>
               <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-transparent" />
               {b.badge && (

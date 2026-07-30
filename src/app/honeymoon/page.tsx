@@ -11,10 +11,10 @@ const trekkingPkg = [
 ];
 
 const getawayPkg = [
-  { name: 'Manali & Jibhi', loc: 'Himachal', dur: '5D/4N', price: 25999, tag: 'Popular', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/hampta-pass' },
-  { name: 'Rishikesh Riverside', loc: 'Uttarakhand', dur: '4D/3N', price: 14999, tag: 'Adventure', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks' },
-  { name: 'Auli Snow Retreat', loc: 'Uttarakhand', dur: '5D/4N', price: 21999, tag: 'Skiing', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks' },
-  { name: 'Pokhara, Nepal', loc: 'Nepal — Lakeside', dur: '5D/4N', price: 29999, tag: 'International', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/pokhara-tour' },
+  { name: 'Valley of Flowers Trek', loc: 'Uttarakhand', dur: '6D/5N', price: 8999, tag: 'UNESCO Paradise', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/valley-of-flowers' },
+  { name: 'Kedarkantha Trek', loc: 'Uttarakhand', dur: '5D/4N', price: 6999, tag: 'Winter Wonderland', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/kedarkantha' },
+  { name: 'Annapurna Base Camp', loc: 'Nepal', dur: '8D/7N', price: 34999, tag: 'International', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/annapurna-base-camp' },
+  { name: 'Sar Pass Trek', loc: 'Himachal', dur: '5D/4N', price: 6999, tag: 'Scenic', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/sar-pass' },
 ];
 
 const highlights = [

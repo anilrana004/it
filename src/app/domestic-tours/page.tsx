@@ -20,10 +20,10 @@ const pilgrimageYatra = [
 ];
 
 const backpackingGets = [
-  { name: 'Rishikesh Adventure', loc: 'Uttarakhand', dur: '3D/2N', price: 3999, diff: 'Easy', img: imgBase, href: '/treks' },
-  { name: 'Manali Escape', loc: 'Himachal', dur: '4D/3N', price: 5999, diff: 'Easy', img: imgBase, href: '/treks/hampta-pass' },
-  { name: 'Kasol & Parvati Valley', loc: 'Himachal', dur: '4D/3N', price: 4999, diff: 'Easy', img: imgBase, href: '/treks/kheerganga' },
-  { name: 'Spiti Valley Expedition', loc: 'Himachal', dur: '8D/7N', price: 15999, diff: 'Moderate', img: imgBase, href: '/treks/hampta-pass' },
+  { name: 'Dayara Bugyal Trek', loc: 'Uttarakhand', dur: '5D/4N', price: 6999, diff: 'Easy', img: imgBase, href: '/treks/dayara-bugyal' },
+  { name: 'Kuari Pass Trek', loc: 'Uttarakhand', dur: '6D/5N', price: 9999, diff: 'Moderate', img: imgBase, href: '/treks/kuari-pass' },
+  { name: 'Nag Tibba Trek', loc: 'Uttarakhand', dur: '2D/1N', price: 2499, diff: 'Easy', img: imgBase, href: '/treks/nag-tibba' },
+  { name: 'Har Ki Dun Trek', loc: 'Uttarakhand', dur: '6D/5N', price: 8999, diff: 'Moderate', img: imgBase, href: '/treks/har-ki-dun' },
 ];
 
 const howSteps = [
