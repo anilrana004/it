@@ -24,13 +24,13 @@ export default function MobileBottomNav() {
   if (shouldHideNav(path)) return null;
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 lg:hidden pb-[env(safe-area-inset-bottom,0px)] shadow-[0_-2px_10px_rgba(0,0,0,0.08)]">
-      <div className="flex items-center justify-around h-[62px]">
+    <nav className="fixed inset-x-0 bottom-0 z-50 bg-white border-t border-gray-200 lg:hidden pb-[env(safe-area-inset-bottom,0px)] shadow-[0_-2px_10px_rgba(0,0,0,0.08)]">
+      <div className="flex items-center justify-around h-[62px] max-w-full">
         {items.map(i => {
           const active = i.href === '/' ? path === '/' : path.startsWith(i.href);
           return (
             <Link key={i.label} href={i.href}
-              className={`flex flex-col items-center justify-center gap-0.5 w-full h-full transition-colors relative ${active ? 'text-[#16a34a]' : 'text-gray-400 hover:text-gray-600'}`}>
+              className={`flex flex-col items-center justify-center gap-0.5 w-full h-full min-w-0 transition-colors relative ${active ? 'text-[#16a34a]' : 'text-gray-400 hover:text-gray-600'}`}>
               {active && <span className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-0.5 bg-[#16a34a] rounded-full" />}
               <i.icon className={`w-[22px] h-[22px] ${active ? 'fill-[#16a34a]/15' : ''}`} />
               <span className={`text-[10px] ${active ? 'font-bold' : 'font-medium'}`}>{i.label}</span>

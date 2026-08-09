@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
@@ -14,12 +14,22 @@ export const metadata: Metadata = {
   keywords: "trekroot, himalayan treks, uttarakhand treks, himachal treks, nepal trek, valley of flowers, kedarkantha, everest base camp, annapurna base camp, kedarnath yatra, badrinath yatra, adventure travel",
 };
 
+/** Keep mobile layout at device width — no auto-zoom / reflow from overflow. */
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  viewportFit: "cover",
+  themeColor: "#16a34a",
+};
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={poppins.variable}>
-      <body className="min-h-screen flex flex-col">
+    <html lang="en" className={`${poppins.variable} overflow-x-clip`}>
+      <body className="min-h-dvh flex flex-col overflow-x-clip overscroll-x-none">
         <Header />
-        <main className="flex-1 pb-16 lg:pb-0">{children}</main>
+        <main className="flex-1 w-full min-w-0 pb-16 lg:pb-0">{children}</main>
         <Footer />
         <WhatsAppFloat />
         <MobileBottomNav />

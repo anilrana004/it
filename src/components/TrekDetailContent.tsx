@@ -307,7 +307,7 @@ export default function TrekDetailContent({ trek, type }: { trek: Trek; type: 't
   ];
 
   return (
-    <div className="pt-16 lg:pt-20 bg-[#f8fafb] pb-[88px] lg:pb-0">
+    <div className="pt-16 lg:pt-20 bg-[#f8fafb] pb-[88px] lg:pb-0 overflow-x-clip max-w-full">
       {/* ========== HERO ========== */}
       <section data-hero className="relative min-h-[65vh] lg:min-h-[80vh] overflow-hidden">
         <div className="absolute inset-0">
@@ -370,13 +370,25 @@ export default function TrekDetailContent({ trek, type }: { trek: Trek; type: 't
 
       {/* ========== QUICK INFO BAR ========== */}
       <div className="relative -mt-8 lg:-mt-12 z-20 container mx-auto px-4 lg:px-6 mb-8 lg:mb-12">
-        <div className="bg-white rounded-2xl shadow-lg shadow-black/5 border border-gray-100/80 p-4 lg:p-5">
-          <div className="grid grid-cols-4 sm:grid-cols-8 gap-4 lg:gap-6">
+        {/* Mobile: 2-col cards — no cramped 4-col squeeze under FABs */}
+        <div className="grid grid-cols-2 gap-2.5 lg:hidden">
+          {highlights.slice(0, 8).map((h, i) => (
+            <div key={i} className="bg-white rounded-2xl border border-gray-100/80 shadow-sm p-3.5 min-w-0">
+              <div className="w-8 h-8 rounded-lg bg-[#f0fdf4] flex items-center justify-center mb-2">
+                <h.icon className="w-4 h-4" style={{ color: accent }} />
+              </div>
+              <p className="text-[10px] text-gray-400 uppercase tracking-wider font-medium truncate">{h.label}</p>
+              <p className="font-bold text-sm text-gray-900 mt-0.5 leading-snug break-words">{h.value}</p>
+            </div>
+          ))}
+        </div>
+        <div className="hidden lg:block bg-white rounded-2xl shadow-lg shadow-black/5 border border-gray-100/80 p-5">
+          <div className="grid grid-cols-8 gap-6">
             {highlights.slice(0, 8).map((h, i) => (
-              <div key={i} className="text-center">
+              <div key={i} className="text-center min-w-0">
                 <h.icon className="w-4 h-4 mx-auto mb-1.5" style={{ color: accent }} />
                 <p className="text-[10px] text-gray-400 uppercase tracking-wider font-medium">{h.label}</p>
-                <p className="font-bold text-xs lg:text-sm text-gray-900 mt-0.5">{h.value}</p>
+                <p className="font-bold text-sm text-gray-900 mt-0.5">{h.value}</p>
               </div>
             ))}
           </div>
@@ -910,7 +922,7 @@ export default function TrekDetailContent({ trek, type }: { trek: Trek; type: 't
                 <div className="pointer-events-none absolute inset-y-0 right-0 w-16 lg:w-24 z-10 bg-gradient-to-l from-[#f8fafb] to-transparent" />
 
                 <div ref={scrollRef}
-                  className="flex gap-4 lg:gap-6 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] py-2 lg:py-4 cursor-grab active:cursor-grabbing scroll-smooth"
+                  className="flex gap-4 lg:gap-6 overflow-x-auto overscroll-x-contain touch-pan-x [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] py-2 lg:py-4 cursor-grab active:cursor-grabbing scroll-smooth max-w-full"
                   onMouseEnter={() => { if (intervalRef.current) clearInterval(intervalRef.current) }}
                   onMouseLeave={() => { startAutoScroll() }}>
                   {[...sampleTestimonials, ...sampleTestimonials].map((t, i) => (
@@ -1188,9 +1200,9 @@ export default function TrekDetailContent({ trek, type }: { trek: Trek; type: 't
       </div>
 
       {/* ========== MOBILE STICKY BOOK BAR (replaces tab nav on detail) ========== */}
-      <div className="fixed bottom-0 left-0 right-0 z-[55] lg:hidden bg-white border-t border-gray-200 shadow-[0_-8px_24px_rgba(0,0,0,0.08)] pb-[env(safe-area-inset-bottom,0px)]">
-        <div className="px-3 pt-2.5 pb-2.5 max-w-lg mx-auto">
-          <div className="flex items-center gap-2.5">
+      <div className="fixed inset-x-0 bottom-0 z-[55] lg:hidden bg-white border-t border-gray-200 shadow-[0_-8px_24px_rgba(0,0,0,0.08)] pb-[env(safe-area-inset-bottom,0px)]">
+        <div className="px-3 pt-2.5 pb-2.5 max-w-lg mx-auto w-full">
+          <div className="flex items-center gap-2.5 min-w-0">
             <button
               type="button"
               onClick={scrollToBatches}
@@ -1211,7 +1223,7 @@ export default function TrekDetailContent({ trek, type }: { trek: Trek; type: 't
             <button
               type="button"
               onClick={() => bookNow()}
-              className="shrink-0 inline-flex items-center justify-center gap-1.5 text-white font-bold text-sm px-5 py-3.5 rounded-xl shadow-md active:opacity-90 min-w-[118px]"
+              className="shrink-0 inline-flex items-center justify-center gap-1.5 text-white font-bold text-sm px-5 py-3.5 rounded-xl shadow-md active:opacity-90"
               style={{ backgroundColor: accent }}
             >
               Book Now

@@ -50,6 +50,11 @@
 html {
   scroll-behavior: smooth;
   width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
+  overscroll-behavior-x: none;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 body {
   font-family: var(--font-sans);
@@ -59,8 +64,28 @@ body {
   line-height: 1.6;
   font-weight: 400;
   width: 100%;
+  max-width: 100%;
   min-height: 100dvh;
-  overflow-x: hidden;
+  overflow-x: clip;
+  overscroll-behavior-x: none;
+  overscroll-behavior-y: none;
+  position: relative;
+}
+
+/* Prevent iOS auto-zoom on focus (requires ≥16px). */
+@media (max-width: 1023px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+}
+
+img,
+video,
+canvas,
+svg {
+  max-width: 100%;
 }
 
 :focus-visible {

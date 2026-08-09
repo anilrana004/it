@@ -35,7 +35,7 @@ export default function BatchSection({
         Five confirmed group batches every month cycle for this {tripLabel}. Pick a departure that fits your calendar - seats update live as groups fill up.
       </p>
 
-      <div className="flex gap-3 overflow-x-auto snap-x snap-mandatory scrollbar-none pb-2 -mx-1 px-1 lg:grid lg:grid-cols-5 lg:overflow-visible lg:pb-0 lg:mx-0 lg:px-0">
+      <div className="flex gap-3 overflow-x-auto overscroll-x-contain snap-x snap-mandatory scrollbar-none pb-2 max-w-full lg:grid lg:grid-cols-5 lg:overflow-visible lg:pb-0">
         {batches.map((batch, index) => {
           const selected = selectedId === batch.id;
           const soldOut = batch.status === 'sold-out';
@@ -48,7 +48,7 @@ export default function BatchSection({
               type="button"
               disabled={soldOut}
               onClick={() => onSelect(batch)}
-              className={`snap-start shrink-0 w-[78vw] max-w-[220px] lg:w-auto lg:max-w-none text-left rounded-2xl border-2 p-4 transition-all ${
+              className={`snap-start shrink-0 w-[min(220px,85%)] lg:w-auto lg:max-w-none text-left rounded-2xl border-2 p-4 transition-all ${
                 soldOut
                   ? 'border-gray-100 bg-gray-50 opacity-70 cursor-not-allowed'
                   : selected
