@@ -15,7 +15,7 @@ export default function Recognitions() {
     <section className="py-8 lg:py-16">
       <div className="container mx-auto">
         <div className="text-center mb-6 lg:mb-8">
-          <p className="text-[#ffaf21] font-semibold text-xs lg:text-sm tracking-widest uppercase mb-1">RECOGNITIONS</p>
+          <p className="text-[#16a34a] font-semibold text-xs lg:text-sm tracking-widest uppercase mb-1">RECOGNITIONS</p>
           <h2 className="text-xl lg:text-3xl font-bold text-[#000000]">Recognitions By Govt.</h2>
           <p className="text-gray-500 text-xs lg:text-sm mt-1 max-w-xl mx-auto">Recognized by Startup India, registered with ATOAI, and recipient of the TripAdvisor Travelers Choice Award.</p>
         </div>

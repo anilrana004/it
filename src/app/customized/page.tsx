@@ -50,10 +50,10 @@ export default function CustomizedPage() {
                   <img src={d.img} alt={d.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 </div>
                 <div className="p-4">
-                  <h3 className="font-bold text-base lg:text-lg text-[#000000] group-hover:text-[#ffaf21] transition-colors">{d.name}</h3>
+                  <h3 className="font-bold text-base lg:text-lg text-[#000000] group-hover:text-[#16a34a] transition-colors">{d.name}</h3>
                   <div className="flex items-center justify-between mt-1.5">
                     <span className="text-xs text-gray-500">{d.count}+ Packages</span>
-                    <span className="text-[#ffaf21] font-bold text-sm">₹{d.price.toLocaleString()}+</span>
+                    <span className="text-[#16a34a] font-bold text-sm">₹{d.price.toLocaleString()}+</span>
                   </div>
                 </div>
               </Link>
@@ -77,10 +77,10 @@ export default function CustomizedPage() {
                   <img src={d.img} alt={d.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 </div>
                 <div className="p-4">
-                  <h3 className="font-bold text-base lg:text-lg text-[#000000] group-hover:text-[#ffaf21] transition-colors">{d.name}</h3>
+                  <h3 className="font-bold text-base lg:text-lg text-[#000000] group-hover:text-[#16a34a] transition-colors">{d.name}</h3>
                   <div className="flex items-center justify-between mt-1.5">
                     <span className="text-xs text-gray-500">{d.count}+ Packages</span>
-                    <span className="text-[#ffaf21] font-bold text-sm">₹{d.price.toLocaleString()}+</span>
+                    <span className="text-[#16a34a] font-bold text-sm">₹{d.price.toLocaleString()}+</span>
                   </div>
                 </div>
               </Link>
@@ -99,7 +99,7 @@ export default function CustomizedPage() {
               { step: '04', title: 'Book & Travel', desc: 'Confirm your booking and embark on a seamless, stress-free journey crafted just for you.' },
             ].map(s => (
               <div key={s.step} className="text-center">
-                <div className="w-12 h-12 bg-[#ffaf21] text-gray-900 rounded-full flex items-center justify-center font-bold text-lg mx-auto mb-3">{s.step}</div>
+                <div className="w-12 h-12 bg-[#16a34a] text-white rounded-full flex items-center justify-center font-bold text-lg mx-auto mb-3">{s.step}</div>
                 <h3 className="font-bold text-sm lg:text-base text-[#000000] mb-1.5">{s.title}</h3>
                 <p className="text-gray-500 text-xs lg:text-sm leading-relaxed">{s.desc}</p>
               </div>
@@ -108,11 +108,11 @@ export default function CustomizedPage() {
         </div>
 
         {/* CTA */}
-        <div className="bg-gradient-to-r from-[#ffaf21] to-[#d49400] rounded-2xl p-8 lg:p-12 text-center text-white">
+        <div className="bg-gradient-to-r from-[#16a34a] to-[#15803d] rounded-2xl p-8 lg:p-12 text-center text-white">
           <h2 className="font-[family-name:var(--font-heading)] text-2xl lg:text-3xl font-bold mb-2">Ready to Plan Your Dream Trip?</h2>
           <p className="text-white/80 text-sm lg:text-base mb-6 max-w-lg mx-auto">Get in touch with our travel experts and receive a free, no-obligation quote within 24 hours.</p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <a href="tel:+919999999999" className="inline-flex items-center gap-2 bg-white text-[#ffaf21] font-semibold px-8 py-3 rounded-full hover:bg-gray-100 transition-all text-sm">Call +91 99 99 99 99 99</a>
+            <a href="tel:+919999999999" className="inline-flex items-center gap-2 bg-white text-[#16a34a] font-semibold px-8 py-3 rounded-full hover:bg-gray-100 transition-all text-sm">Call +91 99 99 99 99 99</a>
             <a href="mailto:hello@trekroot.com" className="inline-flex items-center gap-2 bg-white/10 border border-white/30 text-white font-semibold px-8 py-3 rounded-full hover:bg-white/20 transition-all text-sm">Email Us</a>
           </div>
         </div>

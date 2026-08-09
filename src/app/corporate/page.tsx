@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import Link from 'next/link';
 import { Building2, Users, Heart, Briefcase, Star, ArrowRight, CheckCircle2, MapPin, Clock, Phone, Mail, Send } from 'lucide-react';
@@ -43,11 +43,11 @@ export default function CorporatePage() {
       {/* Hero */}
       <section className="bg-gradient-to-r from-[#000000] to-[#000000] py-12 lg:py-20 mb-10 lg:mb-16">
         <div className="container mx-auto text-center">
-          <Building2 className="w-10 h-10 lg:w-14 lg:h-14 text-[#ffaf21] mx-auto mb-4" />
+          <Building2 className="w-10 h-10 lg:w-14 lg:h-14 text-[#16a34a] mx-auto mb-4" />
           <h1 className="font-[family-name:var(--font-heading)] text-3xl lg:text-5xl font-bold text-white mb-3">Corporate Tours & Retreats</h1>
           <p className="text-white/70 text-sm lg:text-lg max-w-2xl mx-auto mb-6">Build stronger teams, reward your employees, and create unforgettable experiences with TrekRoot&apos;s corporate adventure programs.</p>
           <div className="flex flex-wrap justify-center gap-3">
-            <a href="tel:+919999999999" className="inline-flex items-center gap-2 bg-[#ffaf21] hover:bg-[#d49400] text-gray-900 font-semibold px-6 py-3 rounded-full transition-all text-sm">Call Us Now</a>
+            <a href="tel:+919999999999" className="inline-flex items-center gap-2 bg-[#16a34a] hover:bg-[#15803d] text-white font-semibold px-6 py-3 rounded-full transition-all text-sm">Call Us Now</a>
             <a href="mailto:corporate@trekroot.com" className="inline-flex items-center gap-2 bg-white/10 border border-white/30 text-white font-semibold px-6 py-3 rounded-full hover:bg-white/20 transition-all text-sm">Email Us</a>
           </div>
         </div>
@@ -114,16 +114,16 @@ export default function CorporatePage() {
               <Link key={p.name} href={p.href} className="group bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-lg transition-all">
                 <div className="relative h-40 lg:h-44 overflow-hidden">
                   <img src={p.img} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                  {p.badge && <span className="absolute top-3 left-3 bg-[#ffaf21] text-gray-900 text-[10px] font-bold px-2.5 py-1 rounded-full">{p.badge}</span>}
+                  {p.badge && <span className="absolute top-3 left-3 bg-[#16a34a] text-white text-[10px] font-bold px-2.5 py-1 rounded-full">{p.badge}</span>}
                 </div>
                 <div className="p-4">
                   <div className="flex items-center gap-1 text-xs text-gray-500 mb-1">
-                    <MapPin className="w-3 h-3" />{p.loc} · <Clock className="w-3 h-3" />{p.dur}
+                    <MapPin className="w-3 h-3" />{p.loc} - <Clock className="w-3 h-3" />{p.dur}
                   </div>
-                  <h3 className="font-bold text-base lg:text-lg text-[#000000] group-hover:text-[#ffaf21] transition-colors">{p.name}</h3>
+                  <h3 className="font-bold text-base lg:text-lg text-[#000000] group-hover:text-[#16a34a] transition-colors">{p.name}</h3>
                   <div className="flex items-center justify-between mt-2">
                     <div>
-                      <span className="text-[#ffaf21] font-bold text-base">₹{p.price.toLocaleString()}</span>
+                      <span className="text-[#16a34a] font-bold text-base">₹{p.price.toLocaleString()}</span>
                       <span className="text-gray-400 text-xs ml-1">/person</span>
                     </div>
                     <span className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-blue-50 text-blue-600">{p.capacity}</span>
@@ -142,15 +142,15 @@ export default function CorporatePage() {
             { v: '100+', l: 'Custom Programs' },
             { v: '9+ Years', l: 'Experience' },
           ].map(s => (
-            <div key={s.l} className="bg-gradient-to-br from-[#ffaf21]/10 to-[#ffaf21]/5 rounded-xl p-5 text-center border border-[#ffaf21]/20">
-              <div className="font-bold text-xl lg:text-3xl text-[#ffaf21]">{s.v}</div>
+            <div key={s.l} className="bg-gradient-to-br from-[#16a34a]/10 to-[#16a34a]/5 rounded-xl p-5 text-center border border-[#16a34a]/20">
+              <div className="font-bold text-xl lg:text-3xl text-[#16a34a]">{s.v}</div>
               <div className="text-[11px] lg:text-xs text-gray-600 mt-1">{s.l}</div>
             </div>
           ))}
         </div>
 
         {/* Testimonial */}
-        <div className="bg-gradient-to-r from-[#ffaf21] to-[#d49400] rounded-2xl p-6 lg:p-10 text-white mb-12 lg:mb-20">
+        <div className="bg-gradient-to-r from-[#16a34a] to-[#15803d] rounded-2xl p-6 lg:p-10 text-white mb-12 lg:mb-20">
           <div className="max-w-2xl mx-auto text-center">
             <Star className="w-8 h-8 text-yellow-300 mx-auto mb-3 fill-yellow-300" />
             <p className="text-sm lg:text-lg leading-relaxed italic mb-4">&ldquo;TrekRoot organized an incredible team-building trek for our 45-member team. From seamless logistics to expert guides, everything was perfect. Our team came back more connected and motivated than ever.&rdquo;</p>
@@ -170,8 +170,8 @@ export default function CorporatePage() {
                   { icon: Mail, l: 'Email', v: 'corporate@trekroot.com', h: 'mailto:corporate@trekroot.com' },
                 ].map(item => (
                   <div key={item.l} className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-[#ffaf21]/10 rounded-lg flex items-center justify-center shrink-0"><item.icon className="w-5 h-5 text-[#ffaf21]" /></div>
-                    <div><p className="text-xs text-gray-400">{item.l}</p><a href={item.h} className="font-semibold text-sm text-gray-900 hover:text-[#ffaf21] transition-colors">{item.v}</a></div>
+                    <div className="w-10 h-10 bg-[#16a34a]/10 rounded-lg flex items-center justify-center shrink-0"><item.icon className="w-5 h-5 text-[#16a34a]" /></div>
+                    <div><p className="text-xs text-gray-400">{item.l}</p><a href={item.h} className="font-semibold text-sm text-gray-900 hover:text-[#16a34a] transition-colors">{item.v}</a></div>
                   </div>
                 ))}
               </div>
@@ -189,31 +189,31 @@ export default function CorporatePage() {
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">Your Name *</label>
                       <input type="text" required value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
-                        className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-[#ffaf21] outline-none transition-all" />
+                        className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-[#16a34a] outline-none transition-all" />
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">Company Name</label>
                       <input type="text" value={form.company} onChange={e => setForm(f => ({ ...f, company: e.target.value }))}
-                        className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-[#ffaf21] outline-none transition-all" />
+                        className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-[#16a34a] outline-none transition-all" />
                     </div>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">Email *</label>
                       <input type="email" required value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
-                        className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-[#ffaf21] outline-none transition-all" />
+                        className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-[#16a34a] outline-none transition-all" />
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
                       <input type="tel" value={form.phone} onChange={e => setForm(f => ({ ...f, phone: e.target.value }))}
-                        className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-[#ffaf21] outline-none transition-all" />
+                        className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-[#16a34a] outline-none transition-all" />
                     </div>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">Group Size</label>
                       <select value={form.groupSize} onChange={e => setForm(f => ({ ...f, groupSize: e.target.value }))}
-                        className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-[#ffaf21] outline-none transition-all bg-white">
+                        className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-[#16a34a] outline-none transition-all bg-white">
                         <option value="">Select...</option>
                         {['10-20', '21-40', '41-60', '61-80', '81-100', '100+'].map(s => <option key={s}>{s}</option>)}
                       </select>
@@ -221,7 +221,7 @@ export default function CorporatePage() {
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">Preferred Trek</label>
                       <select value={form.preferredTrek} onChange={e => setForm(f => ({ ...f, preferredTrek: e.target.value }))}
-                        className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-[#ffaf21] outline-none transition-all bg-white">
+                        className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-[#16a34a] outline-none transition-all bg-white">
                         <option value="">Not decided yet</option>
                         {corpPkgs.map(p => <option key={p.name}>{p.name}</option>)}
                       </select>
@@ -230,15 +230,15 @@ export default function CorporatePage() {
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">Preferred Dates</label>
                     <input type="text" placeholder="e.g. March 2027 or 15-20 April 2027" value={form.date} onChange={e => setForm(f => ({ ...f, date: e.target.value }))}
-                      className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-[#ffaf21] outline-none transition-all" />
+                      className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-[#16a34a] outline-none transition-all" />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">Special Requirements</label>
                     <textarea rows={3} value={form.message} onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
-                      className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-[#ffaf21] outline-none transition-all resize-none" />
+                      className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-[#16a34a] outline-none transition-all resize-none" />
                   </div>
                   <button type="submit" disabled={sending}
-                    className="w-full bg-[#ffaf21] hover:bg-[#d49400] disabled:bg-gray-300 text-gray-900 font-semibold px-6 py-3 rounded-full transition-all text-sm flex items-center justify-center gap-2">
+                    className="w-full bg-[#16a34a] hover:bg-[#15803d] disabled:bg-gray-300 text-white font-semibold px-6 py-3 rounded-full transition-all text-sm flex items-center justify-center gap-2">
                     {sending ? 'Sending...' : <><Send className="w-4 h-4" /> Send Inquiry</>}
                   </button>
                 </form>
@@ -252,7 +252,7 @@ export default function CorporatePage() {
           <h2 className="font-[family-name:var(--font-heading)] text-2xl lg:text-3xl font-bold text-[#000000] mb-2">Ready to Plan Your Corporate Adventure?</h2>
           <p className="text-gray-500 text-sm mb-6">Get a free quote for your team&apos;s next offsite or retreat.</p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <a href="tel:+919999999999" className="inline-flex items-center gap-2 bg-[#ffaf21] text-gray-900 font-semibold px-8 py-3 rounded-full hover:bg-[#d49400] transition-all text-sm">Call +91 99 99 99 99 99</a>
+            <a href="tel:+919999999999" className="inline-flex items-center gap-2 bg-[#16a34a] text-white font-semibold px-8 py-3 rounded-full hover:bg-[#15803d] transition-all text-sm">Call +91 99 99 99 99 99</a>
             <a href="mailto:corporate@trekroot.com" className="inline-flex items-center gap-2 bg-gray-100 text-gray-700 font-semibold px-8 py-3 rounded-full hover:bg-gray-200 transition-all text-sm">corporate@trekroot.com</a>
           </div>
         </div>

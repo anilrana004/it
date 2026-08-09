@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { MapPin, Star, Clock, CheckCircle2, ArrowRight, Globe, Plane } from 'lucide-react';
+import { MapPin, Star, Clock, CheckCircle2, ArrowRight, Globe, Plane, Mountain } from 'lucide-react';
 
 const cloud = 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/';
 
@@ -17,7 +17,7 @@ const tours = [
 ];
 
 const whyNepal = [
-  'Visas on arrival for Indian citizens — no passport hassle',
+  'Visas on arrival for Indian citizens  -  no passport hassle',
   'Direct flights from Delhi, Mumbai, Kolkata to Kathmandu',
   'Rich cultural heritage with UNESCO World Heritage sites',
   'Some of the world\'s best trekking trails',
@@ -47,8 +47,8 @@ export default function InternationalGetawaysPage() {
       {/* Hero */}
       <section className="bg-gradient-to-r from-[#000000] to-[#000000] py-10 lg:py-16 mb-10 lg:mb-16">
         <div className="container mx-auto text-center">
-          <Globe className="inline-block text-[#ffaf21] w-10 h-10 lg:w-12 lg:h-12 mb-2" />
-          <h1 className="font-[family-name:var(--font-heading)] text-3xl lg:text-5xl font-bold text-white mb-3">International Getaways — Nepal & Beyond</h1>
+          <Globe className="inline-block text-[#16a34a] w-10 h-10 lg:w-12 lg:h-12 mb-2" />
+          <h1 className="font-[family-name:var(--font-heading)] text-3xl lg:text-5xl font-bold text-white mb-3">International Getaways  -  Nepal & Beyond</h1>
           <p className="text-white/70 text-sm lg:text-lg max-w-2xl mx-auto">From the foothills of Everest to the jungles of Chitwan, embark on international adventures that will leave you breathless. Starting from ₹15,999.</p>
         </div>
       </section>
@@ -57,7 +57,7 @@ export default function InternationalGetawaysPage() {
         {/* Section 1: Trekking Expeditions */}
         <div className="mb-12 lg:mb-20">
           <div className="flex items-center gap-3 mb-8">
-            <span className="text-3xl">🏔️</span>
+            <Mountain className="w-8 h-8 text-[#16a34a]" />
             <div>
               <h2 className="font-[family-name:var(--font-heading)] text-2xl lg:text-3xl font-bold text-[#000000]">Trekking Expeditions</h2>
               <p className="text-gray-500 text-sm">Conquer legendary trails in the heart of the Himalayas</p>
@@ -71,7 +71,7 @@ export default function InternationalGetawaysPage() {
                 </div>
                 <div className="p-4">
                   <div className="flex items-start justify-between gap-2">
-                    <h3 className="font-bold text-sm lg:text-base text-[#000000] group-hover:text-[#ffaf21] transition-colors">{d.name}</h3>
+                    <h3 className="font-bold text-sm lg:text-base text-[#000000] group-hover:text-[#16a34a] transition-colors">{d.name}</h3>
                     <DifficultyBadge level={d.diff} />
                   </div>
                   <div className="flex items-center gap-3 mt-2 text-xs text-gray-500">
@@ -79,8 +79,8 @@ export default function InternationalGetawaysPage() {
                     <span className="flex items-center gap-1"><Clock className="w-3.5 h-3.5" />{d.dur}</span>
                   </div>
                   <div className="mt-3 pt-3 border-t border-gray-100 flex items-center justify-between">
-                    <span className="text-[#ffaf21] font-bold text-sm lg:text-base">₹{d.price.toLocaleString()}</span>
-                    <span className="text-xs text-gray-400 group-hover:text-[#ffaf21] transition-colors flex items-center gap-1">View Details <ArrowRight className="w-3 h-3" /></span>
+                    <span className="text-[#16a34a] font-bold text-sm lg:text-base">₹{d.price.toLocaleString()}</span>
+                    <span className="text-xs text-gray-400 group-hover:text-[#16a34a] transition-colors flex items-center gap-1">View Details <ArrowRight className="w-3 h-3" /></span>
                   </div>
                 </div>
               </Link>
@@ -105,7 +105,7 @@ export default function InternationalGetawaysPage() {
                 </div>
                 <div className="p-4">
                   <div className="flex items-start justify-between gap-2">
-                    <h3 className="font-bold text-sm lg:text-base text-[#000000] group-hover:text-[#ffaf21] transition-colors">{d.name}</h3>
+                    <h3 className="font-bold text-sm lg:text-base text-[#000000] group-hover:text-[#16a34a] transition-colors">{d.name}</h3>
                     <DifficultyBadge level={d.diff} />
                   </div>
                   <div className="flex items-center gap-3 mt-2 text-xs text-gray-500">
@@ -113,8 +113,8 @@ export default function InternationalGetawaysPage() {
                     <span className="flex items-center gap-1"><Clock className="w-3.5 h-3.5" />{d.dur}</span>
                   </div>
                   <div className="mt-3 pt-3 border-t border-gray-100 flex items-center justify-between">
-                    <span className="text-[#ffaf21] font-bold text-sm lg:text-base">₹{d.price.toLocaleString()}</span>
-                    <span className="text-xs text-gray-400 group-hover:text-[#ffaf21] transition-colors flex items-center gap-1">View Details <ArrowRight className="w-3 h-3" /></span>
+                    <span className="text-[#16a34a] font-bold text-sm lg:text-base">₹{d.price.toLocaleString()}</span>
+                    <span className="text-xs text-gray-400 group-hover:text-[#16a34a] transition-colors flex items-center gap-1">View Details <ArrowRight className="w-3 h-3" /></span>
                   </div>
                 </div>
               </Link>
@@ -135,7 +135,7 @@ export default function InternationalGetawaysPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
               {whyNepal.map((item, i) => (
                 <div key={i} className="flex items-start gap-3">
-                  <CheckCircle2 className="w-5 h-5 text-[#ffaf21] mt-0.5 shrink-0" />
+                  <CheckCircle2 className="w-5 h-5 text-[#16a34a] mt-0.5 shrink-0" />
                   <span className="text-sm lg:text-base text-gray-700">{item}</span>
                 </div>
               ))}
@@ -149,7 +149,7 @@ export default function InternationalGetawaysPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {steps.map(s => (
               <div key={s.step} className="text-center">
-                <div className="w-12 h-12 bg-[#ffaf21] text-gray-900 rounded-full flex items-center justify-center font-bold text-lg mx-auto mb-3">{s.step}</div>
+                <div className="w-12 h-12 bg-[#16a34a] text-white rounded-full flex items-center justify-center font-bold text-lg mx-auto mb-3">{s.step}</div>
                 <h3 className="font-bold text-sm lg:text-base text-[#000000] mb-1.5">{s.title}</h3>
                 <p className="text-gray-500 text-xs lg:text-sm leading-relaxed">{s.desc}</p>
               </div>
@@ -159,11 +159,11 @@ export default function InternationalGetawaysPage() {
 
         {/* CTA */}
         <div className="bg-gradient-to-r from-[#000000] to-[#1a1a1a] rounded-2xl p-8 lg:p-12 text-center text-white">
-          <Plane className="inline-block text-[#ffaf21] w-8 h-8 lg:w-10 lg:h-10 mb-3" />
+          <Plane className="inline-block text-[#16a34a] w-8 h-8 lg:w-10 lg:h-10 mb-3" />
           <h2 className="font-[family-name:var(--font-heading)] text-2xl lg:text-3xl font-bold mb-2">Ready for an International Escape?</h2>
           <p className="text-white/70 text-sm lg:text-base mb-6 max-w-lg mx-auto">Get in touch with our travel experts and start planning your Nepal adventure today.</p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <a href="tel:+919999999999" className="inline-flex items-center gap-2 bg-[#ffaf21] text-[#000000] font-semibold px-8 py-3 rounded-full hover:bg-[#ffaf21]/90 transition-all text-sm">Call +91 99 99 99 99 99</a>
+            <a href="tel:+919999999999" className="inline-flex items-center gap-2 bg-[#16a34a] text-[#000000] font-semibold px-8 py-3 rounded-full hover:bg-[#16a34a]/90 transition-all text-sm">Call +91 99 99 99 99 99</a>
             <a href="mailto:hello@trekroot.com" className="inline-flex items-center gap-2 bg-white/10 border border-white/30 text-white font-semibold px-8 py-3 rounded-full hover:bg-white/20 transition-all text-sm">Email Us</a>
           </div>
         </div>

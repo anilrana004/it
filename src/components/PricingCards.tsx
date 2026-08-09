@@ -9,8 +9,8 @@ export default function PricingCards({ trekId, pricing, startEndPoint, groupSize
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6 max-w-5xl mx-auto">
       {pricing.map((pkg, idx) => (
-        <div key={pkg.name} onClick={() => setSelected(idx)} className={`relative bg-white rounded-2xl border-2 cursor-pointer transition-all p-6 lg:p-8 ${selected===idx?'border-[#ffaf21] shadow-lg shadow-[#ffaf21]/10':'border-gray-100 hover:border-gray-200 shadow-sm'}`}>
-          {pkg.badge && <div className={`absolute -top-3 left-1/2 -translate-x-1/2 text-[11px] font-bold px-4 py-1.5 rounded-full ${pkg.badge==='Most Popular'?'bg-[#ffaf21] text-gray-900 shadow-sm':pkg.badge==='Luxury'?'bg-[#000000] text-gray-900':pkg.badge==='Budget'?'bg-[#ffaf21] text-gray-900':pkg.badge==='Budget Friendly'?'bg-[#ffaf21] text-gray-900':pkg.badge==='Best Value'?'bg-[#ffaf21] text-gray-900':'bg-gray-100 text-gray-800'} whitespace-nowrap`}>{pkg.badge}</div>}
+        <div key={pkg.name} onClick={() => setSelected(idx)} className={`relative bg-white rounded-2xl border-2 cursor-pointer transition-all p-6 lg:p-8 ${selected===idx?'border-[#16a34a] shadow-lg shadow-[#16a34a]/10':'border-gray-100 hover:border-gray-200 shadow-sm'}`}>
+          {pkg.badge && <div className={`absolute -top-3 left-1/2 -translate-x-1/2 text-[11px] font-bold px-4 py-1.5 rounded-full ${pkg.badge==='Most Popular'?'bg-[#16a34a] text-white shadow-sm':pkg.badge==='Luxury'?'bg-[#000000] text-gray-900':pkg.badge==='Budget'?'bg-[#16a34a] text-white':pkg.badge==='Budget Friendly'?'bg-[#16a34a] text-white':pkg.badge==='Best Value'?'bg-[#16a34a] text-white':'bg-gray-100 text-gray-800'} whitespace-nowrap`}>{pkg.badge}</div>}
           <div className="text-center mb-6 mt-2">
             <h3 className="font-[family-name:var(--font-heading)] font-bold text-xl text-[#000000]">{pkg.name}</h3>
             <div className="mt-3">
@@ -18,14 +18,14 @@ export default function PricingCards({ trekId, pricing, startEndPoint, groupSize
               <span className="font-[family-name:var(--font-heading)] text-3xl font-bold text-[#000000]">₹ {pkg.price.toLocaleString()}</span>
             </div>
             <p className="text-xs text-gray-500 mt-1">per person</p>
-            <p className="text-sm font-semibold text-[#ffaf21] mt-2">Deposit: ₹ {pkg.deposit.toLocaleString()}</p>
+            <p className="text-sm font-semibold text-[#16a34a] mt-2">Deposit: ₹ {pkg.deposit.toLocaleString()}</p>
           </div>
 
           <hr className="border-dashed border-gray-200 mb-4" />
 
           <ul className="space-y-2.5 mb-6">
             {pkg.inclusions.map((inc, i) => (
-              <li key={i} className="flex items-start gap-2 text-sm text-gray-700"><Check className="w-4 h-4 text-[#ffaf21] shrink-0 mt-0.5" />{inc}</li>
+              <li key={i} className="flex items-start gap-2 text-sm text-gray-700"><Check className="w-4 h-4 text-[#16a34a] shrink-0 mt-0.5" />{inc}</li>
             ))}
           </ul>
 
@@ -43,7 +43,7 @@ export default function PricingCards({ trekId, pricing, startEndPoint, groupSize
           <button onClick={() => {
             const params = new URLSearchParams({ pkg: pkg.name, trek: trekId, price: pkg.price.toString(), deposit: pkg.deposit.toString() });
             window.location.href = `/booking/${trekId}?${params}`;
-          }} className={`w-full py-3 rounded-full font-semibold text-sm transition-all ${selected===idx?'bg-[#ffaf21] hover:bg-[#d49400] text-gray-900 shadow-sm':'bg-gray-100 hover:bg-gray-200 text-gray-700'}`}>
+          }} className={`w-full py-3 rounded-full font-semibold text-sm transition-all ${selected===idx?'bg-[#16a34a] hover:bg-[#15803d] text-white shadow-sm':'bg-gray-100 hover:bg-gray-200 text-gray-700'}`}>
             Book {pkg.name}
           </button>
         </div>

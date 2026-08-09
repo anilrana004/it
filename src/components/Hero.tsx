@@ -1,19 +1,20 @@
-﻿'use client';
+'use client';
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import {
   Search, Star, ChevronLeft, ChevronRight, Users, Award, Shield,
   ArrowRight, MapPin, Calendar, Heart, ChevronDown, MessageSquare,
-  Mountain, Footprints, SunMedium, Quote, X,
+  Mountain, Footprints, SunMedium, Quote, X, Menu,
 } from 'lucide-react';
 import { treks } from '@/lib/data';
+import BrandLogo from '@/components/BrandLogo';
 
 const mobBanners = [
-  { image: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_350,c_fill,g_auto/&q=80', title: 'Uttarakhand Treks', subtitle: 'Chopta · Kedarkantha · Valley of Flowers & more', cta: 'Explore Treks', cat: 'trek' },
-  { image: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_350,c_fill,g_auto/&q=80', title: 'Sacred Yatras', subtitle: 'Kedarnath · Do Dham · Char Dham · Panch Kedar', cta: 'Explore Yatras', cat: 'yatra' },
-  { image: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_350,c_fill,g_auto/&q=80', title: 'Himachal Adventures', subtitle: 'Hampta Pass · Triund · Bhrigu Lake & more', cta: 'Explore Himachal', cat: 'trek' },
-  { image: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_350,c_fill,g_auto/&q=80', title: 'International Expeditions', subtitle: 'EBC · Annapurna · Nepal Backpacking Circuit', cta: 'Explore Global', cat: 'international' },
+  { image: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_350,c_fill,g_auto/&q=80', title: 'Uttarakhand Treks', subtitle: 'Chopta - Kedarkantha - Valley of Flowers & more', cta: 'Explore Treks', cat: 'trek' },
+  { image: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_350,c_fill,g_auto/&q=80', title: 'Sacred Yatras', subtitle: 'Kedarnath - Do Dham - Char Dham - Panch Kedar', cta: 'Explore Yatras', cat: 'yatra' },
+  { image: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_350,c_fill,g_auto/&q=80', title: 'Himachal Adventures', subtitle: 'Hampta Pass - Triund - Bhrigu Lake & more', cta: 'Explore Himachal', cat: 'trek' },
+  { image: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_350,c_fill,g_auto/&q=80', title: 'International Expeditions', subtitle: 'EBC - Annapurna - Nepal Backpacking Circuit', cta: 'Explore Global', cat: 'international' },
 ];
 
 const catItems = [
@@ -38,18 +39,18 @@ const collabItems = [
 ];
 
 const deskSlides = [
-  { id: 'valley-of-flowers', name: 'Valley of Flowers Trek', sub: 'UNESCO Himalayan Paradise — Alpine meadows, rare flora & stunning snow-capped vistas', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_1920,h_960,c_fill,g_auto/', featureImg: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_800,h_1000,c_fill,g_auto/', t: 'trek', rating: '4.8', duration: '6D/5N', difficulty: 'Moderate', altitude: '14,107 ft', distance: '38 km', reviews: '8k+', season: 'Jul–Sep', group: '6–15' },
-  { id: 'kedarkantha', name: 'Kedarkantha Trek', sub: 'Winter Wonderland — Snow-trailed summit with 360° Himalayan panoramas', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_1920,h_960,c_fill,g_auto/', featureImg: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_800,h_1000,c_fill,g_auto/', t: 'trek', rating: '4.9', duration: '5D/4N', difficulty: 'Easy-Moderate', altitude: '12,500 ft', distance: '22 km', reviews: '10k+', season: 'Dec–Apr', group: '6–15' },
-  { id: 'kedarnath-yatra', name: 'Kedarnath Yatra', sub: 'Sacred Pilgrimage — One of the 12 Jyotirlingas in the Char Dham circuit', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_1920,h_960,c_fill,g_auto/', featureImg: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_800,h_1000,c_fill,g_auto/', t: 'yatra', rating: '4.8', duration: '6D/5N', difficulty: 'Moderate', altitude: '11,755 ft', distance: '16 km', reviews: '12k+', season: 'May–Oct', group: '10–30' },
-  { id: 'everest-base-camp', name: 'Everest Base Camp Trek', sub: 'Ultimate Himalayan Dream — Trek to the foot of the world\'s highest peak', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_1920,h_960,c_fill,g_auto/', featureImg: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_800,h_1000,c_fill,g_auto/', t: 'trek', rating: '4.9', duration: '14D/13N', difficulty: 'Moderate', altitude: '17,598 ft', distance: '130 km', reviews: '20k+', season: 'Mar–May,Oct–Nov', group: '4–12' },
-  { id: 'hampta-pass', name: 'Hampta Pass Trek', sub: 'Cross-over Adventure — Lush green Kullu meets barren Spiti valley', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_1920,h_960,c_fill,g_auto/', featureImg: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_800,h_1000,c_fill,g_auto/', t: 'trek', rating: '4.7', duration: '5D/4N', difficulty: 'Moderate', altitude: '14,100 ft', distance: '26 km', reviews: '8k+', season: 'Jun–Oct', group: '6–14' },
+  { id: 'valley-of-flowers', name: 'Valley of Flowers Trek', sub: 'UNESCO Himalayan Paradise - Alpine meadows, rare flora & stunning snow-capped vistas', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_1920,h_960,c_fill,g_auto/', featureImg: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_800,h_1000,c_fill,g_auto/', t: 'trek', rating: '4.8', duration: '6D/5N', difficulty: 'Moderate', altitude: '14,107 ft', distance: '38 km', reviews: '8k+', season: 'Jul-Sep', group: '6-15' },
+  { id: 'kedarkantha', name: 'Kedarkantha Trek', sub: 'Winter Wonderland - Snow-trailed summit with 360- Himalayan panoramas', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_1920,h_960,c_fill,g_auto/', featureImg: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_800,h_1000,c_fill,g_auto/', t: 'trek', rating: '4.9', duration: '5D/4N', difficulty: 'Easy-Moderate', altitude: '12,500 ft', distance: '22 km', reviews: '10k+', season: 'Dec-Apr', group: '6-15' },
+  { id: 'kedarnath-yatra', name: 'Kedarnath Yatra', sub: 'Sacred Pilgrimage - One of the 12 Jyotirlingas in the Char Dham circuit', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_1920,h_960,c_fill,g_auto/', featureImg: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_800,h_1000,c_fill,g_auto/', t: 'yatra', rating: '4.8', duration: '6D/5N', difficulty: 'Moderate', altitude: '11,755 ft', distance: '16 km', reviews: '12k+', season: 'May-Oct', group: '10-30' },
+  { id: 'everest-base-camp', name: 'Everest Base Camp Trek', sub: 'Ultimate Himalayan Dream - Trek to the foot of the world\'s highest peak', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_1920,h_960,c_fill,g_auto/', featureImg: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_800,h_1000,c_fill,g_auto/', t: 'trek', rating: '4.9', duration: '14D/13N', difficulty: 'Moderate', altitude: '17,598 ft', distance: '130 km', reviews: '20k+', season: 'Mar-May,Oct-Nov', group: '4-12' },
+  { id: 'hampta-pass', name: 'Hampta Pass Trek', sub: 'Cross-over Adventure - Lush green Kullu meets barren Spiti valley', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_1920,h_960,c_fill,g_auto/', featureImg: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_800,h_1000,c_fill,g_auto/', t: 'trek', rating: '4.7', duration: '5D/4N', difficulty: 'Moderate', altitude: '14,100 ft', distance: '26 km', reviews: '8k+', season: 'Jun-Oct', group: '6-14' },
 ];
 
 const destinations = ['Kedarkantha', 'Valley of Flowers', 'Everest Base Camp', 'Hampta Pass', 'Chopta Tungnath', 'Kedarnath', 'Triund', 'Annapurna'];
 
 export default function Hero() {
   const router = useRouter();
-  /* ── shared state ── */
+  /* -- shared state -- */
   const [mobSlide, setMobSlide] = useState(0);
   const [collabIdx, setCollabIdx] = useState(0);
   const [collabFade, setCollabFade] = useState(true);
@@ -103,7 +104,7 @@ export default function Hero() {
   /* focus input when overlay opens */
   useEffect(() => { if (showSearch) setTimeout(() => searchRef.current?.focus(), 100); }, [showSearch]);
 
-  /* ── cat-scroll refs ── */
+  /* -- cat-scroll refs -- */
   const catRef = useRef<HTMLDivElement>(null);
   const [catL, setCatL] = useState(false);
   const [catR, setCatR] = useState(true);
@@ -112,7 +113,7 @@ export default function Hero() {
   const dragS = useRef(0);
   const moved = useRef(false);
 
-  /* ── timers ── */
+  /* -- timers -- */
   useEffect(() => {
     const t = setInterval(() => setMobSlide(p => (p + 1) % mobBanners.length), 4000);
     return () => clearInterval(t);
@@ -133,7 +134,7 @@ export default function Hero() {
     return () => clearInterval(t);
   }, []);
 
-  /* ── cat-scroll logic ── */
+  /* -- cat-scroll logic -- */
   const checkScroll = useCallback(() => {
     const el = catRef.current; if (!el) return;
     setCatL(el.scrollLeft > 4);
@@ -168,7 +169,7 @@ export default function Hero() {
     };
 
     return (
-    <section className="relative h-[88vh] min-h-[600px] overflow-hidden">
+    <section className="relative h-[88vh] min-h-[600px] w-full overflow-hidden">
       {/* Background image layer */}
       {deskSlides.map((s, i) => (
         <div key={s.id}
@@ -179,9 +180,9 @@ export default function Hero() {
       <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/70 to-black/40" />
 
       {/* Top bar */}
-      <div className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between px-10 h-14">
+      <div className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between px-6 xl:px-10 2xl:px-14 h-14">
         <div className="flex items-center gap-2">
-          <img src="https://res.cloudinary.com/pg8uhzw0/image/upload/v1785363638/l_kceoj5.png" alt="TrekRoot" className="h-9 w-auto" />
+          <BrandLogo className="h-9 w-auto max-w-[200px] object-contain object-left" />
         </div>
         <div className="flex items-center gap-4 text-white/60 text-xs">
           <a href="tel:+919797972175" className="flex items-center gap-1.5 hover:text-white transition-colors">
@@ -197,12 +198,12 @@ export default function Hero() {
 
       {/* Main content area: left info + right photo */}
       <div className="absolute inset-0 z-10 flex items-center" style={{ top: '56px', bottom: '130px' }}>
-        <div className="container mx-auto px-10 w-full">
+        <div className="container mx-auto w-full">
           <div className="flex items-center gap-10 w-full">
 
-            {/* ── LEFT: Trek info ── */}
+            {/* -- LEFT: Trek info -- */}
             <div className="flex-1 max-w-xl" key={slide.id}>
-              <span className="inline-block text-[10px] font-semibold tracking-[0.2em] uppercase text-[#ffaf21] bg-[#ffaf21]/10 border border-[#ffaf21]/20 px-3 py-1 rounded-full mb-4">
+              <span className="inline-block text-[10px] font-semibold tracking-[0.2em] uppercase text-[#16a34a] bg-[#16a34a]/10 border border-[#16a34a]/20 px-3 py-1 rounded-full mb-4">
                 {slide.t === 'yatra' ? 'Sacred Yatra' : 'Himalayan Trek'}
               </span>
 
@@ -214,7 +215,7 @@ export default function Hero() {
                 {slide.sub}
               </p>
 
-              {/* Info grid — 2x3 */}
+              {/* Info grid - 2x3 */}
               <div className="grid grid-cols-2 gap-x-8 gap-y-3 mb-7 max-w-md">
                 <InfoRow icon={Star} label="Rating" value={`${slide.rating} (${slide.reviews} reviews)`} accent />
                 <InfoRow icon={Calendar} label="Duration" value={slide.duration} />
@@ -234,7 +235,7 @@ export default function Hero() {
 
               <div className="flex items-center gap-3">
                 <Link href={href}
-                  className="inline-flex items-center gap-2 bg-[#ffaf21] hover:bg-[#d49400] text-gray-900 font-semibold text-sm px-6 py-3 rounded-full transition-all active:scale-95 shadow-lg shadow-[#ffaf21]/30">
+                  className="inline-flex items-center gap-2 bg-[#16a34a] hover:bg-[#15803d] text-white font-semibold text-sm px-6 py-3 rounded-full transition-all active:scale-95 shadow-lg shadow-[#16a34a]/30">
                   View Full Details
                   <ArrowRight className="w-4 h-4" />
                 </Link>
@@ -245,7 +246,7 @@ export default function Hero() {
               </div>
             </div>
 
-            {/* ── RIGHT: Feature photo ── */}
+            {/* -- RIGHT: Feature photo -- */}
             <div className="hidden xl:block w-[340px] xl:w-[400px] shrink-0">
               <div className="relative aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl shadow-black/40 group/ph">
                 {deskSlides.map((s, i) => (
@@ -257,7 +258,7 @@ export default function Hero() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
                 <div className="absolute bottom-4 left-4 right-4">
                   <div className="flex items-center gap-2 text-white">
-                    <Quote className="w-3.5 h-3.5 text-[#ffaf21]" />
+                    <Quote className="w-3.5 h-3.5 text-[#16a34a]" />
                     <span className="text-xs text-white/70 font-medium leading-tight">
                       {slide.t === 'yatra' ? 'Spiritual journey' : 'Adventure awaits'}
                     </span>
@@ -271,11 +272,11 @@ export default function Hero() {
       </div>
 
       {/* Search bar */}
-      <div className="absolute bottom-14 left-0 right-0 z-10 container mx-auto px-10">
+      <div className="absolute bottom-14 left-0 right-0 z-10 container mx-auto">
         <div className="bg-white rounded-2xl p-3 shadow-2xl shadow-black/20">
           <div className="flex flex-row gap-2">
             <div className="flex-1 flex items-center gap-2 px-3 py-3 bg-gray-50 rounded-xl">
-              <MapPin className="w-4 h-4 text-[#ffaf21] shrink-0" />
+              <MapPin className="w-4 h-4 text-[#16a34a] shrink-0" />
               <input type="text" aria-label="Destination" placeholder="Where do you want to go?" value={dest}
                 onChange={e => { setDest(e.target.value); setSearchQuery(e.target.value); }}
                 onKeyDown={e => { if (e.key === 'Enter') { setShowSearch(true); } }}
@@ -283,17 +284,17 @@ export default function Hero() {
               <ChevronDown className="w-4 h-4 text-gray-400 shrink-0" />
             </div>
             <div className="flex-1 flex items-center gap-2 px-3 py-3 bg-gray-50 rounded-xl">
-              <Calendar className="w-4 h-4 text-[#ffaf21] shrink-0" />
-              <input type="text" aria-label="Travel date" placeholder="When — Select Date" value={date} onChange={e => setDate(e.target.value)}
+              <Calendar className="w-4 h-4 text-[#16a34a] shrink-0" />
+              <input type="text" aria-label="Travel date" placeholder="When - Select Date" value={date} onChange={e => setDate(e.target.value)}
                 className="flex-1 bg-transparent outline-none text-sm text-gray-800 placeholder:text-gray-400" />
             </div>
             <div className="w-40 flex items-center gap-2 px-3 py-3 bg-gray-50 rounded-xl">
-              <Users className="w-4 h-4 text-[#ffaf21] shrink-0" />
+              <Users className="w-4 h-4 text-[#16a34a] shrink-0" />
               <input type="text" aria-label="Travelers" placeholder="Travelers" value={pax} onChange={e => setPax(e.target.value)}
                 className="flex-1 bg-transparent outline-none text-sm text-gray-800 placeholder:text-gray-400" />
             </div>
             <button type="button" onClick={() => setShowSearch(true)}
-              className="flex items-center justify-center gap-2 bg-[#ffaf21] hover:bg-[#d49400] text-gray-900 font-semibold px-6 py-3 rounded-xl transition-all shadow-lg shadow-[#ffaf21]/30 text-sm whitespace-nowrap shrink-0">
+              className="flex items-center justify-center gap-2 bg-[#16a34a] hover:bg-[#15803d] text-white font-semibold px-6 py-3 rounded-xl transition-all shadow-lg shadow-[#16a34a]/30 text-sm whitespace-nowrap shrink-0">
               <Search className="w-4 h-4" />
               Search
             </button>
@@ -302,12 +303,12 @@ export default function Hero() {
       </div>
 
       {/* Dots + hashtag */}
-      <div className="absolute bottom-5 left-0 right-0 z-10 flex items-center justify-between px-10">
+      <div className="absolute bottom-5 left-0 right-0 z-10 flex items-center justify-between px-6 xl:px-10 2xl:px-14">
         <div className="flex items-center gap-3">
           <div className="flex gap-2">
             {deskSlides.map((_, i) => (
               <button key={i} onClick={() => setDeskSlide(i)}
-                className={`h-1.5 rounded-full transition-all ${i === deskSlide ? 'bg-[#ffaf21] w-6' : 'bg-white/30 hover:bg-white/50 w-1.5'}`} />
+                className={`h-1.5 rounded-full transition-all ${i === deskSlide ? 'bg-[#16a34a] w-6' : 'bg-white/30 hover:bg-white/50 w-1.5'}`} />
             ))}
           </div>
           <span className="text-white/40 text-xs font-medium tracking-wide hidden xl:block">{slide.name}</span>
@@ -320,31 +321,69 @@ export default function Hero() {
 
   const InfoRow = ({ icon: Icon, label, value, accent }: { icon: any; label: string; value: string; accent?: boolean }) => (
     <div className="flex items-center gap-2.5">
-      <Icon className={`w-4 h-4 ${accent ? 'text-[#ffaf21]' : 'text-white/40'}`} />
+      <Icon className={`w-4 h-4 ${accent ? 'text-[#16a34a]' : 'text-white/40'}`} />
       <div>
         <div className="text-[10px] text-white/40 font-medium uppercase tracking-wider">{label}</div>
-        <div className={`text-sm font-semibold ${accent ? 'text-[#ffaf21]' : 'text-white/80'}`}>{value}</div>
+        <div className={`text-sm font-semibold ${accent ? 'text-[#16a34a]' : 'text-white/80'}`}>{value}</div>
       </div>
     </div>
   );
 
   /* ======================== MOBILE LAYOUT ======================== */
   const Mobile = () => (
-    <section className="bg-[#ffaf21] min-h-[50vh]">
-      <div className="container mx-auto px-4 pb-3 pt-4">
+    <section
+      id="home-mobile-hero"
+      className="relative min-h-[50vh] overflow-hidden"
+      style={{
+        // JustWravel: yellow plane that soft-fades into page bg
+        background: 'linear-gradient(180deg, #16a34a 0%, #16a34a 55%, #4ade80 78%, #f3f4f6 100%)',
+      }}
+    >
+      {/* In-flow top bar - part of the yellow page (no overlap). Sticky bar appears on scroll via Header. */}
+      <div
+        className="relative z-10 flex items-center justify-between px-4"
+        style={{
+          height: 'calc(3.5rem + env(safe-area-inset-top, 0px))',
+          paddingTop: 'env(safe-area-inset-top, 0px)',
+        }}
+      >
+        <Link href="/" className="flex items-center">
+          <BrandLogo className="h-7 w-auto max-w-[156px] object-contain object-left" />
+        </Link>
+        <div className="flex items-center gap-1">
+          <button
+            type="button"
+            aria-label="Search"
+            onClick={() => window.dispatchEvent(new Event('trekroot:open-search'))}
+            className="p-2 text-gray-900"
+          >
+            <Search className="w-5 h-5" />
+          </button>
+          <button
+            type="button"
+            aria-label="Open menu"
+            onClick={() => window.dispatchEvent(new Event('trekroot:open-menu'))}
+            className="p-2 text-gray-900"
+          >
+            <Menu className="w-6 h-6" />
+          </button>
+        </div>
+      </div>
 
-        {/* 1. Search button */}
+      <div className="relative z-0 container mx-auto px-4 pb-10 pt-2">
+
+        {/* 1. Search button - fully below in-flow navbar */}
         <div>
           <button type="button" onClick={() => setShowSearch(true)}
-            className="w-full flex items-center gap-3 bg-white/95 backdrop-blur-sm border border-white/50 rounded-2xl px-5 py-4 shadow-lg shadow-[#d49400]/20 hover:shadow-xl hover:bg-white transition-all active:scale-[0.98]">
-            <div className="w-10 h-10 rounded-full bg-[#ffaf21]/20 flex items-center justify-center shrink-0">
-              <Search className="w-5 h-5 text-[#d49400]" />
+            className="w-full flex items-center gap-3 bg-white/95 backdrop-blur-sm border border-white/50 rounded-2xl px-5 py-4 shadow-lg shadow-[#15803d]/20 hover:shadow-xl hover:bg-white transition-all active:scale-[0.98]">
+            <div className="w-10 h-10 rounded-full bg-[#16a34a]/20 flex items-center justify-center shrink-0">
+              <Search className="w-5 h-5 text-[#15803d]" />
             </div>
             <div className="flex-1 min-w-0 text-left">
               <div className="text-sm font-semibold text-gray-900">Where to?</div>
-              <div className="text-xs text-gray-500 truncate">Destinations · Treks · Yatras</div>
+              <div className="text-xs text-gray-500 truncate">Destinations - Treks - Yatras</div>
             </div>
-            <div className="text-xs text-gray-600 font-medium bg-[#ffaf21]/30 px-3 py-1.5 rounded-full shrink-0">Search</div>
+            <div className="text-xs text-gray-600 font-medium bg-[#16a34a]/30 px-3 py-1.5 rounded-full shrink-0">Search</div>
           </button>
         </div>
 
@@ -353,7 +392,7 @@ export default function Hero() {
           <Link href="/reviews"
             className="flex items-center gap-1.5 bg-white/90 backdrop-blur-sm border border-white/60 rounded-xl px-3 py-2 active:scale-95 transition-transform shrink-0 shadow-sm">
             <div className="flex">
-              {[1, 2, 3, 4, 5].map(i => <Star key={i} className="w-3 h-3.5 fill-[#d49400] text-[#d49400]" />)}
+              {[1, 2, 3, 4, 5].map(i => <Star key={i} className="w-3 h-3.5 fill-yellow-400 text-yellow-400" />)}
             </div>
             <span className="text-sm font-bold text-gray-800">4.8</span>
             <span className="text-[11px] text-gray-500 font-medium">(10k+)</span>
@@ -386,7 +425,7 @@ export default function Hero() {
                   <h2 className="text-white font-bold text-lg leading-tight mb-1">{slide.title}</h2>
                   <p className="text-white/70 text-xs mb-3 max-w-md">{slide.subtitle}</p>
                   <button type="button" onClick={() => { setSearchCategory(slide.cat as any); setSearchQuery(''); setSearchIdx(-1); setShowSearch(true); }}
-                    className="inline-flex items-center gap-1.5 bg-[#ffaf21] hover:bg-[#d49400] text-gray-900 font-semibold text-xs px-4 py-2 rounded-full transition-all active:scale-95">
+                    className="inline-flex items-center gap-1.5 bg-[#16a34a] hover:bg-[#15803d] text-white font-semibold text-xs px-4 py-2 rounded-full transition-all active:scale-95">
                     {slide.cta}<ArrowRight className="w-3.5 h-3.5" />
                   </button>
                 </div>
@@ -396,7 +435,7 @@ export default function Hero() {
           <div className="absolute bottom-2 left-1/2 -translate-x-1/2 z-20 flex gap-1.5">
             {mobBanners.map((_, i) => (
               <button key={i} type="button" onClick={() => setMobSlide(i)}
-                className={`h-1.5 rounded-full transition-all ${i === mobSlide ? 'bg-[#ffaf21] w-5' : 'bg-white/50 w-1.5'}`} />
+                className={`h-1.5 rounded-full transition-all ${i === mobSlide ? 'bg-[#16a34a] w-5' : 'bg-white/50 w-1.5'}`} />
             ))}
           </div>
         </div>
@@ -406,13 +445,13 @@ export default function Hero() {
           <div className="relative group/cat">
             {catL && (
               <button type="button" onClick={() => catBy(-1)}
-                className="hidden lg:flex absolute left-0 top-[30px] z-10 w-8 h-8 items-center justify-center rounded-full bg-white shadow-lg border border-gray-100 text-gray-500 hover:text-[#ffaf21] transition-all -translate-x-4 opacity-0 group-hover/cat:opacity-100 group-hover/cat:translate-x-0">
+                className="hidden lg:flex absolute left-0 top-[30px] z-10 w-8 h-8 items-center justify-center rounded-full bg-white shadow-lg border border-gray-100 text-gray-500 hover:text-[#16a34a] transition-all -translate-x-4 opacity-0 group-hover/cat:opacity-100 group-hover/cat:translate-x-0">
                 <ChevronLeft className="w-4 h-4" />
               </button>
             )}
             {catR && (
               <button type="button" onClick={() => catBy(1)}
-                className="hidden lg:flex absolute right-0 top-[30px] z-10 w-8 h-8 items-center justify-center rounded-full bg-white shadow-lg border border-gray-100 text-gray-500 hover:text-[#ffaf21] transition-all translate-x-4 opacity-0 group-hover/cat:opacity-100 group-hover/cat:translate-x-0">
+                className="hidden lg:flex absolute right-0 top-[30px] z-10 w-8 h-8 items-center justify-center rounded-full bg-white shadow-lg border border-gray-100 text-gray-500 hover:text-[#16a34a] transition-all translate-x-4 opacity-0 group-hover/cat:opacity-100 group-hover/cat:translate-x-0">
                 <ChevronRight className="w-4 h-4" />
               </button>
             )}
@@ -426,7 +465,7 @@ export default function Hero() {
               {catItems.map(c => (
                 <Link key={c.n} href={c.h} onClick={e => { if (moved.current) e.preventDefault(); }}
                   className="flex flex-col items-center gap-1.5 snap-start shrink-0 w-[68px]">
-                  <div className="w-[68px] h-[68px] rounded-full p-[3px] bg-gradient-to-br from-[#ffaf21] via-[#ff7a21] to-[#ff4d6a] hover:scale-105 transition-transform duration-200 shadow-sm">
+                  <div className="w-[68px] h-[68px] rounded-full p-[3px] bg-gradient-to-br from-[#16a34a] via-[#22c55e] to-[#14532d] hover:scale-105 transition-transform duration-200 shadow-sm">
                     <div className="w-full h-full rounded-full overflow-hidden border-2 border-white">
                       <img src={c.img} alt={c.n} className="w-full h-full object-cover" />
                     </div>
@@ -439,21 +478,28 @@ export default function Hero() {
         </div>
 
       </div>
+
+      {/* Soft bottom dissolve into page */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-20"
+        style={{ background: 'linear-gradient(180deg, transparent 0%, #f3f4f6 100%)' }}
+      />
     </section>
   );
 
   return (
     <>
-      <div className="mt-14 lg:mt-[72px] lg:hidden"><Mobile /></div>
+      <div className="lg:hidden"><Mobile /></div>
       <div className="hidden lg:block"><Desktop /></div>
 
-      {/* ── Search Overlay ── */}
+      {/* -- Search Overlay -- */}
       {showSearch && (
         <div className="fixed inset-0 z-[100] flex items-start justify-center pt-[15vh] bg-black/60 backdrop-blur-sm"
           onClick={e => { if (e.target === e.currentTarget) { setShowSearch(false); setSearchQuery(''); } }}>
           <div className="w-full max-w-lg mx-4 bg-white rounded-2xl shadow-2xl shadow-black/30 overflow-hidden animate-in fade-in zoom-in-95 duration-200">
             <div className="flex items-center gap-2 px-4 py-3 border-b border-gray-100">
-              <Search className="w-5 h-5 text-[#ffaf21] shrink-0" />
+              <Search className="w-5 h-5 text-[#16a34a] shrink-0" />
               <input ref={searchRef} type="text" autoComplete="off" aria-label="Search treks & yatras"
                 placeholder="Search treks, yatras, destinations..."
                 value={searchQuery} onChange={e => { setSearchQuery(e.target.value); setSearchIdx(-1); }}
@@ -472,7 +518,7 @@ export default function Hero() {
                 { key: 'international', label: 'International' },
               ].map(c => (
                 <button key={c.key} type="button" onClick={() => { setSearchCategory(c.key as any); setSearchIdx(-1); }}
-                  className={`shrink-0 px-3 py-1 rounded-full text-xs font-medium transition-all ${searchCategory === c.key ? 'bg-[#ffaf21] text-gray-900' : 'bg-gray-100 text-gray-500 hover:bg-gray-200'}`}>
+                  className={`shrink-0 px-3 py-1 rounded-full text-xs font-medium transition-all ${searchCategory === c.key ? 'bg-[#16a34a] text-white' : 'bg-gray-100 text-gray-500 hover:bg-gray-200'}`}>
                   {c.label}
                 </button>
               ))}
@@ -492,7 +538,7 @@ export default function Hero() {
                   <div className="flex flex-wrap justify-center gap-1.5 mt-4">
                     {['Kedarkantha', 'Valley of Flowers', 'Everest', 'Hampta Pass', 'Kedarnath', 'Triund', 'Chopta', 'Annapurna'].map(tag => (
                       <button key={tag} type="button" onClick={() => { setSearchQuery(tag); setSearchIdx(-1); searchRef.current?.focus(); }}
-                        className="text-xs bg-gray-100 hover:bg-[#ffaf21]/10 hover:text-[#b87800] text-gray-500 px-3 py-1.5 rounded-full transition-colors">
+                        className="text-xs bg-gray-100 hover:bg-[#16a34a]/10 hover:text-[#166534] text-gray-500 px-3 py-1.5 rounded-full transition-colors">
                         {tag}
                       </button>
                     ))}
@@ -516,7 +562,7 @@ export default function Hero() {
                           <img src={t.images[0]} alt={t.title} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                           <div className="absolute top-2 left-2">
-                            <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${t.type === 'yatra' ? 'bg-[#ffaf21] text-gray-900' : 'bg-emerald-500/80 text-white'}`}>
+                            <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${t.type === 'yatra' ? 'bg-[#16a34a] text-white' : 'bg-emerald-500/80 text-white'}`}>
                               {t.type === 'yatra' ? 'Yatra' : 'Trek'}
                             </span>
                           </div>
@@ -524,7 +570,7 @@ export default function Hero() {
                             <h4 className="text-white text-[11px] font-semibold leading-tight line-clamp-2">{t.title}</h4>
                             <div className="flex items-center gap-1 text-[10px] text-white/60 mt-0.5">
                               <span>{t.duration}</span>
-                              <span className="text-white/30">·</span>
+                              <span className="text-white/30">-</span>
                               <span>₹{Math.min(...t.pricing.map(p => p.price)).toLocaleString()}</span>
                             </div>
                           </div>
@@ -533,15 +579,15 @@ export default function Hero() {
                   </div>
                   <Link href={searchCategory === 'yatra' ? '/yatra' : '/treks'}
                     onClick={() => { setShowSearch(false); setSearchQuery(''); }}
-                    className="block text-center text-xs text-[#ffaf21] font-semibold py-3 hover:underline">
-                    View All {searchCategory === 'trek' ? 'Treks' : searchCategory === 'yatra' ? 'Yatras' : 'International'} →
+                    className="block text-center text-xs text-[#16a34a] font-semibold py-3 hover:underline">
+                    View All {searchCategory === 'trek' ? 'Treks' : searchCategory === 'yatra' ? 'Yatras' : 'International'} ?
                   </Link>
                 </div>
               )}
               {searchQuery.trim() && searchResults.length > 0 && searchResults.map((s, i) => (
                 <button key={s.id} type="button" onClick={() => goSearch(s.id, s.type)}
                   onMouseEnter={() => setSearchIdx(i)}
-                  className={`w-full flex items-center gap-3 px-5 py-3 text-left transition-colors ${i === searchIdx ? 'bg-[#ffaf21]/10' : 'hover:bg-gray-50'}`}>
+                  className={`w-full flex items-center gap-3 px-5 py-3 text-left transition-colors ${i === searchIdx ? 'bg-[#16a34a]/10' : 'hover:bg-gray-50'}`}>
                   <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${s.type === 'yatra' ? 'bg-orange-100 text-orange-600' : 'bg-emerald-100 text-emerald-600'}`}>
                     {s.type === 'yatra' ? <SunMedium className="w-5 h-5" /> : <Mountain className="w-5 h-5" />}
                   </div>

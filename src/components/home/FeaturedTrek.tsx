@@ -1,4 +1,4 @@
-﻿import Link from 'next/link';
+import Link from 'next/link';
 import { MapPin, Clock, TrendingUp, ChevronRight } from 'lucide-react';
 
 const featured = {
@@ -13,7 +13,7 @@ const featured = {
   originalPrice: 11999,
   img: 'https://res.cloudinary.com/pg8uhzw0/image/upload/f_auto,q_auto,w_800,h_600,c_fill,g_auto/v1785367489/pexels-unaizat97-8673607_anl07u.jpg',
   badge: 'Trek of the Week',
-  gradient: 'from-[#ffaf21] to-[#ffaf21]',
+  gradient: 'from-[#16a34a] to-[#16a34a]',
   href: '/treks/valley-of-flowers',
 };
 
@@ -27,18 +27,18 @@ export default function FeaturedTrek() {
             <img src={featured.img} alt={featured.title} className="w-full h-64 lg:h-[420px] object-cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
             <div className="absolute top-4 left-4">
-              <span className="bg-[#ffaf21] text-gray-900 text-xs font-bold px-3 py-1.5 rounded-full uppercase">{featured.badge}</span>
+              <span className="bg-[#16a34a] text-white text-xs font-bold px-3 py-1.5 rounded-full uppercase">{featured.badge}</span>
             </div>
           </div>
           {/* Right - Content */}
           <div className="text-white">
-            <p className="text-[#ffaf21] font-semibold text-xs lg:text-sm tracking-widest uppercase mb-2">Featured Trek</p>
+            <p className="text-[#16a34a] font-semibold text-xs lg:text-sm tracking-widest uppercase mb-2">Featured Trek</p>
             <h2 className="font-[family-name:var(--font-heading)] text-2xl lg:text-4xl xl:text-5xl font-bold mb-2 leading-tight">{featured.title}</h2>
             <p className="text-white/60 text-sm lg:text-lg mb-4">{featured.subtitle}</p>
             <div className="flex flex-wrap items-center gap-4 mb-5 text-white/80 text-sm">
-              <span className="flex items-center gap-1.5"><MapPin className="w-4 h-4 text-[#ffaf21]" />{featured.location}</span>
-              <span className="flex items-center gap-1.5"><Clock className="w-4 h-4 text-[#ffaf21]" />{featured.duration}</span>
-              <span className="flex items-center gap-1.5"><TrendingUp className="w-4 h-4 text-[#ffaf21]" />{featured.maxAltitude}</span>
+              <span className="flex items-center gap-1.5"><MapPin className="w-4 h-4 text-[#16a34a]" />{featured.location}</span>
+              <span className="flex items-center gap-1.5"><Clock className="w-4 h-4 text-[#16a34a]" />{featured.duration}</span>
+              <span className="flex items-center gap-1.5"><TrendingUp className="w-4 h-4 text-[#16a34a]" />{featured.maxAltitude}</span>
             </div>
             <div className="flex items-center gap-2 mb-6">
               <div className="flex items-center gap-0.5">
@@ -52,10 +52,10 @@ export default function FeaturedTrek() {
             <div className="flex items-center gap-3 mb-6">
               <span className="text-3xl font-bold text-white">₹{featured.price.toLocaleString()}</span>
               <span className="text-white/40 text-sm line-through">₹{featured.originalPrice.toLocaleString()}</span>
-              <span className="bg-[#ffaf21]/20 text-[#ffaf21] text-xs font-bold px-2 py-1 rounded-full">{Math.round((1-featured.price/featured.originalPrice)*100)}% OFF</span>
+              <span className="bg-[#16a34a]/20 text-[#16a34a] text-xs font-bold px-2 py-1 rounded-full">{Math.round((1-featured.price/featured.originalPrice)*100)}% OFF</span>
             </div>
             <Link href={featured.href}
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-[#ffaf21] to-[#ffaf21] hover:opacity-90 text-white font-semibold px-6 py-3 rounded-full transition-all shadow-lg shadow-[#ffaf21]/25">
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-[#16a34a] to-[#16a34a] hover:opacity-90 text-white font-semibold px-6 py-3 rounded-full transition-all shadow-lg shadow-[#16a34a]/25">
               Book Now <ChevronRight className="w-4 h-4" />
             </Link>
           </div>

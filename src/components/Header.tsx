@@ -1,9 +1,10 @@
 'use client';
 import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { Menu, X, Phone, Search, ChevronDown, User, Sparkles, Mountain, SunMedium, ArrowRight } from 'lucide-react';
 import { treks } from '@/lib/data';
+import BrandLogo from '@/components/BrandLogo';
 
 const navItems = [
   {
@@ -86,7 +87,7 @@ function Dropdown({ items, onClose }: { items: { l: string; h: string }[]; onClo
     <div className="absolute top-full left-0 mt-1 bg-white rounded-xl shadow-xl border border-gray-100 py-2 min-w-[220px] z-50" role="menu">
       {items.map(item => (
         <Link key={item.l} href={item.h} onClick={onClose} role="menuitem"
-          className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 hover:text-[#ffaf21] transition-colors">
+          className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 hover:text-[#16a34a] transition-colors">
           {item.l}
         </Link>
       ))}
@@ -99,21 +100,28 @@ export default function Header() {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState<string[]>([]);
   const [mobileAccordion, setMobileAccordion] = useState<number | null>(null);
-  const [mobileYellow, setMobileYellow] = useState(1);
+  /** 0 = dissolved into hero, 1 = solid yellow bar (mobile homepage only) */
+  const [navSolid, setNavSolid] = useState(0);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const headerRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
+  const isHome = pathname === '/';
 
   useEffect(() => {
-    const onScroll = () => {
-      const vh = window.innerHeight;
-      const y = window.scrollY;
-      const intensity = Math.max(0, Math.min(1, 1 - (y - vh * 0.8) / (vh * 0.8)));
-      setMobileYellow(intensity);
+    if (!isHome) {
+      setNavSolid(1);
+      return;
+    }
+
+    // JustWravel flow: sticky solid bar only after leaving the top of the page
+    const SHOW_AFTER = 48;
+    const update = () => {
+      setNavSolid(window.scrollY > SHOW_AFTER ? 1 : 0);
     };
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+    return () => window.removeEventListener('scroll', update);
+  }, [isHome]);
 
   const [mobSearch, setMobSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -121,6 +129,21 @@ export default function Header() {
   const searchRef = useRef<HTMLInputElement>(null);
   const searchListRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
+
+  // Hero in-flow bar dispatches these (JustWravel: logo/menu live in the yellow page)
+  useEffect(() => {
+    const openMenu = () => setIsOpen(true);
+    const openSearch = () => setMobSearch(true);
+    window.addEventListener('trekroot:open-menu', openMenu);
+    window.addEventListener('trekroot:open-search', openSearch);
+    return () => {
+      window.removeEventListener('trekroot:open-menu', openMenu);
+      window.removeEventListener('trekroot:open-search', openSearch);
+    };
+  }, []);
+
+  /** Homepage: hide fixed bar until scroll. Other pages: always solid. */
+  const showFixedMobile = !isHome || navSolid > 0 || isOpen;
 
   const searchItems = useMemo(() =>
     treks.map(t => ({ id: t.id, title: t.title, sub: t.subtitle, type: t.type as 'trek' | 'yatra' })),
@@ -200,9 +223,9 @@ export default function Header() {
     <div ref={headerRef}>
       {/* Desktop Header */}
       <header className="fixed left-0 top-0 z-50 hidden w-full bg-white shadow-sm lg:block">
-        <div className="flex h-16 items-center justify-between gap-4 px-6 xl:px-10">
+        <div className="flex h-16 items-center justify-between gap-4 px-6 xl:px-10 2xl:px-14">
           <Link href="/" className="shrink-0">
-            <img src="https://res.cloudinary.com/pg8uhzw0/image/upload/v1785363638/l_kceoj5.png" alt="TrekRoot" className="h-9 w-auto" />
+            <BrandLogo className="h-9 w-auto max-w-[200px] object-contain object-left" />
           </Link>
 
           <nav className="flex items-center justify-center gap-0.5">
@@ -221,13 +244,13 @@ export default function Header() {
                   <button type="button"
                     onClick={() => setOpenDropdown(openDropdown === item.label ? null : item.label)}
                     aria-expanded={openDropdown === item.label} aria-haspopup="true"
-                    className="inline-flex items-center gap-1 px-3 xl:px-4 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-50 hover:text-[#ffaf21] transition-colors">
+                    className="inline-flex items-center gap-1 px-3 xl:px-4 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-50 hover:text-[#16a34a] transition-colors">
                     {item.label}
                     <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${openDropdown === item.label ? 'rotate-180' : ''}`} />
                   </button>
                 ) : (
                   <Link href={item.href}
-                    className="inline-flex items-center gap-1 px-3 xl:px-4 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-50 hover:text-[#ffaf21] transition-colors">
+                    className="inline-flex items-center gap-1 px-3 xl:px-4 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-50 hover:text-[#16a34a] transition-colors">
                     {item.label}
                   </Link>
                 )}
@@ -243,14 +266,14 @@ export default function Header() {
 
           <div className="flex shrink-0 items-center gap-2.5">
             <a href="tel:+919797972175"
-              className="flex items-center gap-2 text-sm font-medium text-gray-700 hover:text-[#ffaf21] px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors">
+              className="flex items-center gap-2 text-sm font-medium text-gray-700 hover:text-[#16a34a] px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors">
               <Phone className="w-4 h-4" /> Call Us
             </a>
-            <button type="button" aria-label="Search" className="w-9 h-9 flex items-center justify-center bg-[#ffaf21] text-black rounded-full hover:bg-[#d49400] transition-colors shadow-sm">
+            <button type="button" aria-label="Search" className="w-9 h-9 flex items-center justify-center bg-[#16a34a] text-white rounded-full hover:bg-[#15803d] transition-colors shadow-sm">
               <Search className="w-4 h-4" />
             </button>
             <Link href="/login"
-              className="flex items-center gap-2 text-sm font-medium text-gray-700 hover:text-[#ffaf21] px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors">
+              className="flex items-center gap-2 text-sm font-medium text-gray-700 hover:text-[#16a34a] px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors">
               <User className="w-4 h-4" />
               <span>Login</span>
             </Link>
@@ -258,28 +281,47 @@ export default function Header() {
         </div>
       </header>
 
-      {/* Mobile Header */}
-      <header className={`fixed left-0 top-0 w-full lg:hidden ${isOpen ? 'z-[70]' : 'z-50'}`}
+      {/*
+        Mobile header (JustWravel flow):
+        - Homepage top: hidden  -  logo/menu live in the yellow hero (document flow)
+        - After scroll: solid yellow bar slides in and sticks
+        - Other pages: always visible solid yellow
+      */}
+      <header
+        className={`fixed left-0 top-0 w-full lg:hidden ${isOpen ? 'z-[70]' : 'z-50'}`}
         style={{
-          background: `rgb(${255}, ${Math.round(175 + 80 * (1 - mobileYellow))}, ${Math.round(33 + 222 * (1 - mobileYellow))})`,
-          backdropFilter: 'blur(4px)',
-          WebkitBackdropFilter: 'blur(4px)',
-          boxShadow: mobileYellow < 0.5 ? 'none' : '0 1px 3px rgba(0,0,0,0.08)',
-        }}>
-        <div className="flex items-center justify-between h-14 px-4">
+          backgroundColor: '#16a34a',
+          boxShadow: showFixedMobile ? '0 1px 8px rgba(0,0,0,0.1)' : 'none',
+          paddingTop: 'env(safe-area-inset-top, 0px)',
+          transform: showFixedMobile ? 'translateY(0)' : 'translateY(-110%)',
+          opacity: showFixedMobile ? 1 : 0,
+          pointerEvents: showFixedMobile ? 'auto' : 'none',
+          transition: 'transform 0.28s cubic-bezier(0.22,1,0.36,1), opacity 0.22s ease, box-shadow 0.22s ease',
+        }}
+      >
+        <div className="flex h-14 items-center justify-between px-4">
           <Link href="/" className="flex items-center gap-2" onClick={() => { if (isOpen) setIsOpen(false); }}>
-            <img src="https://res.cloudinary.com/pg8uhzw0/image/upload/v1785363638/l_kceoj5.png" alt="TrekRoot" className="h-8 w-auto" />
+            <BrandLogo className="h-7 w-auto max-w-[156px] object-contain object-left" />
           </Link>
-          <div className="flex items-center gap-2">
-            <button type="button" aria-label="Search" onClick={() => setMobSearch(true)} className="p-2" style={{ color: `rgb(${100 + 7 * (1 - mobileYellow)}, ${70 + 44 * (1 - mobileYellow)}, ${128 * (1 - mobileYellow)})` }}>
+          <div className="flex items-center gap-1">
+            <button type="button" aria-label="Search" onClick={() => setMobSearch(true)} className="p-2 text-gray-900">
               <Search className="w-5 h-5" />
             </button>
-            <button type="button" onClick={() => setIsOpen(!isOpen)} aria-label={isOpen ? 'Close menu' : 'Open menu'} aria-expanded={isOpen} className="p-2" style={{ color: `rgb(${100 + 7 * (1 - mobileYellow)}, ${70 + 44 * (1 - mobileYellow)}, ${128 * (1 - mobileYellow)})` }}>
+            <button type="button" onClick={() => setIsOpen(!isOpen)} aria-label={isOpen ? 'Close menu' : 'Open menu'} aria-expanded={isOpen} className="p-2 text-gray-900">
               {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
           </div>
         </div>
       </header>
+
+      {/* Non-home pages: reserve space under fixed mobile header */}
+      {!isHome && (
+        <div
+          aria-hidden
+          className="lg:hidden"
+          style={{ height: 'calc(3.5rem + env(safe-area-inset-top, 0px))' }}
+        />
+      )}
 
       {/* Mobile Drawer */}
       {isOpen && (
@@ -336,11 +378,11 @@ export default function Header() {
                 </div>
                 <div className="flex items-center gap-2">
                   <Phone className="w-4 h-4 text-gray-400 shrink-0" />
-                  <a href="tel:+919797972175" className="text-xs text-gray-600 hover:text-[#ffaf21]">+91 97 97 97 21 75</a>
+                  <a href="tel:+919797972175" className="text-xs text-gray-600 hover:text-[#16a34a]">+91 97 97 97 21 75</a>
                 </div>
                 <div className="flex items-center gap-2">
                   <svg className="w-4 h-4 text-gray-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
-                  <a href="mailto:contact@trekroot.com" className="text-xs text-gray-600 hover:text-[#ffaf21]">contact@trekroot.com</a>
+                  <a href="mailto:contact@trekroot.com" className="text-xs text-gray-600 hover:text-[#16a34a]">contact@trekroot.com</a>
                 </div>
               </div>
             </div>
@@ -358,7 +400,7 @@ export default function Header() {
                     <div className="pb-3 space-y-1 px-1">
                       {s.links.map(l => (
                         <Link key={l.l} href={l.h} onClick={closeMobile}
-                          className="block text-sm text-gray-500 hover:text-[#ffaf21] py-1.5">
+                          className="block text-sm text-gray-500 hover:text-[#16a34a] py-1.5">
                           {l.l}
                         </Link>
                       ))}
@@ -389,7 +431,7 @@ export default function Header() {
 
             <div className="px-4 mt-4 space-y-3">
               <Link href="/login" onClick={closeMobile}
-                className="flex items-center justify-center gap-2 bg-[#ffaf21] text-black font-semibold px-6 py-3 rounded-full w-full">
+                className="flex items-center justify-center gap-2 bg-[#16a34a] text-white font-semibold px-6 py-3 rounded-full w-full">
                 <User className="w-4 h-4" /> Login / Sign Up
               </Link>
               <a href="tel:+919797972175"
@@ -407,7 +449,7 @@ export default function Header() {
           onClick={e => { if (e.target === e.currentTarget) { setMobSearch(false); setSearchQuery(''); } }}>
           <div className="w-full max-w-lg mx-4 bg-white rounded-2xl shadow-2xl shadow-black/30 overflow-hidden">
             <div className="flex items-center gap-2 px-4 py-3 border-b border-gray-100">
-              <Search className="w-5 h-5 text-[#ffaf21] shrink-0" />
+              <Search className="w-5 h-5 text-[#16a34a] shrink-0" />
               <input ref={searchRef} type="text" autoComplete="off" aria-label="Search treks & yatras"
                 placeholder="Search treks, yatras, destinations..."
                 value={searchQuery} onChange={e => { setSearchQuery(e.target.value); setSearchIdx(-1); }}
@@ -433,7 +475,7 @@ export default function Header() {
                   <div className="flex flex-wrap justify-center gap-1.5 mt-4">
                     {['Valley of Flowers', 'Kedarkantha', 'Everest', 'Hampta Pass', 'Kedarnath', 'Triund'].map(tag => (
                       <button key={tag} type="button" onClick={() => { setSearchQuery(tag); setSearchIdx(-1); searchRef.current?.focus(); }}
-                        className="text-xs bg-gray-100 hover:bg-[#ffaf21]/10 hover:text-[#b87800] text-gray-500 px-3 py-1.5 rounded-full transition-colors">
+                        className="text-xs bg-gray-100 hover:bg-[#16a34a]/10 hover:text-[#166534] text-gray-500 px-3 py-1.5 rounded-full transition-colors">
                         {tag}
                       </button>
                     ))}
@@ -443,7 +485,7 @@ export default function Header() {
               {searchResults.map((s, i) => (
                 <button key={s.id} type="button" onClick={() => goSearch(s.id, s.type)}
                   onMouseEnter={() => setSearchIdx(i)}
-                  className={`w-full flex items-center gap-3 px-5 py-3 text-left transition-colors ${i === searchIdx ? 'bg-[#ffaf21]/10' : 'hover:bg-gray-50'}`}>
+                  className={`w-full flex items-center gap-3 px-5 py-3 text-left transition-colors ${i === searchIdx ? 'bg-[#16a34a]/10' : 'hover:bg-gray-50'}`}>
                   <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${s.type === 'yatra' ? 'bg-orange-100 text-orange-600' : 'bg-emerald-100 text-emerald-600'}`}>
                     {s.type === 'yatra' ? <SunMedium className="w-5 h-5" /> : <Mountain className="w-5 h-5" />}
                   </div>

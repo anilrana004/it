@@ -12,7 +12,7 @@ export default function WhatsAppFloat() {
       </a>
       {/* Share */}
       <button onClick={() => { if (navigator.share) navigator.share({ title: 'TrekRoot - Explore the Himalayas', url: window.location.href }); }}
-        className="fixed bottom-36 lg:bottom-20 right-4 z-40 w-11 h-11 bg-[#ffaf21] hover:bg-[#d49400] rounded-full flex items-center justify-center shadow-lg shadow-[#ffaf21]/25 hover:scale-110 transition-all">
+        className="fixed bottom-36 lg:bottom-20 right-4 z-40 w-11 h-11 bg-[#16a34a] hover:bg-[#15803d] rounded-full flex items-center justify-center shadow-lg shadow-[#16a34a]/25 hover:scale-110 transition-all">
         <Share2 className="w-5 h-5 text-white" />
       </button>
     </>

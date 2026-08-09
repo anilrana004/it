@@ -37,7 +37,7 @@ export default function AdminLogin() {
       <div className="w-full max-w-sm">
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 lg:p-8">
           <div className="text-center mb-6">
-            <div className="w-12 h-12 bg-gradient-to-br from-[#ffaf21] to-[#ffaf21] rounded-xl flex items-center justify-center mx-auto mb-3">
+            <div className="w-12 h-12 bg-gradient-to-br from-[#16a34a] to-[#16a34a] rounded-xl flex items-center justify-center mx-auto mb-3">
               <span className="text-white font-bold text-xl">TR</span>
             </div>
             <h1 className="font-[family-name:var(--font-heading)] text-xl font-bold text-[#000000]">Admin Login</h1>
@@ -48,20 +48,20 @@ export default function AdminLogin() {
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
               <input type="email" required value={form.email} onChange={e => setForm(f=>({...f,email:e.target.value}))}
-                className="w-full px-4 py-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#ffaf21] text-sm" />
+                className="w-full px-4 py-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#16a34a] text-sm" />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
               <input type="password" required value={form.password} onChange={e => setForm(f=>({...f,password:e.target.value}))}
-                className="w-full px-4 py-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#ffaf21] text-sm" />
+                className="w-full px-4 py-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#16a34a] text-sm" />
             </div>
             <button type="submit" disabled={loading}
-              className="w-full bg-[#ffaf21] hover:bg-[#d49400] text-gray-900 font-semibold px-6 py-3 rounded-full transition-all text-sm disabled:opacity-50">
+              className="w-full bg-[#16a34a] hover:bg-[#15803d] text-white font-semibold px-6 py-3 rounded-full transition-all text-sm disabled:opacity-50">
               {loading ? 'Signing in...' : 'Sign In'}
             </button>
           </form>
           <div className="mt-4 text-center">
-            <Link href="/" className="text-xs text-gray-400 hover:text-[#ffaf21]">Back to Site</Link>
+            <Link href="/" className="text-xs text-gray-400 hover:text-[#16a34a]">Back to Site</Link>
           </div>
         </div>
       </div>

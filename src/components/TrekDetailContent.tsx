@@ -2,15 +2,19 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { MapPin, Clock, Star, ChevronLeft, Check, Shield, Users, TrendingUp, Thermometer, Calendar, Info, Ban, ArrowRight, ChevronDown, Phone, Mail, Navigation, Mountain, Heart, Award, ChefHat, Bed, Minus, Plus, Plane, ExternalLink, SunSnow, Tent, Trees, Footprints, Cable, MountainSnow, SunMedium, DollarSign, Luggage, Camera, Image, Truck, Sparkles, Headphones, Flag, Gift, Tag } from 'lucide-react';
+import { MapPin, Clock, Star, ChevronLeft, Check, Shield, Users, TrendingUp, Thermometer, Calendar, Info, Ban, ArrowRight, ChevronDown, Phone, Mail, Navigation, Mountain, ChefHat, Bed, Minus, Plus, Plane, ExternalLink, SunSnow, Tent, Trees, Footprints, Cable, MountainSnow, SunMedium, DollarSign, Luggage, Camera, Image, Truck, Sparkles, Headphones, Award, Shirt, HeartPulse, FileText, type LucideIcon } from 'lucide-react';
 import type { Trek } from '@/lib/data';
+import { getMonthlyBatches, type TrekBatch } from '@/lib/batches';
 import Gallery from '@/components/Gallery';
 import SimilarTreks from '@/components/SimilarTreks';
+import Banners from '@/components/Banners';
+import BatchSection from '@/components/BatchSection';
 
 const navLinks = [
   { id: 'highlight', label: 'Highlight' },
   { id: 'overview', label: 'Overview' },
   { id: 'itinerary', label: 'Itinerary' },
+  { id: 'batches', label: 'Batches' },
   { id: 'in-ex', label: "Inclusion & exclusion" },
   { id: 'best-time', label: 'Best Time' },
   { id: 'things-to-carry', label: 'Things to Carry' },
@@ -68,11 +72,11 @@ const sampleTestimonials = [
   { name: 'Rahul Sharma', city: 'Delhi', platform: 'Google', text: 'Best trekking experience of my life! The team was incredibly supportive and the views from the summit were absolutely breathtaking. Would recommend to everyone.' },
   { name: 'Anjali Patel', city: 'Ahmedabad', platform: 'TripAdvisor', text: 'The organisation was flawless. From the pickup to the drop, everything was handled professionally. The guides knew the terrain like the back of their hand.' },
   { name: 'Vikram Singh', city: 'Jaipur', platform: 'Google', text: 'I was nervous about my first high-altitude trek but the acclimatisation plan was perfect. The camp food was surprisingly delicious and the camaraderie was unmatched.' },
-  { name: 'Priya Deshmukh', city: 'Pune', platform: 'TripAdvisor', text: 'Crossing the pass at sunrise was a spiritual experience. The snow-capped peaks, the silence, the crisp air — nothing compares. TrekRoot made it happen seamlessly.' },
+  { name: 'Priya Deshmukh', city: 'Pune', platform: 'TripAdvisor', text: 'Crossing the pass at sunrise was a spiritual experience. The snow-capped peaks, the silence, the crisp air - nothing compares. TrekRoot made it happen seamlessly.' },
   { name: 'Arun Nair', city: 'Kochi', platform: 'Google', text: 'Coming from Kerala, I was worried about the cold but the gear they provided was top-notch. The guides made sure everyone was comfortable and safe throughout.' },
-  { name: 'Neha Gupta', city: 'Lucknow', platform: 'TripAdvisor', text: 'The campsites were chosen perfectly — each one had a view that left us speechless. The stargazing at night was the cherry on top. Unforgettable trip!' },
-  { name: 'Siddharth Rao', city: 'Hyderabad', platform: 'Google', text: 'I have done multiple treks with TrekRoot and every single time they exceed expectations. The attention to detail, the safety protocols, the energy — superb!' },
-  { name: 'Kavita Joshi', city: 'Mumbai', platform: 'TripAdvisor', text: 'The booking process was smooth, the team was responsive, and the trek itself was magical. The waterfalls, the meadows, the lake — it felt like a dream.' },
+  { name: 'Neha Gupta', city: 'Lucknow', platform: 'TripAdvisor', text: 'The campsites were chosen perfectly - each one had a view that left us speechless. The stargazing at night was the cherry on top. Unforgettable trip!' },
+  { name: 'Siddharth Rao', city: 'Hyderabad', platform: 'Google', text: 'I have done multiple treks with TrekRoot and every single time they exceed expectations. The attention to detail, the safety protocols, the energy - superb!' },
+  { name: 'Kavita Joshi', city: 'Mumbai', platform: 'TripAdvisor', text: 'The booking process was smooth, the team was responsive, and the trek itself was magical. The waterfalls, the meadows, the lake - it felt like a dream.' },
   { name: 'Amit Thakur', city: 'Chandigarh', platform: 'Google', text: 'As a solo traveller I was a bit anxious, but the group was so welcoming. Made friends for life and the trek leader was amazing. Will definitely book again.' },
   { name: 'Deepa Menon', city: 'Bengaluru', platform: 'TripAdvisor', text: 'The fitness training tips they shared before the trek were incredibly useful. I felt well-prepared and the sense of achievement after summiting was indescribable.' },
   { name: 'Rajesh Patil', city: 'Nashik', platform: 'Google', text: 'Value for money is insane. The quality of tents, sleeping bags, meals, and guidance at this price point is unheard of. TrekRoot is setting new standards.' },
@@ -97,67 +101,33 @@ const diffBg: Record<string, string> = {
   'Difficult': 'bg-red-500',
 };
 
-const sectionBannerPairs = [
+/** Detail-page promo strips - same shape as homepage Banners (full-width, one-at-a-time auto) */
+const detailBannerSets = [
   [
-    { img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_600,h_350,c_fill,g_auto/', badge: 'Best Seller', badgeIcon: Award, title: 'Bali with Gili Islands', subtitle: '7N/8D · Beach & Volcano Trek', promo: 'UPTO ₹3,500 OFF', href: '/booking' },
-    { img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_600,h_350,c_fill,g_auto/', badge: 'Bucket List', badgeIcon: Flag, title: 'Everest Base Camp', subtitle: '13D/12N · The trek of a lifetime', promo: 'Starting ₹74,999', href: '/treks/everest-base-camp' },
+    { src: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/treks', badge: 'Best Seller', title: 'Bali with Gili Islands', subtitle: '7N/8D ? Beach & Volcano Trek', discount: 'UPTO ?3,500 OFF' },
+    { src: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/treks/everest-base-camp', badge: 'Bucket List', title: 'Everest Base Camp', subtitle: '13D/12N ? The trek of a lifetime', discount: 'Starting ?74,999' },
+    { src: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/treks/annapurna-base-camp', badge: 'Classic', title: 'Annapurna Base Camp', subtitle: '8D/7N ? Himalayan sanctuary trek', discount: 'From ?34,999' },
   ],
   [
-    { img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_600,h_350,c_fill,g_auto/', badge: 'Winter Sale', badgeIcon: Tag, title: 'Bucket List Sale', subtitle: 'Handpicked treks at best prices', promo: 'UPTO 40% OFF', href: '/treks' },
-    { img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_600,h_350,c_fill,g_auto/', badge: 'New Launch', badgeIcon: Sparkles, title: 'Thailand - Phuket Krabi', subtitle: 'Full Moon Party Edition', promo: 'UPTO ₹3,500 OFF', href: '/treks' },
+    { src: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/bucket-list-sale', badge: 'Winter Sale', title: 'Bucket List Sale', subtitle: 'Handpicked treks at best prices', discount: 'UPTO 40% OFF' },
+    { src: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/treks', badge: 'New Launch', title: 'Thailand - Phuket Krabi', subtitle: 'Full Moon Party Edition', discount: 'UPTO ?3,500 OFF' },
+    { src: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/treks/kedarkantha', badge: 'Winter Special', title: 'Kedarkantha Winter Trek', subtitle: 'India\'s #1 winter trek - 5D/4N', discount: 'From ?6,999' },
   ],
   [
-    { img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_600,h_350,c_fill,g_auto/', badge: 'Expedition', badgeIcon: Flag, title: 'Tawang Bike Expedition', subtitle: 'North East India · 8N/9D', promo: 'Bestseller', href: '/bucket-list-sale' },
-    { img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_600,h_350,c_fill,g_auto/', badge: 'Squad Goals', badgeIcon: Heart, title: 'All Girls Trip', subtitle: 'Travel with your soul squad', promo: 'Safe & Fun', href: '/treks' },
+    { src: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/bucket-list-sale', badge: 'Expedition', title: 'Tawang Bike Expedition', subtitle: 'North East India ? 8N/9D', discount: 'Bestseller' },
+    { src: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/treks', badge: 'Squad Goals', title: 'All Girls Trip', subtitle: 'Travel with your soul squad', discount: 'Safe & Fun' },
+    { src: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/honeymoon', badge: 'Honeymoon', title: 'Romantic Getaways', subtitle: 'Curated couples packages', discount: 'View Packages' },
   ],
   [
-    { img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_600,h_350,c_fill,g_auto/', badge: 'Gift Cards', badgeIcon: Gift, title: 'Give the Gift of Adventure', subtitle: 'Valid on all treks & yatras', promo: 'Perfect for loved ones', href: '/travel-gift-cards' },
-    { img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_600,h_350,c_fill,g_auto/', badge: 'Group Offer', badgeIcon: Users, title: 'Group Discounts Up to 20%', subtitle: 'Groups of 4+ save big', promo: 'Bigger Group = Bigger Savings', href: '/corporate' },
+    { src: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/travel-gift-cards', badge: 'Gift Cards', title: 'Give the Gift of Adventure', subtitle: 'Valid on all treks & yatras', discount: 'Perfect for loved ones' },
+    { src: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/corporate', badge: 'Group Offer', title: 'Group Discounts Up to 20%', subtitle: 'Groups of 4+ save big', discount: 'Bigger Group = Bigger Savings' },
+    { src: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/customized', badge: 'Tailor-Made', title: 'Customize Your Himalayan Trek', subtitle: 'Uttarakhand ? Himachal ? Nepal', discount: 'Plan Your Trip' },
   ],
 ];
 
-function BannerCard({ item }: { item: typeof sectionBannerPairs[0][0] }) {
-  const BadgeIcon = item.badgeIcon;
-  return (
-    <Link href={item.href}
-      className="group relative flex-1 min-w-0 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-500 active:scale-[0.98]">
-      <div className="aspect-[16/7] lg:aspect-[16/6] overflow-hidden">
-        <img src={item.img} alt={item.title}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-      </div>
-      <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/35 to-transparent" />
-      <div className="absolute top-2 left-2 lg:top-3 lg:left-3 flex items-center gap-1 bg-[#ffaf21]/90 text-black text-[10px] lg:text-xs font-bold px-2 py-0.5 lg:px-2.5 lg:py-1 rounded-full shadow-lg">
-        <BadgeIcon className="w-2.5 h-2.5 lg:w-3 lg:h-3" />{item.badge}
-      </div>
-      <div className="absolute bottom-0 left-0 right-0 p-3 lg:p-5">
-        <h3 className="text-white font-bold text-sm lg:text-lg drop-shadow-sm">{item.title}</h3>
-        <p className="text-white/65 text-[11px] lg:text-sm mt-0.5">{item.subtitle}</p>
-        <div className="flex items-center gap-1.5 mt-1.5">
-          <span className="text-[#ffaf21] text-[10px] lg:text-xs font-semibold tracking-wide">{item.promo}</span>
-          <ArrowRight className="w-3 h-3 lg:w-3.5 lg:h-3.5 text-white/50 group-hover:translate-x-1.5 group-hover:text-white transition-all duration-300" />
-        </div>
-      </div>
-    </Link>
-  );
-}
-
-function SectionBannerPair({ idx }: { idx: number }) {
-  const pair = sectionBannerPairs[idx % sectionBannerPairs.length];
-  return (
-    <div className="flex gap-3 lg:gap-4 overflow-x-auto px-4 mx-0 snap-x snap-mandatory scroll-smooth lg:overflow-visible lg:px-0"
-      style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' }}>
-      {pair.map((item, i) => (
-        <div key={i} className="shrink-0 w-[80vw] lg:w-1/2 snap-start">
-          <BannerCard item={item} />
-        </div>
-      ))}
-    </div>
-  );
-}
-
 export default function TrekDetailContent({ trek, type }: { trek: Trek; type: 'trek' | 'yatra' }) {
   const isTrek = type === 'trek';
-  const accent = '#ffaf21';
+  const accent = '#16a34a';
   const badgeText = isTrek ? 'Trek' : 'Yatra';
   const backHref = isTrek ? '/treks' : '/yatra';
   const similarType = isTrek ? 'trek' : 'yatra';
@@ -173,12 +143,32 @@ export default function TrekDetailContent({ trek, type }: { trek: Trek; type: 't
   const [navVisible, setNavVisible] = useState(false);
   const [showAllPhotos, setShowAllPhotos] = useState(false);
   const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
+  const [selectedBatchId, setSelectedBatchId] = useState<string | null>(null);
   const router = useRouter();
 
+  const batches = getMonthlyBatches(trek, 5);
+  const selectedBatch = batches.find((b) => b.id === selectedBatchId) || null;
   const minPrice = Math.min(...trek.pricing.map(p => p.price));
-  const bookNow = (pkg?: string) => {
-    const params = pkg ? `?pkg=${encodeURIComponent(pkg)}` : '';
-    router.push(`/booking/${trek.id}${params}`);
+
+  useEffect(() => {
+    const firstOpen = getMonthlyBatches(trek, 5).find((b) => b.status !== 'sold-out');
+    setSelectedBatchId(firstOpen?.id ?? null);
+  }, [trek.id]);
+
+  const scrollToBatches = () => {
+    document.getElementById('batches')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  const bookNow = (pkg?: string, batch?: TrekBatch | null) => {
+    const params = new URLSearchParams();
+    if (pkg) params.set('pkg', pkg);
+    const departure = batch || selectedBatch || batches.find((b) => b.status !== 'sold-out') || null;
+    if (departure) {
+      if (!selectedBatchId) setSelectedBatchId(departure.id);
+      params.set('date', departure.startDate);
+    }
+    const q = params.toString();
+    router.push(`/booking/${trek.id}${q ? `?${q}` : ''}`);
   };
   const enquireNow = () => {
     const msg = `Hi! I'm interested in ${trek.title} (${trek.duration}). Please share more details.`;
@@ -259,12 +249,12 @@ export default function TrekDetailContent({ trek, type }: { trek: Trek; type: 't
     { icon: ChefHat, label: 'Meals', value: 'Veg Meals' },
   ];
 
-  const prepTabs = [
-    { id: 'clothing' as const, label: 'Clothing', icon: '👕' },
-    { id: 'footwear' as const, label: 'Footwear', icon: '👟' },
-    { id: 'gear' as const, label: 'Gear', icon: '🎒' },
-    { id: 'health' as const, label: 'Health', icon: '💊' },
-    { id: 'documents' as const, label: 'Documents', icon: '📄' },
+  const prepTabs: { id: typeof prepTab; label: string; icon: LucideIcon }[] = [
+    { id: 'clothing', label: 'Clothing', icon: Shirt },
+    { id: 'footwear', label: 'Footwear', icon: Footprints },
+    { id: 'gear', label: 'Gear', icon: Luggage },
+    { id: 'health', label: 'Health', icon: HeartPulse },
+    { id: 'documents', label: 'Documents', icon: FileText },
   ];
 
   const policyData = [
@@ -292,7 +282,7 @@ export default function TrekDetailContent({ trek, type }: { trek: Trek; type: 't
   const seasons = [
     {
       period: 'June to Early July', title: 'Snow Season',
-      temps: { day: '12°C – 18°C', night: '0°C – 5°C', high: '5°C – 12°C' },
+      temps: { day: '12?C - 18?C', night: '0?C - 5?C', high: '5?C - 12?C' },
       desc: 'Best time to experience snow on the trail. Snow still covers the pass and upper sections. Lower sections are green with early-season wildflowers.',
       highlights: ['Snowfields on the pass crossing', 'Panoramic white peaks and glaciers', 'Early wildflowers in lower meadows'],
       gear: ['Microspikes essential', 'Gaiters recommended'],
@@ -300,15 +290,15 @@ export default function TrekDetailContent({ trek, type }: { trek: Trek; type: 't
     },
     {
       period: 'July to August', title: 'Green Season & Peak Bloom',
-      temps: { day: '15°C – 20°C', night: '3°C – 8°C', high: '8°C – 15°C' },
+      temps: { day: '15?C - 20?C', night: '3?C - 8?C', high: '8?C - 15?C' },
       desc: 'Best time for wildflowers and lush green meadows. Meadows explode into bloom. The Kullu side is at its greenest with dramatic contrast to the Lahaul side.',
       highlights: ['Peak wildflower season', 'Lush green valleys on Kullu side', 'Dramatic landscape contrast'],
       gear: ['Rain jacket for occasional showers', 'Waterproof backpack cover'],
-      crowd: 'High — peak season',
+      crowd: 'High - peak season',
     },
     {
       period: 'September', title: 'Clear Skies & Autumn Colors',
-      temps: { day: '10°C – 15°C', night: '-2°C – 3°C', high: '5°C – 10°C' },
+      temps: { day: '10?C - 15?C', night: '-2?C - 3?C', high: '5?C - 10?C' },
       desc: 'Best time for mountain views and photography. Monsoon clears, skies are crisp. Meadows turn golden-brown. Nights are colder with frost common.',
       highlights: ['Crystal clear mountain views', 'Golden autumn landscapes', 'Best photography conditions'],
       gear: ['Full layering essential', 'Down jacket mandatory'],
@@ -317,7 +307,7 @@ export default function TrekDetailContent({ trek, type }: { trek: Trek; type: 't
   ];
 
   return (
-    <div className="pt-16 lg:pt-20 bg-[#f8fafb]">
+    <div className="pt-16 lg:pt-20 bg-[#f8fafb] pb-[88px] lg:pb-0">
       {/* ========== HERO ========== */}
       <section data-hero className="relative min-h-[65vh] lg:min-h-[80vh] overflow-hidden">
         <div className="absolute inset-0">
@@ -355,12 +345,12 @@ export default function TrekDetailContent({ trek, type }: { trek: Trek; type: 't
                       <p className="text-white/50 text-xs font-medium tracking-wide">Starting from</p>
                       <div className="flex items-baseline gap-2 mt-0.5">
                         <span className="text-3xl font-bold text-white">₹{minPrice.toLocaleString()}</span>
-                        <span className="text-white/40 text-sm line-through">₹{(trek.pricing[0]?.originalPrice || minPrice + 2000).toLocaleString()}</span>
+                        <span className="text-white/40 text-sm line-through">?{(trek.pricing[0]?.originalPrice || minPrice + 2000).toLocaleString()}</span>
                       </div>
                       <p className="text-white/40 text-[11px] mt-0.5">per person + 5% GST</p>
                     </div>
-                    <div className="bg-[#ffaf21]/20 rounded-full px-3 py-1.5">
-                      <p className="text-[11px] text-[#ffaf21] font-bold">Save ₹{((trek.pricing[0]?.originalPrice || minPrice + 2000) - minPrice).toLocaleString()}</p>
+                    <div className="bg-[#16a34a]/20 rounded-full px-3 py-1.5">
+                      <p className="text-[11px] text-[#16a34a] font-bold">Save ?{((trek.pricing[0]?.originalPrice || minPrice + 2000) - minPrice).toLocaleString()}</p>
                     </div>
                   </div>
                   <div className="flex gap-2">
@@ -486,8 +476,7 @@ export default function TrekDetailContent({ trek, type }: { trek: Trek; type: 't
               </div>
             </section>
 
-            {/* --- Section Banner Pair --- */}
-            <SectionBannerPair idx={0} />
+            <Banners embedded items={detailBannerSets[0]} />
 
             {/* --- OVERVIEW --- */}
             <section id="overview">
@@ -523,8 +512,7 @@ export default function TrekDetailContent({ trek, type }: { trek: Trek; type: 't
               </div>
             </section>
 
-            {/* --- Section Banner Pair --- */}
-            <SectionBannerPair idx={1} />
+            <Banners embedded items={detailBannerSets[1]} />
 
             {/* --- ITINERARY --- */}
             <section id="itinerary">
@@ -589,6 +577,16 @@ export default function TrekDetailContent({ trek, type }: { trek: Trek; type: 't
               </div>
             </section>
 
+            {/* --- BATCHES (5 monthly departures) --- */}
+            <BatchSection
+              batches={batches}
+              selectedId={selectedBatchId}
+              onSelect={(batch) => setSelectedBatchId(batch.id)}
+              onBook={(batch) => bookNow(undefined, batch)}
+              accent={accent}
+              tripLabel={isTrek ? 'trek' : 'yatra'}
+            />
+
             {/* --- INCLUSIONS & EXCLUSIONS --- */}
             <section id="in-ex">
               <div className="flex items-center gap-3 mb-6">
@@ -624,7 +622,7 @@ export default function TrekDetailContent({ trek, type }: { trek: Trek; type: 't
                   <ul className="space-y-3">
                     {trek.exclusions.map((exc, i) => (
                       <li key={i} className="flex items-start gap-3 text-sm text-gray-600">
-                        <span className="w-4 h-4 text-red-400 shrink-0 mt-0.5 text-center leading-4 text-xs">✕</span>
+                        <span className="w-4 h-4 text-red-400 shrink-0 mt-0.5 text-center leading-4 text-xs">?</span>
                         {exc}
                       </li>
                     ))}
@@ -633,8 +631,7 @@ export default function TrekDetailContent({ trek, type }: { trek: Trek; type: 't
               </div>
             </section>
 
-            {/* --- Section Banner Pair --- */}
-            <SectionBannerPair idx={2} />
+            <Banners embedded items={detailBannerSets[2]} />
 
             {/* --- BEST TIME TO VISIT --- */}
             <section id="best-time">
@@ -713,7 +710,7 @@ export default function TrekDetailContent({ trek, type }: { trek: Trek; type: 't
                     <button key={tab.id} onClick={() => setPrepTab(tab.id)}
                       className={`shrink-0 flex items-center gap-1.5 px-4 py-3.5 text-xs lg:text-sm font-medium border-b-2 transition-all ${prepTab === tab.id ? '' : 'text-gray-400 border-transparent hover:text-gray-600'}`}
                       style={prepTab === tab.id ? { color: accent, borderColor: accent, backgroundColor: `${accent}06` } : {}}>
-                      <span className="text-base">{tab.icon}</span> {tab.label}
+                      <tab.icon className="w-4 h-4" /> {tab.label}
                     </button>
                   ))}
                 </div>
@@ -847,8 +844,7 @@ export default function TrekDetailContent({ trek, type }: { trek: Trek; type: 't
               </div>
             </section>
 
-            {/* --- Section Banner Pair --- */}
-            <SectionBannerPair idx={3} />
+            <Banners embedded items={detailBannerSets[3]} />
 
             {/* --- RENT A GEAR --- */}
             <section id="rent-gear">
@@ -862,13 +858,13 @@ export default function TrekDetailContent({ trek, type }: { trek: Trek; type: 't
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 lg:gap-4">
                 {gearRentals.map((g, i) => (
                   <div key={i} className="bg-white rounded-xl border border-gray-100/80 shadow-sm p-4 lg:p-5 text-center hover:shadow-md transition-all group">
-                    <div className="w-16 h-16 lg:w-20 lg:h-20 rounded-full overflow-hidden mx-auto mb-3 border-2 border-gray-100 group-hover:border-[#ffaf21]/30 transition-colors">
+                    <div className="w-16 h-16 lg:w-20 lg:h-20 rounded-full overflow-hidden mx-auto mb-3 border-2 border-gray-100 group-hover:border-[#16a34a]/30 transition-colors">
                       <img src={g.img} alt={g.name} className="w-full h-full object-cover" />
                     </div>
                     <h4 className="font-semibold text-xs lg:text-sm text-gray-900">{g.name}</h4>
-                    <p className="text-[#ffaf21] font-bold text-sm lg:text-base mt-1">₹{g.price}<span className="text-gray-400 text-[10px] font-normal">/trek</span></p>
-                    <button type="button" onClick={enquireNow} className="mt-2.5 text-[10px] font-semibold text-gray-500 hover:text-[#ffaf21] transition-colors">
-                      Rent Now →
+                    <p className="text-[#16a34a] font-bold text-sm lg:text-base mt-1">₹{g.price}<span className="text-gray-400 text-[10px] font-normal">/trek</span></p>
+                    <button type="button" onClick={enquireNow} className="mt-2.5 text-[10px] font-semibold text-gray-500 hover:text-[#16a34a] transition-colors">
+                      Rent Now ?
                     </button>
                   </div>
                 ))}
@@ -902,7 +898,7 @@ export default function TrekDetailContent({ trek, type }: { trek: Trek; type: 't
                   </div>
                 </div>
                 <Link href="/reviews"
-                  className="hidden lg:inline-flex items-center gap-1.5 text-sm font-semibold text-gray-600 hover:text-[#ffaf21] transition-colors shrink-0">
+                  className="hidden lg:inline-flex items-center gap-1.5 text-sm font-semibold text-gray-600 hover:text-[#16a34a] transition-colors shrink-0">
                   See all reviews <ArrowRight className="w-4 h-4" />
                 </Link>
               </div>
@@ -951,7 +947,7 @@ export default function TrekDetailContent({ trek, type }: { trek: Trek; type: 't
                       </div>
                       {/* Quote text */}
                       <div className="relative">
-                        <svg className="absolute -top-1 -left-1 w-6 h-6 lg:w-7 lg:h-7 text-[#ffaf21]/10" viewBox="0 0 24 24" fill="currentColor"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10H14.017zM0 21v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151C7.563 6.068 6 8.789 6 11h4v10H0z"/></svg>
+                        <svg className="absolute -top-1 -left-1 w-6 h-6 lg:w-7 lg:h-7 text-[#16a34a]/10" viewBox="0 0 24 24" fill="currentColor"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10H14.017zM0 21v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151C7.563 6.068 6 8.789 6 11h4v10H0z"/></svg>
                         <p className="text-sm lg:text-[15px] text-gray-500 leading-relaxed pl-5 lg:pl-6 line-clamp-3 group-hover:line-clamp-none transition-all duration-300">
                           &ldquo;{t.text}&rdquo;
                         </p>
@@ -964,7 +960,7 @@ export default function TrekDetailContent({ trek, type }: { trek: Trek; type: 't
               {/* Mobile "See all reviews" link */}
               <div className="flex justify-center mt-6 lg:hidden">
                 <Link href="/reviews"
-                  className="inline-flex items-center gap-1.5 text-sm font-semibold text-gray-600 hover:text-[#ffaf21] transition-colors">
+                  className="inline-flex items-center gap-1.5 text-sm font-semibold text-gray-600 hover:text-[#16a34a] transition-colors">
                   See all reviews <ArrowRight className="w-4 h-4" />
                 </Link>
               </div>
@@ -991,8 +987,8 @@ export default function TrekDetailContent({ trek, type }: { trek: Trek; type: 't
                       )}
                     </div>
                     <p className="text-gray-400 text-xs mt-1">per person + 5% GST</p>
-                    <div className="inline-flex items-center gap-1.5 mt-2 bg-[#ffaf21]/10 text-[#ffaf21] text-xs font-bold px-3 py-1 rounded-full">
-                      <Sparkles className="w-3 h-3" /> Save ₹{((trek.pricing[0]?.originalPrice || minPrice + 2000) - minPrice).toLocaleString()}
+                    <div className="inline-flex items-center gap-1.5 mt-2 bg-[#16a34a]/10 text-[#16a34a] text-xs font-bold px-3 py-1 rounded-full">
+                      <Sparkles className="w-3 h-3" /> Save ?{((trek.pricing[0]?.originalPrice || minPrice + 2000) - minPrice).toLocaleString()}
                     </div>
                   </div>
 
@@ -1000,7 +996,7 @@ export default function TrekDetailContent({ trek, type }: { trek: Trek; type: 't
                     <div>
                       <label className="block text-xs font-semibold text-gray-500 mb-1.5 tracking-wide">Occupancy</label>
                       <select value={pickup} onChange={e => setPickup(e.target.value)}
-                        className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm outline-none focus:border-[#ffaf21] focus:ring-2 focus:ring-[#ffaf21]/20 bg-white transition-all">
+                        className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm outline-none focus:border-[#16a34a] focus:ring-2 focus:ring-[#16a34a]/20 bg-white transition-all">
                         <option>Triple Sharing</option>
                         <option>Twin Sharing</option>
                       </select>
@@ -1009,7 +1005,7 @@ export default function TrekDetailContent({ trek, type }: { trek: Trek; type: 't
                     <div>
                       <label className="block text-xs font-semibold text-gray-500 mb-1.5 tracking-wide">Pickup Location</label>
                       <select value={pickup} onChange={e => setPickup(e.target.value)}
-                        className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm outline-none focus:border-[#ffaf21] focus:ring-2 focus:ring-[#ffaf21]/20 bg-white transition-all">
+                        className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm outline-none focus:border-[#16a34a] focus:ring-2 focus:ring-[#16a34a]/20 bg-white transition-all">
                         <option>{trek.location.split(' to ')[0]}</option>
                         <option>Manali</option>
                       </select>
@@ -1042,13 +1038,13 @@ export default function TrekDetailContent({ trek, type }: { trek: Trek; type: 't
                       <label className="block text-xs font-semibold text-gray-500 mb-1.5 tracking-wide">Add ons</label>
                       <div className="space-y-2">
                         {[
-                          { label: 'Backpack Offloading', price: '+ ₹1,600' },
-                          { label: 'Insurance', price: '+ ₹170' },
-                          { label: 'Jumbo Bag', price: '+ ₹2,500' },
+                          { label: 'Backpack Offloading', price: '+ ?1,600' },
+                          { label: 'Insurance', price: '+ ?170' },
+                          { label: 'Jumbo Bag', price: '+ ?2,500' },
                         ].map((addon, i) => (
                           <label key={i} className="flex items-center justify-between px-4 py-2.5 rounded-xl border border-gray-100 bg-gray-50/50 cursor-pointer hover:bg-gray-50 transition-colors">
                             <div className="flex items-center gap-2.5">
-                              <input type="checkbox" className="accent-[#ffaf21] w-4 h-4" />
+                              <input type="checkbox" className="accent-[#16a34a] w-4 h-4" />
                               <span className="text-sm text-gray-600">{addon.label}</span>
                             </div>
                             <span className="text-xs text-gray-400">{addon.price}</span>
@@ -1061,7 +1057,7 @@ export default function TrekDetailContent({ trek, type }: { trek: Trek; type: 't
                   <div className="bg-gradient-to-br from-gray-50 to-white rounded-xl p-4 mb-5 border border-gray-100/80 space-y-2">
                     <div className="flex justify-between text-sm">
                       <span className="text-gray-500">Subtotal ({totalPersons} × ₹{minPrice})</span>
-                      <span className="font-semibold text-gray-800">₹{(totalPersons * minPrice).toLocaleString()}</span>
+                      <span className="font-semibold text-gray-800">?{(totalPersons * minPrice).toLocaleString()}</span>
                     </div>
                     <div className="flex justify-between text-sm">
                       <span className="text-gray-500">GST (5%)</span>
@@ -1070,11 +1066,25 @@ export default function TrekDetailContent({ trek, type }: { trek: Trek; type: 't
                     <hr className="border-gray-200" />
                     <div className="flex justify-between items-center">
                       <span className="font-bold text-gray-900">Total Price</span>
-                      <span className="font-bold text-xl" style={{ color: accent }}>₹{(totalPersons * minPrice + Math.ceil(totalPersons * minPrice * 0.05)).toLocaleString()}</span>
+                      <span className="font-bold text-xl" style={{ color: accent }}>?{(totalPersons * minPrice + Math.ceil(totalPersons * minPrice * 0.05)).toLocaleString()}</span>
                     </div>
                   </div>
 
-                  <button type="button" onClick={() => bookNow()} className="w-full flex items-center justify-center gap-2 text-gray-900 font-bold text-sm py-3.5 rounded-xl transition-all shadow-md hover:shadow-lg hover:opacity-90" style={{ backgroundColor: accent }}>
+                  {selectedBatch && (
+                    <div className="mb-3 rounded-xl border border-[#16a34a]/20 bg-[#16a34a]/5 px-3.5 py-2.5">
+                      <p className="text-[10px] font-semibold uppercase tracking-wider text-[#16a34a]">Selected batch</p>
+                      <p className="text-sm font-bold text-gray-900 mt-0.5">{selectedBatch.label}</p>
+                      <button
+                        type="button"
+                        onClick={scrollToBatches}
+                        className="text-[11px] font-semibold text-gray-500 hover:text-[#16a34a] mt-1"
+                      >
+                        Change batch
+                      </button>
+                    </div>
+                  )}
+
+                  <button type="button" onClick={() => bookNow()} className="w-full flex items-center justify-center gap-2 text-white font-bold text-sm py-3.5 rounded-xl transition-all shadow-md hover:shadow-lg hover:opacity-90" style={{ backgroundColor: accent }}>
                     Book Now <ArrowRight className="w-4 h-4" />
                   </button>
                   <button type="button" onClick={enquireNow} className="w-full flex items-center justify-center gap-2 border-2 border-gray-200 text-gray-600 font-semibold text-sm py-3 rounded-xl mt-2.5 hover:border-gray-300 hover:text-gray-800 transition-all">
@@ -1110,7 +1120,7 @@ export default function TrekDetailContent({ trek, type }: { trek: Trek; type: 't
                   ].map((item, i) => (
                     <div key={i} className="flex items-start gap-3">
                       <div className="w-9 h-9 rounded-lg bg-white/10 flex items-center justify-center shrink-0">
-                        <item.icon className="w-4 h-4" style={{ color: '#ffaf21' }} />
+                        <item.icon className="w-4 h-4" style={{ color: '#16a34a' }} />
                       </div>
                       <div className="min-w-0">
                         <h4 className="text-sm font-semibold text-white">{item.label}</h4>
@@ -1125,7 +1135,7 @@ export default function TrekDetailContent({ trek, type }: { trek: Trek; type: 't
         </div>
       </div>
 
-      {/* ========== MOBILE PRICING ========== */}
+      {/* ========== MOBILE PRICING (in-flow) ========== */}
       <div className="lg:hidden bg-[#f3f4f6] -mx-4 px-4 py-6 mt-6 border-t border-gray-200">
         <div className="max-w-lg mx-auto space-y-4">
           <div className="text-center">
@@ -1166,29 +1176,46 @@ export default function TrekDetailContent({ trek, type }: { trek: Trek; type: 't
                 </div>
               </div>
             )}
-            <button type="button" onClick={() => bookNow()} className="w-full mt-4 flex items-center justify-center gap-2 text-gray-900 font-bold text-sm py-3.5 rounded-xl transition-all shadow-md hover:opacity-90" style={{ backgroundColor: accent }}>
-              Book Now <ArrowRight className="w-4 h-4" />
-            </button>
           </div>
+
+          {selectedBatch && (
+            <button type="button" onClick={scrollToBatches} className="w-full text-center text-xs text-gray-500">
+              Batch <span className="font-semibold text-gray-800">{selectedBatch.label}</span>
+              <span className="text-[#16a34a] font-semibold"> · Change</span>
+            </button>
+          )}
         </div>
       </div>
 
-      {/* ========== MOBILE BOTTOM CTA ========== */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-lg border-t border-gray-200/80 p-3 lg:hidden z-40 shadow-lg shadow-black/5">
-        <div className="flex items-center justify-between max-w-lg mx-auto">
-          <div>
-            <p className="text-[10px] text-gray-400 font-medium">Starting from</p>
-            <div className="flex items-baseline gap-1">
-              <span className="font-bold text-xl" style={{ color: accent }}>₹{minPrice.toLocaleString()}</span>
-              <span className="text-[11px] text-gray-400 font-normal">/person</span>
-            </div>
-          </div>
-          <div className="flex gap-2">
-            <a href="tel:+919999999999" className="w-11 h-11 rounded-xl border-2 border-gray-200 flex items-center justify-center text-gray-600 hover:border-gray-300 transition-all">
-              <Phone className="w-4 h-4" />
-            </a>
-            <button type="button" onClick={() => bookNow()} className="flex items-center gap-2 text-gray-900 font-bold px-6 py-2.5 rounded-xl text-sm transition-all shadow-md hover:opacity-90" style={{ backgroundColor: accent }}>
-              Book Now <ArrowRight className="w-4 h-4" />
+      {/* ========== MOBILE STICKY BOOK BAR (replaces tab nav on detail) ========== */}
+      <div className="fixed bottom-0 left-0 right-0 z-[55] lg:hidden bg-white border-t border-gray-200 shadow-[0_-8px_24px_rgba(0,0,0,0.08)] pb-[env(safe-area-inset-bottom,0px)]">
+        <div className="px-3 pt-2.5 pb-2.5 max-w-lg mx-auto">
+          <div className="flex items-center gap-2.5">
+            <button
+              type="button"
+              onClick={scrollToBatches}
+              className="min-w-0 flex-1 text-left rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 active:bg-gray-100"
+              aria-label="Choose batch dates"
+            >
+              <p className="text-[10px] font-semibold uppercase tracking-wide text-gray-400">
+                {selectedBatch ? 'Selected batch' : 'Choose dates'}
+              </p>
+              <p className="text-sm font-bold text-gray-900 truncate leading-tight mt-0.5">
+                {selectedBatch ? selectedBatch.label : 'Pick from 5 monthly batches'}
+              </p>
+              <p className="text-[11px] text-[#16a34a] font-semibold mt-0.5">
+                ₹{minPrice.toLocaleString()}
+                <span className="text-gray-400 font-normal"> /person</span>
+              </p>
+            </button>
+            <button
+              type="button"
+              onClick={() => bookNow()}
+              className="shrink-0 inline-flex items-center justify-center gap-1.5 text-white font-bold text-sm px-5 py-3.5 rounded-xl shadow-md active:opacity-90 min-w-[118px]"
+              style={{ backgroundColor: accent }}
+            >
+              Book Now
+              <ArrowRight className="w-4 h-4" />
             </button>
           </div>
         </div>

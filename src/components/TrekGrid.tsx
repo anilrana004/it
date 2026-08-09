@@ -29,7 +29,7 @@ export default function TrekGrid({ title, treks: allTreks, viewAll }: { title: s
           {allTreks.filter(tabs[active].filter).slice(0, 8).map(t => <TrekCard key={t.id} trek={t} />)}
         </div>
         {viewAll && <div className="mt-8 text-center">
-          <Link href={viewAll} className="inline-flex items-center gap-2 text-[#ffaf21] hover:text-white font-semibold border-2 border-[#ffaf21] px-6 lg:px-8 py-3 rounded-full hover:bg-[#ffaf21] transition-all">
+          <Link href={viewAll} className="inline-flex items-center gap-2 text-[#16a34a] hover:text-white font-semibold border-2 border-[#16a34a] px-6 lg:px-8 py-3 rounded-full hover:bg-[#16a34a] transition-all">
             View All {title}
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
           </Link>

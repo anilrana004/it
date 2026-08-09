@@ -17,7 +17,7 @@ export default function TrekCard({ trek }: { trek: Trek }) {
       {trek.badge && (
         <div className="absolute top-0 left-0">
           <div className="relative">
-            <div className="bg-[#ffaf21] text-gray-900 text-[9px] font-bold px-6 py-1 -rotate-45 -translate-x-[18px] translate-y-[14px] text-center w-24 shadow-md">
+            <div className="bg-[#16a34a] text-white text-[9px] font-bold px-6 py-1 -rotate-45 -translate-x-[18px] translate-y-[14px] text-center w-24 shadow-md">
               {trek.badge}
             </div>
           </div>
@@ -26,7 +26,7 @@ export default function TrekCard({ trek }: { trek: Trek }) {
 
       {/* Top right badges */}
       <div className="absolute top-2 right-2 flex flex-col gap-1 items-end">
-        {trek.type === 'yatra' && <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#ffaf21] text-gray-900 shadow-sm">Yatra</span>}
+        {trek.type === 'yatra' && <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#16a34a] text-white shadow-sm">Yatra</span>}
         <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-white/90 text-gray-800 shadow-sm">{trek.duration}</span>
       </div>
 
@@ -44,7 +44,7 @@ export default function TrekCard({ trek }: { trek: Trek }) {
           <Clock className="w-3 h-3" />
           <span>{trek.duration}</span>
         </div>
-        <h3 className="font-bold text-sm lg:text-base text-white leading-snug line-clamp-2 group-hover:text-[#ffaf21] transition-colors mb-1.5">{trek.title}</h3>
+        <h3 className="font-bold text-sm lg:text-base text-white leading-snug line-clamp-2 group-hover:text-[#16a34a] transition-colors mb-1.5">{trek.title}</h3>
 
         {/* Rating */}
         <div className="flex items-center gap-1 mb-2">
@@ -60,7 +60,7 @@ export default function TrekCard({ trek }: { trek: Trek }) {
         {/* Price */}
         <div className="flex items-center justify-between mt-1">
           <div className="flex items-baseline gap-1.5">
-            <span className="font-bold text-base lg:text-lg text-[#ffaf21]">₹ {minPrice.toLocaleString()}</span>
+            <span className="font-bold text-base lg:text-lg text-[#16a34a]">₹ {minPrice.toLocaleString()}</span>
             {originalPrice && originalPrice > minPrice && (
               <span className="text-[11px] text-white/50 line-through">₹{originalPrice.toLocaleString()}</span>
             )}

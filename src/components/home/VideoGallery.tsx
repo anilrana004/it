@@ -29,7 +29,7 @@ export default function VideoGallery() {
     <section className="py-8 lg:py-16 bg-white">
       <div className="container mx-auto">
         <div className="text-center mb-6 lg:mb-8">
-          <p className="text-[#ffaf21] font-semibold text-xs lg:text-sm tracking-widest uppercase mb-1">VIDEOS</p>
+          <p className="text-[#16a34a] font-semibold text-xs lg:text-sm tracking-widest uppercase mb-1">VIDEOS</p>
           <h2 className="text-xl lg:text-3xl font-bold text-[#000000]">Memories for Life</h2>
           <p className="text-gray-500 text-xs lg:text-sm mt-1">50+ Videos from our travelers</p>
         </div>
@@ -51,7 +51,7 @@ export default function VideoGallery() {
               <div className="aspect-square rounded-xl overflow-hidden mb-2">
                 <img src={t.img} alt={t.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
               </div>
-              <h3 className="text-[11px] lg:text-sm font-semibold text-gray-800 line-clamp-2 group-hover:text-[#ffaf21] transition-colors">{t.name}</h3>
+              <h3 className="text-[11px] lg:text-sm font-semibold text-gray-800 line-clamp-2 group-hover:text-[#16a34a] transition-colors">{t.name}</h3>
               <div className="flex items-center justify-center gap-1 text-[10px] lg:text-xs text-gray-500 mt-1">
                 <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />{t.rating} Rating
               </div>
@@ -60,7 +60,7 @@ export default function VideoGallery() {
         </div>
         {!showAll && popularTrips.length > 4 && (
           <div className="text-center mt-5">
-            <button onClick={() => setShowAll(true)} className="text-[#ffaf21] text-sm font-semibold hover:text-[#d49400] transition-colors">View All Videos &rarr;</button>
+            <button onClick={() => setShowAll(true)} className="text-[#16a34a] text-sm font-semibold hover:text-[#15803d] transition-colors">View All Videos &rarr;</button>
           </div>
         )}
       </div>

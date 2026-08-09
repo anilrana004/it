@@ -2,12 +2,12 @@ import Link from 'next/link';
 import { MapPin, Star, Clock, Heart, Camera, Home, CheckCircle2, ArrowRight } from 'lucide-react';
 
 const trekkingPkg = [
-  { name: 'Chopta Tungnath Trek', loc: 'Uttarakhand — Mini Switzerland', dur: '4D/3N', price: 18500, tag: 'Most Romantic', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/chopta-tungnath' },
-  { name: 'Triund Trek', loc: 'Himachal — Dhauladhar Views', dur: '3D/2N', price: 12999, tag: 'Couples Choice', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/mcleodganj-trek' },
-  { name: 'Dayara Bugyal Trek', loc: 'Uttarakhand — Alpine Meadows', dur: '5D/4N', price: 16999, tag: 'Scenic', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/dayara-bugyal' },
-  { name: 'Nag Tibba Trek', loc: 'Uttarakhand — Weekend Trek', dur: '2D/1N', price: 7999, tag: 'Quick Escape', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/nag-tibba' },
-  { name: 'Kheerganga Trek', loc: 'Himachal — Hot Springs', dur: '3D/2N', price: 9999, tag: 'Hot Springs', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/kheerganga' },
-  { name: 'Beas Kund Trek', loc: 'Himachal — Solang Valley', dur: '4D/3N', price: 14999, tag: 'Valley Trek', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/beas-kund' },
+  { name: 'Chopta Tungnath Trek', loc: 'Uttarakhand  -  Mini Switzerland', dur: '4D/3N', price: 18500, tag: 'Most Romantic', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/chopta-tungnath' },
+  { name: 'Triund Trek', loc: 'Himachal  -  Dhauladhar Views', dur: '3D/2N', price: 12999, tag: 'Couples Choice', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/mcleodganj-trek' },
+  { name: 'Dayara Bugyal Trek', loc: 'Uttarakhand  -  Alpine Meadows', dur: '5D/4N', price: 16999, tag: 'Scenic', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/dayara-bugyal' },
+  { name: 'Nag Tibba Trek', loc: 'Uttarakhand  -  Weekend Trek', dur: '2D/1N', price: 7999, tag: 'Quick Escape', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/nag-tibba' },
+  { name: 'Kheerganga Trek', loc: 'Himachal  -  Hot Springs', dur: '3D/2N', price: 9999, tag: 'Hot Springs', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/kheerganga' },
+  { name: 'Beas Kund Trek', loc: 'Himachal  -  Solang Valley', dur: '4D/3N', price: 14999, tag: 'Valley Trek', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/beas-kund' },
 ];
 
 const getawayPkg = [
@@ -19,7 +19,7 @@ const getawayPkg = [
 
 const highlights = [
   { icon: Heart, title: 'Private Candlelight Dinners', desc: 'Romantic dinners with Himalayan views at our exclusive campsites' },
-  { icon: Star, title: 'Stargazing Nights', desc: 'Sleep under the clearest skies — Chopta and Tirthan Valley are known for celestial views' },
+  { icon: Star, title: 'Stargazing Nights', desc: 'Sleep under the clearest skies  -  Chopta and Tirthan Valley are known for celestial views' },
   { icon: Camera, title: 'Photography Coverage', desc: 'Capture your special moments with optional professional photography' },
   { icon: Home, title: 'Premium Accommodation', desc: 'Handpicked boutique stays, riverside cottages, and luxury camps' },
 ];
@@ -27,8 +27,8 @@ const highlights = [
 const reasons = [
   'Intimate group sizes (max 8-10 people)',
   'Private tent accommodations for couples',
-  'Easy to moderate difficulty — no prior experience needed',
-  'Flexible itineraries — add spa, private transfers, or extended stays',
+  'Easy to moderate difficulty  -  no prior experience needed',
+  'Flexible itineraries  -  add spa, private transfers, or extended stays',
   'All meals included with special couple dining arrangements',
 ];
 
@@ -37,19 +37,19 @@ function PackageCard({ pkg, roseTag }: { pkg: typeof trekkingPkg[0]; roseTag?: b
     <Link href={pkg.href} className="group bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-lg transition-all">
       <div className="relative h-44 lg:h-48 overflow-hidden">
         <img src={pkg.img} alt={pkg.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-        <div className={`absolute top-3 right-3 text-white text-[10px] font-semibold px-3 py-1 rounded-full ${roseTag ? 'bg-gradient-to-r from-rose-500 to-pink-600' : 'bg-[#ffaf21]/90'}`}>{pkg.tag}</div>
+        <div className={`absolute top-3 right-3 text-white text-[10px] font-semibold px-3 py-1 rounded-full ${roseTag ? 'bg-gradient-to-r from-rose-500 to-pink-600' : 'bg-[#16a34a]/90'}`}>{pkg.tag}</div>
       </div>
       <div className="p-4 lg:p-5">
         <div className="flex items-center gap-1 text-gray-400 text-[11px] lg:text-xs mb-1">
           <MapPin className="w-3 h-3" />{pkg.loc}
         </div>
-        <h3 className="font-bold text-sm lg:text-base text-[#000000] group-hover:text-[#ffaf21] transition-colors line-clamp-1">{pkg.name}</h3>
+        <h3 className="font-bold text-sm lg:text-base text-[#000000] group-hover:text-[#16a34a] transition-colors line-clamp-1">{pkg.name}</h3>
         <div className="flex items-center gap-2 text-xs text-gray-400 mt-1.5 mb-3">
           <Clock className="w-3 h-3" />{pkg.dur}
         </div>
         <div className="flex items-center justify-between pt-2 border-t border-gray-100">
-          <span className="text-[#ffaf21] font-bold text-sm lg:text-base">₹{pkg.price.toLocaleString()}</span>
-          <span className="text-[#ffaf21] group-hover:translate-x-1 transition-transform"><ArrowRight className="w-4 h-4" /></span>
+          <span className="text-[#16a34a] font-bold text-sm lg:text-base">₹{pkg.price.toLocaleString()}</span>
+          <span className="text-[#16a34a] group-hover:translate-x-1 transition-transform"><ArrowRight className="w-4 h-4" /></span>
         </div>
       </div>
     </Link>
@@ -62,8 +62,8 @@ export default function HoneymoonPage() {
       {/* Hero */}
       <section className="bg-gradient-to-r from-[#000000] to-[#000000] py-10 lg:py-16 mb-10 lg:mb-16">
         <div className="container mx-auto text-center">
-          <Heart className="w-10 h-10 lg:w-14 lg:h-14 text-[#ffaf21] mx-auto mb-4" />
-          <h1 className="font-[family-name:var(--font-heading)] text-3xl lg:text-5xl font-bold text-white mb-3">Honeymoon Trips — Romantic Himalayan Escapes</h1>
+          <Heart className="w-10 h-10 lg:w-14 lg:h-14 text-[#16a34a] mx-auto mb-4" />
+          <h1 className="font-[family-name:var(--font-heading)] text-3xl lg:text-5xl font-bold text-white mb-3">Honeymoon Trips  -  Romantic Himalayan Escapes</h1>
           <p className="text-white/70 text-sm lg:text-lg max-w-2xl mx-auto">Celebrate your love amidst snow-capped peaks, serene meadows, and starlit skies. Handpicked romantic getaways for couples.</p>
         </div>
       </section>

@@ -16,7 +16,7 @@ export default function StatsBar() {
             const Icon = s.icon;
             return (
               <div key={s.label} className="bg-white/10 backdrop-blur-sm rounded-xl p-4 lg:p-6 text-center border border-white/10">
-                <Icon className="w-6 h-6 lg:w-8 lg:h-8 text-[#ffaf21] mx-auto mb-2" />
+                <Icon className="w-6 h-6 lg:w-8 lg:h-8 text-[#16a34a] mx-auto mb-2" />
                 <div className="font-bold text-lg lg:text-2xl text-white">{s.value}</div>
                 <div className="text-[10px] lg:text-xs text-white/60 mt-0.5">{s.label}</div>
               </div>

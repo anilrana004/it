@@ -22,8 +22,8 @@ export default function AdminNewsletter() {
         </div>
         <form onSubmit={handleAdd} className="flex gap-2">
           <input type="email" required placeholder="Add subscriber email..." value={email} onChange={e => setEmail(e.target.value)}
-            className="px-4 py-2 rounded-xl border border-gray-200 text-sm outline-none focus:border-[#ffaf21]" />
-          <button type="submit" className="flex items-center gap-1 bg-[#ffaf21] text-gray-900 text-sm font-semibold px-4 py-2 rounded-xl hover:bg-[#d49400]">
+            className="px-4 py-2 rounded-xl border border-gray-200 text-sm outline-none focus:border-[#16a34a]" />
+          <button type="submit" className="flex items-center gap-1 bg-[#16a34a] text-white text-sm font-semibold px-4 py-2 rounded-xl hover:bg-[#15803d]">
             <Plus className="w-4 h-4" /> Add
           </button>
         </form>

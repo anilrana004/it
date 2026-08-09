@@ -52,9 +52,9 @@ function CardGrid({ items }: { items: typeof himalayanTrek }) {
           </div>
           <div className="p-4">
             <div className="flex items-center gap-1 text-xs text-gray-500 mb-1"><MapPin className="w-3 h-3" />{d.loc} · {d.dur}</div>
-            <h3 className="font-bold text-base lg:text-lg text-[#000000] group-hover:text-[#ffaf21] transition-colors">{d.name}</h3>
+            <h3 className="font-bold text-base lg:text-lg text-[#000000] group-hover:text-[#16a34a] transition-colors">{d.name}</h3>
             <div className="flex items-center justify-between mt-2">
-              <span className="text-[#ffaf21] font-bold text-base">₹{d.price.toLocaleString()}+</span>
+              <span className="text-[#16a34a] font-bold text-base">₹{d.price.toLocaleString()}+</span>
               <span className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-gray-100 text-gray-600">{d.diff}</span>
             </div>
           </div>
@@ -70,8 +70,8 @@ export default function DomesticToursPage() {
       <section className="bg-gradient-to-r from-[#000000] to-[#000000] py-10 lg:py-16 mb-10 lg:mb-16">
         <div className="container mx-auto text-center">
           <div className="flex items-center justify-center gap-3 mb-3">
-            <Compass className="w-6 h-6 lg:w-8 lg:h-8 text-[#ffaf21]" />
-            <h1 className="font-[family-name:var(--font-heading)] text-3xl lg:text-5xl font-bold text-white">Domestic Tours — Explore India</h1>
+            <Compass className="w-6 h-6 lg:w-8 lg:h-8 text-[#16a34a]" />
+            <h1 className="font-[family-name:var(--font-heading)] text-3xl lg:text-5xl font-bold text-white">Domestic Tours  -  Explore India</h1>
           </div>
           <p className="text-white/70 text-sm lg:text-lg max-w-2xl mx-auto">From the Himalayan peaks of Uttarakhand to the spiritual trails of Char Dham, discover the best of India with handpicked domestic tour packages.</p>
         </div>
@@ -80,7 +80,7 @@ export default function DomesticToursPage() {
       <div className="container mx-auto">
         <div className="mb-12 lg:mb-16">
           <div className="flex items-center gap-3 mb-8">
-            <Mountain className="w-6 h-6 lg:w-7 lg:h-7 text-[#ffaf21]" />
+            <Mountain className="w-6 h-6 lg:w-7 lg:h-7 text-[#16a34a]" />
             <div>
               <h2 className="font-[family-name:var(--font-heading)] text-2xl lg:text-3xl font-bold text-[#000000]">Himalayan Trekking Packages</h2>
               <p className="text-gray-500 text-sm">Conquer the trails that define India&apos;s wild beauty</p>
@@ -91,7 +91,7 @@ export default function DomesticToursPage() {
 
         <div className="mb-12 lg:mb-16">
           <div className="flex items-center gap-3 mb-8">
-            <Route className="w-6 h-6 lg:w-7 lg:h-7 text-[#ffaf21]" />
+            <Route className="w-6 h-6 lg:w-7 lg:h-7 text-[#16a34a]" />
             <div>
               <h2 className="font-[family-name:var(--font-heading)] text-2xl lg:text-3xl font-bold text-[#000000]">Pilgrimage Yatra Packages</h2>
               <p className="text-gray-500 text-sm">Sacred journeys through the divine Himalayas</p>
@@ -105,9 +105,9 @@ export default function DomesticToursPage() {
                 </div>
                 <div className="p-4">
                   <div className="flex items-center gap-1 text-xs text-gray-500 mb-1"><MapPin className="w-3 h-3" />{d.loc} · {d.dur}</div>
-                  <h3 className="font-bold text-base lg:text-lg text-[#000000] group-hover:text-[#ffaf21] transition-colors">{d.name}</h3>
+                  <h3 className="font-bold text-base lg:text-lg text-[#000000] group-hover:text-[#16a34a] transition-colors">{d.name}</h3>
                   <div className="flex items-center justify-between mt-2">
-                    <span className="text-[#ffaf21] font-bold text-base">₹{d.price.toLocaleString()}+</span>
+                    <span className="text-[#16a34a] font-bold text-base">₹{d.price.toLocaleString()}+</span>
                     <span className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-gray-100 text-gray-600">{d.diff}</span>
                   </div>
                 </div>
@@ -118,7 +118,7 @@ export default function DomesticToursPage() {
 
         <div className="mb-12 lg:mb-16">
           <div className="flex items-center gap-3 mb-8">
-            <Compass className="w-6 h-6 lg:w-7 lg:h-7 text-[#ffaf21]" />
+            <Compass className="w-6 h-6 lg:w-7 lg:h-7 text-[#16a34a]" />
             <div>
               <h2 className="font-[family-name:var(--font-heading)] text-2xl lg:text-3xl font-bold text-[#000000]">Backpacking &amp; Weekend Getaways</h2>
               <p className="text-gray-500 text-sm">Short escapes that leave you refreshed and inspired</p>
@@ -132,9 +132,9 @@ export default function DomesticToursPage() {
                 </div>
                 <div className="p-4">
                   <div className="flex items-center gap-1 text-xs text-gray-500 mb-1"><MapPin className="w-3 h-3" />{d.loc} · {d.dur}</div>
-                  <h3 className="font-bold text-base lg:text-lg text-[#000000] group-hover:text-[#ffaf21] transition-colors">{d.name}</h3>
+                  <h3 className="font-bold text-base lg:text-lg text-[#000000] group-hover:text-[#16a34a] transition-colors">{d.name}</h3>
                   <div className="flex items-center justify-between mt-2">
-                    <span className="text-[#ffaf21] font-bold text-base">₹{d.price.toLocaleString()}+</span>
+                    <span className="text-[#16a34a] font-bold text-base">₹{d.price.toLocaleString()}+</span>
                     <span className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-gray-100 text-gray-600">{d.diff}</span>
                   </div>
                 </div>
@@ -148,7 +148,7 @@ export default function DomesticToursPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {howSteps.map(s => (
               <div key={s.num} className="text-center">
-                <div className="w-12 h-12 bg-[#ffaf21] text-gray-900 rounded-full flex items-center justify-center font-bold text-lg mx-auto mb-3">{s.num}</div>
+                <div className="w-12 h-12 bg-[#16a34a] text-white rounded-full flex items-center justify-center font-bold text-lg mx-auto mb-3">{s.num}</div>
                 <h3 className="font-bold text-sm lg:text-base text-[#000000] mb-1.5">{s.title}</h3>
                 <p className="text-gray-500 text-xs lg:text-sm leading-relaxed">{s.desc}</p>
               </div>
@@ -161,18 +161,18 @@ export default function DomesticToursPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {whyUs.map((item, i) => (
               <div key={i} className="flex items-start gap-3 bg-white rounded-xl p-4 border border-gray-100 shadow-sm">
-                <CheckCircle2 className="w-5 h-5 text-[#ffaf21] shrink-0 mt-0.5" />
+                <CheckCircle2 className="w-5 h-5 text-[#16a34a] shrink-0 mt-0.5" />
                 <span className="text-gray-700 text-sm lg:text-base">{item}</span>
               </div>
             ))}
           </div>
         </div>
 
-        <div className="bg-gradient-to-r from-[#ffaf21] to-[#d49400] rounded-2xl p-8 lg:p-12 text-center text-white">
+        <div className="bg-gradient-to-r from-[#16a34a] to-[#15803d] rounded-2xl p-8 lg:p-12 text-center text-white">
           <h2 className="font-[family-name:var(--font-heading)] text-2xl lg:text-3xl font-bold mb-2">Ready to Explore India?</h2>
           <p className="text-white/80 text-sm lg:text-base mb-6 max-w-lg mx-auto">Get in touch with our travel experts and receive a free quote within 24 hours.</p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <a href="tel:+919797972175" className="inline-flex items-center gap-2 bg-white text-[#ffaf21] font-semibold px-8 py-3 rounded-full hover:bg-gray-100 transition-all text-sm"><ArrowRight className="w-4 h-4" />Call +91 97 97 97 21 75</a>
+            <a href="tel:+919797972175" className="inline-flex items-center gap-2 bg-white text-[#16a34a] font-semibold px-8 py-3 rounded-full hover:bg-gray-100 transition-all text-sm"><ArrowRight className="w-4 h-4" />Call +91 97 97 97 21 75</a>
             <a href="mailto:hello@trekroot.com" className="inline-flex items-center gap-2 bg-white/10 border border-white/30 text-white font-semibold px-8 py-3 rounded-full hover:bg-white/20 transition-all text-sm">Email Us</a>
           </div>
         </div>

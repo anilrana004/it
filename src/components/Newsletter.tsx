@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 export default function Newsletter() {
   return (
     <section className="py-12 lg:py-20 relative overflow-hidden">
@@ -11,8 +11,8 @@ export default function Newsletter() {
         <p className="text-white/70 text-sm lg:text-base mb-5">Sign up now!</p>
         <form className="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto" onSubmit={e => e.preventDefault()}>
           <input type="email" placeholder="Enter your email" required
-            className="flex-1 px-5 py-3.5 rounded-full outline-none text-sm text-gray-800 bg-white/90 backdrop-blur-sm placeholder:text-gray-400 border border-white/10 focus:border-[#ffaf21] transition-colors" />
-          <button type="submit" className="bg-gradient-to-r from-[#ffaf21] to-[#ffaf21] hover:opacity-90 text-white font-semibold px-6 lg:px-8 py-3.5 rounded-full transition-all shadow-lg shadow-[#ffaf21]/25 text-sm whitespace-nowrap">
+            className="flex-1 px-5 py-3.5 rounded-full outline-none text-sm text-gray-800 bg-white/90 backdrop-blur-sm placeholder:text-gray-400 border border-white/10 focus:border-[#16a34a] transition-colors" />
+          <button type="submit" className="bg-gradient-to-r from-[#16a34a] to-[#16a34a] hover:opacity-90 text-white font-semibold px-6 lg:px-8 py-3.5 rounded-full transition-all shadow-lg shadow-[#16a34a]/25 text-sm whitespace-nowrap">
             Subscribe
           </button>
         </form>

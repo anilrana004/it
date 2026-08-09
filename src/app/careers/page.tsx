@@ -31,7 +31,7 @@ export default function CareersPage() {
                 <h3 className="font-semibold text-gray-900 text-sm">{job}</h3>
                 <p className="text-xs text-gray-500">Full Time · Remote</p>
               </div>
-              <button className="bg-[#ffaf21] text-gray-900 text-xs font-semibold px-5 py-2 rounded-full hover:bg-[#d49400] transition-all">Apply Now</button>
+              <button className="bg-[#16a34a] text-white text-xs font-semibold px-5 py-2 rounded-full hover:bg-[#15803d] transition-all">Apply Now</button>
             </div>
           ))}
         </div>

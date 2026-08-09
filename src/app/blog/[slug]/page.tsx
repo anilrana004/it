@@ -33,7 +33,7 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
       <div className="pt-28 pb-20 text-center">
         <div className="container mx-auto">
           <h1 className="text-2xl font-bold text-gray-900 mb-4">Blog Post Not Found</h1>
-          <Link href="/blog" className="text-[#ffaf21] hover:underline">Back to Blog</Link>
+          <Link href="/blog" className="text-[#16a34a] hover:underline">Back to Blog</Link>
         </div>
       </div>
     );
@@ -42,7 +42,7 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
   return (
     <div className="pt-20 lg:pt-28 pb-12 lg:pb-20">
       <article className="container mx-auto max-w-3xl px-4">
-        <Link href="/blog" className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-[#ffaf21] mb-6 transition-colors">
+        <Link href="/blog" className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-[#16a34a] mb-6 transition-colors">
           <ArrowLeft className="w-4 h-4" /> Back to Blog
         </Link>
 
@@ -65,8 +65,8 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
         </div>
 
         <div className="border-t border-gray-100 mt-8 pt-6 flex items-center justify-between">
-          <Link href="/blog" className="text-sm text-[#ffaf21] hover:underline">&larr; More Blogs</Link>
-          <Link href="/treks" className="text-sm bg-[#ffaf21] text-gray-900 px-6 py-2.5 rounded-full hover:bg-[#d49400] transition-all">Explore Treks</Link>
+          <Link href="/blog" className="text-sm text-[#16a34a] hover:underline">&larr; More Blogs</Link>
+          <Link href="/treks" className="text-sm bg-[#16a34a] text-white px-6 py-2.5 rounded-full hover:bg-[#15803d] transition-all">Explore Treks</Link>
         </div>
       </article>
     </div>

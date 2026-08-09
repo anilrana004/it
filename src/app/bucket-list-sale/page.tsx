@@ -26,7 +26,7 @@ export default function BucketListSalePage() {
   const [cat, setCat] = useState('All Deals');
   return (
     <div className="pt-24 lg:pt-28 pb-12 lg:pb-20">
-      <section className="bg-gradient-to-r from-[#ffaf21] via-[#d49400] to-[#b87d00] py-10 lg:py-16 mb-8 lg:mb-12">
+      <section className="bg-gradient-to-r from-[#16a34a] via-[#15803d] to-[#166534] py-10 lg:py-16 mb-8 lg:mb-12">
         <div className="container mx-auto text-center">
           <div className="flex items-center justify-center gap-3 mb-3">
             <Zap className="w-6 h-6 lg:w-8 lg:h-8 text-yellow-300" />
@@ -44,7 +44,7 @@ export default function BucketListSalePage() {
         <div className="flex gap-2 overflow-x-auto scrollbar-none pb-2 -mx-4 px-4 lg:mx-0 lg:px-0 mb-6">
           {categories.map(c => (
             <button key={c} onClick={() => setCat(c)}
-              className={`shrink-0 px-5 py-1.5 rounded-full text-xs lg:text-sm font-medium transition-all ${cat===c?'bg-[#ffaf21] text-gray-900':'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}>{c}</button>
+              className={`shrink-0 px-5 py-1.5 rounded-full text-xs lg:text-sm font-medium transition-all ${cat===c?'bg-[#16a34a] text-white':'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}>{c}</button>
           ))}
         </div>
 
@@ -55,8 +55,8 @@ export default function BucketListSalePage() {
     { v: '₹2,499', l: 'Starting From' },
     { v: 'Limited', l: 'Sale Ends Soon' },
   ].map(s => (
-            <div key={s.l} className="bg-gradient-to-br from-[#ffaf21]/10 to-[#ffaf21]/5 rounded-xl p-4 text-center border border-[#ffaf21]/20">
-              <div className="font-bold text-lg lg:text-2xl text-[#ffaf21]">{s.v}</div>
+            <div key={s.l} className="bg-gradient-to-br from-[#16a34a]/10 to-[#16a34a]/5 rounded-xl p-4 text-center border border-[#16a34a]/20">
+              <div className="font-bold text-lg lg:text-2xl text-[#16a34a]">{s.v}</div>
               <div className="text-[11px] lg:text-xs text-gray-600">{s.l}</div>
             </div>
           ))}
@@ -67,18 +67,18 @@ export default function BucketListSalePage() {
             <Link key={t.title} href={t.href} className="group rounded-xl overflow-hidden transition-all relative aspect-[4/5]">
               <img src={t.img} alt={t.title} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-              <div className="absolute top-3 left-3 bg-[#ffaf21] text-gray-900 text-[10px] lg:text-xs font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
+              <div className="absolute top-3 left-3 bg-[#16a34a] text-white text-[10px] lg:text-xs font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
                 <Tag className="w-3 h-3" />{t.badge}
               </div>
               <div className="absolute bottom-0 left-0 right-0 p-3 lg:p-4">
                 <div className="flex items-center gap-1 text-white/70 text-[10px] lg:text-xs mb-1"><MapPin className="w-3 h-3" />{t.loc}</div>
-                <h3 className="font-semibold text-sm lg:text-base text-white group-hover:text-[#ffaf21] transition-colors line-clamp-1">{t.title}</h3>
+                <h3 className="font-semibold text-sm lg:text-base text-white group-hover:text-[#16a34a] transition-colors line-clamp-1">{t.title}</h3>
                 <div className="flex items-center gap-2 text-[11px] lg:text-xs text-white/60 mt-1 mb-2">
                   <Clock className="w-3 h-3" />{t.dur}<span className="text-white/20">|</span>
                   <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />{t.rating} ({t.rev})
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-[#ffaf21] font-bold text-sm lg:text-base">₹{t.price.toLocaleString()}</span>
+                  <span className="text-[#16a34a] font-bold text-sm lg:text-base">₹{t.price.toLocaleString()}</span>
                   <span className="text-white/50 text-xs line-through">₹{t.origPrice.toLocaleString()}</span>
                   <span className="ml-auto bg-red-500/80 text-white text-[10px] font-bold px-1.5 py-0.5 rounded animate-pulse">{t.badge}</span>
                 </div>

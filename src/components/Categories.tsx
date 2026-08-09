@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 import { useRef, useState, useCallback, useEffect } from 'react';
 import Link from 'next/link';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
@@ -92,13 +92,13 @@ export default function Categories() {
         <div className="relative group/carousel">
           {canScrollLeft && (
             <button type="button" onClick={() => scrollBy(-1)}
-              className="hidden lg:flex absolute left-0 top-[30px] z-10 w-9 h-9 items-center justify-center rounded-full bg-white shadow-lg border border-gray-100 text-gray-600 hover:text-[#ffaf21] hover:shadow-xl transition-all -translate-x-4 opacity-0 group-hover/carousel:opacity-100 group-hover/carousel:translate-x-0">
+              className="hidden lg:flex absolute left-0 top-[30px] z-10 w-9 h-9 items-center justify-center rounded-full bg-white shadow-lg border border-gray-100 text-gray-600 hover:text-[#16a34a] hover:shadow-xl transition-all -translate-x-4 opacity-0 group-hover/carousel:opacity-100 group-hover/carousel:translate-x-0">
               <ChevronLeft className="w-5 h-5" />
             </button>
           )}
           {canScrollRight && (
             <button type="button" onClick={() => scrollBy(1)}
-              className="hidden lg:flex absolute right-0 top-[30px] z-10 w-9 h-9 items-center justify-center rounded-full bg-white shadow-lg border border-gray-100 text-gray-600 hover:text-[#ffaf21] hover:shadow-xl transition-all translate-x-4 opacity-0 group-hover/carousel:opacity-100 group-hover/carousel:translate-x-0">
+              className="hidden lg:flex absolute right-0 top-[30px] z-10 w-9 h-9 items-center justify-center rounded-full bg-white shadow-lg border border-gray-100 text-gray-600 hover:text-[#16a34a] hover:shadow-xl transition-all translate-x-4 opacity-0 group-hover/carousel:opacity-100 group-hover/carousel:translate-x-0">
               <ChevronRight className="w-5 h-5" />
             </button>
           )}
@@ -116,7 +116,7 @@ export default function Categories() {
               <Link key={c.n} href={c.h}
                 onClick={e => { if (hasMoved.current) e.preventDefault(); }}
                 className="flex flex-col items-center gap-2 snap-start shrink-0 w-[72px] lg:w-[92px]">
-                <div className="w-[72px] h-[72px] lg:w-[92px] lg:h-[92px] rounded-full p-[3px] bg-gradient-to-br from-[#ffaf21] via-[#ff7a21] to-[#ff4d6a] hover:scale-105 transition-transform duration-200">
+                <div className="w-[72px] h-[72px] lg:w-[92px] lg:h-[92px] rounded-full p-[3px] bg-gradient-to-br from-[#16a34a] via-[#22c55e] to-[#14532d] hover:scale-105 transition-transform duration-200">
                   <div className="w-full h-full rounded-full overflow-hidden border-2 border-white">
                     <img src={c.img} alt={c.n} className="w-full h-full object-cover" />
                   </div>

@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { ChevronDown, MapPin, Phone, Mail } from 'lucide-react';
+import BrandLogo from '@/components/BrandLogo';
 
 const sections = [
   {
@@ -151,7 +152,7 @@ export default function Footer() {
         <div className="lg:hidden">
           <div className="flex flex-col items-center mb-6">
             <Link href="/" className="flex items-center justify-center mb-2">
-              <img src="https://res.cloudinary.com/pg8uhzw0/image/upload/v1785363638/l_kceoj5.png" alt="TrekRoot" className="h-9 w-auto" />
+              <BrandLogo className="h-9 w-auto max-w-[200px] object-contain" />
             </Link>
             <p className="text-gray-500 text-xs text-center">India&apos;s #1 Social Travel Community</p>
           </div>
@@ -199,7 +200,7 @@ export default function Footer() {
                   <div className="pb-3 space-y-2 px-1">
                     {s.links.map(l => (
                       <Link key={l.l} href={l.h}
-                        className="block text-sm text-gray-600 hover:text-[#ffaf21] transition-colors py-1">
+                        className="block text-sm text-gray-600 hover:text-[#16a34a] transition-colors py-1">
                         {l.l}
                       </Link>
                     ))}
@@ -210,9 +211,9 @@ export default function Footer() {
           </div>
 
           <div className="flex items-center justify-center gap-5 mt-6">
-            <Link href="/privacy-policy" className="text-xs text-gray-500 hover:text-[#ffaf21]">Privacy Policy</Link>
+            <Link href="/privacy-policy" className="text-xs text-gray-500 hover:text-[#16a34a]">Privacy Policy</Link>
             <div className="h-3 w-[1px] bg-gray-300" />
-            <Link href="/terms-and-conditions" className="text-xs text-gray-500 hover:text-[#ffaf21]">Terms &amp; Conditions</Link>
+            <Link href="/terms-and-conditions" className="text-xs text-gray-500 hover:text-[#16a34a]">Terms &amp; Conditions</Link>
           </div>
           <p className="text-center text-xs text-gray-500 mt-4">c 2015-2026 TrekRoot Pvt. Ltd.</p>
         </div>
@@ -221,7 +222,7 @@ export default function Footer() {
         <div className="hidden lg:block">
           <div className="flex items-center gap-2 mb-10">
             <Link href="/" className="flex items-center gap-2">
-              <img src="https://res.cloudinary.com/pg8uhzw0/image/upload/v1785363638/l_kceoj5.png" alt="TrekRoot" className="h-9 w-auto" />
+              <BrandLogo className="h-9 w-auto max-w-[200px] object-contain object-left" />
             </Link>
             <span className="text-gray-500 text-sm ml-2">#wravelerforlife</span>
           </div>
@@ -234,11 +235,11 @@ export default function Footer() {
               </div>
               <div className="flex items-center gap-2 mb-2">
                 <Phone className="w-4 h-4 text-gray-500 shrink-0" />
-                <a href="tel:+919797972175" className="text-xs text-gray-600 hover:text-[#ffaf21]">+91-9797 972 175</a>
+                <a href="tel:+919797972175" className="text-xs text-gray-600 hover:text-[#16a34a]">+91-9797 972 175</a>
               </div>
               <div className="flex items-center gap-2 mb-6">
                 <Mail className="w-4 h-4 text-gray-500 shrink-0" />
-                <a href="mailto:contact@trekroot.com" className="text-xs text-gray-600 hover:text-[#ffaf21]">contact@trekroot.com</a>
+                <a href="mailto:contact@trekroot.com" className="text-xs text-gray-600 hover:text-[#16a34a]">contact@trekroot.com</a>
               </div>
               <div className="flex flex-wrap gap-2">
                 {socialLinks.map(s => (
@@ -254,7 +255,7 @@ export default function Footer() {
                 <ul className="space-y-2.5">
                   {s.links.map(l => (
                     <li key={l.l}>
-                      <Link href={l.h} className="text-xs text-gray-600 hover:text-[#ffaf21] transition-colors">{l.l}</Link>
+                      <Link href={l.h} className="text-xs text-gray-600 hover:text-[#16a34a] transition-colors">{l.l}</Link>
                     </li>
                   ))}
                 </ul>
@@ -265,11 +266,11 @@ export default function Footer() {
           <div className="border-t border-gray-100 pt-5 flex items-center justify-between">
             <p className="text-xs text-gray-400">c 2015-2026 TrekRoot Pvt. Ltd.</p>
             <div className="flex items-center gap-4 text-xs text-gray-600">
-              <Link href="/privacy-policy" className="hover:text-[#ffaf21]">Privacy Policy</Link>
+              <Link href="/privacy-policy" className="hover:text-[#16a34a]">Privacy Policy</Link>
               <div className="h-4 w-[1px] bg-gray-300" />
-              <Link href="/terms-and-conditions" className="hover:text-[#ffaf21]">Terms &amp; Conditions</Link>
+              <Link href="/terms-and-conditions" className="hover:text-[#16a34a]">Terms &amp; Conditions</Link>
               <div className="h-4 w-[1px] bg-gray-300" />
-              <Link href="/payment-policy" className="hover:text-[#ffaf21]">Payment Policy</Link>
+              <Link href="/payment-policy" className="hover:text-[#16a34a]">Payment Policy</Link>
             </div>
           </div>
         </div>

@@ -28,7 +28,7 @@ export default function AdminBookings() {
         <div className="relative">
           <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
           <input type="text" placeholder="Search..." value={search} onChange={e => setSearch(e.target.value)}
-            className="pl-9 pr-4 py-2 rounded-xl border border-gray-200 text-sm outline-none focus:border-[#ffaf21] w-48 lg:w-64" />
+            className="pl-9 pr-4 py-2 rounded-xl border border-gray-200 text-sm outline-none focus:border-[#16a34a] w-48 lg:w-64" />
         </div>
       </div>
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
@@ -56,7 +56,7 @@ export default function AdminBookings() {
                     <div className="text-xs text-gray-400">{book.phone}</div>
                   </td>
                   <td className="p-4 text-gray-600">{book.trekTitle}</td>
-                  <td className="p-4"><span className="text-xs font-semibold text-[#ffaf21]">{book.package}</span></td>
+                  <td className="p-4"><span className="text-xs font-semibold text-[#16a34a]">{book.package}</span></td>
                   <td className="p-4 text-gray-600">{book.persons}</td>
                   <td className="p-4 text-gray-600">{book.date}</td>
                   <td className="p-4 font-semibold">₹{book.amount.toLocaleString()}</td>

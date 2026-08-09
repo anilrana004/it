@@ -21,7 +21,7 @@ export default function AdminDashboard() {
           <h1 className="font-[family-name:var(--font-heading)] text-2xl lg:text-3xl font-bold text-[#000000]">Dashboard</h1>
           <p className="text-gray-500 text-sm">Welcome to TrekRoot Admin Panel</p>
         </div>
-        <Link href="/" className="text-sm text-[#ffaf21] hover:underline hidden lg:block">View Site &rarr;</Link>
+        <Link href="/" className="text-sm text-[#16a34a] hover:underline hidden lg:block">View Site &rarr;</Link>
       </div>
 
       {/* Stats cards */}
@@ -41,7 +41,7 @@ export default function AdminDashboard() {
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 lg:p-6 mb-6">
         <div className="flex items-center justify-between mb-4">
           <h2 className="font-bold text-lg text-[#000000]">Recent Bookings</h2>
-          <Link href="/admin-360f71bc8e5da924/bookings" className="text-sm text-[#ffaf21] hover:underline flex items-center gap-1">View All <ArrowRight className="w-3 h-3" /></Link>
+          <Link href="/admin-360f71bc8e5da924/bookings" className="text-sm text-[#16a34a] hover:underline flex items-center gap-1">View All <ArrowRight className="w-3 h-3" /></Link>
         </div>
         {bookings.length === 0 ? (
           <div className="text-center py-8 text-gray-400 text-sm">No bookings yet</div>
@@ -67,8 +67,8 @@ export default function AdminDashboard() {
             { l: 'New Blog Post', h: '/admin-360f71bc8e5da924/blog', icon: MessageSquare },
             { l: 'Manage Gift Cards', h: '/admin-360f71bc8e5da924/gift-cards', icon: Gift },
           ].map(a => (
-            <Link key={a.l} href={a.h} className="flex items-center gap-3 p-3 lg:p-4 bg-gray-50 rounded-xl hover:bg-[#ffaf21]/5 hover:border-[#ffaf21]/20 border border-transparent transition-all">
-              <div className="w-9 h-9 bg-[#ffaf21]/10 rounded-lg flex items-center justify-center"><a.icon className="w-4 h-4 text-[#ffaf21]" /></div>
+            <Link key={a.l} href={a.h} className="flex items-center gap-3 p-3 lg:p-4 bg-gray-50 rounded-xl hover:bg-[#16a34a]/5 hover:border-[#16a34a]/20 border border-transparent transition-all">
+              <div className="w-9 h-9 bg-[#16a34a]/10 rounded-lg flex items-center justify-center"><a.icon className="w-4 h-4 text-[#16a34a]" /></div>
               <span className="text-sm font-medium text-gray-700">{a.l}</span>
             </Link>
           ))}

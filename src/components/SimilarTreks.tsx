@@ -7,7 +7,7 @@ export default function SimilarTreks({ currentId, type }: { currentId: string; t
 
   if (similar.length === 0) return null;
 
-  const accent = '#ffaf21';
+  const accent = '#16a34a';
 
   return (
     <section className="mt-16 lg:mt-20">
@@ -28,15 +28,15 @@ export default function SimilarTreks({ currentId, type }: { currentId: string; t
               </div>
 
               <div className="absolute bottom-0 left-0 right-0 p-4">
-                <h3 className="font-bold text-sm lg:text-base text-white group-hover:text-[#ffaf21] transition-colors line-clamp-1">{t.title}</h3>
+                <h3 className="font-bold text-sm lg:text-base text-white group-hover:text-[#16a34a] transition-colors line-clamp-1">{t.title}</h3>
                 <div className="flex items-center gap-3 mt-2 text-xs text-white/70">
                   <span className="flex items-center gap-1"><MapPin className="w-3 h-3" />{t.state}</span>
                   <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{t.duration}</span>
                   <span className="flex items-center gap-1"><Star className="w-3 h-3 text-yellow-400" />{t.rating}</span>
                 </div>
                 <div className="flex items-center justify-between mt-3 pt-3 border-t border-white/20">
-                  <div><span className="text-lg font-bold text-[#ffaf21]">₹{minPrice.toLocaleString()}</span><span className="text-xs text-white/50 ml-1">/person</span></div>
-                  <span className="text-xs font-semibold text-[#ffaf21]">View Details →</span>
+                  <div><span className="text-lg font-bold text-[#16a34a]">₹{minPrice.toLocaleString()}</span><span className="text-xs text-white/50 ml-1">/person</span></div>
+                  <span className="text-xs font-semibold text-[#16a34a]">View Details →</span>
                 </div>
               </div>
             </Link>

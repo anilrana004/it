@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 import { useState } from 'react';
 import Link from 'next/link';
 import { Star, Clock, MapPin, TrendingUp, Flame } from 'lucide-react';
@@ -6,22 +6,22 @@ import { Star, Clock, MapPin, TrendingUp, Flame } from 'lucide-react';
 const filters = ['All Trending', 'Trekking', 'Yatra', 'International', 'Weekend'];
 
 const trending = [
-  { title: 'Valley of Flowers Trek', loc: 'Joshimath → Rishikesh', dur: '6D/5N', price: 8999, rating: '4.8', rev: '8k+', img: 'https://res.cloudinary.com/pg8uhzw0/image/upload/f_auto,q_auto,w_420,h_280,c_fill,g_auto/v1785367489/pexels-unaizat97-8673607_anl07u.jpg', href: '/treks/valley-of-flowers', tag: 'Trekking' },
-  { title: 'Kedarkantha Trek', loc: 'Sankri → Dehradun', dur: '5D/4N', price: 6999, rating: '4.9', rev: '10k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/kedarkantha', tag: 'Trekking' },
-  { title: 'Everest Base Camp', loc: 'Lukla → Lukla', dur: '13D/12N', price: 74999, rating: '4.9', rev: '20k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/everest-base-camp', tag: 'International' },
-  { title: 'Annapurna Base Camp', loc: 'Pokhara → Pokhara', dur: '8D/7N', price: 34999, rating: '4.9', rev: '15k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/annapurna-base-camp', tag: 'International' },
-  { title: 'Hampta Pass Trek', loc: 'Manali → Manali', dur: '5D/4N', price: 8499, rating: '4.7', rev: '8k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/hampta-pass', tag: 'Trekking' },
-  { title: 'Kedarnath Yatra', loc: 'Rishikesh → Rishikesh', dur: '6D/5N', price: 9999, rating: '4.8', rev: '12k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/yatra/kedarnath-yatra', tag: 'Yatra' },
-  { title: 'Triund Trek', loc: 'Mcleodganj → Mcleodganj', dur: '3D/2N', price: 2499, rating: '4.6', rev: '15k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/mcleodganj-trek', tag: 'Weekend' },
-  { title: 'Chopta Tungnath', loc: 'Rishikesh → Rishikesh', dur: '4D/3N', price: 5999, rating: '4.7', rev: '7k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/chopta-tungnath', tag: 'Trekking' },
-  { title: 'Har Ki Dun Trek', loc: 'Dehradun → Dehradun', dur: '6D/5N', price: 8999, rating: '4.8', rev: '5k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/har-ki-dun', tag: 'Trekking' },
-  { title: 'Do Dham Yatra', loc: 'Rishikesh → Rishikesh', dur: '7D/6N', price: 14999, rating: '4.8', rev: '8k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/yatra/do-dham', tag: 'Yatra' },
-  { title: 'Dayara Bugyal Trek', loc: 'Rishikesh → Rishikesh', dur: '5D/4N', price: 6999, rating: '4.7', rev: '6k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/dayara-bugyal', tag: 'Trekking' },
-  { title: 'Bhrigu Lake Trek', loc: 'Manali → Manali', dur: '3D/2N', price: 4999, rating: '4.6', rev: '6k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/bhrigu-lake', tag: 'Weekend' },
-  { title: 'Kheerganga Trek', loc: 'Kasol → Kasol', dur: '3D/2N', price: 3499, rating: '4.5', rev: '8k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/kheerganga', tag: 'Weekend' },
-  { title: 'Nepal Backpacking Circuit', loc: 'Kathmandu → Kathmandu', dur: '10D/9N', price: 34999, rating: '4.8', rev: '6k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/nepal-backpacking', tag: 'International' },
-  { title: 'Char Dham Yatra', loc: 'Rishikesh → Rishikesh', dur: '12D/11N', price: 24999, rating: '4.9', rev: '6k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/yatra/char-dham', tag: 'Yatra' },
-  { title: 'Kuari Pass Trek', loc: 'Rishikesh → Rishikesh', dur: '6D/5N', price: 9999, rating: '4.8', rev: '7k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/kuari-pass', tag: 'Trekking' },
+  { title: 'Valley of Flowers Trek', loc: 'Joshimath ? Rishikesh', dur: '6D/5N', price: 8999, rating: '4.8', rev: '8k+', img: 'https://res.cloudinary.com/pg8uhzw0/image/upload/f_auto,q_auto,w_420,h_280,c_fill,g_auto/v1785367489/pexels-unaizat97-8673607_anl07u.jpg', href: '/treks/valley-of-flowers', tag: 'Trekking' },
+  { title: 'Kedarkantha Trek', loc: 'Sankri ? Dehradun', dur: '5D/4N', price: 6999, rating: '4.9', rev: '10k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/kedarkantha', tag: 'Trekking' },
+  { title: 'Everest Base Camp', loc: 'Lukla ? Lukla', dur: '13D/12N', price: 74999, rating: '4.9', rev: '20k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/everest-base-camp', tag: 'International' },
+  { title: 'Annapurna Base Camp', loc: 'Pokhara ? Pokhara', dur: '8D/7N', price: 34999, rating: '4.9', rev: '15k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/annapurna-base-camp', tag: 'International' },
+  { title: 'Hampta Pass Trek', loc: 'Manali ? Manali', dur: '5D/4N', price: 8499, rating: '4.7', rev: '8k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/hampta-pass', tag: 'Trekking' },
+  { title: 'Kedarnath Yatra', loc: 'Rishikesh ? Rishikesh', dur: '6D/5N', price: 9999, rating: '4.8', rev: '12k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/yatra/kedarnath-yatra', tag: 'Yatra' },
+  { title: 'Triund Trek', loc: 'Mcleodganj ? Mcleodganj', dur: '3D/2N', price: 2499, rating: '4.6', rev: '15k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/mcleodganj-trek', tag: 'Weekend' },
+  { title: 'Chopta Tungnath', loc: 'Rishikesh ? Rishikesh', dur: '4D/3N', price: 5999, rating: '4.7', rev: '7k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/chopta-tungnath', tag: 'Trekking' },
+  { title: 'Har Ki Dun Trek', loc: 'Dehradun ? Dehradun', dur: '6D/5N', price: 8999, rating: '4.8', rev: '5k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/har-ki-dun', tag: 'Trekking' },
+  { title: 'Do Dham Yatra', loc: 'Rishikesh ? Rishikesh', dur: '7D/6N', price: 14999, rating: '4.8', rev: '8k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/yatra/do-dham', tag: 'Yatra' },
+  { title: 'Dayara Bugyal Trek', loc: 'Rishikesh ? Rishikesh', dur: '5D/4N', price: 6999, rating: '4.7', rev: '6k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/dayara-bugyal', tag: 'Trekking' },
+  { title: 'Bhrigu Lake Trek', loc: 'Manali ? Manali', dur: '3D/2N', price: 4999, rating: '4.6', rev: '6k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/bhrigu-lake', tag: 'Weekend' },
+  { title: 'Kheerganga Trek', loc: 'Kasol ? Kasol', dur: '3D/2N', price: 3499, rating: '4.5', rev: '8k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/kheerganga', tag: 'Weekend' },
+  { title: 'Nepal Backpacking Circuit', loc: 'Kathmandu ? Kathmandu', dur: '10D/9N', price: 34999, rating: '4.8', rev: '6k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/nepal-backpacking', tag: 'International' },
+  { title: 'Char Dham Yatra', loc: 'Rishikesh ? Rishikesh', dur: '12D/11N', price: 24999, rating: '4.9', rev: '6k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/yatra/char-dham', tag: 'Yatra' },
+  { title: 'Kuari Pass Trek', loc: 'Rishikesh ? Rishikesh', dur: '6D/5N', price: 9999, rating: '4.8', rev: '7k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/kuari-pass', tag: 'Trekking' },
 ];
 
 export default function TrendingPage() {
@@ -32,7 +32,7 @@ export default function TrendingPage() {
       <section className="bg-gradient-to-r from-[#000000] to-[#000000] py-10 lg:py-16 mb-8 lg:mb-12">
         <div className="container mx-auto text-center">
           <div className="flex items-center justify-center gap-3 mb-3">
-            <Flame className="w-6 h-6 lg:w-8 lg:h-8 text-[#ffaf21]" />
+            <Flame className="w-6 h-6 lg:w-8 lg:h-8 text-[#16a34a]" />
             <h1 className="font-[family-name:var(--font-heading)] text-3xl lg:text-5xl font-bold text-white">Trending Destinations</h1>
           </div>
           <p className="text-white/70 text-sm lg:text-lg max-w-xl mx-auto">Discover the most popular adventures our travelers are raving about right now</p>
@@ -52,19 +52,19 @@ export default function TrendingPage() {
             <Link key={t.title} href={t.href} className="group rounded-xl overflow-hidden transition-all relative aspect-[4/5]">
               <img src={t.img} alt={t.title} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-              <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm text-[10px] font-bold px-2 py-1 rounded-full text-[#ffaf21] flex items-center gap-1">
+              <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm text-[10px] font-bold px-2 py-1 rounded-full text-[#16a34a] flex items-center gap-1">
                 <TrendingUp className="w-3 h-3" /> {t.tag}
               </div>
               <div className="absolute bottom-0 left-0 right-0 p-3 lg:p-4">
                 <div className="flex items-center gap-1 text-white/70 text-[10px] lg:text-xs mb-1"><MapPin className="w-3 h-3" />{t.loc}</div>
-                <h3 className="font-semibold text-sm lg:text-base text-white group-hover:text-[#ffaf21] transition-colors line-clamp-1">{t.title}</h3>
+                <h3 className="font-semibold text-sm lg:text-base text-white group-hover:text-[#16a34a] transition-colors line-clamp-1">{t.title}</h3>
                 <div className="flex items-center gap-2 text-[11px] lg:text-xs text-white/60 mt-1 mb-2">
                   <Clock className="w-3 h-3" />{t.dur}<span className="text-white/20">|</span>
                   <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />{t.rating} ({t.rev})
                 </div>
                 <div className="flex items-center">
-                  <span className="text-[#ffaf21] font-bold text-sm lg:text-base">₹{t.price.toLocaleString()}</span>
-                  <span className="ml-auto bg-[#ffaf21]/20 text-[#ffaf21] text-[10px] font-semibold px-2 py-0.5 rounded-full">Trending</span>
+                  <span className="text-[#16a34a] font-bold text-sm lg:text-base">₹{t.price.toLocaleString()}</span>
+                  <span className="ml-auto bg-[#16a34a]/20 text-[#16a34a] text-[10px] font-semibold px-2 py-0.5 rounded-full">Trending</span>
                 </div>
               </div>
             </Link>

@@ -15,9 +15,9 @@ export default function AboutPage() {
           <div className="rounded-2xl overflow-hidden"><img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&h=450&fit=crop" alt="TrekRoot community" className="w-full h-full object-cover" /></div>
         </div>
         <div className="grid grid-cols-3 gap-6 lg:gap-10 mb-16">
-          {[{v:'80,000+',l:'Happy Travelers'},{v:'15,000+',l:'Curated Trips'},{v:'9+ Years',l:'Experience'}].map(s => <div key={s.l} className="text-center p-6 bg-gray-50 rounded-2xl"><div className="font-[family-name:var(--font-heading)] text-2xl lg:text-4xl font-bold text-[#ffaf21] mb-1">{s.v}</div><div className="text-sm text-gray-600">{s.l}</div></div>)}
+          {[{v:'80,000+',l:'Happy Travelers'},{v:'15,000+',l:'Curated Trips'},{v:'9+ Years',l:'Experience'}].map(s => <div key={s.l} className="text-center p-6 bg-gray-50 rounded-2xl"><div className="font-[family-name:var(--font-heading)] text-2xl lg:text-4xl font-bold text-[#16a34a] mb-1">{s.v}</div><div className="text-sm text-gray-600">{s.l}</div></div>)}
         </div>
-        <div className="text-center"><Link href="/contact" className="inline-flex items-center gap-2 bg-[#ffaf21] hover:bg-[#d49400] text-gray-900 font-semibold px-8 py-3.5 rounded-full transition-all">Get in Touch <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg></Link></div>
+        <div className="text-center"><Link href="/contact" className="inline-flex items-center gap-2 bg-[#16a34a] hover:bg-[#15803d] text-white font-semibold px-8 py-3.5 rounded-full transition-all">Get in Touch <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg></Link></div>
       </div>
     </div>
   );
