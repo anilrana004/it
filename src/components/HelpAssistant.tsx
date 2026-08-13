@@ -21,7 +21,7 @@ type ChatMessage = {
   handoff?: boolean;
 };
 
-const WA = 'https://wa.me/919999999999?text=' + encodeURIComponent('Hi TrekRoot! I need help.');
+const WA = 'https://wa.me/919999999999?text=' + encodeURIComponent('Hi Indian Treks! I need help.');
 
 function uid() {
   return `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
@@ -57,7 +57,7 @@ export default function HelpAssistant({ open, onOpenChange }: Props) {
           {
             id: uid(),
             role: 'assistant',
-            text: "Hi! I'm TrekRoot Help. Ask about treks, prices, or booking.",
+            text: "Hi! I'm Indian Treks Help. Ask about treks, prices, or booking.",
             quickReplies: ['Popular treks', 'How to book', 'Talk to a human'],
           },
         ]);
@@ -149,14 +149,14 @@ export default function HelpAssistant({ open, onOpenChange }: Props) {
             h-[min(68dvh,520px)]
             lg:bottom-28 lg:right-6"
           role="dialog"
-          aria-label="TrekRoot help assistant"
+          aria-label="Indian Treks help assistant"
         >
           <div className="flex items-center gap-3 bg-[#111827] px-3 py-2.5 text-white shrink-0">
             <div className="flex h-9 w-9 items-center justify-center rounded-full bg-transparent">
               <AssistantIcon className="h-7 w-7" id="hdr" />
             </div>
             <div className="min-w-0 flex-1">
-              <p className="truncate text-sm font-semibold">TrekRoot Help</p>
+              <p className="truncate text-sm font-semibold">Indian Treks Help</p>
               <p className="truncate text-[11px] text-white/60">{typing ? 'typing...' : 'Online'}</p>
             </div>
             <button

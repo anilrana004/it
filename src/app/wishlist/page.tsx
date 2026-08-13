@@ -20,8 +20,8 @@ export default function WishlistPage() {
     refresh();
     setReady(true);
     const onChange = () => refresh();
-    window.addEventListener('trekroot:wishlist', onChange);
-    return () => window.removeEventListener('trekroot:wishlist', onChange);
+    window.addEventListener('indiantreks:wishlist', onChange);
+    return () => window.removeEventListener('indiantreks:wishlist', onChange);
   }, []);
 
   const items = useMemo(
@@ -38,7 +38,7 @@ export default function WishlistPage() {
     const url = typeof window !== 'undefined' ? window.location.href : '';
     try {
       if (navigator.share) {
-        await navigator.share({ title: 'My TrekRoot Wishlist', url });
+        await navigator.share({ title: 'My Indian Treks Wishlist', url });
       } else {
         await navigator.clipboard.writeText(url);
         alert('Wishlist link copied');

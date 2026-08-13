@@ -5,7 +5,7 @@ export default function ContactPage() {
   return (
     <div className="pt-24 lg:pt-28 pb-12 lg:pb-20">
       <section className="relative h-[30vh] min-h-[220px] overflow-hidden mb-10">
-        <img src="https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_1920,h_500,c_fill,g_auto/" alt="Contact" className="w-full h-full object-cover" />
+        <img src="https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_1920,h_500,c_fill,g_auto/" alt="Contact" className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/30 flex items-center">
           <div className="container mx-auto"><h1 className="font-[family-name:var(--font-heading)] text-3xl lg:text-5xl font-bold text-white mb-2">Contact Us</h1><p className="text-gray-200 text-lg">We&apos;d love to hear from you</p></div>
         </div>
@@ -15,7 +15,7 @@ export default function ContactPage() {
           <div>
             <h2 className="font-[family-name:var(--font-heading)] text-2xl font-bold text-[#000000] mb-6">Get in Touch</h2>
             <div className="space-y-5">
-              {[{icon:Phone,l:'Phone',v:'+91 99 99 99 99 99',h:'tel:+919999999999'},{icon:Mail,l:'Email',v:'hello@trekroot.com',h:'mailto:hello@trekroot.com'},{icon:MapPin,l:'Office',v:'New Delhi, India'},{icon:Clock,l:'Working Hours',v:'Mon - Sat: 10:00 AM - 7:00 PM'}].map(item => (
+              {[{icon:Phone,l:'Phone',v:'+91 99 99 99 99 99',h:'tel:+919999999999'},{icon:Mail,l:'Email',v:'hello@indiantreks.com',h:'mailto:hello@indiantreks.com'},{icon:MapPin,l:'Office',v:'New Delhi, India'},{icon:Clock,l:'Working Hours',v:'Mon - Sat: 10:00 AM - 7:00 PM'}].map(item => (
                 <div key={item.l} className="flex items-start gap-4">
                   <div className="w-10 h-10 bg-[#16a34a]/10 rounded-lg flex items-center justify-center shrink-0 mt-1"><item.icon className="w-5 h-5 text-[#16a34a]" /></div>
                   <div><p className="text-sm text-gray-500">{item.l}</p>{item.h ? <a href={item.h} className="font-semibold text-gray-900 hover:text-[#16a34a] transition-colors">{item.v}</a> : <p className="font-semibold text-gray-900">{item.v}</p>}</div>

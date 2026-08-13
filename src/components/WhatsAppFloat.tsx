@@ -26,7 +26,7 @@ export default function WhatsAppFloat() {
     try {
       if (navigator.share) {
         await navigator.share({
-          title: 'TrekRoot - Explore the Himalayas',
+          title: 'Indian Treks - Explore the Himalayas',
           url: window.location.href,
         });
         return;
@@ -52,7 +52,7 @@ export default function WhatsAppFloat() {
       {/* WhatsApp */}
       {!assistantOpen && (
         <a
-          href="https://wa.me/919999999999?text=Hi%20TrekRoot!%20I%27m%20interested%20in%20a%20trek."
+          href="https://wa.me/919999999999?text=Hi%20Indian%20Treks!%20I%27m%20interested%20in%20a%20trek."
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Chat on WhatsApp"

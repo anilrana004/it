@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { MapPin, Star, Clock, CheckCircle2, ArrowRight, Mountain, Route, Compass } from 'lucide-react';
 
-const imgBase = 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/';
+const imgBase = 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/';
 
 const himalayanTrek = [
   { name: 'Valley of Flowers Trek', loc: 'Uttarakhand', dur: '6D/5N', price: 8999, diff: 'Moderate', img: imgBase, href: '/treks/valley-of-flowers' },
@@ -173,7 +173,7 @@ export default function DomesticToursPage() {
           <p className="text-white/80 text-sm lg:text-base mb-6 max-w-lg mx-auto">Get in touch with our travel experts and receive a free quote within 24 hours.</p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <a href="tel:+919797972175" className="inline-flex items-center gap-2 bg-white text-[#16a34a] font-semibold px-8 py-3 rounded-full hover:bg-gray-100 transition-all text-sm"><ArrowRight className="w-4 h-4" />Call +91 97 97 97 21 75</a>
-            <a href="mailto:hello@trekroot.com" className="inline-flex items-center gap-2 bg-white/10 border border-white/30 text-white font-semibold px-8 py-3 rounded-full hover:bg-white/20 transition-all text-sm">Email Us</a>
+            <a href="mailto:hello@indiantreks.com" className="inline-flex items-center gap-2 bg-white/10 border border-white/30 text-white font-semibold px-8 py-3 rounded-full hover:bg-white/20 transition-all text-sm">Email Us</a>
           </div>
         </div>
       </div>

@@ -1,6 +1,6 @@
 /** Client-side wishlist persistence (localStorage). Safe for demo / pre-auth UX. */
 
-const KEY = 'trekroot_wishlist';
+const KEY = 'indiantreks_wishlist';
 
 export type WishlistItem = {
   id: string;
@@ -21,7 +21,7 @@ function read(): WishlistItem[] {
 
 function write(items: WishlistItem[]) {
   localStorage.setItem(KEY, JSON.stringify(items));
-  window.dispatchEvent(new Event('trekroot:wishlist'));
+  window.dispatchEvent(new Event('indiantreks:wishlist'));
 }
 
 export function getWishlistIds(): string[] {

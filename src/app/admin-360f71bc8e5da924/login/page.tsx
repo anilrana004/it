@@ -41,7 +41,7 @@ export default function AdminLogin() {
               <span className="text-white font-bold text-xl">TR</span>
             </div>
             <h1 className="font-[family-name:var(--font-heading)] text-xl font-bold text-[#000000]">Admin Login</h1>
-            <p className="text-gray-500 text-sm mt-1">Sign in to manage TrekRoot</p>
+            <p className="text-gray-500 text-sm mt-1">Sign in to manage Indian Treks</p>
           </div>
           <form onSubmit={handleSubmit} className="space-y-4">
             {error && <div className="text-sm text-red-600 bg-red-50 rounded-xl p-3 text-center">{error}</div>}

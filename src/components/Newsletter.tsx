@@ -3,7 +3,7 @@ export default function Newsletter() {
   return (
     <section className="py-12 lg:py-20 relative overflow-hidden">
       <div className="absolute inset-0">
-        <img src="https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_1920,h_800,c_fill,g_auto/" alt="" className="w-full h-full object-cover" />
+        <img src="https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_1920,h_800,c_fill,g_auto/" alt="" className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-[#000000]/80" />
       </div>
       <div className="container mx-auto relative z-10 text-center">

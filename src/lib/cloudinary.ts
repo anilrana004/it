@@ -1,4 +1,4 @@
-const CLOUD_NAME = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || 'trekroot';
+const CLOUD_NAME = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || 'pg8uhzw0';
 const FETCH_BASE = `https://res.cloudinary.com/${CLOUD_NAME}/image/fetch`;
 
 export interface CldOptions {

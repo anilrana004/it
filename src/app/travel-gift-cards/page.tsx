@@ -21,7 +21,7 @@ export default function GiftCardsPage() {
     <div className="pt-20 lg:pt-28 pb-12 lg:pb-20">
       {/* Hero */}
       <section className="relative h-[35vh] min-h-[220px] overflow-hidden mb-8">
-        <img src="https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_1920,h_500,c_fill,g_auto/" alt="Gift Cards" className="w-full h-full object-cover" />
+        <img src="https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_1920,h_500,c_fill,g_auto/" alt="Gift Cards" className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/30 flex items-center">
           <div className="container mx-auto px-4">
             <h1 className="font-[family-name:var(--font-heading)] text-3xl lg:text-5xl font-bold text-white mb-2">Travel Gift Cards</h1>
@@ -38,7 +38,7 @@ export default function GiftCardsPage() {
             </div>
             <h2 className="font-[family-name:var(--font-heading)] text-2xl lg:text-3xl font-bold text-[#000000] mb-3">The Gift of Travel</h2>
             <p className="text-gray-600 text-sm lg:text-base max-w-2xl mx-auto mb-6">
-              Say goodbye to chocolates, flowers, and cakes! Give the gift of unforgettable experiences with TrekRoot Travel Gift Cards.
+              Say goodbye to chocolates, flowers, and cakes! Give the gift of unforgettable experiences with Indian Treks Travel Gift Cards.
             </p>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
               {[
@@ -92,7 +92,7 @@ export default function GiftCardsPage() {
                 <div className="bg-white rounded-xl p-4 border border-gray-100">
                   <div className="text-center">
                     <div className="text-2xl font-bold text-[#16a34a]">₹{form.amount.toLocaleString()}</div>
-                    <p className="text-sm text-gray-600 mt-1">TrekRoot Travel Gift Card</p>
+                    <p className="text-sm text-gray-600 mt-1">Indian Treks Travel Gift Card</p>
                     {form.message && <p className="text-xs text-gray-500 mt-2 italic">&ldquo;{form.message}&rdquo;</p>}
                     <p className="text-xs text-gray-400 mt-2">From: {form.senderName || 'You'}</p>
                   </div>
@@ -137,10 +137,10 @@ export default function GiftCardsPage() {
           <h2 className="font-[family-name:var(--font-heading)] text-xl lg:text-2xl font-bold text-[#000000] text-center mb-6">Frequently Asked Questions</h2>
           <div className="max-w-2xl mx-auto space-y-3">
             {[
-              { q: 'What is a TrekRoot Travel Gift Card?', a: 'A TrekRoot Travel Gift Card is a prepaid gift card that can be used to book any trek or yatra on TrekRoot. It\'s an easy and hassle-free way to gift someone a travel experience.' },
+              { q: 'What is an Indian Treks Travel Gift Card?', a: 'An Indian Treks Travel Gift Card is a prepaid gift card that can be used to book any trek or yatra on Indian Treks. It\'s an easy and hassle-free way to gift someone a travel experience.' },
               { q: 'How do I redeem my gift card?', a: 'Simply select your trek, proceed to booking, and enter your unique gift card code in the designated section at checkout. The amount will be deducted automatically.' },
               { q: 'What is the validity of the gift card?', a: 'The gift card is valid for one year from the date of purchase.' },
-              { q: 'Can I use the gift card for any trek?', a: 'Yes! The gift card can be used to book any group trips or customized trips available on TrekRoot.' },
+              { q: 'Can I use the gift card for any trek?', a: 'Yes! The gift card can be used to book any group trips or customized trips available on Indian Treks.' },
             ].map(f => (
               <details key={f.q} className="bg-white rounded-xl border border-gray-100 overflow-hidden group">
                 <summary className="p-4 lg:p-5 font-semibold text-sm text-gray-900 cursor-pointer list-none flex items-center justify-between">

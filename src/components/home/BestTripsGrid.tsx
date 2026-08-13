@@ -3,9 +3,9 @@ import { Star, MapPin } from 'lucide-react';
 
 const trips = [
   { title: 'Valley of Flowers Trek', loc: 'Joshimath, Uttarakhand', rating: '4.8', rev: '8k+', img: 'https://res.cloudinary.com/pg8uhzw0/image/upload/f_auto,q_auto,w_600,h_400,c_fill,g_auto/v1785367489/pexels-unaizat97-8673607_anl07u.jpg', href: '/treks/valley-of-flowers', badge: 'UNESCO Site' },
-  { title: 'Kedarkantha Trek', loc: 'Sankri, Uttarakhand', rating: '4.9', rev: '10k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/kedarkantha', badge: 'Winter Special' },
-  { title: 'Everest Base Camp Trek', loc: 'Lukla, Nepal', rating: '4.9', rev: '20k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/everest-base-camp', badge: 'Bucket List' },
-  { title: 'Hampta Pass Trek', loc: 'Manali, Himachal', rating: '4.7', rev: '8k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/hampta-pass', badge: 'Valley Cross' },
+  { title: 'Kedarkantha Trek', loc: 'Sankri, Uttarakhand', rating: '4.9', rev: '10k+', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/kedarkantha', badge: 'Winter Special' },
+  { title: 'Everest Base Camp Trek', loc: 'Lukla, Nepal', rating: '4.9', rev: '20k+', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/everest-base-camp', badge: 'Bucket List' },
+  { title: 'Hampta Pass Trek', loc: 'Manali, Himachal', rating: '4.7', rev: '8k+', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/hampta-pass', badge: 'Valley Cross' },
 ];
 
 export default function BestTripsGrid() {

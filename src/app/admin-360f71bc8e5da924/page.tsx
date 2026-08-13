@@ -19,7 +19,7 @@ export default function AdminDashboard() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="font-[family-name:var(--font-heading)] text-2xl lg:text-3xl font-bold text-[#000000]">Dashboard</h1>
-          <p className="text-gray-500 text-sm">Welcome to TrekRoot Admin Panel</p>
+          <p className="text-gray-500 text-sm">Welcome to Indian Treks Admin Panel</p>
         </div>
         <Link href="/" className="text-sm text-[#16a34a] hover:underline hidden lg:block">View Site &rarr;</Link>
       </div>

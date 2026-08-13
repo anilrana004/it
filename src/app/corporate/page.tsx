@@ -5,12 +5,12 @@ import { Building2, Users, Heart, Briefcase, Star, ArrowRight, CheckCircle2, Map
 import { useState, FormEvent } from 'react';
 
 const corpPkgs = [
-  { name: 'Kedarkantha Winter Trek', loc: 'Uttarakhand', dur: '5D/4N', price: 6999, capacity: '10-50 pax', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/kedarkantha', badge: 'Best for Teams' },
-  { name: 'Hampta Pass Trek', loc: 'Himachal', dur: '5D/4N', price: 8499, capacity: '10-40 pax', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/hampta-pass', badge: 'Popular' },
-  { name: 'Valley of Flowers Trek', loc: 'Uttarakhand', dur: '6D/5N', price: 8999, capacity: '10-30 pax', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/valley-of-flowers', badge: 'UNESCO' },
-  { name: 'Chopta Tungnath Trek', loc: 'Uttarakhand', dur: '4D/3N', price: 5999, capacity: '10-60 pax', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/chopta-tungnath', badge: 'Easy Access' },
-  { name: 'Triund & Mcleodganj', loc: 'Himachal', dur: '3D/2N', price: 2499, capacity: '10-100 pax', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/mcleodganj-trek', badge: 'Large Groups' },
-  { name: 'Kedarnath Yatra', loc: 'Uttarakhand', dur: '6D/5N', price: 9999, capacity: '10-50 pax', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/yatra/kedarnath-yatra', badge: 'Spiritual' },
+  { name: 'Kedarkantha Winter Trek', loc: 'Uttarakhand', dur: '5D/4N', price: 6999, capacity: '10-50 pax', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/kedarkantha', badge: 'Best for Teams' },
+  { name: 'Hampta Pass Trek', loc: 'Himachal', dur: '5D/4N', price: 8499, capacity: '10-40 pax', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/hampta-pass', badge: 'Popular' },
+  { name: 'Valley of Flowers Trek', loc: 'Uttarakhand', dur: '6D/5N', price: 8999, capacity: '10-30 pax', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/valley-of-flowers', badge: 'UNESCO' },
+  { name: 'Chopta Tungnath Trek', loc: 'Uttarakhand', dur: '4D/3N', price: 5999, capacity: '10-60 pax', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/chopta-tungnath', badge: 'Easy Access' },
+  { name: 'Triund & Mcleodganj', loc: 'Himachal', dur: '3D/2N', price: 2499, capacity: '10-100 pax', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/mcleodganj-trek', badge: 'Large Groups' },
+  { name: 'Kedarnath Yatra', loc: 'Uttarakhand', dur: '6D/5N', price: 9999, capacity: '10-50 pax', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/yatra/kedarnath-yatra', badge: 'Spiritual' },
 ];
 
 export default function CorporatePage() {
@@ -45,10 +45,10 @@ export default function CorporatePage() {
         <div className="container mx-auto text-center">
           <Building2 className="w-10 h-10 lg:w-14 lg:h-14 text-[#16a34a] mx-auto mb-4" />
           <h1 className="font-[family-name:var(--font-heading)] text-3xl lg:text-5xl font-bold text-white mb-3">Corporate Tours & Retreats</h1>
-          <p className="text-white/70 text-sm lg:text-lg max-w-2xl mx-auto mb-6">Build stronger teams, reward your employees, and create unforgettable experiences with TrekRoot&apos;s corporate adventure programs.</p>
+          <p className="text-white/70 text-sm lg:text-lg max-w-2xl mx-auto mb-6">Build stronger teams, reward your employees, and create unforgettable experiences with Indian Treks&apos; corporate adventure programs.</p>
           <div className="flex flex-wrap justify-center gap-3">
             <a href="tel:+919999999999" className="inline-flex items-center gap-2 bg-[#16a34a] hover:bg-[#15803d] text-white font-semibold px-6 py-3 rounded-full transition-all text-sm">Call Us Now</a>
-            <a href="mailto:corporate@trekroot.com" className="inline-flex items-center gap-2 bg-white/10 border border-white/30 text-white font-semibold px-6 py-3 rounded-full hover:bg-white/20 transition-all text-sm">Email Us</a>
+            <a href="mailto:corporate@indiantreks.com" className="inline-flex items-center gap-2 bg-white/10 border border-white/30 text-white font-semibold px-6 py-3 rounded-full hover:bg-white/20 transition-all text-sm">Email Us</a>
           </div>
         </div>
       </section>
@@ -80,7 +80,7 @@ export default function CorporatePage() {
         <div className="bg-gray-50 rounded-2xl p-6 lg:p-10 mb-12 lg:mb-20">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <div>
-              <h2 className="font-[family-name:var(--font-heading)] text-2xl lg:text-3xl font-bold text-[#000000] mb-4">Why Choose TrekRoot for Corporate?</h2>
+              <h2 className="font-[family-name:var(--font-heading)] text-2xl lg:text-3xl font-bold text-[#000000] mb-4">Why Choose Indian Treks for Corporate?</h2>
               <ul className="space-y-3">
                 {[
                   '9+ years of experience organizing corporate adventure programs',
@@ -98,7 +98,7 @@ export default function CorporatePage() {
               </ul>
             </div>
             <div className="relative rounded-xl overflow-hidden h-64 lg:h-80">
-              <img src="https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/" alt="Corporate team" className="w-full h-full object-cover" />
+              <img src="https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/" alt="Corporate team" className="w-full h-full object-cover" />
             </div>
           </div>
         </div>
@@ -153,7 +153,7 @@ export default function CorporatePage() {
         <div className="bg-gradient-to-r from-[#16a34a] to-[#15803d] rounded-2xl p-6 lg:p-10 text-white mb-12 lg:mb-20">
           <div className="max-w-2xl mx-auto text-center">
             <Star className="w-8 h-8 text-yellow-300 mx-auto mb-3 fill-yellow-300" />
-            <p className="text-sm lg:text-lg leading-relaxed italic mb-4">&ldquo;TrekRoot organized an incredible team-building trek for our 45-member team. From seamless logistics to expert guides, everything was perfect. Our team came back more connected and motivated than ever.&rdquo;</p>
+            <p className="text-sm lg:text-lg leading-relaxed italic mb-4">&ldquo;Indian Treks organized an incredible team-building trek for our 45-member team. From seamless logistics to expert guides, everything was perfect. Our team came back more connected and motivated than ever.&rdquo;</p>
             <p className="font-bold text-sm">- HR Director, Leading Tech Company</p>
           </div>
         </div>
@@ -167,7 +167,7 @@ export default function CorporatePage() {
               <div className="space-y-4">
                 {[
                   { icon: Phone, l: 'Call Us', v: '+91 99 99 99 99 99', h: 'tel:+919999999999' },
-                  { icon: Mail, l: 'Email', v: 'corporate@trekroot.com', h: 'mailto:corporate@trekroot.com' },
+                  { icon: Mail, l: 'Email', v: 'corporate@indiantreks.com', h: 'mailto:corporate@indiantreks.com' },
                 ].map(item => (
                   <div key={item.l} className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-[#16a34a]/10 rounded-lg flex items-center justify-center shrink-0"><item.icon className="w-5 h-5 text-[#16a34a]" /></div>
@@ -253,7 +253,7 @@ export default function CorporatePage() {
           <p className="text-gray-500 text-sm mb-6">Get a free quote for your team&apos;s next offsite or retreat.</p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <a href="tel:+919999999999" className="inline-flex items-center gap-2 bg-[#16a34a] text-white font-semibold px-8 py-3 rounded-full hover:bg-[#15803d] transition-all text-sm">Call +91 99 99 99 99 99</a>
-            <a href="mailto:corporate@trekroot.com" className="inline-flex items-center gap-2 bg-gray-100 text-gray-700 font-semibold px-8 py-3 rounded-full hover:bg-gray-200 transition-all text-sm">corporate@trekroot.com</a>
+            <a href="mailto:corporate@indiantreks.com" className="inline-flex items-center gap-2 bg-gray-100 text-gray-700 font-semibold px-8 py-3 rounded-full hover:bg-gray-200 transition-all text-sm">corporate@indiantreks.com</a>
           </div>
         </div>
       </div>

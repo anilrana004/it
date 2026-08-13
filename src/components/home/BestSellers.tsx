@@ -7,23 +7,23 @@ const tabs = ['Top Treks', 'Yatras & Pilgrimages', 'International Adventures'];
 
 const topTreks = [
   { title: 'Valley of Flowers Trek', loc: 'Joshimath ? Rishikesh', dur: '6D/5N', price: 8999, origPrice: 11999, rating: '4.8', rev: '8k+', img: 'https://res.cloudinary.com/pg8uhzw0/image/upload/f_auto,q_auto,w_420,h_280,c_fill,g_auto/v1785367489/pexels-unaizat97-8673607_anl07u.jpg', href: '/treks/valley-of-flowers', badge: 'Bestseller' },
-  { title: 'Kedarkantha Winter Trek', loc: 'Sankri ? Dehradun', dur: '5D/4N', price: 6999, origPrice: 8999, rating: '4.9', rev: '10k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/kedarkantha', badge: '' },
-  { title: 'Hampta Pass Trek', loc: 'Manali ? Manali', dur: '5D/4N', price: 8499, origPrice: 10999, rating: '4.7', rev: '8k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/hampta-pass', badge: '' },
-  { title: 'Chopta Tungnath Trek', loc: 'Rishikesh ? Rishikesh', dur: '4D/3N', price: 5999, origPrice: 7999, rating: '4.7', rev: '6k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/chopta-tungnath', badge: 'New' },
+  { title: 'Kedarkantha Winter Trek', loc: 'Sankri ? Dehradun', dur: '5D/4N', price: 6999, origPrice: 8999, rating: '4.9', rev: '10k+', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/kedarkantha', badge: '' },
+  { title: 'Hampta Pass Trek', loc: 'Manali ? Manali', dur: '5D/4N', price: 8499, origPrice: 10999, rating: '4.7', rev: '8k+', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/hampta-pass', badge: '' },
+  { title: 'Chopta Tungnath Trek', loc: 'Rishikesh ? Rishikesh', dur: '4D/3N', price: 5999, origPrice: 7999, rating: '4.7', rev: '6k+', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/chopta-tungnath', badge: 'New' },
 ];
 
 const yatras = [
-  { title: 'Kedarnath Yatra', loc: 'Rishikesh ? Rishikesh', dur: '6D/5N', price: 9999, origPrice: 12999, rating: '4.8', rev: '12k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/yatra/kedarnath-yatra', badge: 'Popular' },
-  { title: 'Do Dham Yatra', loc: 'Rishikesh ? Rishikesh', dur: '7D/6N', price: 14999, origPrice: 18999, rating: '4.8', rev: '8k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/yatra/do-dham', badge: 'Pilgrimage' },
-  { title: 'Char Dham Yatra', loc: 'Rishikesh ? Rishikesh', dur: '12D/11N', price: 24999, origPrice: 29999, rating: '4.9', rev: '6k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/yatra/char-dham', badge: 'Ultimate' },
-  { title: 'Panch Kedar Yatra', loc: 'Rishikesh ? Rishikesh', dur: '10D/9N', price: 19999, origPrice: 25999, rating: '4.8', rev: '5k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/yatra/panch-kedar', badge: 'Sacred' },
+  { title: 'Kedarnath Yatra', loc: 'Rishikesh ? Rishikesh', dur: '6D/5N', price: 9999, origPrice: 12999, rating: '4.8', rev: '12k+', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/yatra/kedarnath-yatra', badge: 'Popular' },
+  { title: 'Do Dham Yatra', loc: 'Rishikesh ? Rishikesh', dur: '7D/6N', price: 14999, origPrice: 18999, rating: '4.8', rev: '8k+', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/yatra/do-dham', badge: 'Pilgrimage' },
+  { title: 'Char Dham Yatra', loc: 'Rishikesh ? Rishikesh', dur: '12D/11N', price: 24999, origPrice: 29999, rating: '4.9', rev: '6k+', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/yatra/char-dham', badge: 'Ultimate' },
+  { title: 'Panch Kedar Yatra', loc: 'Rishikesh ? Rishikesh', dur: '10D/9N', price: 19999, origPrice: 25999, rating: '4.8', rev: '5k+', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/yatra/panch-kedar', badge: 'Sacred' },
 ];
 
 const international = [
-  { title: 'Everest Base Camp Trek', loc: 'Lukla ? Lukla', dur: '13D/12N', price: 74999, origPrice: 89999, rating: '4.9', rev: '20k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/everest-base-camp', badge: 'Bucket List' },
-  { title: 'Annapurna Base Camp Trek', loc: 'Pokhara ? Pokhara', dur: '8D/7N', price: 34999, origPrice: 42999, rating: '4.9', rev: '15k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/annapurna-base-camp', badge: 'Classic' },
-  { title: 'Nepal Backpacking Circuit', loc: 'Kathmandu ? Kathmandu', dur: '10D/9N', price: 34999, origPrice: 42999, rating: '4.8', rev: '6k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/nepal-backpacking', badge: '' },
-  { title: 'Annapurna Sanctuary Trek', loc: 'Pokhara ? Pokhara', dur: '10D/9N', price: 42999, origPrice: 52999, rating: '4.8', rev: '12k+', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/annapurna-base-camp', badge: 'Premium' },
+  { title: 'Everest Base Camp Trek', loc: 'Lukla ? Lukla', dur: '13D/12N', price: 74999, origPrice: 89999, rating: '4.9', rev: '20k+', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/everest-base-camp', badge: 'Bucket List' },
+  { title: 'Annapurna Base Camp Trek', loc: 'Pokhara ? Pokhara', dur: '8D/7N', price: 34999, origPrice: 42999, rating: '4.9', rev: '15k+', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/annapurna-base-camp', badge: 'Classic' },
+  { title: 'Nepal Backpacking Circuit', loc: 'Kathmandu ? Kathmandu', dur: '10D/9N', price: 34999, origPrice: 42999, rating: '4.8', rev: '6k+', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/nepal-backpacking', badge: '' },
+  { title: 'Annapurna Sanctuary Trek', loc: 'Pokhara ? Pokhara', dur: '10D/9N', price: 42999, origPrice: 52999, rating: '4.8', rev: '12k+', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', href: '/treks/annapurna-base-camp', badge: 'Premium' },
 ];
 
 const data: Record<string, typeof topTreks> = {

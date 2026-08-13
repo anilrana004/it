@@ -1,278 +1,289 @@
-'use client';
-import { useState } from 'react';
 import Link from 'next/link';
-import { ChevronDown, MapPin, Phone, Mail } from 'lucide-react';
+import {
+  Mountain,
+  Shield,
+  Headphones,
+  MapPinned,
+  Check,
+  ChevronRight,
+  MapPin,
+  Mail,
+  Phone,
+  Send,
+} from 'lucide-react';
 import BrandLogo from '@/components/BrandLogo';
+import './footer.css';
 
-const sections = [
+const WA_URL =
+  'https://wa.me/919797972175?text=' +
+  encodeURIComponent("Hi Indian Treks! I'm interested in a trek.");
+
+const trustItems = [
   {
-    title: 'Company',
-    links: [
-      { l: 'About Us', h: '/about' },
-      { l: 'Contact Us', h: '/contact' },
-      { l: 'Our Blogs', h: '/blog' },
-      { l: 'Career With Us', h: '/careers' },
-      { l: 'Payment Policy', h: '/payment-policy' },
-      { l: 'Campus Ambassador Program', h: '/campus-ambassador' },
-      { l: 'Newsletter', h: '/newsletter' },
-    ],
+    icon: Mountain,
+    title: 'Curated Himalayan Adventures',
+    desc: 'Thoughtfully planned mountain journeys',
   },
   {
-    title: 'Group Tours',
-    links: [
-      { l: 'Backpacking Trips', h: '/backpacking-trips' },
-      { l: 'Treks', h: '/treks' },
-      { l: 'Biking Trips', h: '/biking-trips' },
-      { l: 'Upcoming Trips', h: '/upcoming-trips' },
-      { l: 'International Trips', h: '/international-trips' },
-    ],
+    icon: Shield,
+    title: 'Safety-Led Operations',
+    desc: 'Responsible travel with guided support',
   },
   {
-    title: 'Customized Trips',
-    links: [
-      { l: 'Corporate Tours', h: '/corporate' },
-      { l: 'Domestic Tours', h: '/domestic-tours' },
-      { l: 'International Getaways', h: '/international-getaways' },
-      { l: 'Honeymoon Trips', h: '/honeymoon' },
-    ],
+    icon: Headphones,
+    title: 'Personal Assistance',
+    desc: 'Quick help before and after booking',
+  },
+  {
+    icon: MapPinned,
+    title: 'Authentic Access',
+    desc: 'Meaningful routes and real experiences',
   },
 ];
 
-const socialLinks = [
-  {
-    label: 'Facebook', href: 'https://facebook.com/',
-    icon: (s: number) => (
-      <svg xmlns="http://www.w3.org/2000/svg" width={s} height={s} fill="none" viewBox="0 0 32 32">
-        <rect width="32" height="32" fill="#1877F2" rx="5" />
-        <path fill="#fff" d="M24 16c0-4.4-3.6-8-8-8s-8 3.6-8 8c0 4 2.9 7.3 6.7 7.9v-5.6h-2V16h2v-1.8c0-2 1.2-3.1 3-3.1.9 0 1.8.2 1.8.2v2h-1c-1 0-1.3.6-1.3 1.2V16h2.2l-.4 2.3h-1.9V24c4-.6 6.9-4 6.9-8z" />
-      </svg>
-    ),
-  },
-  {
-    label: 'Twitter', href: 'https://twitter.com/',
-    icon: (s: number) => (
-      <svg xmlns="http://www.w3.org/2000/svg" width={s} height={s} fill="none" viewBox="0 0 32 32">
-        <rect width="32" height="32" fill="#1DA1F2" rx="5" />
-        <path fill="#fff" d="M24 11c-.6.3-1.2.4-1.9.5.7-.4 1.2-1 1.4-1.8-.6.4-1.3.6-2.1.8-.6-.6-1.5-1-2.4-1-2.1 0-3.7 2-3.2 4-2.7-.1-5.1-1.4-6.8-3.4-.9 1.5-.4 3.4 1 4.4-.5 0-1-.2-1.5-.4 0 1.5 1.1 2.9 2.6 3.3-.5.1-1 .2-1.5.1.4 1.3 1.6 2.3 3.1 2.3-1.2.9-3 1.4-4.7 1.2 1.5.9 3.2 1.5 5 1.5 6.1 0 9.5-5.1 9.3-9.8.7-.4 1.3-1 1.7-1.7z" />
-      </svg>
-    ),
-  },
-  {
-    label: 'Instagram', href: 'https://instagram.com/',
-    icon: (s: number) => (
-      <svg xmlns="http://www.w3.org/2000/svg" width={s} height={s} fill="none" viewBox="0 0 32 32">
-        <rect width="32" height="32" fill="#F00073" rx="6" />
-        <path fill="#fff" d="M16 9.2h3.4c.8 0 1.2.2 1.5.3.4.2.7.3 1 .6.3.3.5.6.6 1 .1.3.2.7.3 1.5v6.8c0 .8-.2 1.2-.3 1.5-.2.4-.3.7-.6 1-.3.3-.6.5-1 .6-.3.1-.7.2-1.5.3h-6.8c-.8 0-1.2-.2-1.5-.3-.4-.2-.7-.3-1-.6-.3-.3-.5-.6-.6-1-.1-.3-.2-.7-.3-1.5V16v-3.4c0-.8.2-1.2.3-1.5.2-.4.3-.7.6-1 .3-.3.6-.5 1-.6.3-.1.7-.2 1.5-.3H16zm0-1.5h-3.4c-.9 0-1.5.2-2 .4s-1 .5-1.5 1-.7.9-1 1.5c-.2.5-.3 1.1-.4 2v6.8c0 .9.2 1.5.4 2s.5 1 1 1.5.9.7 1.5 1c.5.2 1.1.3 2 .4h6.8c.9 0 1.5-.2 2-.4s1-.5 1.5-1 .7-.9 1-1.5c.2-.5.3-1.1.4-2V16v-3.4c0-.9-.2-1.5-.4-2s-.5-1-1-1.5-.9-.7-1.5-1c-.5-.2-1.1-.3-2-.4H16z" />
-        <path fill="#fff" d="M16 11.7c-2.4 0-4.3 1.9-4.3 4.3s1.9 4.3 4.3 4.3 4.3-1.9 4.3-4.3-1.9-4.3-4.3-4.3zm0 7.1c-1.5 0-2.8-1.2-2.8-2.8 0-1.5 1.2-2.8 2.8-2.8 1.5 0 2.8 1.2 2.8 2.8 0 1.5-1.3 2.8-2.8 2.8zM20.4 12.6a1 1 0 100-2 1 1 0 000 2z" />
-      </svg>
-    ),
-  },
-  {
-    label: 'LinkedIn', href: 'https://linkedin.com/',
-    icon: (s: number) => (
-      <svg xmlns="http://www.w3.org/2000/svg" width={s} height={s} fill="none" viewBox="0 0 32 32">
-        <rect width="32" height="32" fill="#2867B2" rx="6" />
-        <path fill="#fff" d="M11.6 24H8.2V13.3h3.4V24zM9.9 11.8C8.8 11.8 8 11 8 9.9 8 8.8 8.9 8 9.9 8c1.1 0 1.9.8 1.9 1.9 0 1.1-.8 1.9-1.9 1.9zM24 24h-3.4v-5.8c0-1.7-.7-2.2-1.7-2.2s-2 .8-2 2.3V24h-3.4V13.3h3.2v1.5c.3-.7 1.5-1.8 3.2-1.8 1.9 0 3.9 1.1 3.9 4.4V24h.2z" />
-      </svg>
-    ),
-  },
-  {
-    label: 'YouTube', href: 'https://youtube.com/',
-    icon: (s: number) => (
-      <svg xmlns="http://www.w3.org/2000/svg" width={s} height={s} fill="none" viewBox="0 0 32 32">
-        <rect width="32" height="32" fill="red" rx="6" />
-        <path fill="#fff" d="M23.6 12.1c-.2-.7-.7-1.2-1.4-1.4-1.2-.3-6.3-.3-6.3-.3s-5 0-6.3.3c-.7.2-1.2.7-1.4 1.4C8 13.4 8 16 8 16s0 2.6.3 3.9c.2.7.7 1.2 1.4 1.4 1.2.3 6.3.3 6.3.3s5 0 6.3-.3c.7-.2 1.2-.7 1.4-1.4.3-1.3.3-3.9.3-3.9s0-2.6-.4-3.9zm-9.2 6.3v-4.8l4.2 2.4-4.2 2.4z" />
-      </svg>
-    ),
-  },
-  {
-    label: 'Pinterest', href: 'https://pinterest.com/',
-    icon: (s: number) => (
-      <svg xmlns="http://www.w3.org/2000/svg" width={s} height={s} fill="none" viewBox="0 0 32 32">
-        <rect width="32" height="32" fill="#E60023" rx="6" />
-        <path fill="#fff" d="M16 8c-4.4 0-8 3.6-8 8 0 3.3 2 6.1 4.8 7.3 0-.6 0-1.2.1-1.8.2-.7 1-4.4 1-4.4s-.3-.5-.3-1.3c0-1.2.7-2.1 1.5-2.1.7 0 1.1.5 1.1 1.2s-.5 1.8-.7 2.8c-.2.8.4 1.5 1.3 1.5 1.5 0 2.5-1.9 2.5-4.3 0-1.8-1.2-3.1-3.3-3.1-2.4 0-3.9 1.8-3.9 3.8 0 .7.2 1.2.5 1.6.1.2.2.2.1.4 0 .1-.1.5-.2.6-.1.2-.2.3-.4.2-1.1-.5-1.6-1.7-1.6-3.1 0-2.3 1.9-5 5.7-5 3.1 0 5.1 2.2 5.1 4.6 0 3.1-1.7 5.5-4.3 5.5-.9 0-1.7-.5-2-1 0 0-.5 1.8-.6 2.2-.2.6-.5 1.2-.8 1.7.7.2 1.5.3 2.3.3 4.4 0 8-3.6 8-8C24 11.6 20.4 8 16 8z" />
-      </svg>
-    ),
-  },
-  {
-    label: 'TripAdvisor', href: 'https://tripadvisor.in/',
-    icon: (s: number) => (
-      <svg xmlns="http://www.w3.org/2000/svg" width={s} height={s} fill="none" viewBox="0 0 32 32">
-        <rect width="32" height="32" fill="#589541" rx="6" />
-        <path fill="#fff" d="M16 8.5c-3.331 0-5.831.838-8.331 3.338H3.5s0 1.25 1.669 1.668C4.419 14.525 3.5 16.3 3.5 17.67c0 3.437 2.394 5.831 5.831 5.831 1.95 0 3.857-1.094 5-2.5L16 23.5l1.669-2.5c1.143 1.406 3.05 2.5 5 2.5 3.437 0 5.831-2.394 5.831-5.831 0-1.369-.919-3.138-1.669-4.169 1.669-.419 1.669-1.669 1.669-1.669h-4.169c-2.5-2.5-5-3.331-8.331-3.331zm0 .831c4.169 0 6.669 2.5 6.669 2.5C19.33 11.831 16 16 16 20.17c0-4.169-3.331-8.332-6.669-8.332 0-.006 2.5-2.506 6.669-2.506zM9.331 13.5c2.3 0 4.169 1.863 4.169 4.169 0 2.3-1.863 4.168-4.169 4.168a4.164 4.164 0 01-4.168-4.168A4.176 4.176 0 019.33 13.5zm13.338 0c2.3 0 4.168 1.863 4.168 4.169a4.168 4.168 0 11-8.337 0c0-2.3 1.863-4.169 4.169-4.169zM9.33 15.169a2.5 2.5 0 10-.001 4.998 2.5 2.5 0 00.001-4.998zm13.338 0a2.5 2.5 0 10-.002 4.998 2.5 2.5 0 00.002-4.998zM9.33 16c.919 0 1.669.75 1.669 1.669a1.668 1.668 0 01-3.338 0A1.677 1.677 0 019.332 16zm13.338 0c.918 0 1.668.75 1.668 1.669 0 .918-.75 1.668-1.668 1.668a1.668 1.668 0 110-3.337zm-13.338.831a.831.831 0 10.832.832.827.827 0 00-.832-.832zm13.338 0a.831.831 0 100 1.662.831.831 0 000-1.662z" />
-      </svg>
-    ),
-  },
-  {
-    label: 'Quora', href: 'https://quora.com/',
-    icon: (s: number) => (
-      <svg xmlns="http://www.w3.org/2000/svg" width={s} height={s} fill="none" viewBox="0 0 32 32">
-        <path fill="#F44336" d="M23.471 26.68a14.441 14.441 0 006.75-12.266C30.221 6.456 23.853 0 16 0 8.143 0 1.777 6.456 1.777 14.416c0 7.964 6.366 14.416 14.222 14.416 1.156 0 2.276-.142 3.352-.406 1.348 2.454 3.408 4.194 7.772 3.364v-2.446s-2.798-.704-3.652-2.664zm-.1-10.356c0 2.406-.768 4.592-2.012 6.204a8.98 8.98 0 00-7.12-2.858v2.834s2.11.084 3.552 2.564a5.914 5.914 0 01-1.684.246c-4.012 0-7.262-4.026-7.262-8.992V12.61c0-4.968 3.25-8.994 7.262-8.994s7.266 4.026 7.266 8.994l-.002 3.714z" />
-      </svg>
-    ),
-  },
-  {
-    label: 'Spotify', href: 'https://open.spotify.com/',
-    icon: (s: number) => (
-      <svg xmlns="http://www.w3.org/2000/svg" width={s} height={s} fill="none" viewBox="0 0 32 32">
-        <rect width="32" height="32" fill="#3BD75F" rx="6" />
-        <path fill="#fff" d="M16 28c6.627 0 12-5.373 12-12S22.627 4 16 4 4 9.373 4 16s5.373 12 12 12z" />
-        <path stroke="#3BD75F" strokeLinecap="round" strokeWidth="3" d="M8.813 10.854c4.687-1.25 10.25-.937 14.874 1.5" />
-        <path stroke="#3BD75F" strokeLinecap="round" strokeWidth="2" d="M9.5 16.062c3.813-1.062 9-.812 12.688 1.5" />
-        <path stroke="#3BD75F" strokeLinecap="round" d="M9.75 21.021c3.375-.75 7.25-1.062 11.125 1.25" />
-      </svg>
-    ),
-  },
-  {
-    label: 'Google Podcast', href: 'https://podcasts.google.com/',
-    icon: (s: number) => (
-      <svg xmlns="http://www.w3.org/2000/svg" width={s} height={s} fill="none" viewBox="0 0 32 32">
-        <path fill="#0066D9" d="M4 14.91v2.181a2 2 0 11-4 0v-2.182a2 2 0 114 0z" />
-        <path fill="#4285F4" d="M28 14.966v-.057a2 2 0 114 0v2.239a2 2 0 01-3.998 0v-2.182H28z" />
-        <path fill="#EA4335" d="M10.908 21.454v2.182a2 2 0 01-4 0v-2.182a2 2 0 114 0zm0-13.09V15.5a2 2 0 01-4 0V8.363a2 2 0 014 0z" />
-        <path fill="#34A853" d="M21.092 10.545a2 2 0 104 0V8.363a2 2 0 10-4 0v2.182z" />
-        <path fill="#FAB908" d="M14 4.182a2 2 0 104 0V2a2 2 0 10-4 0v2.182zm0 23.636a2 2 0 114 0V30a2 2 0 01-4 0v-2.182z" />
-        <path fill="#34A853" d="M21.092 16.546a2 2 0 014 0v7.091a2 2 0 01-4 0v-7.091z" />
-        <path fill="#FAB908" d="M18 10.182v11.636a2 2 0 11-4 0V10.182a2 2 0 014 0z" />
-      </svg>
-    ),
-  },
+const companyLinks = [
+  { label: 'Home', href: '/' },
+  { label: 'About Us', href: '/about' },
+  { label: 'Contact Us', href: '/contact' },
+  { label: 'Gallery', href: null },
+  { label: 'Blogs', href: '/blog' },
 ];
 
-const row1 = socialLinks.slice(0, 5);
-const row2 = socialLinks.slice(5);
+const exploreLinks = [
+  { label: 'Upcoming Treks', href: '/treks' },
+  { label: 'Weekend Treks', href: null },
+  { label: 'Snow Treks', href: '/treks' },
+  { label: 'High Altitude Treks', href: null },
+  { label: 'Expeditions', href: null },
+];
+
+function WhatsAppIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" aria-hidden>
+      <path
+        fill="currentColor"
+        d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"
+      />
+    </svg>
+  );
+}
 
 export default function Footer() {
-  const [openSection, setOpenSection] = useState<number | null>(null);
-
   return (
-    <footer className="bg-white text-gray-900 pb-[62px] lg:pb-0">
-      <div className="container mx-auto py-8 lg:py-16">
-        {/* Mobile */}
-        <div className="lg:hidden">
-          <div className="flex flex-col items-center mb-6">
-            <Link href="/" className="flex items-center justify-center mb-2">
-              <BrandLogo className="h-9 w-auto max-w-[200px] object-contain" />
-            </Link>
-            <p className="text-gray-500 text-xs text-center">India&apos;s #1 Social Travel Community</p>
-          </div>
-
-          <div className="bg-gray-50 border border-gray-100 rounded-xl p-4 mb-5 space-y-3">
-            <p className="text-sm font-semibold text-gray-900">Contact Us</p>
-            <div className="flex items-start gap-2">
-              <MapPin className="w-4 h-4 text-gray-500 shrink-0 mt-0.5" />
-              <p className="text-xs text-gray-700">B-42, 2nd Floor, Tower- B, The Corenthum, Block A, Sector 62, Noida, Uttar Pradesh 201301</p>
-            </div>
-            <div className="flex items-center gap-2">
-              <Phone className="w-4 h-4 text-gray-500 shrink-0" />
-              <a href="tel:+919797972175" className="text-xs text-gray-700">+91-9797 972 175</a>
-            </div>
-            <div className="flex items-center gap-2">
-              <Mail className="w-4 h-4 text-gray-500 shrink-0" />
-              <a href="mailto:contact@trekroot.com" className="text-xs text-gray-700">contact@trekroot.com</a>
-            </div>
-          </div>
-
-          <div className="flex flex-wrap items-center justify-center gap-3 mb-4">
-            {row1.map(s => (
-              <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.label}>
-                {s.icon(32)}
-              </a>
-            ))}
-          </div>
-          <div className="flex flex-wrap items-center justify-center gap-3 mb-6">
-            {row2.map(s => (
-              <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.label}>
-                {s.icon(32)}
-              </a>
-            ))}
-          </div>
-
-          <div className="space-y-0.5">
-            {sections.map((s, i) => (
-              <div key={s.title} className="border-b border-gray-100">
-                <button onClick={() => setOpenSection(openSection === i ? null : i)}
-                  className="w-full flex items-center justify-between py-3.5 px-1 text-sm font-semibold text-gray-900">
-                  {s.title}
-                  <ChevronDown className={`w-4 h-4 text-gray-500 transition-transform duration-200 ${openSection === i ? 'rotate-180' : ''}`} />
-                </button>
-                {openSection === i && (
-                  <div className="pb-3 space-y-2 px-1">
-                    {s.links.map(l => (
-                      <Link key={l.l} href={l.h}
-                        className="block text-sm text-gray-600 hover:text-[#16a34a] transition-colors py-1">
-                        {l.l}
-                      </Link>
-                    ))}
+    <footer className="rhf-footer pb-[62px] lg:pb-0">
+      <div className="rhf-wrap">
+        <div className="rhf-topline">
+          <div className="rhf-topline-inner">
+            {trustItems.map((item) => {
+              const Icon = item.icon;
+              return (
+                <div key={item.title} className="rhf-topline-item">
+                  <div className="rhf-topline-icon">
+                    <Icon className="h-[15px] w-[15px]" strokeWidth={2.2} />
                   </div>
-                )}
-              </div>
-            ))}
+                  <div className="rhf-topline-text">
+                    <strong>{item.title}</strong>
+                    <span>{item.desc}</span>
+                  </div>
+                </div>
+              );
+            })}
           </div>
-
-          <div className="flex items-center justify-center gap-5 mt-6">
-            <Link href="/privacy-policy" className="text-xs text-gray-500 hover:text-[#16a34a]">Privacy Policy</Link>
-            <div className="h-3 w-[1px] bg-gray-300" />
-            <Link href="/terms-and-conditions" className="text-xs text-gray-500 hover:text-[#16a34a]">Terms &amp; Conditions</Link>
-          </div>
-          <p className="text-center text-xs text-gray-500 mt-4">c 2015-2026 TrekRoot Pvt. Ltd.</p>
         </div>
 
-        {/* Desktop */}
-        <div className="hidden lg:block">
-          <div className="flex items-center gap-2 mb-10">
-            <Link href="/" className="flex items-center gap-2">
-              <BrandLogo className="h-9 w-auto max-w-[200px] object-contain object-left" />
-            </Link>
-            <span className="text-gray-500 text-sm ml-2">#wravelerforlife</span>
-          </div>
-
-          <div className="grid grid-cols-5 gap-8 mb-12">
-            <div className="col-span-1">
-              <div className="flex items-start gap-2 mb-3">
-                <MapPin className="w-4 h-4 text-gray-500 shrink-0 mt-0.5" />
-                <p className="text-xs text-gray-700 leading-relaxed">B-42, 2nd Floor, Tower- B, The Corenthum, Block A, Sector 62, Noida, Uttar Pradesh 201301</p>
-              </div>
-              <div className="flex items-center gap-2 mb-2">
-                <Phone className="w-4 h-4 text-gray-500 shrink-0" />
-                <a href="tel:+919797972175" className="text-xs text-gray-600 hover:text-[#16a34a]">+91-9797 972 175</a>
-              </div>
-              <div className="flex items-center gap-2 mb-6">
-                <Mail className="w-4 h-4 text-gray-500 shrink-0" />
-                <a href="mailto:contact@trekroot.com" className="text-xs text-gray-600 hover:text-[#16a34a]">contact@trekroot.com</a>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {socialLinks.map(s => (
-                  <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.label}>
-                    {s.icon(28)}
-                  </a>
-                ))}
-              </div>
+        <div className="rhf-main">
+          <div className="rhf-card rhf-brand-card">
+            <div className="rhf-brand-top">
+              <Link href="/" className="rhf-logo-box">
+                <BrandLogo className="h-full w-full max-w-none object-contain object-left" />
+              </Link>
             </div>
-            {sections.map(s => (
-              <div key={s.title}>
-                <h4 className="font-bold text-xs mb-4 text-gray-900 uppercase tracking-wider">{s.title}</h4>
-                <ul className="space-y-2.5">
-                  {s.links.map(l => (
-                    <li key={l.l}>
-                      <Link href={l.h} className="text-xs text-gray-600 hover:text-[#16a34a] transition-colors">{l.l}</Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-
-          <div className="border-t border-gray-100 pt-5 flex items-center justify-between">
-            <p className="text-xs text-gray-400">c 2015-2026 TrekRoot Pvt. Ltd.</p>
-            <div className="flex items-center gap-4 text-xs text-gray-600">
-              <Link href="/privacy-policy" className="hover:text-[#16a34a]">Privacy Policy</Link>
-              <div className="h-4 w-[1px] bg-gray-300" />
-              <Link href="/terms-and-conditions" className="hover:text-[#16a34a]">Terms &amp; Conditions</Link>
-              <div className="h-4 w-[1px] bg-gray-300" />
-              <Link href="/payment-policy" className="hover:text-[#16a34a]">Payment Policy</Link>
+            <p className="rhf-brand-copy">
+              Indian Treks creates thoughtfully designed treks, spiritual journeys, and mountain
+              experiences for travelers who want comfort, clarity, and a memorable Himalayan
+              connection.
+            </p>
+            <div className="rhf-mini-badges">
+              <span>
+                <Check strokeWidth={3} /> Premium Trips
+              </span>
+              <span>
+                <Check strokeWidth={3} /> Trek Experts
+              </span>
+              <span>
+                <Check strokeWidth={3} /> Fast Support
+              </span>
+            </div>
+            <div className="rhf-btn-row">
+              <a className="rhf-btn rhf-btn-primary" href={WA_URL} target="_blank" rel="noopener noreferrer">
+                <WhatsAppIcon /> Plan Your Trek
+              </a>
+              <Link className="rhf-btn rhf-btn-light" href="/contact">
+                <Send /> Contact Us
+              </Link>
             </div>
           </div>
+
+          <div className="rhf-card">
+            <h4 className="rhf-title">Company</h4>
+            <ul className="rhf-links">
+              {companyLinks.map((link) => (
+                <li key={link.label}>
+                  {link.href ? (
+                    <Link href={link.href}>
+                      <ChevronRight strokeWidth={2.5} /> {link.label}
+                    </Link>
+                  ) : (
+                    <span className="rhf-link-text" aria-disabled="true">
+                      <ChevronRight strokeWidth={2.5} /> {link.label}
+                    </span>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="rhf-card">
+            <h4 className="rhf-title">Explore</h4>
+            <ul className="rhf-links">
+              {exploreLinks.map((link) => (
+                <li key={link.label}>
+                  {link.href ? (
+                    <Link href={link.href}>
+                      <ChevronRight strokeWidth={2.5} /> {link.label}
+                    </Link>
+                  ) : (
+                    <span className="rhf-link-text" aria-disabled="true">
+                      <ChevronRight strokeWidth={2.5} /> {link.label}
+                    </span>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="rhf-card">
+            <h4 className="rhf-title">Get in Touch</h4>
+            <div className="rhf-contact-list">
+              <div className="rhf-contact-item">
+                <div className="rhf-contact-icon">
+                  <MapPin strokeWidth={2.2} />
+                </div>
+                <div className="rhf-contact-content">
+                  <strong>Office Address</strong>
+                  B-42, 2nd Floor, Tower- B, The Corenthum, Block A, Sector 62, Noida, Uttar Pradesh
+                  201301
+                </div>
+              </div>
+              <div className="rhf-contact-item">
+                <div className="rhf-contact-icon">
+                  <Mail strokeWidth={2.2} />
+                </div>
+                <div className="rhf-contact-content">
+                  <strong>Email</strong>
+                  <a href="mailto:contact@indiantreks.com">contact@indiantreks.com</a>
+                </div>
+              </div>
+              <div className="rhf-contact-item">
+                <div className="rhf-contact-icon">
+                  <Phone strokeWidth={2.2} />
+                </div>
+                <div className="rhf-contact-content">
+                  <strong>Call Us</strong>
+                  <a href="tel:+919797972175">+91-9797 972 175</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="rhf-bottom">
+          <div className="rhf-bottom-card">
+            <h5 className="rhf-subtitle">Accepted Payments</h5>
+            <div className="rhf-payment-box">
+              <img
+                src="https://roopkundheaven.in/wp-content/uploads/2026/04/payment.webp"
+                alt="Accepted Payment Methods"
+              />
+            </div>
+          </div>
+
+          <div className="rhf-bottom-card">
+            <h5 className="rhf-subtitle">Quick Links</h5>
+            <p className="rhf-copy">
+              <strong>© 2026 Indian Treks. Crafted for unforgettable mountain journeys.</strong>
+            </p>
+            <div className="rhf-policy-links">
+              <Link href="/privacy">Privacy Policy</Link>
+              <Link href="/terms">Terms &amp; Conditions</Link>
+              <Link href="/payment-policy">Cancellation &amp; Refund Policy</Link>
+            </div>
+          </div>
+
+          <div className="rhf-bottom-card">
+            <h5 className="rhf-subtitle">Connect With Us</h5>
+            <div className="rhf-socials">
+              <a
+                className="rhf-ig"
+                href="https://www.instagram.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram"
+              >
+                <svg viewBox="0 0 24 24" aria-hidden>
+                  <path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 01-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 017.8 2m-.2 2A3.6 3.6 0 004 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 003.6-3.6V7.6C20 5.61 18.39 4 16.4 4H7.6m9.65 1.5a1.25 1.25 0 110 2.5 1.25 1.25 0 010-2.5M12 7a5 5 0 110 10 5 5 0 010-10m0 2a3 3 0 100 6 3 3 0 000-6z" />
+                </svg>
+              </a>
+              <a
+                className="rhf-fb"
+                href="https://www.facebook.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Facebook"
+              >
+                <svg viewBox="0 0 24 24" aria-hidden>
+                  <path d="M14 13.5h2.5l1-4H14v-2c0-1.03 0-2 2-2h1.5V2.14c-.326-.043-1.557-.14-2.857-.14C11.928 2 10 3.657 10 6.7v2.8H7v4h3V22h4v-8.5z" />
+                </svg>
+              </a>
+              <a
+                className="rhf-yt"
+                href="https://www.youtube.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="YouTube"
+              >
+                <svg viewBox="0 0 24 24" aria-hidden>
+                  <path d="M10 15l5.19-3L10 9v6m11.56-7.83c.13.47.22 1.1.28 1.9.07.8.1 1.49.1 2.09L22 12c0 2.19-.16 3.8-.44 4.83-.25.9-.83 1.48-1.73 1.73-.47.13-1.33.22-2.65.28-1.3.07-2.49.1-3.59.1L12 19c-4.19 0-6.8-.16-7.83-.44-.9-.25-1.48-.83-1.73-1.73-.13-.47-.22-1.1-.28-1.9-.07-.8-.1-1.49-.1-2.09L2 12c0-2.19.16-3.8.44-4.83.25-.9.83-1.48 1.73-1.73.47-.13 1.33-.22 2.65-.28 1.3-.07 2.49-.1 3.59-.1L12 5c4.19 0 6.8.16 7.83.44.9.25 1.48.83 1.73 1.73z" />
+                </svg>
+              </a>
+              <a
+                className="rhf-li"
+                href="https://www.linkedin.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="LinkedIn"
+              >
+                <svg viewBox="0 0 24 24" aria-hidden>
+                  <path d="M6.94 5a2 2 0 11-4-.002 2 2 0 014 .002zM7 8.48H3V21h4V8.48zm6.32 0H9.34V21h3.94v-6.57c0-3.66 4.77-4 4.77 0V21H22v-7.93c0-6.17-7.06-5.94-8.72-2.91l.04-1.68z" />
+                </svg>
+              </a>
+              <a
+                className="rhf-wa"
+                href={WA_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="WhatsApp"
+              >
+                <WhatsAppIcon />
+              </a>
+            </div>
+            <p className="rhf-social-note">Follow us for trek updates, stories, and new departures.</p>
+          </div>
+        </div>
+
+        <div className="rhf-legal">
+          Designed for modern explorers seeking elegant, dependable, and experience-led Himalayan
+          travel.
         </div>
       </div>
     </footer>

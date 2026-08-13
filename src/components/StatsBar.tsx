@@ -11,7 +11,7 @@ export default function StatsBar() {
   return (
     <section className="bg-gradient-to-r from-[#000000] to-[#000000] py-8 lg:py-12">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-2 lg:flex lg:flex-row gap-4 lg:gap-8">
+        <div className="mx-auto grid max-w-5xl grid-cols-2 gap-4 lg:grid-cols-4 lg:gap-6">
           {stats.map((s) => {
             const Icon = s.icon;
             return (

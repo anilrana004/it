@@ -9,9 +9,9 @@ import MobileBottomNav from "@/components/MobileBottomNav";
 const poppins = Poppins({ subsets: ["latin"], weight: ["400","500","600","700","800"], variable: "--font-poppins" });
 
 export const metadata: Metadata = {
-  title: "TrekRoot - Himalayan Treks, Yatras & Adventure Travel",
+  title: "Indian Treks - Himalayan Treks, Yatras & Adventure Travel",
   description: "Book Himalayan treks and sacred yatras in Uttarakhand, Himachal Pradesh, and Nepal. Trusted by 80,000+ travelers. Valley of Flowers, Kedarkantha, Hampta Pass, Everest Base Camp, Kedarnath Yatra and more.",
-  keywords: "trekroot, himalayan treks, uttarakhand treks, himachal treks, nepal trek, valley of flowers, kedarkantha, everest base camp, annapurna base camp, kedarnath yatra, badrinath yatra, adventure travel",
+  keywords: "indiantreks, indian treks, himalayan treks, uttarakhand treks, himachal treks, nepal trek, valley of flowers, kedarkantha, everest base camp, annapurna base camp, kedarnath yatra, badrinath yatra, adventure travel",
 };
 
 /** Keep mobile layout at device width — no auto-zoom / reflow from overflow. */

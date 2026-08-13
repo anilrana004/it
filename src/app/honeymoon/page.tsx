@@ -2,19 +2,19 @@ import Link from 'next/link';
 import { MapPin, Star, Clock, Heart, Camera, Home, CheckCircle2, ArrowRight } from 'lucide-react';
 
 const trekkingPkg = [
-  { name: 'Chopta Tungnath Trek', loc: 'Uttarakhand  -  Mini Switzerland', dur: '4D/3N', price: 18500, tag: 'Most Romantic', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/chopta-tungnath' },
-  { name: 'Triund Trek', loc: 'Himachal  -  Dhauladhar Views', dur: '3D/2N', price: 12999, tag: 'Couples Choice', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/mcleodganj-trek' },
-  { name: 'Dayara Bugyal Trek', loc: 'Uttarakhand  -  Alpine Meadows', dur: '5D/4N', price: 16999, tag: 'Scenic', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/dayara-bugyal' },
-  { name: 'Nag Tibba Trek', loc: 'Uttarakhand  -  Weekend Trek', dur: '2D/1N', price: 7999, tag: 'Quick Escape', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/nag-tibba' },
-  { name: 'Kheerganga Trek', loc: 'Himachal  -  Hot Springs', dur: '3D/2N', price: 9999, tag: 'Hot Springs', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/kheerganga' },
-  { name: 'Beas Kund Trek', loc: 'Himachal  -  Solang Valley', dur: '4D/3N', price: 14999, tag: 'Valley Trek', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/beas-kund' },
+  { name: 'Chopta Tungnath Trek', loc: 'Uttarakhand  -  Mini Switzerland', dur: '4D/3N', price: 18500, tag: 'Most Romantic', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/chopta-tungnath' },
+  { name: 'Triund Trek', loc: 'Himachal  -  Dhauladhar Views', dur: '3D/2N', price: 12999, tag: 'Couples Choice', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/mcleodganj-trek' },
+  { name: 'Dayara Bugyal Trek', loc: 'Uttarakhand  -  Alpine Meadows', dur: '5D/4N', price: 16999, tag: 'Scenic', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/dayara-bugyal' },
+  { name: 'Nag Tibba Trek', loc: 'Uttarakhand  -  Weekend Trek', dur: '2D/1N', price: 7999, tag: 'Quick Escape', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/nag-tibba' },
+  { name: 'Kheerganga Trek', loc: 'Himachal  -  Hot Springs', dur: '3D/2N', price: 9999, tag: 'Hot Springs', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/kheerganga' },
+  { name: 'Beas Kund Trek', loc: 'Himachal  -  Solang Valley', dur: '4D/3N', price: 14999, tag: 'Valley Trek', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/beas-kund' },
 ];
 
 const getawayPkg = [
-  { name: 'Valley of Flowers Trek', loc: 'Uttarakhand', dur: '6D/5N', price: 8999, tag: 'UNESCO Paradise', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/valley-of-flowers' },
-  { name: 'Kedarkantha Trek', loc: 'Uttarakhand', dur: '5D/4N', price: 6999, tag: 'Winter Wonderland', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/kedarkantha' },
-  { name: 'Annapurna Base Camp', loc: 'Nepal', dur: '8D/7N', price: 34999, tag: 'International', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/annapurna-base-camp' },
-  { name: 'Sar Pass Trek', loc: 'Himachal', dur: '5D/4N', price: 6999, tag: 'Scenic', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/sar-pass' },
+  { name: 'Valley of Flowers Trek', loc: 'Uttarakhand', dur: '6D/5N', price: 8999, tag: 'UNESCO Paradise', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/valley-of-flowers' },
+  { name: 'Kedarkantha Trek', loc: 'Uttarakhand', dur: '5D/4N', price: 6999, tag: 'Winter Wonderland', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/kedarkantha' },
+  { name: 'Annapurna Base Camp', loc: 'Nepal', dur: '8D/7N', price: 34999, tag: 'International', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/annapurna-base-camp' },
+  { name: 'Sar Pass Trek', loc: 'Himachal', dur: '5D/4N', price: 6999, tag: 'Scenic', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/sar-pass' },
 ];
 
 const highlights = [
@@ -133,7 +133,7 @@ export default function HoneymoonPage() {
               </ul>
             </div>
             <div className="relative rounded-xl overflow-hidden h-64 lg:h-80">
-              <img src="https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/" alt="Couple in the Himalayas" className="w-full h-full object-cover" />
+              <img src="https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/" alt="Couple in the Himalayas" className="w-full h-full object-cover" />
             </div>
           </div>
         </div>
@@ -144,7 +144,7 @@ export default function HoneymoonPage() {
           <p className="text-white/80 text-sm lg:text-base mb-6 max-w-lg mx-auto">Let us craft the perfect honeymoon itinerary for you.</p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <a href="tel:+919999999999" className="inline-flex items-center gap-2 bg-white text-rose-600 font-semibold px-8 py-3 rounded-full hover:bg-gray-100 transition-all text-sm">Call +91 99 99 99 99 99</a>
-            <a href="mailto:hello@trekroot.com" className="inline-flex items-center gap-2 bg-white/10 border border-white/30 text-white font-semibold px-8 py-3 rounded-full hover:bg-white/20 transition-all text-sm">Email Us</a>
+            <a href="mailto:hello@indiantreks.com" className="inline-flex items-center gap-2 bg-white/10 border border-white/30 text-white font-semibold px-8 py-3 rounded-full hover:bg-white/20 transition-all text-sm">Email Us</a>
           </div>
         </div>
       </div>

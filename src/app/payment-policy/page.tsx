@@ -4,7 +4,7 @@ export default function PaymentPolicyPage() {
       <div className="container mx-auto max-w-3xl px-4">
         <h1 className="font-[family-name:var(--font-heading)] text-3xl font-bold text-[#000000] mb-6">Payment Policy</h1>
         <div className="text-gray-700 text-sm space-y-4">
-          <p>At TrekRoot, we strive to make booking your dream adventure as simple and flexible as possible. Here&apos;s how our payment structure works:</p>
+          <p>At Indian Treks, we strive to make booking your dream adventure as simple and flexible as possible. Here&apos;s how our payment structure works:</p>
           <h3 className="font-bold text-gray-900 text-lg">1. Booking Confirmation</h3>
           <p>To confirm your booking, you need to pay an advance deposit. The deposit amount varies based on your chosen package and trek.</p>
           <h3 className="font-bold text-gray-900 text-lg">2. Payment Options</h3>

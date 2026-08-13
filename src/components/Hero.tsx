@@ -11,23 +11,23 @@ import { treks } from '@/lib/data';
 import BrandLogo from '@/components/BrandLogo';
 
 const mobBanners = [
-  { image: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_350,c_fill,g_auto/&q=80', title: 'Uttarakhand Treks', subtitle: 'Chopta - Kedarkantha - Valley of Flowers & more', cta: 'Explore Treks', cat: 'trek' },
-  { image: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_350,c_fill,g_auto/&q=80', title: 'Sacred Yatras', subtitle: 'Kedarnath - Do Dham - Char Dham - Panch Kedar', cta: 'Explore Yatras', cat: 'yatra' },
-  { image: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_350,c_fill,g_auto/&q=80', title: 'Himachal Adventures', subtitle: 'Hampta Pass - Triund - Bhrigu Lake & more', cta: 'Explore Himachal', cat: 'trek' },
-  { image: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_350,c_fill,g_auto/&q=80', title: 'International Expeditions', subtitle: 'EBC - Annapurna - Nepal Backpacking Circuit', cta: 'Explore Global', cat: 'international' },
+  { image: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_600,h_350,c_fill,g_auto/&q=80', title: 'Uttarakhand Treks', subtitle: 'Chopta - Kedarkantha - Valley of Flowers & more', cta: 'Explore Treks', cat: 'trek' },
+  { image: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_600,h_350,c_fill,g_auto/&q=80', title: 'Sacred Yatras', subtitle: 'Kedarnath - Do Dham - Char Dham - Panch Kedar', cta: 'Explore Yatras', cat: 'yatra' },
+  { image: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_600,h_350,c_fill,g_auto/&q=80', title: 'Himachal Adventures', subtitle: 'Hampta Pass - Triund - Bhrigu Lake & more', cta: 'Explore Himachal', cat: 'trek' },
+  { image: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_600,h_350,c_fill,g_auto/&q=80', title: 'International Expeditions', subtitle: 'EBC - Annapurna - Nepal Backpacking Circuit', cta: 'Explore Global', cat: 'international' },
 ];
 
 const catItems = [
-  { n: 'Uttarakhand Treks', h: '/treks?region=uttarakhand', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_300,h_300,c_fill,g_auto/&q=80' },
-  { n: 'Himachal Treks', h: '/treks?region=himachal', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_300,h_300,c_fill,g_auto/&q=80' },
-  { n: 'Char Dham Yatra', h: '/yatra', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_300,h_300,c_fill,g_auto/&q=80' },
-  { n: 'Kedarnath Yatra', h: '/yatra/kedarnath-yatra', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_300,h_300,c_fill,g_auto/&q=80' },
-  { n: 'Everest Base Camp', h: '/treks/everest-base-camp', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_300,h_300,c_fill,g_auto/&q=80' },
-  { n: 'Nepal', h: '/treks?region=nepal', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_300,h_300,c_fill,g_auto/&q=80' },
-  { n: 'Chopta Tungnath', h: '/treks/chopta-tungnath', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_300,h_300,c_fill,g_auto/&q=80' },
-  { n: 'Hampta Pass', h: '/treks/hampta-pass', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_300,h_300,c_fill,g_auto/&q=80' },
-  { n: 'Triund Trek', h: '/treks/mcleodganj-trek', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_300,h_300,c_fill,g_auto/&q=80' },
-  { n: 'Valley of Flowers', h: '/treks/valley-of-flowers', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_300,h_300,c_fill,g_auto/&q=80' },
+  { n: 'Uttarakhand Treks', h: '/treks?region=uttarakhand', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_300,h_300,c_fill,g_auto/&q=80' },
+  { n: 'Himachal Treks', h: '/treks?region=himachal', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_300,h_300,c_fill,g_auto/&q=80' },
+  { n: 'Char Dham Yatra', h: '/yatra', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_300,h_300,c_fill,g_auto/&q=80' },
+  { n: 'Kedarnath Yatra', h: '/yatra/kedarnath-yatra', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_300,h_300,c_fill,g_auto/&q=80' },
+  { n: 'Everest Base Camp', h: '/treks/everest-base-camp', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_300,h_300,c_fill,g_auto/&q=80' },
+  { n: 'Nepal', h: '/treks?region=nepal', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_300,h_300,c_fill,g_auto/&q=80' },
+  { n: 'Chopta Tungnath', h: '/treks/chopta-tungnath', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_300,h_300,c_fill,g_auto/&q=80' },
+  { n: 'Hampta Pass', h: '/treks/hampta-pass', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_300,h_300,c_fill,g_auto/&q=80' },
+  { n: 'Triund Trek', h: '/treks/mcleodganj-trek', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_300,h_300,c_fill,g_auto/&q=80' },
+  { n: 'Valley of Flowers', h: '/treks/valley-of-flowers', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_300,h_300,c_fill,g_auto/&q=80' },
 ];
 
 const collabItems = [
@@ -39,11 +39,11 @@ const collabItems = [
 ];
 
 const deskSlides = [
-  { id: 'valley-of-flowers', name: 'Valley of Flowers Trek', sub: 'UNESCO Himalayan Paradise - Alpine meadows, rare flora & stunning snow-capped vistas', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_1920,h_960,c_fill,g_auto/', featureImg: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_800,h_1000,c_fill,g_auto/', t: 'trek', rating: '4.8', duration: '6D/5N', difficulty: 'Moderate', altitude: '14,107 ft', distance: '38 km', reviews: '8k+', season: 'Jul-Sep', group: '6-15' },
-  { id: 'kedarkantha', name: 'Kedarkantha Trek', sub: 'Winter Wonderland - Snow-trailed summit with 360- Himalayan panoramas', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_1920,h_960,c_fill,g_auto/', featureImg: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_800,h_1000,c_fill,g_auto/', t: 'trek', rating: '4.9', duration: '5D/4N', difficulty: 'Easy-Moderate', altitude: '12,500 ft', distance: '22 km', reviews: '10k+', season: 'Dec-Apr', group: '6-15' },
-  { id: 'kedarnath-yatra', name: 'Kedarnath Yatra', sub: 'Sacred Pilgrimage - One of the 12 Jyotirlingas in the Char Dham circuit', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_1920,h_960,c_fill,g_auto/', featureImg: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_800,h_1000,c_fill,g_auto/', t: 'yatra', rating: '4.8', duration: '6D/5N', difficulty: 'Moderate', altitude: '11,755 ft', distance: '16 km', reviews: '12k+', season: 'May-Oct', group: '10-30' },
-  { id: 'everest-base-camp', name: 'Everest Base Camp Trek', sub: 'Ultimate Himalayan Dream - Trek to the foot of the world\'s highest peak', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_1920,h_960,c_fill,g_auto/', featureImg: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_800,h_1000,c_fill,g_auto/', t: 'trek', rating: '4.9', duration: '14D/13N', difficulty: 'Moderate', altitude: '17,598 ft', distance: '130 km', reviews: '20k+', season: 'Mar-May,Oct-Nov', group: '4-12' },
-  { id: 'hampta-pass', name: 'Hampta Pass Trek', sub: 'Cross-over Adventure - Lush green Kullu meets barren Spiti valley', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_1920,h_960,c_fill,g_auto/', featureImg: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_800,h_1000,c_fill,g_auto/', t: 'trek', rating: '4.7', duration: '5D/4N', difficulty: 'Moderate', altitude: '14,100 ft', distance: '26 km', reviews: '8k+', season: 'Jun-Oct', group: '6-14' },
+  { id: 'valley-of-flowers', name: 'Valley of Flowers Trek', sub: 'UNESCO Himalayan Paradise - Alpine meadows, rare flora & stunning snow-capped vistas', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_1920,h_960,c_fill,g_auto/', featureImg: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_800,h_1000,c_fill,g_auto/', t: 'trek', rating: '4.8', duration: '6D/5N', difficulty: 'Moderate', altitude: '14,107 ft', distance: '38 km', reviews: '8k+', season: 'Jul-Sep', group: '6-15' },
+  { id: 'kedarkantha', name: 'Kedarkantha Trek', sub: 'Winter Wonderland - Snow-trailed summit with 360- Himalayan panoramas', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_1920,h_960,c_fill,g_auto/', featureImg: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_800,h_1000,c_fill,g_auto/', t: 'trek', rating: '4.9', duration: '5D/4N', difficulty: 'Easy-Moderate', altitude: '12,500 ft', distance: '22 km', reviews: '10k+', season: 'Dec-Apr', group: '6-15' },
+  { id: 'kedarnath-yatra', name: 'Kedarnath Yatra', sub: 'Sacred Pilgrimage - One of the 12 Jyotirlingas in the Char Dham circuit', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_1920,h_960,c_fill,g_auto/', featureImg: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_800,h_1000,c_fill,g_auto/', t: 'yatra', rating: '4.8', duration: '6D/5N', difficulty: 'Moderate', altitude: '11,755 ft', distance: '16 km', reviews: '12k+', season: 'May-Oct', group: '10-30' },
+  { id: 'everest-base-camp', name: 'Everest Base Camp Trek', sub: 'Ultimate Himalayan Dream - Trek to the foot of the world\'s highest peak', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_1920,h_960,c_fill,g_auto/', featureImg: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_800,h_1000,c_fill,g_auto/', t: 'trek', rating: '4.9', duration: '14D/13N', difficulty: 'Moderate', altitude: '17,598 ft', distance: '130 km', reviews: '20k+', season: 'Mar-May,Oct-Nov', group: '4-12' },
+  { id: 'hampta-pass', name: 'Hampta Pass Trek', sub: 'Cross-over Adventure - Lush green Kullu meets barren Spiti valley', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_1920,h_960,c_fill,g_auto/', featureImg: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_800,h_1000,c_fill,g_auto/', t: 'trek', rating: '4.7', duration: '5D/4N', difficulty: 'Moderate', altitude: '14,100 ft', distance: '26 km', reviews: '8k+', season: 'Jun-Oct', group: '6-14' },
 ];
 
 const destinations = ['Kedarkantha', 'Valley of Flowers', 'Everest Base Camp', 'Hampta Pass', 'Chopta Tungnath', 'Kedarnath', 'Triund', 'Annapurna'];
@@ -169,7 +169,7 @@ export default function Hero() {
     };
 
     return (
-    <section className="relative h-[88vh] min-h-[600px] w-full overflow-hidden">
+    <section className="relative flex min-h-[640px] h-[min(92vh,920px)] w-full flex-col overflow-hidden">
       {/* Background image layer */}
       {deskSlides.map((s, i) => (
         <div key={s.id}
@@ -180,7 +180,7 @@ export default function Hero() {
       <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/70 to-black/40" />
 
       {/* Top bar */}
-      <div className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between px-6 xl:px-10 2xl:px-14 h-14">
+      <div className="relative z-20 flex h-14 shrink-0 items-center justify-between px-6 xl:px-10 2xl:px-14">
         <div className="flex items-center gap-2">
           <BrandLogo className="h-9 w-auto max-w-[200px] object-contain object-left" />
         </div>
@@ -197,26 +197,26 @@ export default function Hero() {
       </div>
 
       {/* Main content area: left info + right photo */}
-      <div className="absolute inset-0 z-10 flex items-center" style={{ top: '56px', bottom: '130px' }}>
+      <div className="relative z-10 flex min-h-0 flex-1 items-center py-4">
         <div className="container mx-auto w-full">
           <div className="flex items-center gap-10 w-full">
 
             {/* -- LEFT: Trek info -- */}
             <div className="flex-1 max-w-xl" key={slide.id}>
-              <span className="inline-block text-[10px] font-semibold tracking-[0.2em] uppercase text-[#16a34a] bg-[#16a34a]/10 border border-[#16a34a]/20 px-3 py-1 rounded-full mb-4">
+              <span className="inline-block text-[10px] font-semibold tracking-[0.2em] uppercase text-[#16a34a] bg-[#16a34a]/10 border border-[#16a34a]/20 px-3 py-1 rounded-full mb-3">
                 {slide.t === 'yatra' ? 'Sacred Yatra' : 'Himalayan Trek'}
               </span>
 
-              <h1 className="font-bold text-white text-5xl xl:text-6xl leading-[1.1] mb-3">
+              <h1 className="font-bold text-white text-4xl xl:text-5xl 2xl:text-6xl leading-[1.1] mb-2.5">
                 {slide.name}
               </h1>
 
-              <p className="text-white/50 text-base leading-relaxed mb-6 max-w-lg">
+              <p className="text-white/50 text-sm xl:text-base leading-relaxed mb-5 max-w-lg">
                 {slide.sub}
               </p>
 
               {/* Info grid - 2x3 */}
-              <div className="grid grid-cols-2 gap-x-8 gap-y-3 mb-7 max-w-md">
+              <div className="grid grid-cols-2 gap-x-8 gap-y-2.5 mb-5 max-w-md">
                 <InfoRow icon={Star} label="Rating" value={`${slide.rating} (${slide.reviews} reviews)`} accent />
                 <InfoRow icon={Calendar} label="Duration" value={slide.duration} />
                 <InfoRow icon={Mountain} label="Max Altitude" value={slide.altitude} />
@@ -225,7 +225,7 @@ export default function Hero() {
                 <InfoRow icon={Users} label="Group Size" value={slide.group} />
               </div>
 
-              <div className="flex items-center gap-2.5 mb-5">
+              <div className="flex items-center gap-2.5 mb-4">
                 <span className={`text-[11px] font-semibold px-3 py-1 rounded-full ${diffBadge(slide.difficulty)}`}>
                   {slide.difficulty}
                 </span>
@@ -247,8 +247,8 @@ export default function Hero() {
             </div>
 
             {/* -- RIGHT: Feature photo -- */}
-            <div className="hidden xl:block w-[340px] xl:w-[400px] shrink-0">
-              <div className="relative aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl shadow-black/40 group/ph">
+            <div className="hidden xl:block w-[300px] xl:w-[360px] 2xl:w-[400px] shrink-0">
+              <div className="relative aspect-[3/4] max-h-[min(52vh,480px)] mx-auto rounded-2xl overflow-hidden shadow-2xl shadow-black/40 group/ph">
                 {deskSlides.map((s, i) => (
                   <div key={s.id}
                     className={`absolute inset-0 transition-all duration-1000 ${i === deskSlide ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
@@ -271,8 +271,8 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Search bar */}
-      <div className="absolute bottom-14 left-0 right-0 z-10 container mx-auto">
+      {/* Search bar - in normal flow so it never covers CTAs */}
+      <div className="relative z-10 shrink-0 container mx-auto px-4 pb-3 pt-1">
         <div className="bg-white rounded-2xl p-3 shadow-2xl shadow-black/20">
           <div className="flex flex-row gap-2">
             <div className="flex-1 flex items-center gap-2 px-3 py-3 bg-gray-50 rounded-xl">
@@ -303,7 +303,7 @@ export default function Hero() {
       </div>
 
       {/* Dots + hashtag */}
-      <div className="absolute bottom-5 left-0 right-0 z-10 flex items-center justify-between px-6 xl:px-10 2xl:px-14">
+      <div className="relative z-10 flex shrink-0 items-center justify-between px-6 pb-4 xl:px-10 2xl:px-14">
         <div className="flex items-center gap-3">
           <div className="flex gap-2">
             {deskSlides.map((_, i) => (
@@ -354,7 +354,7 @@ export default function Hero() {
           <button
             type="button"
             aria-label="Search"
-            onClick={() => window.dispatchEvent(new Event('trekroot:open-search'))}
+            onClick={() => window.dispatchEvent(new Event('indiantreks:open-search'))}
             className="p-2 text-gray-900"
           >
             <Search className="w-5 h-5" />
@@ -362,7 +362,7 @@ export default function Hero() {
           <button
             type="button"
             aria-label="Open menu"
-            onClick={() => window.dispatchEvent(new Event('trekroot:open-menu'))}
+            onClick={() => window.dispatchEvent(new Event('indiantreks:open-menu'))}
             className="p-2 text-gray-900"
           >
             <Menu className="w-6 h-6" />

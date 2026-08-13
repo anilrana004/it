@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 import { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -62,27 +62,27 @@ const packingData = {
 };
 
 const gearRentals = [
-  { name: 'Trekking Shoes', icon: Footprints, price: '1,000', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_200,h_200,c_fill,g_auto/' },
-  { name: 'Down Jacket', icon: MountainSnow, price: '1,000', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_200,h_200,c_fill,g_auto/' },
-  { name: 'Trekking Pole', icon: Trees, price: '250', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_200,h_200,c_fill,g_auto/' },
-  { name: 'Poncho', icon: SunSnow, price: '250', img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_200,h_200,c_fill,g_auto/' },
+  { name: 'Trekking Shoes', icon: Footprints, price: '1,000', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_80,w_200,h_200,c_fill,g_auto/' },
+  { name: 'Down Jacket', icon: MountainSnow, price: '1,000', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_80,w_200,h_200,c_fill,g_auto/' },
+  { name: 'Trekking Pole', icon: Trees, price: '250', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_80,w_200,h_200,c_fill,g_auto/' },
+  { name: 'Poncho', icon: SunSnow, price: '250', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_80,w_200,h_200,c_fill,g_auto/' },
 ];
 
 const sampleTestimonials = [
   { name: 'Rahul Sharma', city: 'Delhi', platform: 'Google', text: 'Best trekking experience of my life! The team was incredibly supportive and the views from the summit were absolutely breathtaking. Would recommend to everyone.' },
   { name: 'Anjali Patel', city: 'Ahmedabad', platform: 'TripAdvisor', text: 'The organisation was flawless. From the pickup to the drop, everything was handled professionally. The guides knew the terrain like the back of their hand.' },
   { name: 'Vikram Singh', city: 'Jaipur', platform: 'Google', text: 'I was nervous about my first high-altitude trek but the acclimatisation plan was perfect. The camp food was surprisingly delicious and the camaraderie was unmatched.' },
-  { name: 'Priya Deshmukh', city: 'Pune', platform: 'TripAdvisor', text: 'Crossing the pass at sunrise was a spiritual experience. The snow-capped peaks, the silence, the crisp air - nothing compares. TrekRoot made it happen seamlessly.' },
+  { name: 'Priya Deshmukh', city: 'Pune', platform: 'TripAdvisor', text: 'Crossing the pass at sunrise was a spiritual experience. The snow-capped peaks, the silence, the crisp air - nothing compares. Indian Treks made it happen seamlessly.' },
   { name: 'Arun Nair', city: 'Kochi', platform: 'Google', text: 'Coming from Kerala, I was worried about the cold but the gear they provided was top-notch. The guides made sure everyone was comfortable and safe throughout.' },
   { name: 'Neha Gupta', city: 'Lucknow', platform: 'TripAdvisor', text: 'The campsites were chosen perfectly - each one had a view that left us speechless. The stargazing at night was the cherry on top. Unforgettable trip!' },
-  { name: 'Siddharth Rao', city: 'Hyderabad', platform: 'Google', text: 'I have done multiple treks with TrekRoot and every single time they exceed expectations. The attention to detail, the safety protocols, the energy - superb!' },
+  { name: 'Siddharth Rao', city: 'Hyderabad', platform: 'Google', text: 'I have done multiple treks with Indian Treks and every single time they exceed expectations. The attention to detail, the safety protocols, the energy - superb!' },
   { name: 'Kavita Joshi', city: 'Mumbai', platform: 'TripAdvisor', text: 'The booking process was smooth, the team was responsive, and the trek itself was magical. The waterfalls, the meadows, the lake - it felt like a dream.' },
   { name: 'Amit Thakur', city: 'Chandigarh', platform: 'Google', text: 'As a solo traveller I was a bit anxious, but the group was so welcoming. Made friends for life and the trek leader was amazing. Will definitely book again.' },
   { name: 'Deepa Menon', city: 'Bengaluru', platform: 'TripAdvisor', text: 'The fitness training tips they shared before the trek were incredibly useful. I felt well-prepared and the sense of achievement after summiting was indescribable.' },
-  { name: 'Rajesh Patil', city: 'Nashik', platform: 'Google', text: 'Value for money is insane. The quality of tents, sleeping bags, meals, and guidance at this price point is unheard of. TrekRoot is setting new standards.' },
-  { name: 'Swati Agarwal', city: 'Kolkata', platform: 'TripAdvisor', text: 'The sunrise from the summit was worth every step. The team captured beautiful photos and videos that we will cherish forever. Thank you TrekRoot for this memory.' },
+  { name: 'Rajesh Patil', city: 'Nashik', platform: 'Google', text: 'Value for money is insane. The quality of tents, sleeping bags, meals, and guidance at this price point is unheard of. Indian Treks is setting new standards.' },
+  { name: 'Swati Agarwal', city: 'Kolkata', platform: 'TripAdvisor', text: 'The sunrise from the summit was worth every step. The team captured beautiful photos and videos that we will cherish forever. Thank you Indian Treks for this memory.' },
   { name: 'Manoj Tiwari', city: 'Varanasi', platform: 'Google', text: 'I had never camped before this trek. The team made it so easy and comfortable. The bonfire nights and group singing were absolutely delightful.' },
-  { name: 'Pooja Mishra', city: 'Bhopal', platform: 'TripAdvisor', text: 'The eco-conscious approach of TrekRoot impressed me. They genuinely care about the mountains and leave no trace. It feels good to trek responsibly.' },
+  { name: 'Pooja Mishra', city: 'Bhopal', platform: 'TripAdvisor', text: 'The eco-conscious approach of Indian Treks impressed me. They genuinely care about the mountains and leave no trace. It feels good to trek responsibly.' },
 ];
 
 const difficultyColors: Record<string, string> = {
@@ -104,24 +104,24 @@ const diffBg: Record<string, string> = {
 /** Detail-page promo strips - same shape as homepage Banners (full-width, one-at-a-time auto) */
 const detailBannerSets = [
   [
-    { src: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/treks', badge: 'Best Seller', title: 'Bali with Gili Islands', subtitle: '7N/8D ? Beach & Volcano Trek', discount: 'UPTO ?3,500 OFF' },
-    { src: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/treks/everest-base-camp', badge: 'Bucket List', title: 'Everest Base Camp', subtitle: '13D/12N ? The trek of a lifetime', discount: 'Starting ?74,999' },
-    { src: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/treks/annapurna-base-camp', badge: 'Classic', title: 'Annapurna Base Camp', subtitle: '8D/7N ? Himalayan sanctuary trek', discount: 'From ?34,999' },
+    { src: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/treks', badge: 'Best Seller', title: 'Bali with Gili Islands', subtitle: '7N/8D ? Beach & Volcano Trek', discount: 'UPTO ?3,500 OFF' },
+    { src: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/treks/everest-base-camp', badge: 'Bucket List', title: 'Everest Base Camp', subtitle: '13D/12N ? The trek of a lifetime', discount: 'Starting ?74,999' },
+    { src: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/treks/annapurna-base-camp', badge: 'Classic', title: 'Annapurna Base Camp', subtitle: '8D/7N ? Himalayan sanctuary trek', discount: 'From ?34,999' },
   ],
   [
-    { src: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/bucket-list-sale', badge: 'Winter Sale', title: 'Bucket List Sale', subtitle: 'Handpicked treks at best prices', discount: 'UPTO 40% OFF' },
-    { src: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/treks', badge: 'New Launch', title: 'Thailand - Phuket Krabi', subtitle: 'Full Moon Party Edition', discount: 'UPTO ?3,500 OFF' },
-    { src: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/treks/kedarkantha', badge: 'Winter Special', title: 'Kedarkantha Winter Trek', subtitle: 'India\'s #1 winter trek - 5D/4N', discount: 'From ?6,999' },
+    { src: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/bucket-list-sale', badge: 'Winter Sale', title: 'Bucket List Sale', subtitle: 'Handpicked treks at best prices', discount: 'UPTO 40% OFF' },
+    { src: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/treks', badge: 'New Launch', title: 'Thailand - Phuket Krabi', subtitle: 'Full Moon Party Edition', discount: 'UPTO ?3,500 OFF' },
+    { src: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/treks/kedarkantha', badge: 'Winter Special', title: 'Kedarkantha Winter Trek', subtitle: 'India\'s #1 winter trek - 5D/4N', discount: 'From ?6,999' },
   ],
   [
-    { src: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/bucket-list-sale', badge: 'Expedition', title: 'Tawang Bike Expedition', subtitle: 'North East India ? 8N/9D', discount: 'Bestseller' },
-    { src: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/treks', badge: 'Squad Goals', title: 'All Girls Trip', subtitle: 'Travel with your soul squad', discount: 'Safe & Fun' },
-    { src: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/honeymoon', badge: 'Honeymoon', title: 'Romantic Getaways', subtitle: 'Curated couples packages', discount: 'View Packages' },
+    { src: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/bucket-list-sale', badge: 'Expedition', title: 'Tawang Bike Expedition', subtitle: 'North East India ? 8N/9D', discount: 'Bestseller' },
+    { src: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/treks', badge: 'Squad Goals', title: 'All Girls Trip', subtitle: 'Travel with your soul squad', discount: 'Safe & Fun' },
+    { src: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/honeymoon', badge: 'Honeymoon', title: 'Romantic Getaways', subtitle: 'Curated couples packages', discount: 'View Packages' },
   ],
   [
-    { src: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/travel-gift-cards', badge: 'Gift Cards', title: 'Give the Gift of Adventure', subtitle: 'Valid on all treks & yatras', discount: 'Perfect for loved ones' },
-    { src: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/corporate', badge: 'Group Offer', title: 'Group Discounts Up to 20%', subtitle: 'Groups of 4+ save big', discount: 'Bigger Group = Bigger Savings' },
-    { src: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/customized', badge: 'Tailor-Made', title: 'Customize Your Himalayan Trek', subtitle: 'Uttarakhand ? Himachal ? Nepal', discount: 'Plan Your Trip' },
+    { src: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/travel-gift-cards', badge: 'Gift Cards', title: 'Give the Gift of Adventure', subtitle: 'Valid on all treks & yatras', discount: 'Perfect for loved ones' },
+    { src: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/corporate', badge: 'Group Offer', title: 'Group Discounts Up to 20%', subtitle: 'Groups of 4+ save big', discount: 'Bigger Group = Bigger Savings' },
+    { src: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/customized', badge: 'Tailor-Made', title: 'Customize Your Himalayan Trek', subtitle: 'Uttarakhand ? Himachal ? Nepal', discount: 'Plan Your Trip' },
   ],
 ];
 
@@ -1110,8 +1110,8 @@ export default function TrekDetailContent({ trek, type }: { trek: Trek; type: 't
                     <a href="tel:+919999999999" className="flex items-center gap-2.5 text-gray-700 hover:text-gray-900 transition-colors font-medium">
                       <Phone className="w-4 h-4" style={{ color: accent }} /> +91 99999 99999
                     </a>
-                    <a href="mailto:info@trekroot.com" className="flex items-center gap-2.5 text-gray-500 hover:text-gray-700 transition-colors text-xs">
-                      <Mail className="w-4 h-4" style={{ color: accent }} /> info@trekroot.com
+                    <a href="mailto:info@indiantreks.com" className="flex items-center gap-2.5 text-gray-500 hover:text-gray-700 transition-colors text-xs">
+                      <Mail className="w-4 h-4" style={{ color: accent }} /> info@indiantreks.com
                     </a>
                   </div>
                   <div className="mt-4 flex items-center gap-2 text-xs text-gray-400">
@@ -1122,7 +1122,7 @@ export default function TrekDetailContent({ trek, type }: { trek: Trek; type: 't
 
               {/* Trust badges */}
               <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl p-6 lg:p-7 text-white shadow-lg">
-                <h3 className="font-bold text-base mb-4">Why TrekRoot?</h3>
+                <h3 className="font-bold text-base mb-4">Why Indian Treks?</h3>
                 <div className="grid grid-cols-1 gap-4">
                   {[
                     { icon: Award, label: 'Curated Himalayan Adventures', desc: 'Thoughtfully planned mountain journeys' },

@@ -134,11 +134,11 @@ export default function Header() {
   useEffect(() => {
     const openMenu = () => setIsOpen(true);
     const openSearch = () => setMobSearch(true);
-    window.addEventListener('trekroot:open-menu', openMenu);
-    window.addEventListener('trekroot:open-search', openSearch);
+    window.addEventListener('indiantreks:open-menu', openMenu);
+    window.addEventListener('indiantreks:open-search', openSearch);
     return () => {
-      window.removeEventListener('trekroot:open-menu', openMenu);
-      window.removeEventListener('trekroot:open-search', openSearch);
+      window.removeEventListener('indiantreks:open-menu', openMenu);
+      window.removeEventListener('indiantreks:open-search', openSearch);
     };
   }, []);
 
@@ -382,7 +382,7 @@ export default function Header() {
                 </div>
                 <div className="flex items-center gap-2">
                   <svg className="w-4 h-4 text-gray-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
-                  <a href="mailto:contact@trekroot.com" className="text-xs text-gray-600 hover:text-[#16a34a]">contact@trekroot.com</a>
+                  <a href="mailto:contact@indiantreks.com" className="text-xs text-gray-600 hover:text-[#16a34a]">contact@indiantreks.com</a>
                 </div>
               </div>
             </div>

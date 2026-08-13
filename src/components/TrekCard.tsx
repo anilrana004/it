@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { MapPin, Clock, Star } from 'lucide-react';
-import type { Trek } from '@/lib/data';
+import { trekDetailPath, type Trek } from '@/lib/data';
 
 export default function TrekCard({ trek }: { trek: Trek }) {
   const minPrice = Math.min(...trek.pricing.map(p => p.price));
@@ -9,7 +9,7 @@ export default function TrekCard({ trek }: { trek: Trek }) {
   const originalPrice = eco?.originalPrice;
 
   return (
-    <Link href={`/treks/${trek.id}`} className="group block rounded-2xl overflow-hidden transition-all duration-300 relative aspect-[3/4]">
+    <Link href={trekDetailPath(trek)} className="group block rounded-2xl overflow-hidden transition-all duration-300 relative aspect-[3/4]">
       <img src={trek.images[0]} alt={trek.title} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
@@ -28,11 +28,11 @@ export default function TrekCard({ trek }: { trek: Trek }) {
       <div className="absolute top-2 right-2 flex flex-col gap-1 items-end">
         {trek.type === 'yatra' && <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#16a34a] text-white shadow-sm">Yatra</span>}
         <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-white/90 text-gray-800 shadow-sm">{trek.duration}</span>
-      </div>
-
-      {/* Difficulty badge */}
-      <div className="absolute bottom-20 left-3">
-        <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-black/50 text-white backdrop-blur-sm">{trek.difficulty}</span>
+        {trek.difficulty && (
+          <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-black/55 text-white backdrop-blur-sm shadow-sm">
+            {trek.difficulty}
+          </span>
+        )}
       </div>
 
       {/* Content overlay */}

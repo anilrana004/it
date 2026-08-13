@@ -3,25 +3,25 @@ import { useState } from 'react';
 import Link from 'next/link';
 
 const international = [
-  { name: 'Nepal', count: 16, price: 18500, img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_390,h_500,c_fill,g_auto/', href: '/treks/kathmandu-tour' },
-  { name: 'Everest Base Camp', count: 8, price: 74999, img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_390,h_500,c_fill,g_auto/', href: '/treks/everest-base-camp' },
-  { name: 'Annapurna', count: 10, price: 34999, img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_390,h_500,c_fill,g_auto/', href: '/treks/annapurna-base-camp' },
-  { name: 'Pokhara', count: 6, price: 15999, img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_390,h_500,c_fill,g_auto/', href: '/treks/pokhara-tour' },
-  { name: 'Chitwan', count: 4, price: 21999, img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_390,h_500,c_fill,g_auto/', href: '/treks/chitwan-safari' },
-  { name: 'Nepal Circuit', count: 5, price: 34999, img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_390,h_500,c_fill,g_auto/', href: '/treks/nepal-backpacking' },
-  { name: 'Kathmandu Valley', count: 7, price: 18999, img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_390,h_500,c_fill,g_auto/', href: '/treks/kathmandu-tour' },
-  { name: 'EBC Premium', count: 3, price: 94999, img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_390,h_500,c_fill,g_auto/', href: '/treks/everest-base-camp' },
+  { name: 'Nepal', count: 16, price: 18500, img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_390,h_500,c_fill,g_auto/', href: '/treks/kathmandu-tour' },
+  { name: 'Everest Base Camp', count: 8, price: 74999, img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_390,h_500,c_fill,g_auto/', href: '/treks/everest-base-camp' },
+  { name: 'Annapurna', count: 10, price: 34999, img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_390,h_500,c_fill,g_auto/', href: '/treks/annapurna-base-camp' },
+  { name: 'Pokhara', count: 6, price: 15999, img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_390,h_500,c_fill,g_auto/', href: '/treks/pokhara-tour' },
+  { name: 'Chitwan', count: 4, price: 21999, img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_390,h_500,c_fill,g_auto/', href: '/treks/chitwan-safari' },
+  { name: 'Nepal Circuit', count: 5, price: 34999, img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_390,h_500,c_fill,g_auto/', href: '/treks/nepal-backpacking' },
+  { name: 'Kathmandu Valley', count: 7, price: 18999, img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_390,h_500,c_fill,g_auto/', href: '/treks/kathmandu-tour' },
+  { name: 'EBC Premium', count: 3, price: 94999, img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_390,h_500,c_fill,g_auto/', href: '/treks/everest-base-camp' },
 ];
 
 const india = [
-  { name: 'Uttarakhand Treks', count: 22, price: 7000, img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_390,h_500,c_fill,g_auto/', href: '/treks/valley-of-flowers' },
-  { name: 'Himachal Treks', count: 18, price: 8500, img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_390,h_500,c_fill,g_auto/', href: '/treks/hampta-pass' },
-  { name: 'Kedarnath Yatra', count: 12, price: 9999, img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_390,h_500,c_fill,g_auto/', href: '/yatra/kedarnath-yatra' },
-  { name: 'Char Dham Yatra', count: 8, price: 24999, img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_390,h_500,c_fill,g_auto/', href: '/yatra/char-dham' },
-  { name: 'Rishikesh', count: 10, price: 4999, img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_390,h_500,c_fill,g_auto/', href: '/treks' },
-  { name: 'Manali', count: 14, price: 5999, img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_390,h_500,c_fill,g_auto/', href: '/treks/hampta-pass' },
-  { name: 'Do Dham Yatra', count: 6, price: 14999, img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_390,h_500,c_fill,g_auto/', href: '/yatra/do-dham' },
-  { name: 'Spiti Valley', count: 5, price: 15999, img: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_390,h_500,c_fill,g_auto/', href: '/treks/hampta-pass' },
+  { name: 'Uttarakhand Treks', count: 22, price: 7000, img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_390,h_500,c_fill,g_auto/', href: '/treks/valley-of-flowers' },
+  { name: 'Himachal Treks', count: 18, price: 8500, img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_390,h_500,c_fill,g_auto/', href: '/treks/hampta-pass' },
+  { name: 'Kedarnath Yatra', count: 12, price: 9999, img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_390,h_500,c_fill,g_auto/', href: '/yatra/kedarnath-yatra' },
+  { name: 'Char Dham Yatra', count: 8, price: 24999, img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_390,h_500,c_fill,g_auto/', href: '/yatra/char-dham' },
+  { name: 'Rishikesh', count: 10, price: 4999, img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_390,h_500,c_fill,g_auto/', href: '/treks' },
+  { name: 'Manali', count: 14, price: 5999, img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_390,h_500,c_fill,g_auto/', href: '/treks/hampta-pass' },
+  { name: 'Do Dham Yatra', count: 6, price: 14999, img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_390,h_500,c_fill,g_auto/', href: '/yatra/do-dham' },
+  { name: 'Spiti Valley', count: 5, price: 15999, img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_390,h_500,c_fill,g_auto/', href: '/treks/hampta-pass' },
 ];
 
 export default function CustomizedTours() {

@@ -11,7 +11,7 @@ export type AssistantReply = {
 const WA_NUMBER = '919999999999';
 
 export function whatsappUrl(prefill?: string) {
-  const text = encodeURIComponent(prefill || 'Hi TrekRoot! I need help with a trek.');
+  const text = encodeURIComponent(prefill || 'Hi Indian Treks! I need help with a trek.');
   return `https://wa.me/${WA_NUMBER}?text=${text}`;
 }
 
@@ -181,13 +181,13 @@ function humanHandoff(userMessage: string, reason?: string): AssistantReply {
     text:
       (reason ||
         'I could not fully solve that with the info I have.') +
-      '\n\nA TrekRoot teammate can help manually on WhatsApp - share your dates, trek name, and group size for a fast reply.',
+      '\n\nAn Indian Treks teammate can help manually on WhatsApp - share your dates, trek name, and group size for a fast reply.',
     handoff: true,
     quickReplies: ['Popular treks', 'How to book', 'All destinations'],
     links: [
       {
         label: 'Chat with human on WhatsApp',
-        href: whatsappUrl(`Hi TrekRoot! I need manual help.\n\nMy question: ${userMessage}`),
+        href: whatsappUrl(`Hi Indian Treks! I need manual help.\n\nMy question: ${userMessage}`),
       },
     ],
   };
@@ -207,7 +207,7 @@ const topicKnowledge: { keywords: string[]; answer: string; handoff?: boolean }[
   {
     keywords: ['book', 'booking', 'how to book', 'reserve', 'payment', 'deposit', 'pay'],
     answer:
-      '*How booking works at TrekRoot*\n\n' +
+      '*How booking works at Indian Treks*\n\n' +
       '1) Choose trek/yatra on the website\n' +
       '2) Pick a monthly batch + package (Economic / Standard / Premium)\n' +
       '3) Fill traveler details and pay the deposit\n' +
@@ -310,7 +310,7 @@ const topicKnowledge: { keywords: string[]; answer: string; handoff?: boolean }[
   {
     keywords: ['group', 'community', 'who joins', 'age', 'age limit'],
     answer:
-      '*Who joins TrekRoot trips*\n\n' +
+      '*Who joins Indian Treks trips*\n\n' +
       '- Social travel community; solo joiners are common\n' +
       '- Typical adult groups; family/custom options available\n' +
       '- Exact age limits can vary by trek difficulty\n\n' +
@@ -386,14 +386,14 @@ const topicKnowledge: { keywords: string[]; answer: string; handoff?: boolean }[
   {
     keywords: ['gift', 'gift card', 'voucher'],
     answer:
-      'TrekRoot travel gift cards can be used on treks and yatras.\n' +
+      'Indian Treks travel gift cards can be used on treks and yatras.\n' +
       'Visit /travel-gift-cards or ask a human to issue one for a specific amount.',
     handoff: true,
   },
   {
-    keywords: ['about', 'trekroot', 'who are you', 'company'],
+    keywords: ['about', 'indiantreks', 'who are you', 'company'],
     answer:
-      'TrekRoot is a Himalayan treks, yatras, and adventure travel community.\n' +
+      'Indian Treks is a Himalayan treks, yatras, and adventure travel community.\n' +
       'We run group departures across Uttarakhand, Himachal, Nepal, plus domestic/international getaways.\n' +
       'Focus: safety, community, and well-organized fixed departures.',
   },
@@ -402,7 +402,7 @@ const topicKnowledge: { keywords: string[]; answer: string; handoff?: boolean }[
 export function getWelcome(): AssistantReply {
   return {
     text:
-      "Hi! I'm *TrekRoot Help* - your trek assistant.\n\n" +
+      "Hi! I'm *Indian Treks Help* - your trek assistant.\n\n" +
       'I can share full trek details (price, itinerary, inclusions, difficulty, season), booking steps, policies, and recommendations.\n\n' +
       'If I cannot solve it, I will connect you to a human on WhatsApp.\n\n' +
       'Try a trek name (e.g. Kedarkantha) or pick an option below.',
@@ -432,7 +432,7 @@ export function getAssistantReply(message: string): AssistantReply {
     q.includes('customer care') ||
     q.includes('executive')
   ) {
-    return humanHandoff(original, 'Connecting you to a TrekRoot teammate for manual help.');
+    return humanHandoff(original, 'Connecting you to an Indian Treks teammate for manual help.');
   }
 
   // Catalog / destinations

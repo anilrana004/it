@@ -15,11 +15,11 @@ interface BannerItem {
 
 const defaultBanners: BannerItem[] = [
   { src: 'https://res.cloudinary.com/pg8uhzw0/image/upload/f_auto,q_auto,w_1200,h_500,c_fill,g_auto/v1785367489/pexels-unaizat97-8673607_anl07u.jpg', href: '/treks/valley-of-flowers', title: 'Valley of Flowers Trek', subtitle: 'UNESCO Himalayan Paradise - 6D/5N', badge: 'Best Seller', discount: '?8,999' },
-  { src: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/treks/kedarkantha', title: 'Kedarkantha Winter Trek', subtitle: 'India\'s #1 winter trek - 5D/4N', badge: 'Winter Special', discount: '?6,999' },
-  { src: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/treks/hampta-pass', title: 'Hampta Pass - Valley Crossing', subtitle: 'Lush Kullu meets barren Spiti - 5D/4N', badge: 'Adventure', discount: '?8,499' },
-  { src: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/treks/everest-base-camp', title: 'Everest Base Camp', subtitle: 'The trek of a lifetime - 13D/12N', badge: 'Bucket List', discount: '?74,999' },
-  { src: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/yatra/kedarnath-yatra', title: 'Kedarnath Yatra', subtitle: 'Sacred pilgrimage - 6D/5N', badge: 'Yatra', discount: '?9,999' },
-  { src: 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/bucket-list-sale', title: 'Bucket List Sale - UPTO 40% OFF', subtitle: 'Limited period deals on handpicked treks', badge: 'Sale Active', discount: 'Grab Your Deal' },
+  { src: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/treks/kedarkantha', title: 'Kedarkantha Winter Trek', subtitle: 'India\'s #1 winter trek - 5D/4N', badge: 'Winter Special', discount: '?6,999' },
+  { src: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/treks/hampta-pass', title: 'Hampta Pass - Valley Crossing', subtitle: 'Lush Kullu meets barren Spiti - 5D/4N', badge: 'Adventure', discount: '?8,499' },
+  { src: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/treks/everest-base-camp', title: 'Everest Base Camp', subtitle: 'The trek of a lifetime - 13D/12N', badge: 'Bucket List', discount: '?74,999' },
+  { src: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/yatra/kedarnath-yatra', title: 'Kedarnath Yatra', subtitle: 'Sacred pilgrimage - 6D/5N', badge: 'Yatra', discount: '?9,999' },
+  { src: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/bucket-list-sale', title: 'Bucket List Sale - UPTO 40% OFF', subtitle: 'Limited period deals on handpicked treks', badge: 'Sale Active', discount: 'Grab Your Deal' },
 ];
 
 export default function Banners({

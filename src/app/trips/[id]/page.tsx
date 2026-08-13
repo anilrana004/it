@@ -5,10 +5,10 @@ import TrekDetailContent from '@/components/TrekDetailContent';
 export const dynamicParams = true;
 
 export function generateStaticParams() {
-  return treks.filter((t) => t.type === 'yatra').map((t) => ({ id: t.id }));
+  return treks.map((t) => ({ id: t.id }));
 }
 
-export default async function YatraDetailPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function TripDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const trek = getTrekById(id);
   if (!trek) notFound();

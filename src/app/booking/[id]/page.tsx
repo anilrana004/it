@@ -40,7 +40,7 @@ function BookingContent() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (step < 3) { setStep(s => s + 1); return; }
-    const msg = `*New Booking - TrekRoot*\n\n*Trek:* ${trek.title}\n*Duration:* ${trek.duration}\n*Package:* ${form.pkg}\n*Persons:* ${form.persons}\n*Date:* ${form.date}\n*Payment:* ${form.payment === 'deposit' ? 'Advance Deposit' : form.payment === 'full' ? 'Full Payment' : '50% Now'}\n*Amount:* ₹${payableNow.toLocaleString()}\n*Name:* ${form.name}\n*Email:* ${form.email}\n*Phone:* ${form.phone}\n${form.notes ? `*Notes:* ${form.notes}` : ''}`;
+    const msg = `*New Booking - Indian Treks*\n\n*Trek:* ${trek.title}\n*Duration:* ${trek.duration}\n*Package:* ${form.pkg}\n*Persons:* ${form.persons}\n*Date:* ${form.date}\n*Payment:* ${form.payment === 'deposit' ? 'Advance Deposit' : form.payment === 'full' ? 'Full Payment' : '50% Now'}\n*Amount:* ₹${payableNow.toLocaleString()}\n*Name:* ${form.name}\n*Email:* ${form.email}\n*Phone:* ${form.phone}\n${form.notes ? `*Notes:* ${form.notes}` : ''}`;
     window.open(`https://wa.me/919999999999?text=${encodeURIComponent(msg)}`, '_blank');
   };
 

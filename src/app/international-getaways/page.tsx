@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { MapPin, Star, Clock, CheckCircle2, ArrowRight, Globe, Plane, Mountain } from 'lucide-react';
 
-const cloud = 'https://res.cloudinary.com/trekroot/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/';
+const cloud = 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/';
 
 const treks = [
   { name: 'Everest Base Camp Trek', loc: 'Nepal', dur: '13D/12N', price: 74999, diff: 'Difficult', img: cloud, href: '/treks/everest-base-camp' },
@@ -164,7 +164,7 @@ export default function InternationalGetawaysPage() {
           <p className="text-white/70 text-sm lg:text-base mb-6 max-w-lg mx-auto">Get in touch with our travel experts and start planning your Nepal adventure today.</p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <a href="tel:+919999999999" className="inline-flex items-center gap-2 bg-[#16a34a] text-[#000000] font-semibold px-8 py-3 rounded-full hover:bg-[#16a34a]/90 transition-all text-sm">Call +91 99 99 99 99 99</a>
-            <a href="mailto:hello@trekroot.com" className="inline-flex items-center gap-2 bg-white/10 border border-white/30 text-white font-semibold px-8 py-3 rounded-full hover:bg-white/20 transition-all text-sm">Email Us</a>
+            <a href="mailto:hello@indiantreks.com" className="inline-flex items-center gap-2 bg-white/10 border border-white/30 text-white font-semibold px-8 py-3 rounded-full hover:bg-white/20 transition-all text-sm">Email Us</a>
           </div>
         </div>
       </div>

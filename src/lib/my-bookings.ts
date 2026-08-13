@@ -1,7 +1,7 @@
 /** Client-side bookings list for My Bookings UI (localStorage). */
 
-const KEY = 'trekroot_my_bookings';
-const SEEDED = 'trekroot_my_bookings_seeded';
+const KEY = 'indiantreks_my_bookings';
+const SEEDED = 'indiantreks_my_bookings_seeded';
 
 export type BookingStatus = 'upcoming' | 'completed' | 'cancelled';
 
@@ -32,7 +32,7 @@ function read(): MyBooking[] {
 
 function write(items: MyBooking[]) {
   localStorage.setItem(KEY, JSON.stringify(items));
-  window.dispatchEvent(new Event('trekroot:bookings'));
+  window.dispatchEvent(new Event('indiantreks:bookings'));
 }
 
 /** Seed a couple of realistic demo bookings once, so the page isn't empty on first visit. */

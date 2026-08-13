@@ -43,8 +43,8 @@ export default function BookingsPage() {
     refresh();
     setReady(true);
     const onChange = () => refresh();
-    window.addEventListener('trekroot:bookings', onChange);
-    return () => window.removeEventListener('trekroot:bookings', onChange);
+    window.addEventListener('indiantreks:bookings', onChange);
+    return () => window.removeEventListener('indiantreks:bookings', onChange);
   }, []);
 
   const filtered = useMemo(
@@ -163,7 +163,7 @@ export default function BookingsPage() {
                           View trek <ChevronRight className="w-3.5 h-3.5" />
                         </Link>
                         <a
-                          href={`https://wa.me/919797972175?text=${encodeURIComponent(`Hi TrekRoot, I need help with booking ${b.id} (${trek.title}).`)}`}
+                          href={`https://wa.me/919797972175?text=${encodeURIComponent(`Hi Indian Treks, I need help with booking ${b.id} (${trek.title}).`)}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 px-3 py-2 rounded-full transition-colors"

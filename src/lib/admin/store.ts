@@ -85,7 +85,7 @@ function save(key: string, data: unknown) {
 export const bookings: AdminBooking[] = persist('tr_bookings', []);
 export const contacts: AdminContact[] = persist('tr_contacts', []);
 export const users: AdminUser[] = persist('tr_users', [
-  { id: '1', name: 'Admin', email: 'admin@trekroot.com', phone: '+919999999999', role: 'admin', bookings: 0, createdAt: '2024-01-01' },
+  { id: '1', name: 'Admin', email: 'admin@indiantreks.com', phone: '+919999999999', role: 'admin', bookings: 0, createdAt: '2024-01-01' },
 ]);
 export const blogPosts: AdminBlogPost[] = persist('tr_blogPosts', []);
 export const giftCards: GiftCard[] = persist('tr_giftCards', []);
