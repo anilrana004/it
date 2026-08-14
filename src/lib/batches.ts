@@ -107,6 +107,51 @@ export function getMonthlyBatches(trek: Trek, count = 5): TrekBatch[] {
   return batches;
 }
 
+/**
+ * Builds several departures per month for the detail-page date picker, so each
+ * month exposes a real choice of dates rather than a single batch.
+ */
+export function getDepartureBatches(trek: Trek, months = 4, perMonth = 3): TrekBatch[] {
+  const tripDays = Math.max(trek.days || 1, 1);
+  const seed = hashId(trek.id);
+  const startDayOptions = [3, 6, 9, 12, 15, 18, 21, 24, 27];
+  const capacity = 20 + (seed % 5) * 2;
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const batches: TrekBatch[] = [];
+
+  for (let monthOffset = 0; monthOffset < months + 2 && batches.length < months * perMonth; monthOffset++) {
+    let addedThisMonth = 0;
+
+    for (let slot = 0; slot < perMonth * 2 && addedThisMonth < perMonth; slot++) {
+      const startDay = startDayOptions[(seed + monthOffset * perMonth + slot) % startDayOptions.length];
+      const start = new Date(today.getFullYear(), today.getMonth() + monthOffset, startDay);
+      if (start < today) continue;
+      if (batches.some((b) => b.startDate === toISO(start))) continue;
+
+      const end = addDays(start, tripDays - 1);
+      const seatsLeft = Math.max(0, capacity - ((seed + batches.length * 7) % (capacity + 1)));
+
+      batches.push({
+        id: `${trek.id}-${toISO(start)}`,
+        startDate: toISO(start),
+        endDate: toISO(end),
+        label: formatRange(start, end),
+        monthLabel: `${MONTHS[start.getMonth()]} ${start.getFullYear()}`,
+        weekday: WEEKDAYS[start.getDay()],
+        seatsLeft,
+        capacity,
+        status: statusFromSeats(seatsLeft, capacity),
+      });
+      addedThisMonth++;
+    }
+  }
+
+  return batches.sort((a, b) => a.startDate.localeCompare(b.startDate));
+}
+
 export const batchStatusMeta: Record<BatchStatus, { label: string; className: string }> = {
   available: { label: 'Available', className: 'bg-emerald-50 text-emerald-700' },
   'filling-fast': { label: 'Filling Fast', className: 'bg-amber-50 text-amber-700' },

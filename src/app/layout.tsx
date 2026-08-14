@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Poppins } from "next/font/google";
+import { Nunito, Playfair_Display, Poppins } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -7,6 +7,10 @@ import WhatsAppFloat from "@/components/WhatsAppFloat";
 import MobileBottomNav from "@/components/MobileBottomNav";
 
 const poppins = Poppins({ subsets: ["latin"], weight: ["400","500","600","700","800"], variable: "--font-poppins" });
+
+/** Detail pages use a Playfair/Nunito pairing for headings and body copy. */
+const playfair = Playfair_Display({ subsets: ["latin"], weight: ["600","700","800","900"], variable: "--font-playfair" });
+const nunito = Nunito({ subsets: ["latin"], weight: ["400","600","700","800","900"], variable: "--font-nunito" });
 
 export const metadata: Metadata = {
   title: "Indian Treks - Himalayan Treks, Yatras & Adventure Travel",
@@ -26,7 +30,19 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${poppins.variable} overflow-x-clip`}>
+    <html
+      lang="en"
+      className={`${poppins.variable} ${playfair.variable} ${nunito.variable} overflow-x-clip`}
+    >
+      <head>
+        <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+          integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+          crossOrigin="anonymous"
+          referrerPolicy="no-referrer"
+        />
+      </head>
       <body className="min-h-dvh flex flex-col overflow-x-clip overscroll-x-none">
         <Header />
         <main className="flex-1 w-full min-w-0 pb-16 lg:pb-0">{children}</main>

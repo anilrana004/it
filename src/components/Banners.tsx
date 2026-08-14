@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { ArrowRight, Tag } from 'lucide-react';
 import { photos } from '@/lib/media';
 
-interface BannerItem {
+export interface BannerItem {
   src: string;
   href: string;
   title?: string;

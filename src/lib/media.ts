@@ -24,3 +24,17 @@ export const photos = {
 } as const;
 
 export type PhotoKey = keyof typeof photos;
+
+/** Square thumbnails for the rental-gear carousel on detail pages. */
+export const gearPhotos: string[] = [
+  u('photo-1454496522488-7a8e488e8606', 600, 600),
+  u('photo-1483728642387-6c3bdd6c93e5', 600, 600),
+  u('photo-1506905925346-21bda4d32df4', 600, 600),
+  u('photo-1464822759023-fed622ff2c3b', 600, 600),
+  u('photo-1518002054494-3a6f94352e9d', 600, 600),
+  u('photo-1544735716-392fe2489ffa', 600, 600),
+  u('photo-1486870591958-9b9d0d1dda99', 600, 600),
+  u('photo-1626621341517-bbf3d9990a23', 600, 600),
+  u('photo-1564507592333-c60657eea523', 600, 600),
+  u('photo-1548013146-72479768bada', 600, 600),
+];

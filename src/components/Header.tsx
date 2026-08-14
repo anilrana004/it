@@ -123,6 +123,10 @@ export default function Header() {
     return () => window.removeEventListener('scroll', update);
   }, [isHome]);
 
+  /** Slides the bar out of the way while reading down the page, back in on the
+   *  way up — this is what lets a page's own sticky nav own the top edge. */
+  const [hidden, setHidden] = useState(false);
+
   const [mobSearch, setMobSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchIdx, setSearchIdx] = useState(-1);
@@ -141,6 +145,37 @@ export default function Header() {
       window.removeEventListener('indiantreks:open-search', openSearch);
     };
   }, []);
+
+  const blockHide = isOpen || mobSearch || openDropdown !== null;
+
+  useEffect(() => {
+    if (blockHide) {
+      setHidden(false);
+      return;
+    }
+
+    const HIDE_AFTER = 120;
+    let last = window.scrollY;
+    let frame = 0;
+
+    const update = () => {
+      frame = 0;
+      const current = window.scrollY;
+      setHidden(current > last && current > HIDE_AFTER);
+      last = current;
+    };
+
+    const onScroll = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(update);
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      window.removeEventListener('scroll', onScroll);
+    };
+  }, [blockHide]);
 
   /** Homepage: hide fixed bar until scroll. Other pages: always solid. */
   const showFixedMobile = !isHome || navSolid > 0 || isOpen;
@@ -222,7 +257,13 @@ export default function Header() {
   return (
     <div ref={headerRef}>
       {/* Desktop Header */}
-      <header className="fixed left-0 top-0 z-50 hidden w-full bg-white shadow-sm lg:block">
+      <header
+        className="fixed left-0 top-0 z-50 hidden w-full bg-white shadow-sm lg:block"
+        style={{
+          transform: hidden ? 'translateY(-110%)' : 'translateY(0)',
+          transition: 'transform 0.28s cubic-bezier(0.4, 0, 0.2, 1)',
+        }}
+      >
         <div className="flex h-16 items-center justify-between gap-4 px-6 xl:px-10 2xl:px-14">
           <Link href="/" className="shrink-0">
             <BrandLogo className="h-9 w-auto max-w-[200px] object-contain object-left" />
@@ -294,9 +335,9 @@ export default function Header() {
           boxShadow: showFixedMobile ? '0 1px 8px rgba(22,163,74,0.18)' : 'none',
           borderBottom: showFixedMobile ? '1px solid #22c55e' : 'none',
           paddingTop: 'env(safe-area-inset-top, 0px)',
-          transform: showFixedMobile ? 'translateY(0)' : 'translateY(-110%)',
-          opacity: showFixedMobile ? 1 : 0,
-          pointerEvents: showFixedMobile ? 'auto' : 'none',
+          transform: showFixedMobile && !hidden ? 'translateY(0)' : 'translateY(-110%)',
+          opacity: showFixedMobile && !hidden ? 1 : 0,
+          pointerEvents: showFixedMobile && !hidden ? 'auto' : 'none',
           transition: 'transform 0.28s cubic-bezier(0.22,1,0.36,1), opacity 0.22s ease, box-shadow 0.22s ease',
         }}
       >
