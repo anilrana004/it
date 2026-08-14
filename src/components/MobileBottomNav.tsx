@@ -16,6 +16,7 @@ function shouldHideNav(path: string) {
   if (path.startsWith('/booking/')) return true;
   if (/^\/treks\/[^/]+\/?$/.test(path)) return true;
   if (/^\/yatra\/[^/]+\/?$/.test(path)) return true;
+  if (/^\/trips\/[^/]+\/?$/.test(path)) return true;
   return false;
 }
 

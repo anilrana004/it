@@ -45,16 +45,16 @@ const companyLinks = [
   { label: 'Home', href: '/' },
   { label: 'About Us', href: '/about' },
   { label: 'Contact Us', href: '/contact' },
-  { label: 'Gallery', href: null },
+  { label: 'Reviews', href: '/reviews' },
   { label: 'Blogs', href: '/blog' },
 ];
 
 const exploreLinks = [
   { label: 'Upcoming Treks', href: '/treks' },
-  { label: 'Weekend Treks', href: null },
-  { label: 'Snow Treks', href: '/treks' },
-  { label: 'High Altitude Treks', href: null },
-  { label: 'Expeditions', href: null },
+  { label: 'Weekend Treks', href: '/treks?difficulty=easy' },
+  { label: 'Snow Treks', href: '/treks/kedarkantha' },
+  { label: 'Group Trips', href: '/group-trips' },
+  { label: 'Biking Trips', href: '/biking' },
 ];
 
 function WhatsAppIcon({ className }: { className?: string }) {
@@ -284,6 +284,21 @@ export default function Footer() {
         <div className="rhf-legal">
           Designed for modern explorers seeking elegant, dependable, and experience-led Himalayan
           travel.
+        </div>
+      </div>
+
+      <div className="rhf-marquee" aria-hidden="true">
+        <div className="rhf-marquee-track">
+          {[0, 1].map((copy) => (
+            <div key={copy} className="rhf-marquee-group">
+              {Array.from({ length: 10 }).map((_, i) => (
+                <span key={`${copy}-${i}`} className="rhf-marquee-item">
+                  IndianTreks
+                  <span className="rhf-marquee-dot" />
+                </span>
+              ))}
+            </div>
+          ))}
         </div>
       </div>
     </footer>

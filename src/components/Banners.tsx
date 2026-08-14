@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import { ArrowRight, Tag } from 'lucide-react';
+import { photos } from '@/lib/media';
 
 interface BannerItem {
   src: string;
@@ -14,13 +15,38 @@ interface BannerItem {
 }
 
 const defaultBanners: BannerItem[] = [
-  { src: 'https://res.cloudinary.com/pg8uhzw0/image/upload/f_auto,q_auto,w_1200,h_500,c_fill,g_auto/v1785367489/pexels-unaizat97-8673607_anl07u.jpg', href: '/treks/valley-of-flowers', title: 'Valley of Flowers Trek', subtitle: 'UNESCO Himalayan Paradise - 6D/5N', badge: 'Best Seller', discount: '?8,999' },
-  { src: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/treks/kedarkantha', title: 'Kedarkantha Winter Trek', subtitle: 'India\'s #1 winter trek - 5D/4N', badge: 'Winter Special', discount: '?6,999' },
-  { src: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/treks/hampta-pass', title: 'Hampta Pass - Valley Crossing', subtitle: 'Lush Kullu meets barren Spiti - 5D/4N', badge: 'Adventure', discount: '?8,499' },
-  { src: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/treks/everest-base-camp', title: 'Everest Base Camp', subtitle: 'The trek of a lifetime - 13D/12N', badge: 'Bucket List', discount: '?74,999' },
-  { src: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/yatra/kedarnath-yatra', title: 'Kedarnath Yatra', subtitle: 'Sacred pilgrimage - 6D/5N', badge: 'Yatra', discount: '?9,999' },
-  { src: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_80,w_1200,h_500,c_fill,g_auto/', href: '/bucket-list-sale', title: 'Bucket List Sale - UPTO 40% OFF', subtitle: 'Limited period deals on handpicked treks', badge: 'Sale Active', discount: 'Grab Your Deal' },
+  { src: photos.vof, href: '/treks/valley-of-flowers', title: 'Valley of Flowers Trek', subtitle: 'UNESCO Himalayan Paradise - 6D/5N', badge: 'Best Seller', discount: '₹8,999' },
+  { src: photos.kedarkantha, href: '/treks/kedarkantha', title: 'Kedarkantha Winter Trek', subtitle: "India's #1 winter trek - 5D/4N", badge: 'Winter Special', discount: '₹6,999' },
+  { src: photos.hampta, href: '/treks/hampta-pass', title: 'Hampta Pass - Valley Crossing', subtitle: 'Lush Kullu meets barren Spiti - 5D/4N', badge: 'Adventure', discount: '₹8,499' },
+  { src: photos.ebc, href: '/treks/everest-base-camp', title: 'Everest Base Camp', subtitle: 'The trek of a lifetime - 13D/12N', badge: 'Bucket List', discount: '₹74,999' },
+  { src: photos.yatra, href: '/yatra/kedarnath-yatra', title: 'Kedarnath Yatra', subtitle: 'Sacred pilgrimage - 6D/5N', badge: 'Yatra', discount: '₹9,999' },
 ];
+
+function SlideImage({ src, desktopSrc, alt }: { src: string; desktopSrc?: string; alt: string }) {
+  return (
+    <>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={src}
+        alt={alt}
+        loading="lazy"
+        decoding="async"
+        referrerPolicy="no-referrer"
+        className="absolute inset-0 h-full w-full object-cover lg:hidden"
+      />
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={desktopSrc || src}
+        alt=""
+        aria-hidden
+        loading="lazy"
+        decoding="async"
+        referrerPolicy="no-referrer"
+        className="absolute inset-0 hidden h-full w-full object-cover lg:block"
+      />
+    </>
+  );
+}
 
 export default function Banners({
   items = defaultBanners,
@@ -34,6 +60,8 @@ export default function Banners({
   const pausedRef = useRef(false);
   const resumeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const count = items.length;
+  const touchX = useRef(0);
+  const swiped = useRef(false);
 
   const goTo = useCallback((i: number) => {
     setIndex(((i % count) + count) % count);
@@ -41,7 +69,7 @@ export default function Banners({
 
   useEffect(() => {
     if (count < 2) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     const id = window.setInterval(() => {
       if (pausedRef.current) return;
@@ -61,13 +89,20 @@ export default function Banners({
 
   const slider = (
     <div
-      className="relative w-full overflow-hidden rounded-xl shadow-sm"
+      className="relative w-full overflow-hidden rounded-[18px] bg-[#1f2937] shadow-sm"
       onPointerDown={pause}
       onMouseEnter={() => { pausedRef.current = true; }}
       onMouseLeave={() => { pausedRef.current = false; }}
+      onTouchStart={e => { touchX.current = e.touches[0].clientX; pause(); }}
+      onTouchEnd={e => {
+        const dx = e.changedTouches[0].clientX - touchX.current;
+        if (Math.abs(dx) < 40) return;
+        swiped.current = true;
+        if (dx < 0) goTo(index + 1);
+        else goTo(index - 1);
+      }}
     >
-      {/* Full-width single banner slot - compact cinematic strip */}
-      <div className="relative h-[132px] sm:h-[150px] lg:h-[180px] w-full">
+      <div className={`relative w-full ${embedded ? 'h-[140px]' : 'h-[132px] sm:h-[150px] lg:h-[180px]'}`}>
         {items.map((b, i) => {
           const active = i === index;
           return (
@@ -76,22 +111,21 @@ export default function Banners({
               href={b.href}
               aria-hidden={!active}
               tabIndex={active ? 0 : -1}
+              onClick={e => {
+                if (swiped.current) {
+                  e.preventDefault();
+                  swiped.current = false;
+                }
+              }}
               className={`absolute inset-0 block transition-opacity duration-700 ease-out ${
                 active ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
               }`}
             >
-              <div
-                className="absolute inset-0 bg-cover bg-center lg:hidden"
-                style={{ backgroundImage: `url(${b.src})` }}
-              />
-              <div
-                className="absolute inset-0 bg-cover bg-center hidden lg:block"
-                style={{ backgroundImage: `url(${b.desktopSrc || b.src})` }}
-              />
-              <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/40 to-black/10" />
+              <SlideImage src={b.src} desktopSrc={b.desktopSrc} alt={b.title || 'Promo'} />
+              <div className="absolute inset-0 bg-gradient-to-r from-black/78 via-black/42 to-black/15" />
 
               {b.badge && (
-                <div className="absolute top-2.5 left-2.5 lg:top-4 lg:left-4 flex items-center gap-1 bg-[#16a34a]/90 text-white text-[10px] lg:text-xs font-bold px-2.5 py-1 rounded-full shadow-sm">
+                <div className="absolute top-2.5 left-2.5 lg:top-4 lg:left-4 flex items-center gap-1 bg-[#16a34a]/95 text-white text-[10px] lg:text-xs font-bold px-2.5 py-1 rounded-full shadow-sm">
                   <Tag className="w-3 h-3" />
                   {b.badge}
                 </div>
@@ -109,7 +143,7 @@ export default function Banners({
                   </p>
                 )}
                 <div className="flex items-center gap-1.5 mt-1.5 lg:mt-2">
-                  <span className="text-[#16a34a] text-[11px] lg:text-xs font-semibold">
+                  <span className="text-[#4ade80] text-[11px] lg:text-xs font-semibold">
                     {b.discount}
                   </span>
                   <ArrowRight className="w-3 h-3 lg:w-3.5 lg:h-3.5 text-white/70" />
@@ -129,7 +163,7 @@ export default function Banners({
               aria-label={`Show banner ${i + 1}`}
               onClick={() => { pause(); goTo(i); }}
               className={`h-1.5 rounded-full transition-all ${
-                i === index ? 'bg-[#16a34a] w-5' : 'bg-white/50 w-1.5 hover:bg-white/80'
+                i === index ? 'bg-[#16a34a] w-5' : 'bg-white/55 w-1.5 hover:bg-white/80'
               }`}
             />
           ))}

@@ -3,14 +3,15 @@
 import Link from 'next/link';
 import { Building2, Users, Heart, Briefcase, Star, ArrowRight, CheckCircle2, MapPin, Clock, Phone, Mail, Send } from 'lucide-react';
 import { useState, FormEvent } from 'react';
+import { photos } from '@/lib/media';
 
 const corpPkgs = [
-  { name: 'Kedarkantha Winter Trek', loc: 'Uttarakhand', dur: '5D/4N', price: 6999, capacity: '10-50 pax', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/kedarkantha', badge: 'Best for Teams' },
-  { name: 'Hampta Pass Trek', loc: 'Himachal', dur: '5D/4N', price: 8499, capacity: '10-40 pax', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/hampta-pass', badge: 'Popular' },
-  { name: 'Valley of Flowers Trek', loc: 'Uttarakhand', dur: '6D/5N', price: 8999, capacity: '10-30 pax', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/valley-of-flowers', badge: 'UNESCO' },
-  { name: 'Chopta Tungnath Trek', loc: 'Uttarakhand', dur: '4D/3N', price: 5999, capacity: '10-60 pax', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/chopta-tungnath', badge: 'Easy Access' },
-  { name: 'Triund & Mcleodganj', loc: 'Himachal', dur: '3D/2N', price: 2499, capacity: '10-100 pax', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/mcleodganj-trek', badge: 'Large Groups' },
-  { name: 'Kedarnath Yatra', loc: 'Uttarakhand', dur: '6D/5N', price: 9999, capacity: '10-50 pax', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/yatra/kedarnath-yatra', badge: 'Spiritual' },
+  { name: 'Kedarkantha Winter Trek', loc: 'Uttarakhand', dur: '5D/4N', price: 6999, capacity: '10-50 pax', img: photos.kedarkantha, href: '/treks/kedarkantha', badge: 'Best for Teams' },
+  { name: 'Hampta Pass Trek', loc: 'Himachal', dur: '5D/4N', price: 8499, capacity: '10-40 pax', img: photos.hampta, href: '/treks/hampta-pass', badge: 'Popular' },
+  { name: 'Valley of Flowers Trek', loc: 'Uttarakhand', dur: '6D/5N', price: 8999, capacity: '10-30 pax', img: photos.vof, href: '/treks/valley-of-flowers', badge: 'UNESCO' },
+  { name: 'Chopta Tungnath Trek', loc: 'Uttarakhand', dur: '4D/3N', price: 5999, capacity: '10-60 pax', img: photos.chopta, href: '/treks/chopta-tungnath', badge: 'Easy Access' },
+  { name: 'Triund & Mcleodganj', loc: 'Himachal', dur: '3D/2N', price: 2499, capacity: '10-100 pax', img: photos.triund, href: '/treks/mcleodganj-trek', badge: 'Large Groups' },
+  { name: 'Kedarnath Yatra', loc: 'Uttarakhand', dur: '6D/5N', price: 9999, capacity: '10-50 pax', img: photos.yatra, href: '/yatra/kedarnath-yatra', badge: 'Spiritual' },
 ];
 
 export default function CorporatePage() {
@@ -98,7 +99,7 @@ export default function CorporatePage() {
               </ul>
             </div>
             <div className="relative rounded-xl overflow-hidden h-64 lg:h-80">
-              <img src="https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/" alt="Corporate team" className="w-full h-full object-cover" />
+              <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80" alt="Corporate team" className="w-full h-full object-cover" />
             </div>
           </div>
         </div>

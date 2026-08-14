@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { MapPin, Star, Clock, CheckCircle2, ArrowRight, Globe, Plane, Mountain } from 'lucide-react';
 
-const cloud = 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/';
+const cloud = 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80';
 
 const treks = [
   { name: 'Everest Base Camp Trek', loc: 'Nepal', dur: '13D/12N', price: 74999, diff: 'Difficult', img: cloud, href: '/treks/everest-base-camp' },

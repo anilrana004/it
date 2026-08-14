@@ -2,10 +2,10 @@ import Link from 'next/link';
 import { Calendar, Clock, ArrowRight } from 'lucide-react';
 
 const blogs = [
-  { t: 'Why Indian Treks Is the Perfect Choice for Your All-Girls Trip | Safe & Fun Group Travel', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', d: '30 Jul', r: '6 min read', h: '/blog/girls-trip-with-indiantreks' },
-  { t: 'Book Now Pay Later with Indian Treks | Travel Now, Pay in EMIs', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', d: '25 Jun', r: '5 min read', h: '/blog/book-now-pay-later' },
-  { t: 'Why School Trips Are More Than Just Fun Days Out: How Indian Treks Creates Life-Changing Educational Adventures', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', d: '18 Sep', r: '9 min read', h: '/blog/school-trips' },
-  { t: '25 Best Places to Visit in India in July', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/', d: '16 Jun', r: '17 min read', h: '/blog/best-places-to-visit-in-india-in-july' },
+  { t: 'Why Indian Treks Is the Perfect Choice for Your All-Girls Trip | Safe & Fun Group Travel', img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', d: '30 Jul', r: '6 min read', h: '/blog/girls-trip-with-indiantreks' },
+  { t: 'Book Now Pay Later with Indian Treks | Travel Now, Pay in EMIs', img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', d: '25 Jun', r: '5 min read', h: '/blog/book-now-pay-later' },
+  { t: 'Why School Trips Are More Than Just Fun Days Out: How Indian Treks Creates Life-Changing Educational Adventures', img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', d: '18 Sep', r: '9 min read', h: '/blog/school-trips' },
+  { t: '25 Best Places to Visit in India in July', img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', d: '16 Jun', r: '17 min read', h: '/blog/best-places-to-visit-in-india-in-july' },
 ];
 
 export default function Blog() {

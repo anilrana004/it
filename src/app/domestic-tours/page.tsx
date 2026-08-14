@@ -1,29 +1,28 @@
 import Link from 'next/link';
-import { MapPin, Star, Clock, CheckCircle2, ArrowRight, Mountain, Route, Compass } from 'lucide-react';
-
-const imgBase = 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/';
+import { MapPin, CheckCircle2, ArrowRight, Compass, Mountain, Route } from 'lucide-react';
+import { photos } from '@/lib/media';
 
 const himalayanTrek = [
-  { name: 'Valley of Flowers Trek', loc: 'Uttarakhand', dur: '6D/5N', price: 8999, diff: 'Moderate', img: imgBase, href: '/treks/valley-of-flowers' },
-  { name: 'Kedarkantha Trek', loc: 'Uttarakhand', dur: '5D/4N', price: 6999, diff: 'Easy-Moderate', img: imgBase, href: '/treks/kedarkantha' },
-  { name: 'Hampta Pass Trek', loc: 'Himachal', dur: '5D/4N', price: 8499, diff: 'Moderate', img: imgBase, href: '/treks/hampta-pass' },
-  { name: 'Chopta Tungnath Trek', loc: 'Uttarakhand', dur: '4D/3N', price: 5999, diff: 'Easy-Moderate', img: imgBase, href: '/treks/chopta-tungnath' },
-  { name: 'Triund Trek', loc: 'Himachal', dur: '3D/2N', price: 2499, diff: 'Easy', img: imgBase, href: '/treks/mcleodganj-trek' },
-  { name: 'Bhrigu Lake Trek', loc: 'Himachal', dur: '3D/2N', price: 4999, diff: 'Easy-Moderate', img: imgBase, href: '/treks/bhrigu-lake' },
+  { name: 'Valley of Flowers Trek', loc: 'Uttarakhand', dur: '6D/5N', price: 8999, diff: 'Moderate', img: photos.vof, href: '/treks/valley-of-flowers' },
+  { name: 'Kedarkantha Trek', loc: 'Uttarakhand', dur: '5D/4N', price: 6999, diff: 'Easy-Moderate', img: photos.kedarkantha, href: '/treks/kedarkantha' },
+  { name: 'Hampta Pass Trek', loc: 'Himachal', dur: '5D/4N', price: 8499, diff: 'Moderate', img: photos.hampta, href: '/treks/hampta-pass' },
+  { name: 'Chopta Tungnath Trek', loc: 'Uttarakhand', dur: '4D/3N', price: 5999, diff: 'Easy-Moderate', img: photos.chopta, href: '/treks/chopta-tungnath' },
+  { name: 'Triund Trek', loc: 'Himachal', dur: '3D/2N', price: 2499, diff: 'Easy', img: photos.triund, href: '/treks/mcleodganj-trek' },
+  { name: 'Bhrigu Lake Trek', loc: 'Himachal', dur: '3D/2N', price: 4999, diff: 'Easy-Moderate', img: photos.himachal, href: '/treks/bhrigu-lake' },
 ];
 
 const pilgrimageYatra = [
-  { name: 'Kedarnath Yatra', loc: 'Uttarakhand', dur: '6D/5N', price: 9999, diff: 'Moderate', img: imgBase, href: '/yatra/kedarnath-yatra' },
-  { name: 'Do Dham Yatra', loc: 'Uttarakhand', dur: '7D/6N', price: 14999, diff: 'Moderate', img: imgBase, href: '/yatra/do-dham' },
-  { name: 'Char Dham Yatra', loc: 'Uttarakhand', dur: '12D/11N', price: 24999, diff: 'Challenging', img: imgBase, href: '/yatra/char-dham' },
-  { name: 'Panch Kedar Yatra', loc: 'Uttarakhand', dur: '10D/9N', price: 19999, diff: 'Moderate', img: imgBase, href: '/yatra/panch-kedar' },
+  { name: 'Kedarnath Yatra', loc: 'Uttarakhand', dur: '6D/5N', price: 9999, diff: 'Moderate', img: photos.yatra, href: '/yatra/kedarnath-yatra' },
+  { name: 'Do Dham Yatra', loc: 'Uttarakhand', dur: '7D/6N', price: 14999, diff: 'Moderate', img: photos.yatra, href: '/yatra/do-dham' },
+  { name: 'Char Dham Yatra', loc: 'Uttarakhand', dur: '12D/11N', price: 24999, diff: 'Challenging', img: photos.kedarnath, href: '/yatra/char-dham' },
+  { name: 'Panch Kedar Yatra', loc: 'Uttarakhand', dur: '10D/9N', price: 19999, diff: 'Moderate', img: photos.yatra, href: '/yatra/panch-kedar' },
 ];
 
 const backpackingGets = [
-  { name: 'Dayara Bugyal Trek', loc: 'Uttarakhand', dur: '5D/4N', price: 6999, diff: 'Easy', img: imgBase, href: '/treks/dayara-bugyal' },
-  { name: 'Kuari Pass Trek', loc: 'Uttarakhand', dur: '6D/5N', price: 9999, diff: 'Moderate', img: imgBase, href: '/treks/kuari-pass' },
-  { name: 'Nag Tibba Trek', loc: 'Uttarakhand', dur: '2D/1N', price: 2499, diff: 'Easy', img: imgBase, href: '/treks/nag-tibba' },
-  { name: 'Har Ki Dun Trek', loc: 'Uttarakhand', dur: '6D/5N', price: 8999, diff: 'Moderate', img: imgBase, href: '/treks/har-ki-dun' },
+  { name: 'Dayara Bugyal Trek', loc: 'Uttarakhand', dur: '5D/4N', price: 6999, diff: 'Easy', img: photos.uttarakhand, href: '/treks/dayara-bugyal' },
+  { name: 'Kuari Pass Trek', loc: 'Uttarakhand', dur: '6D/5N', price: 9999, diff: 'Moderate', img: photos.uttarakhand, href: '/treks/kuari-pass' },
+  { name: 'Nag Tibba Trek', loc: 'Uttarakhand', dur: '2D/1N', price: 2499, diff: 'Easy', img: photos.uttarakhand, href: '/treks/nag-tibba' },
+  { name: 'Har Ki Dun Trek', loc: 'Uttarakhand', dur: '6D/5N', price: 8999, diff: 'Moderate', img: photos.uttarakhand, href: '/treks/har-ki-dun' },
 ];
 
 const howSteps = [

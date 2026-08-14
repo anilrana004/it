@@ -4,22 +4,22 @@ const features = [
   {
     title: 'Trusted Experience',
     desc: "We don't just organize trips - we create experiences backed by expertise and thousands of successful departures.",
-    img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/',
+    img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80',
   },
   {
     title: 'Safety First',
     desc: 'Every itinerary is designed with safety and responsible operations at its core so you can travel worry-free.',
-    img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/',
+    img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80',
   },
   {
     title: 'Award-Winning Excellence',
     desc: 'Our commitment to quality has earned recognition from industry leaders and our travelers.',
-    img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/',
+    img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80',
   },
   {
     title: 'More Than Just Travel',
     desc: 'Indian Treks is a community where strangers become friends and every trip creates lifelong stories.',
-    img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_420,h_280,c_fill,g_auto/',
+    img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80',
   },
 ];
 

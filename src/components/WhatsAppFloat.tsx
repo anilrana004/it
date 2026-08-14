@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { MessageCircle, Share2 } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import HelpAssistant from '@/components/HelpAssistant';
+import { whatsappUrl } from '@/lib/contact';
 
 function hasDetailChrome(path: string) {
   if (path.startsWith('/booking/')) return true;
@@ -52,7 +53,7 @@ export default function WhatsAppFloat() {
       {/* WhatsApp */}
       {!assistantOpen && (
         <a
-          href="https://wa.me/919999999999?text=Hi%20Indian%20Treks!%20I%27m%20interested%20in%20a%20trek."
+          href={whatsappUrl("Hi Indian Treks! I'm interested in a trek.")}
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Chat on WhatsApp"

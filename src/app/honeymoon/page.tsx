@@ -2,19 +2,19 @@ import Link from 'next/link';
 import { MapPin, Star, Clock, Heart, Camera, Home, CheckCircle2, ArrowRight } from 'lucide-react';
 
 const trekkingPkg = [
-  { name: 'Chopta Tungnath Trek', loc: 'Uttarakhand  -  Mini Switzerland', dur: '4D/3N', price: 18500, tag: 'Most Romantic', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/chopta-tungnath' },
-  { name: 'Triund Trek', loc: 'Himachal  -  Dhauladhar Views', dur: '3D/2N', price: 12999, tag: 'Couples Choice', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/mcleodganj-trek' },
-  { name: 'Dayara Bugyal Trek', loc: 'Uttarakhand  -  Alpine Meadows', dur: '5D/4N', price: 16999, tag: 'Scenic', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/dayara-bugyal' },
-  { name: 'Nag Tibba Trek', loc: 'Uttarakhand  -  Weekend Trek', dur: '2D/1N', price: 7999, tag: 'Quick Escape', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/nag-tibba' },
-  { name: 'Kheerganga Trek', loc: 'Himachal  -  Hot Springs', dur: '3D/2N', price: 9999, tag: 'Hot Springs', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/kheerganga' },
-  { name: 'Beas Kund Trek', loc: 'Himachal  -  Solang Valley', dur: '4D/3N', price: 14999, tag: 'Valley Trek', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/beas-kund' },
+  { name: 'Chopta Tungnath Trek', loc: 'Uttarakhand  -  Mini Switzerland', dur: '4D/3N', price: 18500, tag: 'Most Romantic', img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', href: '/treks/chopta-tungnath' },
+  { name: 'Triund Trek', loc: 'Himachal  -  Dhauladhar Views', dur: '3D/2N', price: 12999, tag: 'Couples Choice', img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', href: '/treks/mcleodganj-trek' },
+  { name: 'Dayara Bugyal Trek', loc: 'Uttarakhand  -  Alpine Meadows', dur: '5D/4N', price: 16999, tag: 'Scenic', img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', href: '/treks/dayara-bugyal' },
+  { name: 'Nag Tibba Trek', loc: 'Uttarakhand  -  Weekend Trek', dur: '2D/1N', price: 7999, tag: 'Quick Escape', img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', href: '/treks/nag-tibba' },
+  { name: 'Kheerganga Trek', loc: 'Himachal  -  Hot Springs', dur: '3D/2N', price: 9999, tag: 'Hot Springs', img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', href: '/treks/kheerganga' },
+  { name: 'Beas Kund Trek', loc: 'Himachal  -  Solang Valley', dur: '4D/3N', price: 14999, tag: 'Valley Trek', img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', href: '/treks/beas-kund' },
 ];
 
 const getawayPkg = [
-  { name: 'Valley of Flowers Trek', loc: 'Uttarakhand', dur: '6D/5N', price: 8999, tag: 'UNESCO Paradise', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/valley-of-flowers' },
-  { name: 'Kedarkantha Trek', loc: 'Uttarakhand', dur: '5D/4N', price: 6999, tag: 'Winter Wonderland', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/kedarkantha' },
-  { name: 'Annapurna Base Camp', loc: 'Nepal', dur: '8D/7N', price: 34999, tag: 'International', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/annapurna-base-camp' },
-  { name: 'Sar Pass Trek', loc: 'Himachal', dur: '5D/4N', price: 6999, tag: 'Scenic', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/', href: '/treks/sar-pass' },
+  { name: 'Valley of Flowers Trek', loc: 'Uttarakhand', dur: '6D/5N', price: 8999, tag: 'UNESCO Paradise', img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', href: '/treks/valley-of-flowers' },
+  { name: 'Kedarkantha Trek', loc: 'Uttarakhand', dur: '5D/4N', price: 6999, tag: 'Winter Wonderland', img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', href: '/treks/kedarkantha' },
+  { name: 'Annapurna Base Camp', loc: 'Nepal', dur: '8D/7N', price: 34999, tag: 'International', img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', href: '/treks/annapurna-base-camp' },
+  { name: 'Sar Pass Trek', loc: 'Himachal', dur: '5D/4N', price: 6999, tag: 'Scenic', img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', href: '/treks/sar-pass' },
 ];
 
 const highlights = [
@@ -133,7 +133,7 @@ export default function HoneymoonPage() {
               </ul>
             </div>
             <div className="relative rounded-xl overflow-hidden h-64 lg:h-80">
-              <img src="https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_600,h_400,c_fill,g_auto/" alt="Couple in the Himalayas" className="w-full h-full object-cover" />
+              <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80" alt="Couple in the Himalayas" className="w-full h-full object-cover" />
             </div>
           </div>
         </div>

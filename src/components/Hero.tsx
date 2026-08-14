@@ -3,47 +3,56 @@ import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import {
-  Search, Star, ChevronLeft, ChevronRight, Users, Award, Shield,
-  ArrowRight, MapPin, Calendar, Heart, ChevronDown, MessageSquare,
+  Search, Star, Users, Award, Shield,
+  ArrowRight, MapPin, Calendar, Heart, ChevronDown,
   Mountain, Footprints, SunMedium, Quote, X, Menu,
 } from 'lucide-react';
 import { treks } from '@/lib/data';
+import { photos } from '@/lib/media';
 import BrandLogo from '@/components/BrandLogo';
+import Banners from '@/components/Banners';
+import CategoryScroller from '@/components/home/CategoryScroller';
 
 const mobBanners = [
-  { image: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_600,h_350,c_fill,g_auto/&q=80', title: 'Uttarakhand Treks', subtitle: 'Chopta - Kedarkantha - Valley of Flowers & more', cta: 'Explore Treks', cat: 'trek' },
-  { image: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_600,h_350,c_fill,g_auto/&q=80', title: 'Sacred Yatras', subtitle: 'Kedarnath - Do Dham - Char Dham - Panch Kedar', cta: 'Explore Yatras', cat: 'yatra' },
-  { image: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_600,h_350,c_fill,g_auto/&q=80', title: 'Himachal Adventures', subtitle: 'Hampta Pass - Triund - Bhrigu Lake & more', cta: 'Explore Himachal', cat: 'trek' },
-  { image: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_600,h_350,c_fill,g_auto/&q=80', title: 'International Expeditions', subtitle: 'EBC - Annapurna - Nepal Backpacking Circuit', cta: 'Explore Global', cat: 'international' },
+  { image: photos.himachal, title: 'Himachal Adventures', subtitle: 'Hampta Pass – Triund – Bhrigu Lake & more', cta: 'Explore Himachal', href: '/treks?region=himachal' },
+  { image: photos.uttarakhand, title: 'Uttarakhand Treks', subtitle: 'Chopta – Kedarkantha – Valley of Flowers & more', cta: 'Explore Treks', href: '/treks?region=uttarakhand' },
+  { image: photos.yatra, title: 'Sacred Yatras', subtitle: 'Kedarnath – Do Dham – Char Dham – Panch Kedar', cta: 'Explore Yatras', href: '/yatra' },
+  { image: photos.nepal, title: 'International Expeditions', subtitle: 'EBC – Annapurna – Nepal Backpacking Circuit', cta: 'Explore Global', href: '/treks?region=nepal' },
+];
+
+const explorePromos = [
+  { src: photos.yatra, href: '/yatra', title: 'Sacred Yatras – Spiritual Himalaya', subtitle: 'Kedarnath · Do Dham · Char Dham · Panch Kedar – divine journeys', badge: 'Yatra', discount: 'Plan Your Yatra' },
+  { src: photos.uttarakhand, href: '/treks?region=uttarakhand', title: 'Uttarakhand – Land of Gods & Treks', subtitle: '10 iconic Himalayan treks across Chopta, Kedarkantha & beyond', badge: 'Uttarakhand', discount: 'View All Treks' },
+  { src: photos.himachal, href: '/treks?region=himachal', title: 'Himachal – Adventure Capital', subtitle: 'Hampta, Triund, Bhrigu Lake, Kheerganga & more', badge: 'Himachal', discount: 'Explore Himachal' },
 ];
 
 const catItems = [
-  { n: 'Uttarakhand Treks', h: '/treks?region=uttarakhand', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_300,h_300,c_fill,g_auto/&q=80' },
-  { n: 'Himachal Treks', h: '/treks?region=himachal', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_300,h_300,c_fill,g_auto/&q=80' },
-  { n: 'Char Dham Yatra', h: '/yatra', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_300,h_300,c_fill,g_auto/&q=80' },
-  { n: 'Kedarnath Yatra', h: '/yatra/kedarnath-yatra', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_300,h_300,c_fill,g_auto/&q=80' },
-  { n: 'Everest Base Camp', h: '/treks/everest-base-camp', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_300,h_300,c_fill,g_auto/&q=80' },
-  { n: 'Nepal', h: '/treks?region=nepal', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_300,h_300,c_fill,g_auto/&q=80' },
-  { n: 'Chopta Tungnath', h: '/treks/chopta-tungnath', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_300,h_300,c_fill,g_auto/&q=80' },
-  { n: 'Hampta Pass', h: '/treks/hampta-pass', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_300,h_300,c_fill,g_auto/&q=80' },
-  { n: 'Triund Trek', h: '/treks/mcleodganj-trek', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_300,h_300,c_fill,g_auto/&q=80' },
-  { n: 'Valley of Flowers', h: '/treks/valley-of-flowers', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_300,h_300,c_fill,g_auto/&q=80' },
+  { n: 'Uttarakhand Treks', h: '/treks?region=uttarakhand', img: photos.uttarakhand },
+  { n: 'Himachal Treks', h: '/treks?region=himachal', img: photos.himachal },
+  { n: 'Char Dham Yatra', h: '/yatra/char-dham', img: photos.yatra },
+  { n: 'Kedarnath Yatra', h: '/yatra/kedarnath-yatra', img: photos.kedarnath },
+  { n: 'Everest Base Camp', h: '/treks/everest-base-camp', img: photos.ebc },
+  { n: 'Nepal', h: '/treks?region=nepal', img: photos.nepal },
+  { n: 'Chopta Tungnath', h: '/treks/chopta-tungnath', img: photos.chopta },
+  { n: 'Hampta Pass', h: '/treks/hampta-pass', img: photos.hampta },
+  { n: 'Triund Trek', h: '/treks/mcleodganj-trek', img: photos.triund },
+  { n: 'Valley of Flowers', h: '/treks/valley-of-flowers', img: photos.vof },
 ];
 
 const collabItems = [
+  { icon: Heart, label: 'TripAdvisor Choice', href: '/#reviews', c: 'text-rose-500', bg: 'from-rose-50 to-pink-50', bd: 'border-rose-200/60' },
   { icon: Users, label: '80k+ Travelers', href: '/about', c: 'text-blue-500', bg: 'from-blue-50 to-indigo-50', bd: 'border-blue-200/60' },
   { icon: Award, label: 'ATOAI Recognized', href: '/about', c: 'text-amber-500', bg: 'from-amber-50 to-orange-50', bd: 'border-amber-200/60' },
   { icon: Shield, label: 'Startup India', href: '/corporate', c: 'text-green-500', bg: 'from-green-50 to-emerald-50', bd: 'border-green-200/60' },
-  { icon: Heart, label: 'TripAdvisor Choice', href: '/reviews', c: 'text-rose-500', bg: 'from-rose-50 to-pink-50', bd: 'border-rose-200/60' },
   { icon: Calendar, label: '10+ Years Legacy', href: '/about', c: 'text-purple-500', bg: 'from-purple-50 to-violet-50', bd: 'border-purple-200/60' },
 ];
 
 const deskSlides = [
-  { id: 'valley-of-flowers', name: 'Valley of Flowers Trek', sub: 'UNESCO Himalayan Paradise - Alpine meadows, rare flora & stunning snow-capped vistas', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_1920,h_960,c_fill,g_auto/', featureImg: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_800,h_1000,c_fill,g_auto/', t: 'trek', rating: '4.8', duration: '6D/5N', difficulty: 'Moderate', altitude: '14,107 ft', distance: '38 km', reviews: '8k+', season: 'Jul-Sep', group: '6-15' },
-  { id: 'kedarkantha', name: 'Kedarkantha Trek', sub: 'Winter Wonderland - Snow-trailed summit with 360- Himalayan panoramas', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_1920,h_960,c_fill,g_auto/', featureImg: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_800,h_1000,c_fill,g_auto/', t: 'trek', rating: '4.9', duration: '5D/4N', difficulty: 'Easy-Moderate', altitude: '12,500 ft', distance: '22 km', reviews: '10k+', season: 'Dec-Apr', group: '6-15' },
-  { id: 'kedarnath-yatra', name: 'Kedarnath Yatra', sub: 'Sacred Pilgrimage - One of the 12 Jyotirlingas in the Char Dham circuit', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_1920,h_960,c_fill,g_auto/', featureImg: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_800,h_1000,c_fill,g_auto/', t: 'yatra', rating: '4.8', duration: '6D/5N', difficulty: 'Moderate', altitude: '11,755 ft', distance: '16 km', reviews: '12k+', season: 'May-Oct', group: '10-30' },
-  { id: 'everest-base-camp', name: 'Everest Base Camp Trek', sub: 'Ultimate Himalayan Dream - Trek to the foot of the world\'s highest peak', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_1920,h_960,c_fill,g_auto/', featureImg: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_800,h_1000,c_fill,g_auto/', t: 'trek', rating: '4.9', duration: '14D/13N', difficulty: 'Moderate', altitude: '17,598 ft', distance: '130 km', reviews: '20k+', season: 'Mar-May,Oct-Nov', group: '4-12' },
-  { id: 'hampta-pass', name: 'Hampta Pass Trek', sub: 'Cross-over Adventure - Lush green Kullu meets barren Spiti valley', img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_1920,h_960,c_fill,g_auto/', featureImg: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_800,h_1000,c_fill,g_auto/', t: 'trek', rating: '4.7', duration: '5D/4N', difficulty: 'Moderate', altitude: '14,100 ft', distance: '26 km', reviews: '8k+', season: 'Jun-Oct', group: '6-14' },
+  { id: 'valley-of-flowers', name: 'Valley of Flowers Trek', sub: 'UNESCO Himalayan Paradise - Alpine meadows, rare flora & stunning snow-capped vistas', img: photos.vof, featureImg: photos.vof, t: 'trek', rating: '4.8', duration: '6D/5N', difficulty: 'Moderate', altitude: '14,107 ft', distance: '38 km', reviews: '8k+', season: 'Jul-Sep', group: '6-15' },
+  { id: 'kedarkantha', name: 'Kedarkantha Trek', sub: 'Winter Wonderland - Snow-trailed summit with 360- Himalayan panoramas', img: photos.kedarkantha, featureImg: photos.snow, t: 'trek', rating: '4.9', duration: '5D/4N', difficulty: 'Easy-Moderate', altitude: '12,500 ft', distance: '22 km', reviews: '10k+', season: 'Dec-Apr', group: '6-15' },
+  { id: 'kedarnath-yatra', name: 'Kedarnath Yatra', sub: 'Sacred Pilgrimage - One of the 12 Jyotirlingas in the Char Dham circuit', img: photos.yatra, featureImg: photos.yatra, t: 'yatra', rating: '4.8', duration: '6D/5N', difficulty: 'Moderate', altitude: '11,755 ft', distance: '16 km', reviews: '12k+', season: 'May-Oct', group: '10-30' },
+  { id: 'everest-base-camp', name: 'Everest Base Camp Trek', sub: 'Ultimate Himalayan Dream - Trek to the foot of the world\'s highest peak', img: photos.ebc, featureImg: photos.ebc, t: 'trek', rating: '4.9', duration: '14D/13N', difficulty: 'Moderate', altitude: '17,598 ft', distance: '130 km', reviews: '20k+', season: 'Mar-May,Oct-Nov', group: '4-12' },
+  { id: 'hampta-pass', name: 'Hampta Pass Trek', sub: 'Cross-over Adventure - Lush green Kullu meets barren Spiti valley', img: photos.hampta, featureImg: photos.himachal, t: 'trek', rating: '4.7', duration: '5D/4N', difficulty: 'Moderate', altitude: '14,100 ft', distance: '26 km', reviews: '8k+', season: 'Jun-Oct', group: '6-14' },
 ];
 
 const destinations = ['Kedarkantha', 'Valley of Flowers', 'Everest Base Camp', 'Hampta Pass', 'Chopta Tungnath', 'Kedarnath', 'Triund', 'Annapurna'];
@@ -104,18 +113,16 @@ export default function Hero() {
   /* focus input when overlay opens */
   useEffect(() => { if (showSearch) setTimeout(() => searchRef.current?.focus(), 100); }, [showSearch]);
 
-  /* -- cat-scroll refs -- */
-  const catRef = useRef<HTMLDivElement>(null);
-  const [catL, setCatL] = useState(false);
-  const [catR, setCatR] = useState(true);
-  const [drag, setDrag] = useState(false);
-  const dragX = useRef(0);
-  const dragS = useRef(0);
-  const moved = useRef(false);
+  const bannerTouchX = useRef(0);
+  const bannerPaused = useRef(false);
+  const bannerSwiped = useRef(false);
 
   /* -- timers -- */
   useEffect(() => {
-    const t = setInterval(() => setMobSlide(p => (p + 1) % mobBanners.length), 4000);
+    const t = setInterval(() => {
+      if (bannerPaused.current) return;
+      setMobSlide(p => (p + 1) % mobBanners.length);
+    }, 4500);
     return () => clearInterval(t);
   }, []);
   useEffect(() => {
@@ -134,47 +141,31 @@ export default function Hero() {
     return () => clearInterval(t);
   }, []);
 
-  /* -- cat-scroll logic -- */
-  const checkScroll = useCallback(() => {
-    const el = catRef.current; if (!el) return;
-    setCatL(el.scrollLeft > 4);
-    setCatR(el.scrollLeft < el.scrollWidth - el.clientWidth - 4);
-  }, []);
-  useEffect(() => {
-    const el = catRef.current; if (!el) return;
-    checkScroll();
-    const h = () => checkScroll();
-    el.addEventListener('scroll', h, { passive: true });
-    window.addEventListener('resize', checkScroll);
-    return () => { el.removeEventListener('scroll', h); window.removeEventListener('resize', checkScroll); };
-  }, [checkScroll]);
-  const catBy = useCallback((d: number) => catRef.current?.scrollBy({ left: d * 88 * 3, behavior: 'smooth' }), []);
-  const onPD = useCallback((x: number) => { const el = catRef.current; if (!el) return; setDrag(true); moved.current = false; dragX.current = x; dragS.current = el.scrollLeft; }, []);
-  const onPM = useCallback((x: number) => { if (!drag || !catRef.current) return; const dx = x - dragX.current; if (Math.abs(dx) > 5) moved.current = true; catRef.current.scrollLeft = dragS.current - dx; }, [drag]);
-  const onPU = useCallback(() => setDrag(false), []);
-  useEffect(() => {
-    const el = catRef.current; if (!el) return;
-    const w = (e: WheelEvent) => { const delta = e.deltaX || e.deltaY; el.scrollLeft += delta; e.preventDefault(); };
-    el.addEventListener('wheel', w, { passive: false });
-    return () => el.removeEventListener('wheel', w);
-  }, []);
+  const InfoRow = ({ icon: Icon, label, value, accent }: { icon: any; label: string; value: string; accent?: boolean }) => (
+    <div className="flex items-center gap-2.5">
+      <Icon className={`w-4 h-4 ${accent ? 'text-[#16a34a]' : 'text-white/40'}`} />
+      <div>
+        <div className="text-[10px] text-white/40 font-medium uppercase tracking-wider">{label}</div>
+        <div className={`text-sm font-semibold ${accent ? 'text-[#16a34a]' : 'text-white/80'}`}>{value}</div>
+      </div>
+    </div>
+  );
 
   /* ======================== DESKTOP LAYOUT ======================== */
-  const Desktop = () => {
-    const slide = deskSlides[deskSlide];
-    const href = `/${slide.t === 'yatra' ? 'yatra' : 'treks'}/${slide.id}`;
-    const diffBadge = (d: string) => {
-      const map: Record<string, string> = { 'Easy': 'bg-green-500/20 text-green-300', 'Easy-Moderate': 'bg-emerald-500/20 text-emerald-300', 'Moderate': 'bg-yellow-500/20 text-yellow-300', 'Moderate-Difficult': 'bg-orange-500/20 text-orange-300', 'Difficult': 'bg-red-500/20 text-red-300' };
-      return map[d] || 'bg-gray-500/20 text-gray-300';
-    };
+  const slide = deskSlides[deskSlide];
+  const href = `/${slide.t === 'yatra' ? 'yatra' : 'treks'}/${slide.id}`;
+  const diffBadge = (d: string) => {
+    const map: Record<string, string> = { 'Easy': 'bg-green-500/20 text-green-300', 'Easy-Moderate': 'bg-emerald-500/20 text-emerald-300', 'Moderate': 'bg-yellow-500/20 text-yellow-300', 'Moderate-Difficult': 'bg-orange-500/20 text-orange-300', 'Difficult': 'bg-red-500/20 text-red-300' };
+    return map[d] || 'bg-gray-500/20 text-gray-300';
+  };
 
-    return (
+  const desktop = (
     <section className="relative flex min-h-[640px] h-[min(92vh,920px)] w-full flex-col overflow-hidden">
       {/* Background image layer */}
       {deskSlides.map((s, i) => (
         <div key={s.id}
           className={`absolute inset-0 transition-all duration-1000 ${i === deskSlide ? 'opacity-100 scale-100' : 'opacity-0 scale-105'}`}>
-          <img src={s.img} alt={s.name} className="w-full h-full object-cover" />
+          <img src={s.img} alt={s.name} referrerPolicy="no-referrer" className="w-full h-full object-cover" />
         </div>
       ))}
       <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/70 to-black/40" />
@@ -252,7 +243,7 @@ export default function Hero() {
                 {deskSlides.map((s, i) => (
                   <div key={s.id}
                     className={`absolute inset-0 transition-all duration-1000 ${i === deskSlide ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
-                    <img src={s.featureImg} alt={s.name} className="w-full h-full object-cover" />
+                    <img src={s.featureImg} alt={s.name} referrerPolicy="no-referrer" className="w-full h-full object-cover" />
                   </div>
                 ))}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
@@ -316,27 +307,27 @@ export default function Hero() {
         <span className="text-white/40 text-xs font-medium bg-black/20 backdrop-blur-sm px-3 py-1.5 rounded-full">#wravelerforlife</span>
       </div>
     </section>
-    );
-  };
-
-  const InfoRow = ({ icon: Icon, label, value, accent }: { icon: any; label: string; value: string; accent?: boolean }) => (
-    <div className="flex items-center gap-2.5">
-      <Icon className={`w-4 h-4 ${accent ? 'text-[#16a34a]' : 'text-white/40'}`} />
-      <div>
-        <div className="text-[10px] text-white/40 font-medium uppercase tracking-wider">{label}</div>
-        <div className={`text-sm font-semibold ${accent ? 'text-[#16a34a]' : 'text-white/80'}`}>{value}</div>
-      </div>
-    </div>
   );
 
+  const onBannerTouchStart = (x: number) => { bannerTouchX.current = x; };
+  const onBannerTouchEnd = (x: number) => {
+    const dx = x - bannerTouchX.current;
+    if (Math.abs(dx) < 40) return;
+    bannerSwiped.current = true;
+    bannerPaused.current = true;
+    window.setTimeout(() => { bannerPaused.current = false; }, 6000);
+    setMobSlide(p => dx < 0
+      ? (p + 1) % mobBanners.length
+      : (p - 1 + mobBanners.length) % mobBanners.length);
+  };
+
   /* ======================== MOBILE LAYOUT ======================== */
-  const Mobile = () => (
+  const mobile = (
     <section
       id="home-mobile-hero"
-      className="relative min-h-[50vh] overflow-hidden"
+      className="relative overflow-hidden"
       style={{
-        // JustWravel: yellow plane that soft-fades into page bg
-        background: 'linear-gradient(180deg, #16a34a 0%, #16a34a 55%, #4ade80 78%, #f3f4f6 100%)',
+        background: 'linear-gradient(180deg, #4ade80 0%, #86efac 28%, #bbf7d0 55%, #dcfce7 78%, #f0fdf4 100%)',
       }}
     >
       {/* In-flow top bar - part of the yellow page (no overlap). Sticky bar appears on scroll via Header. */}
@@ -354,7 +345,7 @@ export default function Hero() {
           <button
             type="button"
             aria-label="Search"
-            onClick={() => window.dispatchEvent(new Event('indiantreks:open-search'))}
+            onClick={() => setShowSearch(true)}
             className="p-2 text-gray-900"
           >
             <Search className="w-5 h-5" />
@@ -370,29 +361,26 @@ export default function Hero() {
         </div>
       </div>
 
-      <div className="relative z-0 container mx-auto px-4 pb-10 pt-2">
+      <div className="relative z-0 px-4 pb-8 pt-1">
 
-        {/* 1. Search button - fully below in-flow navbar */}
-        <div>
-          <button type="button" onClick={() => setShowSearch(true)}
-            className="w-full flex items-center gap-3 bg-white/95 backdrop-blur-sm border border-white/50 rounded-2xl px-5 py-4 shadow-lg shadow-[#15803d]/20 hover:shadow-xl hover:bg-white transition-all active:scale-[0.98]">
-            <div className="w-10 h-10 rounded-full bg-[#16a34a]/20 flex items-center justify-center shrink-0">
-              <Search className="w-5 h-5 text-[#15803d]" />
-            </div>
-            <div className="flex-1 min-w-0 text-left">
-              <div className="text-sm font-semibold text-gray-900">Where to?</div>
-              <div className="text-xs text-gray-500 truncate">Destinations - Treks - Yatras</div>
-            </div>
-            <div className="text-xs text-gray-600 font-medium bg-[#16a34a]/30 px-3 py-1.5 rounded-full shrink-0">Search</div>
-          </button>
-        </div>
+        <button type="button" onClick={() => setShowSearch(true)}
+          className="w-full flex items-center gap-3 bg-white rounded-full px-3 py-2.5 shadow-[0_6px_20px_rgba(22,163,74,0.10)] border border-[#dcfce7] active:scale-[0.99] transition-transform">
+          <div className="w-10 h-10 rounded-full bg-[#f0fdf4] flex items-center justify-center shrink-0">
+            <Search className="w-5 h-5 text-[#16a34a]" />
+          </div>
+          <div className="flex-1 min-w-0 text-left">
+            <div className="text-[15px] font-bold text-gray-900 leading-tight">Where to?</div>
+            <div className="text-[11px] text-gray-400 truncate">Destinations – Treks – Yatras</div>
+          </div>
+          <span className="text-[13px] font-semibold text-[#166534] bg-[#dcfce7] px-4 py-2 rounded-full shrink-0">Search</span>
+        </button>
 
         {/* 2. Rating (left) + Rotating collab (right) */}
-        <div className="flex items-center gap-2 mt-4">
+        <div className="flex items-center gap-2 mt-3.5">
           <Link href="/reviews"
-            className="flex items-center gap-1.5 bg-white/90 backdrop-blur-sm border border-white/60 rounded-xl px-3 py-2 active:scale-95 transition-transform shrink-0 shadow-sm">
+            className="flex items-center gap-1.5 bg-white rounded-full px-3 py-1.5 active:scale-95 transition-transform shrink-0 shadow-sm">
             <div className="flex">
-              {[1, 2, 3, 4, 5].map(i => <Star key={i} className="w-3 h-3.5 fill-yellow-400 text-yellow-400" />)}
+              {[1, 2, 3, 4, 5].map(i => <Star key={i} className="w-3 h-3 fill-yellow-400 text-yellow-400" />)}
             </div>
             <span className="text-sm font-bold text-gray-800">4.8</span>
             <span className="text-[11px] text-gray-500 font-medium">(10k+)</span>
@@ -404,7 +392,7 @@ export default function Hero() {
               const Icon = c.icon;
               return (
                 <Link key={collabIdx} href={c.href}
-                  className={`flex items-center gap-1.5 bg-gradient-to-r ${c.bg} border ${c.bd} rounded-xl px-3 py-2 active:scale-95 transition-all duration-200 ${collabFade ? 'opacity-100' : 'opacity-0'}`}>
+                  className={`flex items-center gap-1.5 bg-gradient-to-r ${c.bg} border ${c.bd} rounded-full px-3 py-1.5 active:scale-95 transition-all duration-200 ${collabFade ? 'opacity-100' : 'opacity-0'}`}>
                   <Icon className={`w-3.5 h-3.5 ${c.c}`} />
                   <span className="text-[11px] font-semibold text-gray-600">{c.label}</span>
                 </Link>
@@ -413,85 +401,70 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* 3. Banner slider */}
-        <div className="relative mt-3 rounded-2xl overflow-hidden group/banner">
-          <div className="relative aspect-[21/9]">
+        <div
+          className="relative mt-3 overflow-hidden rounded-[22px] bg-[#14532d] shadow-[0_10px_28px_rgba(20,83,45,0.28)]"
+          onTouchStart={e => onBannerTouchStart(e.touches[0].clientX)}
+          onTouchEnd={e => onBannerTouchEnd(e.changedTouches[0].clientX)}
+        >
+          <div className="relative h-[188px]">
             {mobBanners.map((slide, i) => (
-              <div key={i}
-                className={`absolute inset-0 transition-opacity duration-700 ${i === mobSlide ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}>
-                <img src={slide.image} alt={slide.title} className="w-full h-full object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-4">
-                  <h2 className="text-white font-bold text-lg leading-tight mb-1">{slide.title}</h2>
-                  <p className="text-white/70 text-xs mb-3 max-w-md">{slide.subtitle}</p>
-                  <button type="button" onClick={() => { setSearchCategory(slide.cat as any); setSearchQuery(''); setSearchIdx(-1); setShowSearch(true); }}
-                    className="inline-flex items-center gap-1.5 bg-[#16a34a] hover:bg-[#15803d] text-white font-semibold text-xs px-4 py-2 rounded-full transition-all active:scale-95">
-                    {slide.cta}<ArrowRight className="w-3.5 h-3.5" />
-                  </button>
+              <Link
+                key={slide.href}
+                href={slide.href}
+                className={`absolute inset-0 block transition-opacity duration-500 ${i === mobSlide ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'}`}
+                onClick={e => {
+                  if (bannerSwiped.current) {
+                    e.preventDefault();
+                    bannerSwiped.current = false;
+                  }
+                }}
+                tabIndex={i === mobSlide ? 0 : -1}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={slide.image}
+                  alt={slide.title}
+                  decoding="async"
+                  referrerPolicy="no-referrer"
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-black/20" />
+                <div className="absolute inset-0 flex flex-col justify-end p-4 pb-8">
+                  <h2 className="text-[22px] font-bold leading-tight text-white drop-shadow-sm">{slide.title}</h2>
+                  <p className="mt-1 mb-3 text-xs text-white/85">{slide.subtitle}</p>
+                  <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-[#16a34a] px-4 py-2 text-xs font-semibold text-white shadow-sm">
+                    {slide.cta}<ArrowRight className="h-3.5 w-3.5" />
+                  </span>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
-          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 z-20 flex gap-1.5">
+          <div className="absolute bottom-2.5 left-1/2 z-20 flex -translate-x-1/2 items-center gap-1.5">
             {mobBanners.map((_, i) => (
-              <button key={i} type="button" onClick={() => setMobSlide(i)}
-                className={`h-1.5 rounded-full transition-all ${i === mobSlide ? 'bg-[#16a34a] w-5' : 'bg-white/50 w-1.5'}`} />
+              <button
+                key={i}
+                type="button"
+                aria-label={`Show banner ${i + 1}`}
+                onClick={() => { bannerPaused.current = true; setMobSlide(i); }}
+                className={`h-1.5 rounded-full transition-all ${i === mobSlide ? 'w-6 bg-[#16a34a]' : 'w-1.5 bg-white/60'}`}
+              />
             ))}
           </div>
         </div>
 
-        {/* 4. Instagram-style categories */}
-        <div className="relative mt-4 select-none">
-          <div className="relative group/cat">
-            {catL && (
-              <button type="button" onClick={() => catBy(-1)}
-                className="hidden lg:flex absolute left-0 top-[30px] z-10 w-8 h-8 items-center justify-center rounded-full bg-white shadow-lg border border-gray-100 text-gray-500 hover:text-[#16a34a] transition-all -translate-x-4 opacity-0 group-hover/cat:opacity-100 group-hover/cat:translate-x-0">
-                <ChevronLeft className="w-4 h-4" />
-              </button>
-            )}
-            {catR && (
-              <button type="button" onClick={() => catBy(1)}
-                className="hidden lg:flex absolute right-0 top-[30px] z-10 w-8 h-8 items-center justify-center rounded-full bg-white shadow-lg border border-gray-100 text-gray-500 hover:text-[#16a34a] transition-all translate-x-4 opacity-0 group-hover/cat:opacity-100 group-hover/cat:translate-x-0">
-                <ChevronRight className="w-4 h-4" />
-              </button>
-            )}
-            <div ref={catRef}
-              onMouseDown={e => onPD(e.clientX)} onMouseMove={e => onPM(e.clientX)}
-              onMouseUp={onPU} onMouseLeave={onPU}
-              onTouchStart={e => onPD(e.touches[0].clientX)} onTouchMove={e => onPM(e.touches[0].clientX)}
-              onTouchEnd={onPU}
-              className="flex gap-3 overflow-x-auto pb-1 snap-x snap-mandatory scrollbar-none cursor-grab active:cursor-grabbing"
-              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-              {catItems.map(c => (
-                <Link key={c.n} href={c.h} onClick={e => { if (moved.current) e.preventDefault(); }}
-                  className="flex flex-col items-center gap-1.5 snap-start shrink-0 w-[68px]">
-                  <div className="w-[68px] h-[68px] rounded-full p-[3px] bg-gradient-to-br from-[#16a34a] via-[#22c55e] to-[#14532d] hover:scale-105 transition-transform duration-200 shadow-sm">
-                    <div className="w-full h-full rounded-full overflow-hidden border-2 border-white">
-                      <img src={c.img} alt={c.n} className="w-full h-full object-cover" />
-                    </div>
-                  </div>
-                  <span className="text-[10px] text-gray-700 font-semibold text-center leading-tight max-w-[68px]">{c.n}</span>
-                </Link>
-              ))}
-            </div>
-          </div>
+        <CategoryScroller items={catItems} />
+
+        <div className="mt-4">
+          <Banners items={explorePromos} embedded />
         </div>
-
       </div>
-
-      {/* Soft bottom dissolve into page */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-20"
-        style={{ background: 'linear-gradient(180deg, transparent 0%, #f3f4f6 100%)' }}
-      />
     </section>
   );
 
   return (
     <>
-      <div className="lg:hidden"><Mobile /></div>
-      <div className="hidden lg:block"><Desktop /></div>
+      <div className="lg:hidden">{mobile}</div>
+      <div className="hidden lg:block">{desktop}</div>
 
       {/* -- Search Overlay -- */}
       {showSearch && (

@@ -2,12 +2,12 @@ import Link from 'next/link';
 import { MapPin, Star, Clock } from 'lucide-react';
 
 const destinations = [
-  { name: 'Kedarkantha', state: 'Uttarakhand', rating: '4.9', dur: '5D/4N', price: 6999, img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_400,h_500,c_fill,g_auto/', href: '/treks/kedarkantha' },
+  { name: 'Kedarkantha', state: 'Uttarakhand', rating: '4.9', dur: '5D/4N', price: 6999, img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', href: '/treks/kedarkantha' },
   { name: 'Valley of Flowers', state: 'Uttarakhand', rating: '4.8', dur: '6D/5N', price: 8999, img: 'https://res.cloudinary.com/pg8uhzw0/image/upload/f_auto,q_auto,w_400,h_500,c_fill,g_auto/v1785367489/pexels-unaizat97-8673607_anl07u.jpg', href: '/treks/valley-of-flowers' },
-  { name: 'Hampta Pass', state: 'Himachal', rating: '4.7', dur: '5D/4N', price: 8499, img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_400,h_500,c_fill,g_auto/', href: '/treks/hampta-pass' },
-  { name: 'Chopta Tungnath', state: 'Uttarakhand', rating: '4.7', dur: '4D/3N', price: 5999, img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_400,h_500,c_fill,g_auto/', href: '/treks/chopta-tungnath' },
-  { name: 'Everest Base Camp', state: 'Nepal', rating: '4.9', dur: '13D/12N', price: 74999, img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_400,h_500,c_fill,g_auto/', href: '/treks/everest-base-camp' },
-  { name: 'Kedarnath Yatra', state: 'Uttarakhand', rating: '4.8', dur: '6D/5N', price: 9999, img: 'https://res.cloudinary.com/pg8uhzw0/image/fetch/f_auto,q_auto,w_400,h_500,c_fill,g_auto/', href: '/yatra/kedarnath-yatra' },
+  { name: 'Hampta Pass', state: 'Himachal', rating: '4.7', dur: '5D/4N', price: 8499, img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', href: '/treks/hampta-pass' },
+  { name: 'Chopta Tungnath', state: 'Uttarakhand', rating: '4.7', dur: '4D/3N', price: 5999, img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', href: '/treks/chopta-tungnath' },
+  { name: 'Everest Base Camp', state: 'Nepal', rating: '4.9', dur: '13D/12N', price: 74999, img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', href: '/treks/everest-base-camp' },
+  { name: 'Kedarnath Yatra', state: 'Uttarakhand', rating: '4.8', dur: '6D/5N', price: 9999, img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', href: '/yatra/kedarnath-yatra' },
 ];
 
 export default function TopDestinations() {

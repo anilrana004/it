@@ -290,8 +290,9 @@ export default function Header() {
       <header
         className={`fixed left-0 top-0 w-full lg:hidden ${isOpen ? 'z-[70]' : 'z-50'}`}
         style={{
-          backgroundColor: '#16a34a',
-          boxShadow: showFixedMobile ? '0 1px 8px rgba(0,0,0,0.1)' : 'none',
+          backgroundColor: '#4ade80',
+          boxShadow: showFixedMobile ? '0 1px 8px rgba(22,163,74,0.18)' : 'none',
+          borderBottom: showFixedMobile ? '1px solid #22c55e' : 'none',
           paddingTop: 'env(safe-area-inset-top, 0px)',
           transform: showFixedMobile ? 'translateY(0)' : 'translateY(-110%)',
           opacity: showFixedMobile ? 1 : 0,

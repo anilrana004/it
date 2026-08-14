@@ -1,16 +1,18 @@
 import Link from 'next/link';
 import { MapPin, Clock, Star } from 'lucide-react';
 import { trekDetailPath, type Trek } from '@/lib/data';
+import { safeImage, trekPhoto } from '@/lib/safe-image';
 
 export default function TrekCard({ trek }: { trek: Trek }) {
   const minPrice = Math.min(...trek.pricing.map(p => p.price));
   const hasDiscount = trek.pricing.some(p => p.originalPrice);
   const eco = trek.pricing.find(p => p.name === 'Economic');
   const originalPrice = eco?.originalPrice;
+  const cover = safeImage(trek.images[0], trekPhoto(trek.id));
 
   return (
     <Link href={trekDetailPath(trek)} className="group block rounded-2xl overflow-hidden transition-all duration-300 relative aspect-[3/4]">
-      <img src={trek.images[0]} alt={trek.title} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+      <img src={cover} alt={trek.title} referrerPolicy="no-referrer" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
       {/* Ribbon badge - top left diagonal */}
