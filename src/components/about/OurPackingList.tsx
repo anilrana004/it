@@ -1,14 +1,14 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { photos } from '@/lib/media';
 import './our-packing-list.css';
 
 /**
  * Our Packing List:
- * 01 Meet the crew (passport cards)
- * 02 What's packed (immersive route lanes — not a filter grid)
+ * 01 Meet the crew
+ * 02 What's packed — light beams from one hub to many clickable journeys
  */
 
 const CREW = [
@@ -33,61 +33,13 @@ const CREW = [
   },
 ] as const;
 
-const ROUTES = [
-  {
-    id: 'treks',
-    pill: 'Treks',
-    title: 'Himalayan Treks',
-    desc: 'From easy weekends to high passes — guided routes across Uttarakhand, Himachal, and beyond.',
-    href: '/treks',
-    img: photos.kedarkantha,
-    cta: 'Browse treks',
-  },
-  {
-    id: 'snow',
-    pill: 'Winter',
-    title: 'Snow & Winter Trails',
-    desc: 'Frozen lakes, white ridgelines, and cold-season adventures built for first snow and seasoned boots.',
-    href: '/treks',
-    img: photos.snow,
-    cta: 'See snow trips',
-  },
-  {
-    id: 'yatra',
-    pill: 'Yatra',
-    title: 'Sacred Himalayan Yatras',
-    desc: 'Kedarnath, Do Dham, Char Dham — pilgrimage logistics with the same care as our expeditions.',
-    href: '/yatra',
-    img: photos.yatra,
-    cta: 'Explore yatras',
-  },
-  {
-    id: 'flowers',
-    pill: 'Seasonal',
-    title: 'Valley of Flowers',
-    desc: 'A UNESCO bloom season classic — meadows, monsoon colour, and carefully paced itineraries.',
-    href: '/treks/valley-of-flowers',
-    img: photos.vof,
-    cta: 'View itinerary',
-  },
-  {
-    id: 'world',
-    pill: 'Abroad',
-    title: 'Nepal & International',
-    desc: 'Everest, Annapurna, and Nepal circuits with trusted local partners and clear support.',
-    href: '/international-getaways',
-    img: photos.ebc,
-    cta: 'Go international',
-  },
-  {
-    id: 'custom',
-    pill: 'Custom',
-    title: 'Made-for-you Journeys',
-    desc: 'Private groups, corporate offsites, and tailored routes designed around your dates and pace.',
-    href: '/customized',
-    img: photos.chopta,
-    cta: 'Plan a custom trip',
-  },
+const BEAMS = [
+  { id: 'treks', label: 'Himalayan Treks', href: '/treks', img: photos.kedarkantha },
+  { id: 'snow', label: 'Snow Trails', href: '/treks', img: photos.snow },
+  { id: 'yatra', label: 'Sacred Yatras', href: '/yatra', img: photos.yatra },
+  { id: 'flowers', label: 'Valley of Flowers', href: '/treks/valley-of-flowers', img: photos.vof },
+  { id: 'nepal', label: 'Nepal & Abroad', href: '/international-getaways', img: photos.ebc },
+  { id: 'custom', label: 'Custom Trips', href: '/customized', img: photos.chopta },
 ] as const;
 
 function useInViewOnce<T extends HTMLElement>() {
@@ -108,7 +60,7 @@ function useInViewOnce<T extends HTMLElement>() {
           io.disconnect();
         }
       },
-      { threshold: 0.18, rootMargin: '0px 0px -6% 0px' },
+      { threshold: 0.15, rootMargin: '0px 0px -6% 0px' },
     );
     io.observe(el);
     return () => io.disconnect();
@@ -155,48 +107,142 @@ function PassportCard({
   );
 }
 
-function RouteLane({
-  route,
-  index,
-}: {
-  route: (typeof ROUTES)[number];
-  index: number;
-}) {
-  const { ref, on } = useInViewOnce<HTMLAnchorElement>();
-  const flip = index % 2 === 1;
+function BeamMap() {
+  const uid = useId().replace(/:/g, '');
+  const { ref, on } = useInViewOnce<HTMLDivElement>();
+  const [active, setActive] = useState<string | null>(null);
+  const [narrow, setNarrow] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 759px)');
+    const sync = () => setNarrow(mq.matches);
+    sync();
+    mq.addEventListener?.('change', sync);
+    return () => mq.removeEventListener?.('change', sync);
+  }, []);
+
+  const nodes = useMemo(() => {
+    const n = BEAMS.length;
+    // Mobile: fan downward from hub (readable + tappable)
+    // Desktop: full radial burst
+    return BEAMS.map((item, i) => {
+      if (narrow) {
+        const cols = 2;
+        const col = i % cols;
+        const row = Math.floor(i / cols);
+        const rows = Math.ceil(n / cols);
+        const x = 18 + col * 64;
+        const y = 28 + (row / Math.max(rows - 1, 1)) * 62;
+        return { ...item, x, y };
+      }
+      const angle = (i / n) * Math.PI * 2 - Math.PI / 2;
+      const radius = 38;
+      return {
+        ...item,
+        x: 50 + Math.cos(angle) * radius,
+        y: 50 + Math.sin(angle) * radius,
+      };
+    });
+  }, [narrow]);
+
+  const hub = narrow ? { x: 50, y: 10 } : { x: 50, y: 50 };
 
   return (
-    <Link
+    <div
       ref={ref}
-      href={route.href}
-      className={`it-pack__route${flip ? ' it-pack__route--flip' : ''}${on ? ' is-in' : ''}`}
-      style={{ transitionDelay: on ? `${(index % 3) * 70}ms` : '0ms' }}
+      className={`it-pack__beam${on ? ' is-in' : ''}${narrow ? ' is-mobile' : ''}`}
+      aria-label="Journeys packed from Indian Treks"
     >
-      <div className="it-pack__route-media">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={route.img} alt="" loading="lazy" />
+      <svg className="it-pack__beam-svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" aria-hidden>
+        <defs>
+          <radialGradient id={`hub-glow-${uid}`} cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="#86efac" stopOpacity="0.95" />
+            <stop offset="45%" stopColor="#16a34a" stopOpacity="0.55" />
+            <stop offset="100%" stopColor="#16a34a" stopOpacity="0" />
+          </radialGradient>
+          {nodes.map((node) => (
+            <linearGradient
+              key={`g-${node.id}`}
+              id={`beam-${uid}-${node.id}`}
+              x1={`${hub.x}%`}
+              y1={`${hub.y}%`}
+              x2={`${node.x}%`}
+              y2={`${node.y}%`}
+            >
+              <stop offset="0%" stopColor="#86efac" stopOpacity="0.95" />
+              <stop offset="55%" stopColor="#4ade80" stopOpacity="0.55" />
+              <stop offset="100%" stopColor="#16a34a" stopOpacity="0.05" />
+            </linearGradient>
+          ))}
+          <filter id={`soft-${uid}`} x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="0.6" />
+          </filter>
+        </defs>
+
+        <circle cx={hub.x} cy={hub.y} r={narrow ? 14 : 18} fill={`url(#hub-glow-${uid})`} />
+
+        {nodes.map((node) => {
+          const lit = active === node.id || active === null;
+          return (
+            <g key={node.id}>
+              <line
+                className={`it-pack__beam-ray${active === node.id ? ' is-hot' : ''}${
+                  active && active !== node.id ? ' is-dim' : ''
+                }`}
+                x1={hub.x}
+                y1={hub.y}
+                x2={node.x}
+                y2={node.y}
+                stroke={`url(#beam-${uid}-${node.id})`}
+                strokeWidth={active === node.id ? 1.35 : 0.7}
+                strokeLinecap="round"
+                opacity={lit ? 1 : 0.25}
+                filter={`url(#soft-${uid})`}
+              />
+              <line
+                className="it-pack__beam-core"
+                x1={hub.x}
+                y1={hub.y}
+                x2={node.x}
+                y2={node.y}
+                stroke="#bbf7d0"
+                strokeWidth={active === node.id ? 0.35 : 0.18}
+                strokeLinecap="round"
+                opacity={active === node.id ? 0.95 : 0.45}
+              />
+            </g>
+          );
+        })}
+
+        <circle cx={hub.x} cy={hub.y} r={narrow ? 3.2 : 4.2} fill="#ecfdf5" />
+        <circle cx={hub.x} cy={hub.y} r={narrow ? 1.6 : 2.1} fill="#16a34a" />
+      </svg>
+
+      <div className="it-pack__beam-hub" style={{ left: `${hub.x}%`, top: `${hub.y}%` }}>
+        <span className="it-pack__beam-hub-label">Indian Treks</span>
+        <span className="it-pack__beam-hub-sub">One source</span>
       </div>
-      <div className="it-pack__route-body">
-        <div className="it-pack__route-meta">
-          <span className="it-pack__route-index">0{index + 1}</span>
-          <span className="it-pack__route-pill">{route.pill}</span>
-        </div>
-        <h3 className="it-pack__route-title">{route.title}</h3>
-        <p className="it-pack__route-desc">{route.desc}</p>
-        <span className="it-pack__route-cta">
-          {route.cta}
-          <svg viewBox="0 0 24 24" fill="none" aria-hidden>
-            <path
-              d="M5 12h14M13 6l6 6-6 6"
-              stroke="currentColor"
-              strokeWidth="2.2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </span>
-      </div>
-    </Link>
+
+      {nodes.map((node) => (
+        <Link
+          key={node.id}
+          href={node.href}
+          className={`it-pack__beam-node${active === node.id ? ' is-hot' : ''}`}
+          style={{ left: `${node.x}%`, top: `${node.y}%` }}
+          onMouseEnter={() => setActive(node.id)}
+          onMouseLeave={() => setActive(null)}
+          onFocus={() => setActive(node.id)}
+          onBlur={() => setActive(null)}
+          onTouchStart={() => setActive(node.id)}
+        >
+          <span className="it-pack__beam-node-photo">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={node.img} alt="" loading="lazy" />
+          </span>
+          <span className="it-pack__beam-node-label">{node.label}</span>
+        </Link>
+      ))}
+    </div>
   );
 }
 
@@ -218,8 +264,8 @@ export default function OurPackingList() {
             </h2>
           </div>
           <p className="it-pack__lead">
-            Not gear — people and journeys. Meet the crew who built Indian Treks, then walk through
-            the routes we pack for every kind of mountain traveler.
+            Not gear — people and journeys. Meet the crew, then follow the light from one source to
+            every kind of Himalayan trip.
           </p>
         </div>
 
@@ -238,12 +284,11 @@ export default function OurPackingList() {
           <span className="it-pack__chapter-num">02</span>
           <p className="it-pack__chapter-label">What&apos;s packed</p>
         </div>
+        <p className="it-pack__beam-hint">
+          One light. Many journeys. Tap a destination to open it.
+        </p>
 
-        <div className="it-pack__routes" aria-label="Packed journeys">
-          {ROUTES.map((route, i) => (
-            <RouteLane key={route.id} route={route} index={i} />
-          ))}
-        </div>
+        <BeamMap />
       </div>
     </section>
   );
