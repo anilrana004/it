@@ -13,8 +13,10 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
 /**
- * Videos / Memories from the trail — 3D coverflow (pre-chat effect).
- * Category strip above stays native horizontal snap for phone swipe.
+ * Videos / Memories — 3D coverflow with working pointer:
+ * - side slides clickable (slideToClickedSlide)
+ * - iframe does not steal swipe/clicks
+ * - nav + pagination stay above the stage
  */
 
 type Journey = {
@@ -106,6 +108,11 @@ export default function PackedJourneysMemories() {
           speed={700}
           navigation
           pagination={{ clickable: true }}
+          slideToClickedSlide
+          simulateTouch
+          allowTouchMove
+          threshold={6}
+          touchStartPreventDefault={false}
           coverflowEffect={{
             rotate: 48,
             stretch: -28,
@@ -158,14 +165,20 @@ export default function PackedJourneysMemories() {
             const isActive = i === active;
             return (
               <SwiperSlide key={item.id} className="it-pack-mem__slide">
-                <div className={`it-pack-mem__panel${isActive ? ' is-active' : ''}`}>
+                <div
+                  className={`it-pack-mem__panel${isActive ? ' is-active' : ''}`}
+                  role="button"
+                  tabIndex={0}
+                  aria-label={isActive ? `${item.title} (playing)` : `Show ${item.title}`}
+                >
                   {isActive ? (
                     <iframe
-                      className="it-pack-mem__media"
+                      className="it-pack-mem__media it-pack-mem__media--video"
                       src={embedUrl(item.youtubeId)}
                       title={item.title}
                       allow="autoplay; encrypted-media; picture-in-picture"
                       allowFullScreen
+                      tabIndex={-1}
                     />
                   ) : (
                     // eslint-disable-next-line @next/next/no-img-element
@@ -174,6 +187,7 @@ export default function PackedJourneysMemories() {
                       src={item.image}
                       alt={item.title}
                       loading="lazy"
+                      draggable={false}
                     />
                   )}
                   {!isActive ? (

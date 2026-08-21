@@ -1,14 +1,13 @@
 'use client';
 
 import Link from 'next/link';
-import { useId } from 'react';
+import { useId, useRef } from 'react';
 import { photos } from '@/lib/media';
 import PackedJourneysMemories from './PackedJourneysMemories';
 import './our-packing-list.css';
 
 /**
- * Our Packing List — journey categories (not team).
- * Native horizontal snap scroll so phones swipe reliably.
+ * Our Packing List — journey categories with reliable click + horizontal swipe.
  */
 
 const PACKED = [
@@ -70,8 +69,38 @@ const PACKED = [
   },
 ] as const;
 
+/** Ignore click after a horizontal drag (swipe), allow real taps. */
+function useSwipeSafeClick(threshold = 10) {
+  const origin = useRef<{ x: number; y: number } | null>(null);
+  const moved = useRef(false);
+
+  return {
+    onPointerDown: (e: React.PointerEvent) => {
+      origin.current = { x: e.clientX, y: e.clientY };
+      moved.current = false;
+    },
+    onPointerMove: (e: React.PointerEvent) => {
+      if (!origin.current) return;
+      const dx = Math.abs(e.clientX - origin.current.x);
+      const dy = Math.abs(e.clientY - origin.current.y);
+      if (dx > threshold || dy > threshold) moved.current = true;
+    },
+    onPointerUp: () => {
+      origin.current = null;
+    },
+    onClickCapture: (e: React.MouseEvent) => {
+      if (moved.current) {
+        e.preventDefault();
+        e.stopPropagation();
+        moved.current = false;
+      }
+    },
+  };
+}
+
 export default function OurPackingList() {
   const titleId = useId();
+  const swipeSafe = useSwipeSafeClick();
 
   return (
     <section
@@ -93,12 +122,20 @@ export default function OurPackingList() {
       </div>
 
       <div className="it-pack__cats" aria-label="Packed journey categories">
-        <div className="it-pack__cats-rail">
+        <div
+          className="it-pack__cats-rail"
+          onPointerDown={swipeSafe.onPointerDown}
+          onPointerMove={swipeSafe.onPointerMove}
+          onPointerUp={swipeSafe.onPointerUp}
+          onPointerCancel={swipeSafe.onPointerUp}
+          onClickCapture={swipeSafe.onClickCapture}
+        >
           {PACKED.map((item) => (
             <Link
               key={item.id}
               href={item.href}
               className={`it-pack__cat it-pack__cat--${item.tone}`}
+              draggable={false}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={item.img} alt="" loading="lazy" draggable={false} />

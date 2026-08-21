@@ -10,9 +10,12 @@
   --it-muted: #64748b;
 
   position: relative;
+  z-index: 1;
   overflow: visible;
   padding: 36px 0 8px;
   background: #fff;
+  pointer-events: auto;
+  isolation: isolate;
 }
 
 .it-pack__wrap {
@@ -62,6 +65,9 @@
 .it-pack__cats {
   width: 100%;
   margin: 0 auto 4px;
+  position: relative;
+  z-index: 2;
+  pointer-events: auto;
 }
 
 .it-pack__cats-rail {
@@ -75,8 +81,13 @@
   -webkit-overflow-scrolling: touch;
   overscroll-behavior-x: contain;
   touch-action: pan-x;
+  cursor: grab;
   scrollbar-width: thin;
   scrollbar-color: rgba(22, 163, 74, 0.45) transparent;
+}
+
+.it-pack__cats-rail:active {
+  cursor: grabbing;
 }
 
 .it-pack__cats-rail::-webkit-scrollbar {
@@ -97,11 +108,16 @@
   border-radius: 0.85rem;
   overflow: hidden;
   text-decoration: none;
+  color: inherit;
   background: #111;
   scroll-snap-align: center;
   box-shadow: 0 16px 36px rgba(15, 23, 42, 0.14);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
+  pointer-events: auto;
+  touch-action: manipulation;
+  z-index: 1;
 }
 
 @media (min-width: 768px) {
@@ -117,6 +133,10 @@
     width: 280px;
     height: 520px;
   }
+}
+
+.it-pack__cat:hover {
+  box-shadow: 0 22px 44px rgba(15, 23, 42, 0.2);
 }
 
 .it-pack__cat:active {
@@ -148,6 +168,7 @@
   font-weight: 800;
   line-height: 1.15;
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
+  pointer-events: none;
 }
 
 .it-pack__cat--green .it-pack__cat-label {
@@ -164,12 +185,17 @@
   padding: 32px 0 16px;
   background: #fafafa;
   overflow: hidden;
+  position: relative;
+  z-index: 1;
+  pointer-events: auto;
 }
 
 .it-pack-mem__head {
   width: min(1100px, calc(100% - 34px));
   margin: 0 auto 18px;
   text-align: center;
+  position: relative;
+  z-index: 2;
 }
 
 .it-pack-mem__kicker {
@@ -194,18 +220,31 @@
   position: relative;
   width: 100%;
   padding: 8px 0 20px;
+  z-index: 1;
+  pointer-events: auto;
 }
 
 .it-pack-mem__swiper {
   width: 100%;
-  padding: 28px 0 48px !important;
+  padding: 28px 0 56px !important;
   overflow: visible;
+  cursor: grab;
+}
+
+.it-pack-mem__swiper:active {
+  cursor: grabbing;
+}
+
+.it-pack-mem__swiper .swiper-wrapper {
+  align-items: center;
 }
 
 .it-pack-mem__slide {
   width: min(78vw, 760px) !important;
   height: clamp(250px, 46vw, 420px);
   background: transparent;
+  cursor: pointer;
+  pointer-events: auto !important;
 }
 
 .it-pack-mem__panel {
@@ -218,11 +257,14 @@
   background: #111;
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.14);
   transition: border-width 0.35s ease, box-shadow 0.35s ease;
+  pointer-events: auto;
+  cursor: pointer;
 }
 
 .it-pack-mem__panel.is-active {
   border-width: 8px;
   box-shadow: 0 28px 60px rgba(0, 0, 0, 0.2);
+  cursor: grab;
 }
 
 .it-pack-mem__media {
@@ -231,6 +273,13 @@
   display: block;
   object-fit: cover;
   border: 0;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Keep video visual, but never let iframe steal swipe / side clicks */
+.it-pack-mem__media--video {
+  pointer-events: none !important;
 }
 
 .it-pack-mem__caption {
@@ -247,16 +296,20 @@
   font-weight: 800;
   text-align: center;
   backdrop-filter: blur(6px);
+  pointer-events: none;
 }
 
 .it-pack-mem__swiper .swiper-button-prev,
 .it-pack-mem__swiper .swiper-button-next {
-  width: 42px;
-  height: 42px;
+  width: 44px;
+  height: 44px;
   border-radius: 999px;
   background: #fff;
   color: #16a34a;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  z-index: 30;
+  pointer-events: auto !important;
+  cursor: pointer;
 }
 
 .it-pack-mem__swiper .swiper-button-prev::after,
@@ -271,9 +324,16 @@
   color: #fff;
 }
 
+.it-pack-mem__swiper .swiper-pagination {
+  z-index: 30;
+  pointer-events: auto !important;
+}
+
 .it-pack-mem__swiper .swiper-pagination-bullet {
   background: #d1d5db;
   opacity: 1;
+  cursor: pointer;
+  pointer-events: auto !important;
 }
 
 .it-pack-mem__swiper .swiper-pagination-bullet-active {
@@ -286,6 +346,9 @@
   display: flex;
   justify-content: center;
   padding: 4px 16px 8px;
+  position: relative;
+  z-index: 5;
+  pointer-events: auto;
 }
 
 .it-pack-mem__cta {
@@ -302,6 +365,8 @@
   font-weight: 800;
   box-shadow: 0 14px 28px rgba(22, 163, 74, 0.22);
   transition: transform 0.2s ease, background 0.2s ease;
+  cursor: pointer;
+  pointer-events: auto;
 }
 
 .it-pack-mem__cta:hover {
