@@ -1,23 +1,64 @@
 import Link from 'next/link';
+import TeamSection from '@/components/about/TeamSection';
+import OurJourney from '@/components/about/OurJourney';
+import OurPackingList from '@/components/about/OurPackingList';
+import AboutBrand from '@/components/about/AboutBrand';
+import AboutVideoHero from '@/components/about/AboutVideoHero';
+import WhyTravelWithUs from '@/components/about/WhyTravelWithUs';
+import RecognitionCertifications from '@/components/about/RecognitionCertifications';
+import AppreciationLetters from '@/components/about/AppreciationLetters';
+import { ABOUT_STATS } from '@/lib/about-content';
 
 export default function AboutPage() {
   return (
-    <div className="pt-24 lg:pt-28 pb-12 lg:pb-20">
-      <section className="relative h-[35vh] min-h-[250px] overflow-hidden mb-10">
-        <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1920&h=600&fit=crop" alt="About" className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/30 flex items-center">
-          <div className="container mx-auto"><h1 className="font-[family-name:var(--font-heading)] text-3xl lg:text-5xl font-bold text-white mb-2">About Indian Treks</h1><p className="text-gray-200 text-lg max-w-xl">India&apos;s Premier Himalayan Trek &amp; Yatra Community</p></div>
+    <div className="pb-16 lg:pb-20">
+      <AboutVideoHero />
+
+      <div className="pt-6 sm:pt-10 lg:pt-14">
+        <AboutBrand />
+
+        <div className="container mx-auto mt-4 mb-10 max-w-4xl px-4 sm:mt-6 sm:mb-14 lg:mb-16">
+          <div className="grid grid-cols-3 gap-2 sm:gap-4 lg:gap-10">
+            {ABOUT_STATS.map((s) => (
+              <div
+                key={s.l}
+                className="rounded-xl bg-gray-50 px-2 py-4 text-center sm:rounded-2xl sm:p-6"
+              >
+                <div className="font-[family-name:var(--font-heading)] text-lg font-bold text-[#16a34a] sm:text-2xl lg:text-4xl">
+                  {s.v}
+                </div>
+                <div className="mt-0.5 text-[10px] leading-snug text-gray-600 sm:text-sm">{s.l}</div>
+              </div>
+            ))}
+          </div>
         </div>
-      </section>
-      <div className="container mx-auto max-w-4xl">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center mb-16">
-          <div><h2 className="font-[family-name:var(--font-heading)] text-2xl lg:text-3xl font-bold text-[#000000] mb-4">Our Story</h2><p className="text-gray-600 leading-relaxed mb-4">Indian Treks was born from a simple belief: the Himalayas have the power to transform perspectives, build meaningful connections, and create stories that last a lifetime.</p><p className="text-gray-600 leading-relaxed">Over the past decade, we&apos;ve grown from a small group of trekking enthusiasts into India&apos;s most trusted community for Himalayan treks and sacred yatras, curating thousands of unforgettable journeys across Uttarakhand, Himachal Pradesh, and Nepal.</p></div>
-          <div className="rounded-2xl overflow-hidden"><img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&h=450&fit=crop" alt="Indian Treks community" className="w-full h-full object-cover" /></div>
+
+        {/* Sticky journey must not sit under an overflow-x ancestor */}
+        <OurJourney />
+
+        <OurPackingList />
+
+        <WhyTravelWithUs />
+
+        <RecognitionCertifications />
+
+        <AppreciationLetters />
+
+        <div className="container mx-auto max-w-4xl px-4">
+          <TeamSection />
+
+          <div className="mt-2 px-2 text-center sm:mt-0 sm:px-0">
+            <Link
+              href="/contact"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#16a34a] px-8 py-3.5 font-semibold text-white transition-all hover:bg-[#15803d] sm:w-auto"
+            >
+              Get in Touch
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </Link>
+          </div>
         </div>
-        <div className="grid grid-cols-3 gap-6 lg:gap-10 mb-16">
-          {[{v:'80,000+',l:'Happy Travelers'},{v:'15,000+',l:'Curated Trips'},{v:'9+ Years',l:'Experience'}].map(s => <div key={s.l} className="text-center p-6 bg-gray-50 rounded-2xl"><div className="font-[family-name:var(--font-heading)] text-2xl lg:text-4xl font-bold text-[#16a34a] mb-1">{s.v}</div><div className="text-sm text-gray-600">{s.l}</div></div>)}
-        </div>
-        <div className="text-center"><Link href="/contact" className="inline-flex items-center gap-2 bg-[#16a34a] hover:bg-[#15803d] text-white font-semibold px-8 py-3.5 rounded-full transition-all">Get in Touch <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg></Link></div>
       </div>
     </div>
   );

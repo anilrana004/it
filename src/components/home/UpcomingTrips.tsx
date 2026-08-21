@@ -1,38 +1,26 @@
 'use client';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { Star, Clock, MapPin } from 'lucide-react';
+import { getUpcomingCatalog } from '@/lib/catalog';
 
-const filters = ['Domestic', 'International', 'All Months'];
-
-const trips = [
-  { date: '5-10 Sep 2026', origin: 'Delhi', dest: 'Valley of Flowers', title: 'Valley of Flowers Trek', dur: '6D/5N', price: 8999, origPrice: 11999, rating: '4.8', reviews: '8k+', badge: 'New', img: 'https://res.cloudinary.com/pg8uhzw0/image/upload/f_auto,q_auto,w_420,h_280,c_fill,g_auto/v1785367489/pexels-unaizat97-8673607_anl07u.jpg', href: '/treks/valley-of-flowers', type: 'domestic' },
-  { date: '12-16 Sep 2026', origin: 'Dehradun', dest: 'Kedarkantha', title: 'Kedarkantha Trek', dur: '5D/4N', price: 6999, origPrice: 8999, rating: '4.9', reviews: '10k+', badge: '', img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', href: '/treks/kedarkantha', type: 'domestic' },
-  { date: '18-22 Sep 2026', origin: 'Manali', dest: 'Hampta Pass', title: 'Hampta Pass Trek', dur: '5D/4N', price: 8499, origPrice: 10999, rating: '4.7', reviews: '8k+', badge: '', img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', href: '/treks/hampta-pass', type: 'domestic' },
-  { date: '20-24 Sep 2026', origin: 'Rishikesh', dest: 'Chopta', title: 'Chopta Tungnath Trek', dur: '4D/3N', price: 5999, origPrice: 7999, rating: '4.7', reviews: '6k+', badge: 'Trending', img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', href: '/treks/chopta-tungnath', type: 'domestic' },
-  { date: '25-30 Sep 2026', origin: 'Pokhara', dest: 'ABC', title: 'Annapurna Base Camp Trek', dur: '8D/7N', price: 34999, origPrice: 42999, rating: '4.9', reviews: '15k+', badge: '', img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', href: '/treks/annapurna-base-camp', type: 'international' },
-  { date: '3-8 Oct 2026', origin: 'Rishikesh', dest: 'Kedarnath', title: 'Kedarnath Yatra', dur: '6D/5N', price: 9999, origPrice: 12999, rating: '4.8', reviews: '12k+', badge: 'Popular', img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', href: '/yatra/kedarnath-yatra', type: 'domestic' },
-  { date: '10-15 Oct 2026', origin: 'Manali', dest: 'Triund', title: 'Triund Trek', dur: '3D/2N', price: 2499, origPrice: 3999, rating: '4.6', reviews: '15k+', badge: 'Weekend', img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', href: '/treks/mcleodganj-trek', type: 'domestic' },
-  { date: '5-17 Oct 2026', origin: 'Kathmandu', dest: 'EBC', title: 'Everest Base Camp Trek', dur: '13D/12N', price: 74999, origPrice: 89999, rating: '4.9', reviews: '20k+', badge: '', img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', href: '/treks/everest-base-camp', type: 'international' },
-  { date: '25-30 Oct 2026', origin: 'Rishikesh', dest: 'Rishikesh', title: 'Do Dham Yatra (Kedarnath+Badrinath)', dur: '7D/6N', price: 14999, origPrice: 18999, rating: '4.8', reviews: '8k+', badge: 'Yatra', img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', href: '/yatra/do-dham', type: 'domestic' },
-  { date: '5-14 Nov 2026', origin: 'Kathmandu', dest: 'Nepal', title: 'Nepal Backpacking Circuit', dur: '10D/9N', price: 34999, origPrice: 42999, rating: '4.8', reviews: '6k+', badge: 'Popular', img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', href: '/treks/nepal-backpacking', type: 'international' },
-];
+const filters = ['Domestic', 'International', 'All Months'] as const;
 
 export default function UpcomingTrips() {
-  const [activeFilter, setActiveFilter] = useState('Domestic');
+  const trips = useMemo(() => getUpcomingCatalog(12), []);
+  const [activeFilter, setActiveFilter] = useState<(typeof filters)[number]>('Domestic');
   const scrollerRef = useRef<HTMLDivElement>(null);
   const pausedRef = useRef(false);
   const resumeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const filteredTrips = activeFilter === 'All Months'
     ? trips
-    : trips.filter(t => t.type === activeFilter.toLowerCase());
+    : trips.filter((t) => t.type === activeFilter.toLowerCase());
 
   useEffect(() => {
     scrollerRef.current?.scrollTo({ left: 0, behavior: 'smooth' });
   }, [activeFilter]);
 
-  // Auto-scroll one card at a time; pause on user interaction
   useEffect(() => {
     const el = scrollerRef.current;
     if (!el || filteredTrips.length < 2) return;
@@ -93,15 +81,15 @@ export default function UpcomingTrips() {
         </div>
 
         <div className="flex gap-2 overflow-x-auto scrollbar-none pb-2 px-4 lg:px-0 mb-6" style={{ scrollbarWidth: 'none' }}>
-          {filters.map(f => (
+          {filters.map((f) => (
             <button
               key={f}
               type="button"
               onClick={() => setActiveFilter(f)}
               className={`shrink-0 px-4 py-1.5 rounded-full text-xs lg:text-sm font-medium transition-all ${
                 activeFilter === f
-                  ? 'bg-[#000000] text-white'
-                  : 'bg-white text-gray-600 border border-gray-200 hover:border-gray-300'
+                  ? 'bg-[#16a34a] text-white'
+                  : 'bg-white text-gray-600 border border-gray-200 hover:border-[#16a34a] hover:text-[#166534]'
               }`}
             >
               {f}
@@ -109,19 +97,19 @@ export default function UpcomingTrips() {
           ))}
         </div>
 
-        {/* Horizontal auto-scrolling snap carousel */}
         <div
           ref={scrollerRef}
           className="flex gap-3 lg:gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-none pb-1 px-4 lg:px-0"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' }}
           aria-label="Upcoming trips carousel"
         >
-          {filteredTrips.map(t => (
+          {filteredTrips.map((t) => (
             <Link
-              key={t.title}
+              key={`${t.id}-${t.date}`}
               href={t.href}
               className="group relative aspect-[3/4] w-[72vw] max-w-[260px] sm:w-[240px] lg:w-[260px] shrink-0 snap-start rounded-xl overflow-hidden"
             >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={t.img}
                 alt={t.title}
@@ -139,7 +127,7 @@ export default function UpcomingTrips() {
               <div className="absolute bottom-0 left-0 right-0 p-3 lg:p-4">
                 <div className="flex items-center gap-1 text-white/80 text-xs font-medium mb-1">
                   <MapPin className="w-3 h-3 text-[#16a34a] shrink-0" />
-                  <span className="truncate">{t.origin} ? {t.dest}</span>
+                  <span className="truncate">{t.origin} → {t.dest}</span>
                 </div>
                 <h3 className="font-semibold text-sm lg:text-base text-white group-hover:text-[#16a34a] transition-colors line-clamp-1 mb-1">
                   {t.title}
@@ -149,16 +137,18 @@ export default function UpcomingTrips() {
                   {t.dur}
                   <span className="text-white/20">|</span>
                   <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
-                  {t.rating} ({t.reviews})
+                  {t.rating} ({t.rev})
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-[#16a34a] font-bold text-sm lg:text-base">₹{t.price.toLocaleString()}</span>
                   <span className="text-white/50 text-xs line-through">₹{t.origPrice.toLocaleString()}</span>
-                  <span className="ml-auto bg-green-500/80 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">
-                    {Math.round((1 - t.price / t.origPrice) * 100)}% OFF
-                  </span>
+                  {t.origPrice > t.price && (
+                    <span className="ml-auto bg-green-500/80 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">
+                      {Math.round((1 - t.price / t.origPrice) * 100)}% OFF
+                    </span>
+                  )}
                 </div>
-                <span className="inline-block mt-1.5 text-[10px] text-blue-300 font-semibold bg-blue-900/40 backdrop-blur-sm px-2 py-0.5 rounded">
+                <span className="inline-block mt-1.5 text-[10px] text-[#bbf7d0] font-semibold bg-[#14532d]/70 backdrop-blur-sm px-2 py-0.5 rounded">
                   Book Now, Pay Later
                 </span>
               </div>

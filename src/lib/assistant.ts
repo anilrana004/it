@@ -504,6 +504,7 @@ const topicKnowledge: {
 function regionFilter(q: string): Trek[] | null {
   if (/\buttarakhand\b|\buk\b/.test(q)) return treks.filter((t) => t.region === 'uttarakhand');
   if (/\bhimachal\b|\bhp\b/.test(q)) return treks.filter((t) => t.region === 'himachal');
+  if (/\bkashmir\b|\bsonamarg\b/.test(q)) return treks.filter((t) => t.region === 'kashmir');
   if (/\bnepal\b/.test(q)) return treks.filter((t) => t.region === 'nepal');
   if (/\byatra\b|\byatras\b/.test(q) && !findTreks(q).length) return treks.filter((t) => t.type === 'yatra');
   return null;
@@ -622,7 +623,7 @@ export function getAssistantReply(message: string, history?: HistoryItem[]): Ass
     q === 'all destinations' ||
     q === 'catalog'
   ) {
-    const byRegion: Record<string, Trek[]> = { uttarakhand: [], himachal: [], nepal: [] };
+    const byRegion: Record<string, Trek[]> = { uttarakhand: [], himachal: [], nepal: [], kashmir: [] };
     for (const t of treks) {
       (byRegion[t.region] || (byRegion[t.region] = [])).push(t);
     }
@@ -639,6 +640,7 @@ export function getAssistantReply(message: string, history?: HistoryItem[]): Ass
         `Here is our live catalog:\n\n` +
         `${block('Uttarakhand', byRegion.uttarakhand)}\n\n` +
         `${block('Himachal', byRegion.himachal)}\n\n` +
+        `${block('Kashmir', byRegion.kashmir)}\n\n` +
         `${block('Nepal', byRegion.nepal)}\n\n` +
         `Send any trek/yatra name for full details.`,
       quickReplies: ['Kedarkantha', 'Valley of Flowers', 'Everest Base Camp', 'Char Dham', 'Talk to support'],

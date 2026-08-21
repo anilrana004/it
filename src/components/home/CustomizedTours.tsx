@@ -1,32 +1,74 @@
 'use client';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import Link from 'next/link';
+import { treks } from '@/lib/data';
+import { trekCover, trekPrice } from '@/lib/catalog';
 
-const international = [
-  { name: 'Nepal', count: 16, price: 18500, img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', href: '/treks/kathmandu-tour' },
-  { name: 'Everest Base Camp', count: 8, price: 74999, img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', href: '/treks/everest-base-camp' },
-  { name: 'Annapurna', count: 10, price: 34999, img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', href: '/treks/annapurna-base-camp' },
-  { name: 'Pokhara', count: 6, price: 15999, img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', href: '/treks/pokhara-tour' },
-  { name: 'Chitwan', count: 4, price: 21999, img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', href: '/treks/chitwan-safari' },
-  { name: 'Nepal Circuit', count: 5, price: 34999, img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', href: '/treks/nepal-backpacking' },
-  { name: 'Kathmandu Valley', count: 7, price: 18999, img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', href: '/treks/kathmandu-tour' },
-  { name: 'EBC Premium', count: 3, price: 94999, img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', href: '/treks/everest-base-camp' },
-];
+type DestCard = { name: string; count: number; price: number; img: string; href: string };
 
-const india = [
-  { name: 'Uttarakhand Treks', count: 22, price: 7000, img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', href: '/treks/valley-of-flowers' },
-  { name: 'Himachal Treks', count: 18, price: 8500, img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', href: '/treks/hampta-pass' },
-  { name: 'Kedarnath Yatra', count: 12, price: 9999, img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', href: '/yatra/kedarnath-yatra' },
-  { name: 'Char Dham Yatra', count: 8, price: 24999, img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', href: '/yatra/char-dham' },
-  { name: 'Rishikesh', count: 10, price: 4999, img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', href: '/treks' },
-  { name: 'Manali', count: 14, price: 5999, img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', href: '/treks/hampta-pass' },
-  { name: 'Do Dham Yatra', count: 6, price: 14999, img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', href: '/yatra/do-dham' },
-  { name: 'Spiti Valley', count: 5, price: 15999, img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', href: '/treks/hampta-pass' },
-];
+function buildDestinations(kind: 'International' | 'India'): DestCard[] {
+  if (kind === 'International') {
+    const nepal = treks.filter((t) => t.region === 'nepal');
+    const byTitle = new Map<string, typeof nepal>();
+    for (const t of nepal) {
+      const key = t.title.includes('Everest')
+        ? 'Everest Base Camp'
+        : t.title.includes('Annapurna')
+          ? 'Annapurna'
+          : t.title.includes('Pokhara')
+            ? 'Pokhara'
+            : t.title.includes('Chitwan')
+              ? 'Chitwan'
+              : t.title.includes('Kathmandu')
+                ? 'Kathmandu Valley'
+                : t.title.includes('Nepal')
+                  ? 'Nepal Circuit'
+                  : t.title;
+      const list = byTitle.get(key) || [];
+      list.push(t);
+      byTitle.set(key, list);
+    }
+    return [...byTitle.entries()].map(([name, list]) => {
+      const sample = list[0];
+      return {
+        name,
+        count: list.length,
+        price: Math.min(...list.map(trekPrice)),
+        img: trekCover(sample),
+        href: sample.type === 'yatra' ? `/yatra/${sample.id}` : `/treks/${sample.id}`,
+      };
+    });
+  }
+
+  const groups: { name: string; match: (t: (typeof treks)[0]) => boolean; href: string }[] = [
+    { name: 'Uttarakhand Treks', match: (t) => t.region === 'uttarakhand' && t.type === 'trek', href: '/treks?region=uttarakhand' },
+    { name: 'Himachal Treks', match: (t) => t.region === 'himachal' && t.type === 'trek', href: '/treks?region=himachal' },
+    { name: 'Kashmir Treks', match: (t) => t.region === 'kashmir' && t.type === 'trek', href: '/treks?region=kashmir' },
+    { name: 'Kedarnath Yatra', match: (t) => t.id.includes('kedarnath'), href: '/yatra/kedarnath-yatra' },
+    { name: 'Char Dham Yatra', match: (t) => t.id === 'char-dham', href: '/yatra/char-dham' },
+    { name: 'Do Dham Yatra', match: (t) => t.id.startsWith('do-dham'), href: '/yatra/do-dham' },
+  ];
+
+  return groups
+    .map((g) => {
+      const list = treks.filter(g.match);
+      if (!list.length) return null;
+      const sample = list[0];
+      return {
+        name: g.name,
+        count: list.length,
+        price: Math.min(...list.map(trekPrice)),
+        img: trekCover(sample),
+        href: g.href,
+      };
+    })
+    .filter(Boolean) as DestCard[];
+}
 
 export default function CustomizedTours() {
-  const [tab, setTab] = useState('International');
-  const items = tab === 'International' ? international : india;
+  const [tab, setTab] = useState<'International' | 'India'>('International');
+  const items = useMemo(() => buildDestinations(tab), [tab]);
+
   return (
     <section className="py-8 lg:py-16 bg-gray-50">
       <div className="container mx-auto">
@@ -35,17 +77,31 @@ export default function CustomizedTours() {
           <h2 className="text-xl lg:text-3xl font-bold text-[#000000]">Get a Customised Tour Package</h2>
         </div>
         <div className="flex justify-center gap-2 mb-6">
-          {['International', 'India'].map(t => (
-            <button key={t} onClick={() => setTab(t)}
-              className={`px-5 py-1.5 rounded-full text-xs lg:text-sm font-medium transition-all ${tab===t?'bg-[#000000] text-white':'bg-white text-gray-600 border border-gray-200 hover:border-gray-300'}`}>{t}</button>
+          {(['International', 'India'] as const).map((t) => (
+            <button
+              key={t}
+              type="button"
+              onClick={() => setTab(t)}
+              className={`px-5 py-1.5 rounded-full text-xs lg:text-sm font-medium transition-all ${
+                tab === t
+                  ? 'bg-[#16a34a] text-white'
+                  : 'bg-white text-gray-600 border border-gray-200 hover:border-[#16a34a] hover:text-[#166534]'
+              }`}
+            >
+              {t}
+            </button>
           ))}
         </div>
         <div className="overflow-x-auto scrollbar-none -mx-4 px-4 lg:mx-0 lg:px-0">
           <div className="flex gap-4 pb-2 w-max lg:w-full lg:grid lg:grid-cols-4">
-            {items.map(d => (
-              <Link key={d.name} href={d.href}
-                className="group relative w-[220px] lg:w-auto rounded-2xl overflow-hidden shrink-0 transition-all">
+            {items.map((d) => (
+              <Link
+                key={d.name}
+                href={d.href}
+                className="group relative w-[220px] lg:w-auto rounded-2xl overflow-hidden shrink-0 transition-all"
+              >
                 <div className="relative h-[280px] lg:h-[320px] overflow-hidden">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={d.img} alt={d.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
                   <div className="absolute top-3 left-3 bg-[#16a34a] text-white text-xs font-bold px-2.5 py-1 rounded-full">
@@ -55,7 +111,7 @@ export default function CustomizedTours() {
                     <h3 className="font-bold text-lg text-white group-hover:text-[#16a34a] transition-colors">{d.name}</h3>
                     <div className="flex items-center gap-1 mt-1">
                       <span className="text-white/70 text-xs">Starting Price</span>
-                      <span className="text-white font-bold text-base">₹{d.price.toLocaleString()}</span>
+                      <span className="text-[#4ade80] font-bold text-base">₹{d.price.toLocaleString()}</span>
                     </div>
                   </div>
                 </div>
@@ -64,7 +120,9 @@ export default function CustomizedTours() {
           </div>
         </div>
         <div className="text-center mt-6">
-          <Link href="/customized" className="text-[#16a34a] text-sm font-semibold hover:text-[#15803d] transition-colors">View All Customized Tours &rarr;</Link>
+          <Link href="/customized" className="text-[#16a34a] text-sm font-semibold hover:text-[#15803d] transition-colors">
+            View All Customized Tours &rarr;
+          </Link>
         </div>
       </div>
     </section>

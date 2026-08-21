@@ -18,6 +18,12 @@ import Banners from "@/components/Banners";
 
 const banners = {
   explore: [
+    {
+      src: photos.choptaSale,
+      href: '/treks/chopta-tungnath',
+      title: 'Chopta Tungnath Chandrashila',
+      designed: true,
+    },
     { src: photos.uttarakhand, href: '/treks?region=uttarakhand', title: 'Uttarakhand  -  Land of Gods & Treks', subtitle: '10 iconic Himalayan treks across Chopta, Kedarkantha, Valley of Flowers & beyond', badge: 'Uttarakhand', discount: 'View All Treks' },
     { src: photos.himachal, href: '/treks?region=himachal', title: 'Himachal  -  Adventure Capital', subtitle: '8 breathtaking treks  -  Hampta, Triund, Bhrigu Lake, Kheerganga & more', badge: 'Himachal', discount: 'Explore Himachal' },
     { src: photos.yatra, href: '/yatra', title: 'Sacred Yatras  -  Spiritual Himalaya', subtitle: 'Kedarnath · Do Dham · Char Dham · Panch Kedar  -  divine journeys', badge: 'Yatra', discount: 'Plan Your Yatra' },

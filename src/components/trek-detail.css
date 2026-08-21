@@ -423,8 +423,8 @@
   transition: width 0.25s ease, max-width 0.25s ease, box-shadow 0.25s ease, border-radius 0.25s ease, left 0.25s ease, transform 0.25s ease;
 }
 
-/* The site header slides away on scroll-down, so the nav takes the top edge;
-   on the way up the header slides back over it (higher z-index). */
+/* Desktop header stays visible (JustWravel flow), so the section nav parks
+   under it. Below 1024px the site header still hides, so this sits at top: 0. */
 .kg-sticky-nav.is-stuck {
   position: fixed;
   top: 0;
@@ -439,6 +439,12 @@
   background: rgba(255, 255, 255, 0.96);
   backdrop-filter: blur(14px);
   box-shadow: 0 16px 36px rgba(16, 24, 40, 0.08);
+}
+
+@media (min-width: 1024px) {
+  .kg-sticky-nav.is-stuck {
+    top: var(--header-h);
+  }
 }
 
 .kg-sticky-track {
@@ -530,6 +536,16 @@
   scroll-margin-top: 104px;
   padding: 28px 0 40px;
   border-bottom: 1px solid rgba(16, 24, 40, 0.08);
+}
+
+@media (min-width: 1024px) {
+  .kg-booking-sticky {
+    top: calc(var(--header-h) + 96px);
+  }
+
+  .kg-section {
+    scroll-margin-top: calc(var(--header-h) + 104px);
+  }
 }
 
 .kg-section:last-child {

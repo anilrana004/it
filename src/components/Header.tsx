@@ -100,7 +100,7 @@ export default function Header() {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState<string[]>([]);
   const [mobileAccordion, setMobileAccordion] = useState<number | null>(null);
-  /** 0 = dissolved into hero, 1 = solid yellow bar (mobile homepage only) */
+  /** 0 = dissolved into hero, 1 = solid brand-wash bar (homepage only) */
   const [navSolid, setNavSolid] = useState(0);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const headerRef = useRef<HTMLDivElement>(null);
@@ -123,8 +123,7 @@ export default function Header() {
     return () => window.removeEventListener('scroll', update);
   }, [isHome]);
 
-  /** Slides the bar out of the way while reading down the page, back in on the
-   *  way up — this is what lets a page's own sticky nav own the top edge. */
+  /** Mobile only: slides the wash bar away while reading down, back in on the way up. */
   const [hidden, setHidden] = useState(false);
 
   const [mobSearch, setMobSearch] = useState(false);
@@ -134,7 +133,7 @@ export default function Header() {
   const searchListRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
-  // Hero in-flow bar dispatches these (JustWravel: logo/menu live in the yellow page)
+  // Hero in-flow bar dispatches these (JustWravel: logo/menu live in the brand wash)
   useEffect(() => {
     const openMenu = () => setIsOpen(true);
     const openSearch = () => setMobSearch(true);
@@ -154,12 +153,17 @@ export default function Header() {
       return;
     }
 
+    const mq = window.matchMedia('(max-width: 1023px)');
     const HIDE_AFTER = 120;
     let last = window.scrollY;
     let frame = 0;
 
     const update = () => {
       frame = 0;
+      if (!mq.matches) {
+        setHidden(false);
+        return;
+      }
       const current = window.scrollY;
       setHidden(current > last && current > HIDE_AFTER);
       last = current;
@@ -170,14 +174,20 @@ export default function Header() {
       frame = window.requestAnimationFrame(update);
     };
 
+    const onBreakpoint = () => {
+      if (!mq.matches) setHidden(false);
+    };
+
     window.addEventListener('scroll', onScroll, { passive: true });
+    mq.addEventListener('change', onBreakpoint);
     return () => {
       if (frame) window.cancelAnimationFrame(frame);
       window.removeEventListener('scroll', onScroll);
+      mq.removeEventListener('change', onBreakpoint);
     };
   }, [blockHide]);
 
-  /** Homepage: hide fixed bar until scroll. Other pages: always solid. */
+  /** Homepage mobile: hide fixed bar until scroll. Other pages: always solid. */
   const showFixedMobile = !isHome || navSolid > 0 || isOpen;
 
   const searchItems = useMemo(() =>
@@ -256,14 +266,9 @@ export default function Header() {
 
   return (
     <div ref={headerRef}>
-      {/* Desktop Header */}
-      <header
-        className="fixed left-0 top-0 z-50 hidden w-full bg-white shadow-sm lg:block"
-        style={{
-          transform: hidden ? 'translateY(-110%)' : 'translateY(0)',
-          transition: 'transform 0.28s cubic-bezier(0.4, 0, 0.2, 1)',
-        }}
-      >
+      {/* Desktop header — JustWravel flow: always-visible white bar. Hero
+          content is padded below it; the bar never hides or dissolves. */}
+      <header className="fixed left-0 top-0 z-50 hidden w-full bg-white shadow-sm lg:block">
         <div className="flex h-16 items-center justify-between gap-4 px-6 xl:px-10 2xl:px-14">
           <Link href="/" className="shrink-0">
             <BrandLogo className="h-9 w-auto max-w-[200px] object-contain object-left" />
@@ -277,7 +282,7 @@ export default function Header() {
                 onMouseLeave={handleMouseLeave}>
                 {item.sale ? (
                   <Link href={item.href}
-                    className="inline-flex items-center gap-1.5 px-4 py-1.5 text-sm font-bold text-white bg-gradient-to-r from-orange-500 to-rose-500 rounded-full hover:from-orange-600 hover:to-rose-600 transition-all duration-300 shadow-lg shadow-orange-500/25 animate-pulse">
+                    className="inline-flex items-center gap-1.5 px-4 py-1.5 text-sm font-bold text-white bg-[#16a34a] rounded-full hover:bg-[#15803d] transition-all duration-300 shadow-lg shadow-[#16a34a]/25">
                     <Sparkles className="w-3.5 h-3.5" />
                     {item.label}
                   </Link>
@@ -322,11 +327,16 @@ export default function Header() {
         </div>
       </header>
 
+      {/* Homepage desktop: fixed bar is out of flow — push the hero below it
+          so the page never paints under the navbar. Other routes keep their
+          own lg:pt-* offsets. */}
+      {isHome && <div aria-hidden className="hidden h-16 shrink-0 lg:block" />}
+
       {/*
         Mobile header (JustWravel flow):
-        - Homepage top: hidden  -  logo/menu live in the yellow hero (document flow)
-        - After scroll: solid yellow bar slides in and sticks
-        - Other pages: always visible solid yellow
+        - Homepage top: hidden  -  logo/menu live in the brand wash (document flow)
+        - After scroll: solid brand-wash bar slides in and sticks
+        - Other pages: always visible solid wash
       */}
       <header
         className={`fixed left-0 top-0 w-full lg:hidden ${isOpen ? 'z-[70]' : 'z-50'}`}
@@ -398,7 +408,7 @@ export default function Header() {
                     </div>
                   ) : item.sale ? (
                     <Link href={item.href} onClick={closeMobile}
-                      className="flex items-center gap-2 px-4 py-3 text-sm font-bold text-white bg-gradient-to-r from-orange-500 to-rose-500 rounded-full mx-4 my-2 shadow-lg shadow-orange-500/25">
+                      className="flex items-center gap-2 px-4 py-3 text-sm font-bold text-white bg-[#16a34a] rounded-full mx-4 my-2 shadow-lg shadow-[#16a34a]/25">
                       <Sparkles className="w-4 h-4" /> {item.label}
                     </Link>
                   ) : (
@@ -412,7 +422,7 @@ export default function Header() {
             </div>
 
             <div className="px-4 mt-2">
-              <div className="bg-blue-50/50 rounded-xl p-4 space-y-3">
+              <div className="bg-[#f0fdf4] rounded-xl p-4 space-y-3">
                 <p className="text-sm font-semibold text-gray-900">Contact Us</p>
                 <div className="flex items-start gap-2">
                   <svg className="w-4 h-4 text-gray-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
@@ -528,7 +538,7 @@ export default function Header() {
                 <button key={s.id} type="button" onClick={() => goSearch(s.id, s.type)}
                   onMouseEnter={() => setSearchIdx(i)}
                   className={`w-full flex items-center gap-3 px-5 py-3 text-left transition-colors ${i === searchIdx ? 'bg-[#16a34a]/10' : 'hover:bg-gray-50'}`}>
-                  <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${s.type === 'yatra' ? 'bg-orange-100 text-orange-600' : 'bg-emerald-100 text-emerald-600'}`}>
+                  <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${s.type === 'yatra' ? 'bg-[#166534] text-[#dcfce7]' : 'bg-[#dcfce7] text-[#16a34a]'}`}>
                     {s.type === 'yatra' ? <SunMedium className="w-5 h-5" /> : <Mountain className="w-5 h-5" />}
                   </div>
                   <div className="flex-1 min-w-0">
@@ -536,7 +546,7 @@ export default function Header() {
                     <div className="text-xs text-gray-400 truncate">{s.sub}</div>
                   </div>
                   <div className="flex items-center gap-1 shrink-0">
-                    <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${s.type === 'yatra' ? 'bg-orange-100 text-orange-600' : 'bg-emerald-100 text-emerald-600'}`}>
+                    <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${s.type === 'yatra' ? 'bg-[#166534] text-white' : 'bg-[#dcfce7] text-[#166534]'}`}>
                       {s.type === 'yatra' ? 'Yatra' : 'Trek'}
                     </span>
                     <ArrowRight className="w-4 h-4 text-gray-300" />

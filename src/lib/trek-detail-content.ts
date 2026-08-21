@@ -141,6 +141,7 @@ const regionLabel: Record<Trek['region'], string> = {
   uttarakhand: 'Uttarakhand',
   himachal: 'Himachal',
   nepal: 'Nepal',
+  kashmir: 'Kashmir',
 };
 
 function fromPrice(trek: Trek) {

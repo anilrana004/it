@@ -36,8 +36,16 @@
 }
 
 :root {
+  /* Palette stays Indian Treks. Roles follow JustWravel color theory:
+     60% canvas (photo / white / wash), 30% ink & overlays, 10% brand spark. */
   --jw-primary: #16a34a;
   --jw-primary-hover: #15803d;
+  --jw-primary-active: #166534;
+  --jw-spark: #4ade80;          /* highlight on dark photos — same job as JW yellow */
+  --jw-wash: #4ade80;           /* mobile page canvas — same job as JW yellow wash */
+  --jw-wash-mid: #86efac;
+  --jw-wash-soft: #dcfce7;
+  --jw-wash-mist: #f0fdf4;
   --jw-secondary: #1666d9;
   --jw-bg: #f3f4f6;
   --jw-text: #000000;
@@ -45,6 +53,7 @@
   --jw-border: #212529;
   --jw-accent-green: #16a34a;
   --jw-accent-blue: #007aff;
+  --jw-surface: #ffffff;
 }
 
 html {

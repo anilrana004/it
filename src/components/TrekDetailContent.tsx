@@ -362,16 +362,17 @@ export default function TrekDetailContent({
       const nav = navRef.current;
       if (!shell || !nav) return;
 
-      isStuck = shell.getBoundingClientRect().top <= 0;
+      const headerOffset = window.innerWidth >= 1024 ? 64 : 0;
+      isStuck = shell.getBoundingClientRect().top <= headerOffset;
       setStuck(isStuck);
 
       const booking = bookingStickyRef.current;
       if (booking) {
-        booking.style.top = window.innerWidth <= 767 ? '' : `${nav.offsetHeight + 18}px`;
+        booking.style.top = window.innerWidth <= 767 ? '' : `${headerOffset + nav.offsetHeight + 18}px`;
       }
 
       if (sections.length) {
-        const checkpoint = window.scrollY + (isStuck ? 110 : 150);
+        const checkpoint = window.scrollY + (isStuck ? headerOffset + 110 : 150);
         let current = sections[0].id;
         for (const section of sections) {
           if (section.getBoundingClientRect().top + window.scrollY <= checkpoint) {

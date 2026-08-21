@@ -1,3 +1,5 @@
+import { EXTRA_SITE_PACKAGES, applyLiveSitePricing } from "@/lib/site-packages";
+
 export interface PricingTier {
   name: "Economic" | "Standard" | "Premium";
   price: number;
@@ -24,7 +26,7 @@ export interface Trek {
   subtitle: string;
   location: string;
   state: string;
-  region: "uttarakhand" | "himachal" | "nepal";
+  region: "uttarakhand" | "himachal" | "nepal" | "kashmir";
   type: "trek" | "yatra";
   duration: string;
   nights: number;
@@ -60,7 +62,7 @@ export function trekDetailPath(trek: Trek) {
   return trek.type === "yatra" ? `/yatra/${trek.id}` : `/treks/${trek.id}`;
 }
 
-export const treks: Trek[] = [
+const baseTreks: Trek[] = [
   {
     id: "valley-of-flowers",
     title: "Valley of Flowers Trek",
@@ -1663,6 +1665,9 @@ export const treks: Trek[] = [
     startEndPoint: "Kathmandu to Kathmandu",
   },
 ];
+
+/** Full catalog: app packages + missing indiantreks.in listings, with live starting prices applied. */
+export const treks: Trek[] = applyLiveSitePricing([...baseTreks, ...EXTRA_SITE_PACKAGES]);
 
 export const heroSlides = [
   { name: "Valley of Flowers", subtitle: "UNESCO Himalayan Paradise", image: "https://images.unsplash.com/photo-1544735716-392fe2489ffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80" },

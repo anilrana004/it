@@ -109,7 +109,7 @@ export default function Backpacking() {
               onClick={() => setRegion(r)}
               className={`shrink-0 px-5 py-1.5 rounded-full text-xs lg:text-sm font-medium transition-all ${
                 region === r
-                  ? 'bg-[#000000] text-white'
+                  ? 'bg-[#16a34a] text-white'
                   : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
               }`}
             >
@@ -168,7 +168,7 @@ export default function Backpacking() {
                     </span>
                   )}
                 </div>
-                <span className="inline-block mt-1.5 text-[10px] text-blue-300 font-semibold bg-blue-900/40 backdrop-blur-sm px-2 py-0.5 rounded">
+                <span className="inline-block mt-1.5 text-[10px] text-[#bbf7d0] font-semibold bg-[#14532d]/70 backdrop-blur-sm px-2 py-0.5 rounded">
                   Book Now, Pay Later
                 </span>
               </div>

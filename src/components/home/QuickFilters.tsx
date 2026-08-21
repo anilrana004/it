@@ -15,7 +15,7 @@ export default function QuickFilters() {
         <div className="flex gap-2 overflow-x-auto pb-3 pt-1 scrollbar-none" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
           {filters.map(f => (
             <Link key={f.label} href={f.href}
-              className="flex items-center gap-1.5 shrink-0 px-4 py-2 rounded-lg bg-gray-50 hover:bg-[#16a34a] hover:text-white border-2 border-[#16a34a] text-xs font-semibold text-gray-700 transition-all">
+              className="flex items-center gap-1.5 shrink-0 px-4 py-2 rounded-full bg-white hover:bg-[#16a34a] hover:text-white border border-gray-200 hover:border-[#16a34a] text-xs font-semibold text-gray-700 transition-all">
               <f.icon className="w-3.5 h-3.5" />
               {f.label}
             </Link>

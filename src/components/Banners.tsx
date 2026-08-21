@@ -12,6 +12,8 @@ export interface BannerItem {
   badge?: string;
   discount?: string;
   desktopSrc?: string;
+  /** Full creative with text/CTA in the image — skip overlays so we don't double up */
+  designed?: boolean;
 }
 
 const defaultBanners: BannerItem[] = [
@@ -22,7 +24,18 @@ const defaultBanners: BannerItem[] = [
   { src: photos.yatra, href: '/yatra/kedarnath-yatra', title: 'Kedarnath Yatra', subtitle: 'Sacred pilgrimage - 6D/5N', badge: 'Yatra', discount: '₹9,999' },
 ];
 
-function SlideImage({ src, desktopSrc, alt }: { src: string; desktopSrc?: string; alt: string }) {
+function SlideImage({
+  src,
+  desktopSrc,
+  alt,
+  designed,
+}: {
+  src: string;
+  desktopSrc?: string;
+  alt: string;
+  designed?: boolean;
+}) {
+  const fit = designed ? 'object-cover object-center' : 'object-cover';
   return (
     <>
       {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -32,7 +45,7 @@ function SlideImage({ src, desktopSrc, alt }: { src: string; desktopSrc?: string
         loading="lazy"
         decoding="async"
         referrerPolicy="no-referrer"
-        className="absolute inset-0 h-full w-full object-cover lg:hidden"
+        className={`absolute inset-0 h-full w-full ${fit} lg:hidden`}
       />
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
@@ -42,7 +55,7 @@ function SlideImage({ src, desktopSrc, alt }: { src: string; desktopSrc?: string
         loading="lazy"
         decoding="async"
         referrerPolicy="no-referrer"
-        className="absolute inset-0 hidden h-full w-full object-cover lg:block"
+        className={`absolute inset-0 hidden h-full w-full ${fit} lg:block`}
       />
     </>
   );
@@ -121,41 +134,55 @@ export default function Banners({
                 active ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
               }`}
             >
-              <SlideImage src={b.src} desktopSrc={b.desktopSrc} alt={b.title || 'Promo'} />
-              <div className="absolute inset-0 bg-gradient-to-r from-black/78 via-black/42 to-black/15" />
+              <SlideImage
+                src={b.src}
+                desktopSrc={b.desktopSrc}
+                alt={b.title || 'Promo'}
+                designed={b.designed}
+              />
 
-              {b.badge && (
-                <div className="absolute top-2.5 left-2.5 lg:top-4 lg:left-4 flex items-center gap-1 bg-[#16a34a]/95 text-white text-[10px] lg:text-xs font-bold px-2.5 py-1 rounded-full shadow-sm">
-                  <Tag className="w-3 h-3" />
-                  {b.badge}
-                </div>
+              {!b.designed && (
+                <>
+                  <div className="absolute inset-0 bg-gradient-to-r from-black/78 via-black/42 to-black/15" />
+
+                  {b.badge && (
+                    <div className="absolute top-2.5 left-2.5 lg:top-4 lg:left-4 flex items-center gap-1 bg-[#16a34a]/95 text-white text-[10px] lg:text-xs font-bold px-2.5 py-1 rounded-full shadow-sm">
+                      <Tag className="w-3 h-3" />
+                      {b.badge}
+                    </div>
+                  )}
+
+                  <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4 lg:p-5 max-w-2xl">
+                    {b.title && (
+                      <h3 className="text-white font-bold text-sm sm:text-base lg:text-xl drop-shadow-sm leading-tight">
+                        {b.title}
+                      </h3>
+                    )}
+                    {b.subtitle && (
+                      <p className="text-white/85 text-[10px] sm:text-xs lg:text-sm mt-0.5 leading-relaxed line-clamp-1 sm:line-clamp-2">
+                        {b.subtitle}
+                      </p>
+                    )}
+                    <div className="flex items-center gap-1.5 mt-1.5 lg:mt-2">
+                      <span className="text-[#4ade80] text-[11px] lg:text-xs font-semibold">
+                        {b.discount}
+                      </span>
+                      <ArrowRight className="w-3 h-3 lg:w-3.5 lg:h-3.5 text-white/70" />
+                    </div>
+                  </div>
+                </>
               )}
-
-              <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4 lg:p-5 max-w-2xl">
-                {b.title && (
-                  <h3 className="text-white font-bold text-sm sm:text-base lg:text-xl drop-shadow-sm leading-tight">
-                    {b.title}
-                  </h3>
-                )}
-                {b.subtitle && (
-                  <p className="text-white/85 text-[10px] sm:text-xs lg:text-sm mt-0.5 leading-relaxed line-clamp-1 sm:line-clamp-2">
-                    {b.subtitle}
-                  </p>
-                )}
-                <div className="flex items-center gap-1.5 mt-1.5 lg:mt-2">
-                  <span className="text-[#4ade80] text-[11px] lg:text-xs font-semibold">
-                    {b.discount}
-                  </span>
-                  <ArrowRight className="w-3 h-3 lg:w-3.5 lg:h-3.5 text-white/70" />
-                </div>
-              </div>
             </Link>
           );
         })}
       </div>
 
       {count > 1 && (
-        <div className="absolute bottom-2.5 right-2.5 lg:bottom-3.5 lg:right-3.5 z-20 flex items-center gap-1.5">
+        <div
+          className={`absolute bottom-2.5 z-20 flex items-center gap-1.5 lg:bottom-3.5 ${
+            items[index]?.designed ? 'left-2.5 lg:left-3.5' : 'right-2.5 lg:right-3.5'
+          }`}
+        >
           {items.map((_, i) => (
             <button
               key={i}

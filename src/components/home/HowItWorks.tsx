@@ -21,7 +21,7 @@ const steps = [
     icon: Backpack,
     title: 'Go on Adventure',
     desc: 'Meet fellow trekkers, follow expert guides, and make memories for a lifetime. We handle everything - you just explore.',
-    color: 'from-[#16a34a] to-orange-500',
+    color: 'from-[#16a34a] to-[#4ade80]',
   },
 ];
 

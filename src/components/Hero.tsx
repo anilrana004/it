@@ -21,6 +21,12 @@ const mobBanners = [
 ];
 
 const explorePromos = [
+  {
+    src: photos.choptaSale,
+    href: '/treks/chopta-tungnath',
+    title: 'Chopta Tungnath Chandrashila',
+    designed: true,
+  },
   { src: photos.yatra, href: '/yatra', title: 'Sacred Yatras – Spiritual Himalaya', subtitle: 'Kedarnath · Do Dham · Char Dham · Panch Kedar – divine journeys', badge: 'Yatra', discount: 'Plan Your Yatra' },
   { src: photos.uttarakhand, href: '/treks?region=uttarakhand', title: 'Uttarakhand – Land of Gods & Treks', subtitle: '10 iconic Himalayan treks across Chopta, Kedarkantha & beyond', badge: 'Uttarakhand', discount: 'View All Treks' },
   { src: photos.himachal, href: '/treks?region=himachal', title: 'Himachal – Adventure Capital', subtitle: 'Hampta, Triund, Bhrigu Lake, Kheerganga & more', badge: 'Himachal', discount: 'Explore Himachal' },
@@ -40,11 +46,11 @@ const catItems = [
 ];
 
 const collabItems = [
-  { icon: Heart, label: 'TripAdvisor Choice', href: '/#reviews', c: 'text-rose-500', bg: 'from-rose-50 to-pink-50', bd: 'border-rose-200/60' },
-  { icon: Users, label: '80k+ Travelers', href: '/about', c: 'text-blue-500', bg: 'from-blue-50 to-indigo-50', bd: 'border-blue-200/60' },
-  { icon: Award, label: 'ATOAI Recognized', href: '/about', c: 'text-amber-500', bg: 'from-amber-50 to-orange-50', bd: 'border-amber-200/60' },
-  { icon: Shield, label: 'Startup India', href: '/corporate', c: 'text-green-500', bg: 'from-green-50 to-emerald-50', bd: 'border-green-200/60' },
-  { icon: Calendar, label: '10+ Years Legacy', href: '/about', c: 'text-purple-500', bg: 'from-purple-50 to-violet-50', bd: 'border-purple-200/60' },
+  { icon: Heart, label: 'TripAdvisor Choice', href: '/#reviews' },
+  { icon: Users, label: '80k+ Travelers', href: '/about' },
+  { icon: Award, label: 'ATOAI Recognized', href: '/about' },
+  { icon: Shield, label: 'Startup India', href: '/corporate' },
+  { icon: Calendar, label: '10+ Years Legacy', href: '/about' },
 ];
 
 const deskSlides = [
@@ -143,10 +149,10 @@ export default function Hero() {
 
   const InfoRow = ({ icon: Icon, label, value, accent }: { icon: any; label: string; value: string; accent?: boolean }) => (
     <div className="flex items-center gap-2.5">
-      <Icon className={`w-4 h-4 ${accent ? 'text-[#16a34a]' : 'text-white/40'}`} />
+      <Icon className={`w-4 h-4 ${accent ? 'text-[#4ade80]' : 'text-white/40'}`} />
       <div>
         <div className="text-[10px] text-white/40 font-medium uppercase tracking-wider">{label}</div>
-        <div className={`text-sm font-semibold ${accent ? 'text-[#16a34a]' : 'text-white/80'}`}>{value}</div>
+        <div className={`text-sm font-semibold ${accent ? 'text-[#4ade80]' : 'text-white/80'}`}>{value}</div>
       </div>
     </div>
   );
@@ -168,24 +174,7 @@ export default function Hero() {
           <img src={s.img} alt={s.name} referrerPolicy="no-referrer" className="w-full h-full object-cover" />
         </div>
       ))}
-      <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/70 to-black/40" />
-
-      {/* Top bar */}
-      <div className="relative z-20 flex h-14 shrink-0 items-center justify-between px-6 xl:px-10 2xl:px-14">
-        <div className="flex items-center gap-2">
-          <BrandLogo className="h-9 w-auto max-w-[200px] object-contain object-left" />
-        </div>
-        <div className="flex items-center gap-4 text-white/60 text-xs">
-          <a href="tel:+919797972175" className="flex items-center gap-1.5 hover:text-white transition-colors">
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
-            <span>+91 97 97 97 21 75</span>
-          </a>
-          <Link href="/login" className="flex items-center gap-1.5 hover:text-white transition-colors">
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
-            <span>Login</span>
-          </Link>
-        </div>
-      </div>
+      <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/50 to-black/15" />
 
       {/* Main content area: left info + right photo */}
       <div className="relative z-10 flex min-h-0 flex-1 items-center py-4">
@@ -194,11 +183,14 @@ export default function Hero() {
 
             {/* -- LEFT: Trek info -- */}
             <div className="flex-1 max-w-xl" key={slide.id}>
-              <span className="inline-block text-[10px] font-semibold tracking-[0.2em] uppercase text-[#16a34a] bg-[#16a34a]/10 border border-[#16a34a]/20 px-3 py-1 rounded-full mb-3">
+              <span className="inline-block text-[10px] font-semibold tracking-[0.2em] uppercase text-[#4ade80] bg-[#16a34a]/15 border border-[#4ade80]/30 px-3 py-1 rounded-full mb-3">
                 {slide.t === 'yatra' ? 'Sacred Yatra' : 'Himalayan Trek'}
               </span>
 
-              <h1 className="font-bold text-white text-4xl xl:text-5xl 2xl:text-6xl leading-[1.1] mb-2.5">
+              <p className="text-white/80 text-sm xl:text-lg font-medium tracking-wide mb-1">
+                Book your trip to
+              </p>
+              <h1 className="font-bold text-[#4ade80] text-4xl xl:text-5xl 2xl:text-6xl leading-[1.1] mb-2.5 drop-shadow-[0_2px_12px_rgba(22,163,74,0.35)]">
                 {slide.name}
               </h1>
 
@@ -249,7 +241,7 @@ export default function Hero() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
                 <div className="absolute bottom-4 left-4 right-4">
                   <div className="flex items-center gap-2 text-white">
-                    <Quote className="w-3.5 h-3.5 text-[#16a34a]" />
+                    <Quote className="w-3.5 h-3.5 text-[#4ade80]" />
                     <span className="text-xs text-white/70 font-medium leading-tight">
                       {slide.t === 'yatra' ? 'Spiritual journey' : 'Adventure awaits'}
                     </span>
@@ -299,7 +291,7 @@ export default function Hero() {
           <div className="flex gap-2">
             {deskSlides.map((_, i) => (
               <button key={i} onClick={() => setDeskSlide(i)}
-                className={`h-1.5 rounded-full transition-all ${i === deskSlide ? 'bg-[#16a34a] w-6' : 'bg-white/30 hover:bg-white/50 w-1.5'}`} />
+                className={`h-1.5 rounded-full transition-all ${i === deskSlide ? 'bg-[#4ade80] w-6' : 'bg-white/30 hover:bg-white/50 w-1.5'}`} />
             ))}
           </div>
           <span className="text-white/40 text-xs font-medium tracking-wide hidden xl:block">{slide.name}</span>
@@ -327,7 +319,7 @@ export default function Hero() {
       id="home-mobile-hero"
       className="relative overflow-hidden"
       style={{
-        background: 'linear-gradient(180deg, #4ade80 0%, #86efac 28%, #bbf7d0 55%, #dcfce7 78%, #f0fdf4 100%)',
+        background: 'linear-gradient(180deg, #4ade80 0%, #4ade80 42%, #86efac 68%, #dcfce7 86%, #f3f4f6 100%)',
       }}
     >
       {/* In-flow top bar - part of the yellow page (no overlap). Sticky bar appears on scroll via Header. */}
@@ -392,9 +384,9 @@ export default function Hero() {
               const Icon = c.icon;
               return (
                 <Link key={collabIdx} href={c.href}
-                  className={`flex items-center gap-1.5 bg-gradient-to-r ${c.bg} border ${c.bd} rounded-full px-3 py-1.5 active:scale-95 transition-all duration-200 ${collabFade ? 'opacity-100' : 'opacity-0'}`}>
-                  <Icon className={`w-3.5 h-3.5 ${c.c}`} />
-                  <span className="text-[11px] font-semibold text-gray-600">{c.label}</span>
+                  className={`flex items-center gap-1.5 bg-white border border-[#dcfce7] rounded-full px-3 py-1.5 shadow-sm active:scale-95 transition-all duration-200 ${collabFade ? 'opacity-100' : 'opacity-0'}`}>
+                  <Icon className="w-3.5 h-3.5 text-[#16a34a]" />
+                  <span className="text-[11px] font-semibold text-gray-700">{c.label}</span>
                 </Link>
               );
             })()}
@@ -561,7 +553,7 @@ export default function Hero() {
                 <button key={s.id} type="button" onClick={() => goSearch(s.id, s.type)}
                   onMouseEnter={() => setSearchIdx(i)}
                   className={`w-full flex items-center gap-3 px-5 py-3 text-left transition-colors ${i === searchIdx ? 'bg-[#16a34a]/10' : 'hover:bg-gray-50'}`}>
-                  <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${s.type === 'yatra' ? 'bg-orange-100 text-orange-600' : 'bg-emerald-100 text-emerald-600'}`}>
+                  <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${s.type === 'yatra' ? 'bg-[#166534] text-[#dcfce7]' : 'bg-[#dcfce7] text-[#16a34a]'}`}>
                     {s.type === 'yatra' ? <SunMedium className="w-5 h-5" /> : <Mountain className="w-5 h-5" />}
                   </div>
                   <div className="flex-1 min-w-0">
@@ -569,7 +561,7 @@ export default function Hero() {
                     <div className="text-xs text-gray-400 truncate">{s.sub}</div>
                   </div>
                   <div className="flex items-center gap-1 shrink-0">
-                    <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${s.type === 'yatra' ? 'bg-orange-100 text-orange-600' : 'bg-emerald-100 text-emerald-600'}`}>
+                    <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${s.type === 'yatra' ? 'bg-[#166534] text-white' : 'bg-[#dcfce7] text-[#166534]'}`}>
                       {s.type === 'yatra' ? 'Yatra' : 'Trek'}
                     </span>
                     <ArrowRight className="w-4 h-4 text-gray-300" />

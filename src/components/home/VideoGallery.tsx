@@ -38,8 +38,8 @@ export default function VideoGallery() {
             <div key={v.id} className="group relative rounded-lg overflow-hidden cursor-pointer aspect-[3/2]">
               <img src={v.thumb} alt={v.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
               <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors flex items-center justify-center">
-                <div className="w-8 h-8 lg:w-10 lg:h-10 bg-white/90 rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                  <svg className="w-3.5 h-3.5 lg:w-5 lg:h-5 text-[#000000] ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                <div className="w-8 h-8 lg:w-10 lg:h-10 bg-[#16a34a] rounded-full flex items-center justify-center shadow-lg shadow-[#16a34a]/30 group-hover:scale-110 transition-transform">
+                  <svg className="w-3.5 h-3.5 lg:w-5 lg:h-5 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                 </div>
               </div>
             </div>

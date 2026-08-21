@@ -21,6 +21,9 @@ export const photos = {
   snow: u('photo-1483728642387-6c3bdd6c93e5', 1400, 900),
   vof: cld('v1785367489/pexels-unaizat97-8673607_anl07u.jpg'),
   kedarkantha: cld('v1785399843/pexels-sanket-barik-2808574-7846473_efonvw.jpg'),
+  /** Designed promo creative (copy/CTA baked into the asset) — do not crop aggressively */
+  choptaSale:
+    'https://res.cloudinary.com/pg8uhzw0/image/upload/f_auto,q_auto/v1787222468/Screenshot_2026-08-20_161024_qsice7.png',
 } as const;
 
 export type PhotoKey = keyof typeof photos;

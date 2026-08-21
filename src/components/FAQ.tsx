@@ -33,7 +33,7 @@ export default function FAQ() {
             <div key={i} className="bg-white rounded-xl border border-gray-100 overflow-hidden">
               <button onClick={() => setOpen(open===i?null:i)} className="w-full flex items-center justify-between gap-4 p-4 lg:p-6 text-left">
                 <span className="font-semibold text-sm lg:text-base text-gray-900">{f.q}</span>
-                <ChevronDown className={`w-5 h-5 shrink-0 text-gray-400 transition-transform ${open===i?'rotate-180':''}`} />
+                <ChevronDown className={`w-5 h-5 shrink-0 transition-transform ${open===i?'rotate-180 text-[#16a34a]':'text-gray-400'}`} />
               </button>
               {open===i && <div className="px-4 lg:px-6 pb-4 lg:pb-6"><p className="text-gray-600 text-sm leading-relaxed">{f.a}</p></div>}
             </div>
