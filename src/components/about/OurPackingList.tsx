@@ -1,239 +1,268 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useId, useState } from 'react';
 import { photos } from '@/lib/media';
 import './our-packing-list.css';
 
 /**
- * Our Packing List — full redesign:
- * expedition dossier: field header → leaders → clickable kit checklist
+ * Our Packing List — UI mirrored from
+ * https://roopkundheaven.in/about-us/ “Meet The Team”
+ * (portrait cards + modal), Indian Treks green.
  */
 
-const CREW = [
+type Person = {
+  id: string;
+  name: string;
+  role: string;
+  exp: string;
+  image: string;
+  bio: string[];
+};
+
+const CREW: Person[] = [
   {
     id: 'vijay',
-    tag: 'Founder',
     name: 'Mr Vijay Singh Rana',
-    role: 'Founder, Indiantreks',
-    years: 'Since 2005',
+    role: 'Founder',
+    exp: 'Founder, Indiantreks',
     image: 'https://indiantreks.in/wp-content/uploads/2023/02/Vijay-Singh-Rana-Indian-Treks.jpg',
-    quote:
-      'Long before Indian Treks was established, I had already been working on the ground in trekking and mountaineering since 2005. With over two decades of Himalayan experience, I prioritized quality, safety, and real mountain experience over numbers alone.',
+    bio: [
+      'Long before Indian Treks was established, I had already been working on the ground in trekking and mountaineering since 2005.',
+      'With over two decades of Himalayan experience, I prioritized quality, safety, and real mountain experience over numbers alone.',
+      'That foundation still guides every trek we run across Uttarakhand, Himachal, and beyond.',
+    ],
   },
   {
     id: 'vivek',
-    tag: 'CEO',
     name: 'Mr Vivek Rana',
-    role: 'CEO, Indiantreks',
-    years: '20,000+ trekkers / year',
+    role: 'CEO',
+    exp: 'CEO, Indiantreks',
     image:
       'https://indiantreks.in/wp-content/uploads/2025/02/WhatsApp-Image-2025-02-02-at-1.52.36-PM-1024x983.jpeg',
-    quote:
-      'From Osla village in the Garhwal Himalayas to leading Indiantreks, my focus has always been safe, well-planned journeys. Today we welcome 20,000+ trekkers every year across 200+ routes — smooth, enriching, and unforgettable.',
+    bio: [
+      'From Osla village in the Garhwal Himalayas to leading Indiantreks, my focus has always been safe, well-planned journeys.',
+      'Today we welcome 20,000+ trekkers every year across 200+ routes — smooth, enriching, and unforgettable.',
+      'Every departure is built around guest comfort, mountain safety, and authentic Himalayan experience.',
+    ],
   },
-] as const;
+];
 
 const KIT = [
   {
     id: 'treks',
-    mark: '01',
+    badge: 'Treks',
     title: 'Himalayan Treks',
-    note: 'Weekend walks to high passes',
+    role: 'Guided routes',
+    exp: 'Easy weekends to high passes',
     href: '/treks',
     img: photos.kedarkantha,
   },
   {
     id: 'snow',
-    mark: '02',
-    title: 'Snow & Winter',
-    note: 'Frozen lakes and white ridgelines',
+    badge: 'Winter',
+    title: 'Snow Trails',
+    role: 'Cold season',
+    exp: 'Frozen lakes & white ridges',
     href: '/treks',
     img: photos.snow,
   },
   {
     id: 'yatra',
-    mark: '03',
+    badge: 'Yatra',
     title: 'Sacred Yatras',
-    note: 'Pilgrim trails with mountain care',
+    role: 'Pilgrim journeys',
+    exp: 'Faith meets mountain care',
     href: '/yatra',
     img: photos.yatra,
   },
   {
     id: 'flowers',
-    mark: '04',
+    badge: 'UNESCO',
     title: 'Valley of Flowers',
-    note: 'UNESCO meadows in bloom',
+    role: 'Monsoon magic',
+    exp: 'Alpine meadows in bloom',
     href: '/treks/valley-of-flowers',
     img: photos.vof,
   },
   {
     id: 'nepal',
-    mark: '05',
+    badge: 'Abroad',
     title: 'Nepal & Abroad',
-    note: 'Beyond the Indian Himalaya',
+    role: 'International',
+    exp: 'Beyond the Indian Himalaya',
     href: '/international-getaways',
     img: photos.ebc,
   },
   {
     id: 'custom',
-    mark: '06',
+    badge: 'Custom',
     title: 'Custom Trips',
-    note: 'Built around your dates & pace',
+    role: 'Your dates',
+    exp: 'Built around your pace',
     href: '/customized',
     img: photos.chopta,
   },
 ] as const;
 
-function useInViewOnce<T extends HTMLElement>(delay = 0) {
-  const ref = useRef<T | null>(null);
-  const [on, setOn] = useState(false);
+export default function OurPackingList() {
+  const titleId = useId();
+  const [active, setActive] = useState<Person | null>(null);
 
   useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setOn(true);
-      return;
-    }
-    const io = new IntersectionObserver(
-      ([e]) => {
-        if (e.isIntersecting) {
-          window.setTimeout(() => setOn(true), delay);
-          io.disconnect();
-        }
-      },
-      { threshold: 0.12, rootMargin: '0px 0px -5% 0px' },
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, [delay]);
+    if (!active) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setActive(null);
+    };
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', onKey);
+    return () => {
+      document.body.style.overflow = prev;
+      window.removeEventListener('keydown', onKey);
+    };
+  }, [active]);
 
-  return { ref, on };
-}
-
-function LeaderPanel({
-  person,
-  index,
-}: {
-  person: (typeof CREW)[number];
-  index: number;
-}) {
-  const { ref, on } = useInViewOnce<HTMLElement>(index * 80);
-  const [open, setOpen] = useState(false);
-
-  return (
-    <article
-      ref={ref}
-      className={`it-pack__leader${on ? ' is-in' : ''}${index % 2 ? ' is-flip' : ''}`}
-    >
-      <div className="it-pack__leader-media">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={person.image} alt={person.name} referrerPolicy="no-referrer" />
-        <span className="it-pack__leader-tag">{person.tag}</span>
-      </div>
-      <div className="it-pack__leader-copy">
-        <p className="it-pack__leader-years">{person.years}</p>
-        <h3 className="it-pack__leader-name">{person.name}</h3>
-        <p className="it-pack__leader-role">{person.role}</p>
-        <p className={`it-pack__leader-quote${open ? ' is-open' : ''}`}>{person.quote}</p>
-        <button
-          type="button"
-          className="it-pack__leader-more"
-          aria-expanded={open}
-          onClick={() => setOpen((v) => !v)}
-        >
-          {open ? 'Show less' : 'Read more'}
-        </button>
-      </div>
-    </article>
-  );
-}
-
-function KitRow({
-  item,
-  index,
-}: {
-  item: (typeof KIT)[number];
-  index: number;
-}) {
-  const { ref, on } = useInViewOnce<HTMLAnchorElement>(index * 50);
-
-  return (
-    <Link
-      ref={ref}
-      href={item.href}
-      className={`it-pack__kit-row${on ? ' is-in' : ''}`}
-      style={{ transitionDelay: on ? `${index * 45}ms` : '0ms' }}
-    >
-      <span className="it-pack__kit-mark" aria-hidden>
-        {item.mark}
-      </span>
-      <span className="it-pack__kit-thumb">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={item.img} alt="" loading="lazy" />
-      </span>
-      <span className="it-pack__kit-text">
-        <span className="it-pack__kit-title">{item.title}</span>
-        <span className="it-pack__kit-note">{item.note}</span>
-      </span>
-      <span className="it-pack__kit-go" aria-hidden>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-          <path d="M5 12h14M13 6l6 6-6 6" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      </span>
-    </Link>
-  );
-}
-
-export default function OurPackingList() {
   return (
     <section
       id="packing-list"
       className="it-pack scroll-mt-24 sm:scroll-mt-28"
-      aria-labelledby="packing-list-heading"
+      aria-labelledby={titleId}
     >
-      <header className="it-pack__mast">
-        <div className="it-pack__mast-bg" aria-hidden>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={photos.kedarkantha} alt="" />
-        </div>
-        <div className="it-pack__mast-inner">
-          <p className="it-pack__eyebrow">Field kit · Indian Treks</p>
-          <h2 id="packing-list-heading" className="it-pack__title">
-            Our Packing List <em>!!</em>
-          </h2>
-          <p className="it-pack__lede">
-            The people who lead the trail — and the journeys we pack for every kind of Himalayan
-            trip. Tap any kit item to open it.
-          </p>
-        </div>
-      </header>
-
-      <div className="it-pack__body">
-        <div className="it-pack__block">
-          <div className="it-pack__block-head">
-            <span>Who packs</span>
-            <span className="it-pack__rule" aria-hidden />
+      <div className="it-pack__wrap">
+        <div className="it-pack__head">
+          <div className="it-pack__top">
+            <div className="it-pack__kicker">
+              <i className="fa-solid fa-suitcase" aria-hidden />
+              Our Packing List !!
+            </div>
+            <h2 id={titleId} className="it-pack__title">
+              The people and journeys that fill every <span>Indian Treks departure</span>
+            </h2>
+            <p className="it-pack__sub">
+              Meet the founders who pack safety and local knowledge into the trail — then open the
+              journeys we run across the Himalayas.
+            </p>
           </div>
-          <div className="it-pack__leaders">
-            {CREW.map((person, i) => (
-              <LeaderPanel key={person.id} person={person} index={i} />
-            ))}
+
+          <div className="it-pack__note">
+            <i className="fa-solid fa-shield-heart" aria-hidden />
+            <div>
+              <strong>Built on real Himalayan experience</strong>
+              <span>Local knowledge, structured execution and dependable on-ground support.</span>
+            </div>
           </div>
         </div>
 
-        <div className="it-pack__block">
-          <div className="it-pack__block-head">
-            <span>What&apos;s in the bag</span>
-            <span className="it-pack__rule" aria-hidden />
-          </div>
-          <div className="it-pack__kit" role="list">
-            {KIT.map((item, i) => (
-              <KitRow key={item.id} item={item} index={i} />
-            ))}
-          </div>
+        <div className="it-pack__grid it-pack__grid--crew" aria-label="Founders">
+          {CREW.map((person) => (
+            <article
+              key={person.id}
+              className="it-pack__card"
+              role="button"
+              tabIndex={0}
+              onClick={() => setActive(person)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  setActive(person);
+                }
+              }}
+              aria-haspopup="dialog"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={person.image} alt={person.name} referrerPolicy="no-referrer" />
+              <div className="it-pack__badge">{person.role}</div>
+              <div className="it-pack__card-body">
+                <h3 className="it-pack__name">{person.name}</h3>
+                <p className="it-pack__role">{person.role}</p>
+                <div className="it-pack__line">
+                  <span className="it-pack__exp">{person.exp}</span>
+                  <span className="it-pack__arrow" aria-hidden>
+                    <i className="fa-solid fa-arrow-right" />
+                  </span>
+                </div>
+              </div>
+            </article>
+          ))}
+
+          <Link href="/team" className="it-pack__card it-pack__card--cta">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={photos.chopta} alt="" />
+            <div className="it-pack__badge">Team</div>
+            <div className="it-pack__card-body">
+              <h3 className="it-pack__name">Meet the full team</h3>
+              <p className="it-pack__role">Guides &amp; staff</p>
+              <div className="it-pack__line">
+                <span className="it-pack__exp">Mountain specialists on ground</span>
+                <span className="it-pack__arrow" aria-hidden>
+                  <i className="fa-solid fa-arrow-right" />
+                </span>
+              </div>
+            </div>
+          </Link>
         </div>
+
+        <div className="it-pack__kit-head">
+          <div className="it-pack__kicker it-pack__kicker--sm">What&apos;s packed</div>
+          <h3 className="it-pack__kit-title">
+            Tap a journey to <span>open it</span>
+          </h3>
+        </div>
+
+        <div className="it-pack__grid it-pack__grid--kit" aria-label="Journeys packed">
+          {KIT.map((item) => (
+            <Link key={item.id} href={item.href} className="it-pack__card it-pack__card--kit">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={item.img} alt="" loading="lazy" />
+              <div className="it-pack__badge">{item.badge}</div>
+              <div className="it-pack__card-body">
+                <h3 className="it-pack__name">{item.title}</h3>
+                <p className="it-pack__role">{item.role}</p>
+                <div className="it-pack__line">
+                  <span className="it-pack__exp">{item.exp}</span>
+                  <span className="it-pack__arrow" aria-hidden>
+                    <i className="fa-solid fa-arrow-right" />
+                  </span>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+
+      <div
+        className={`it-pack__modal${active ? ' is-open' : ''}`}
+        role="dialog"
+        aria-modal="true"
+        aria-hidden={!active}
+        aria-labelledby={active ? 'it-pack-modal-title' : undefined}
+        onClick={() => setActive(null)}
+      >
+        {active ? (
+          <div className="it-pack__modal-box" onClick={(e) => e.stopPropagation()}>
+            <button
+              type="button"
+              className="it-pack__modal-close"
+              aria-label="Close"
+              onClick={() => setActive(null)}
+            >
+              <i className="fa-solid fa-xmark" aria-hidden />
+            </button>
+            <div className="it-pack__modal-image">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={active.image} alt={active.name} referrerPolicy="no-referrer" />
+            </div>
+            <div className="it-pack__modal-content">
+              <span className="it-pack__modal-role">{active.role}</span>
+              <h3 id="it-pack-modal-title">{active.name}</h3>
+              <span className="it-pack__modal-exp">{active.exp}</span>
+              {active.bio.map((p) => (
+                <p key={p.slice(0, 24)}>{p}</p>
+              ))}
+            </div>
+          </div>
+        ) : null}
       </div>
     </section>
   );
