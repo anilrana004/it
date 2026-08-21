@@ -96,6 +96,8 @@ export default function OurJourney() {
           --it-journey-header: 0px;
           background: var(--it-journey-bg);
           overflow: visible;
+          width: 100%;
+          max-width: 100vw;
         }
 
         @media (min-width: 1024px) {

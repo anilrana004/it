@@ -11,7 +11,7 @@ import { ABOUT_STATS } from '@/lib/about-content';
 
 export default function AboutPage() {
   return (
-    <div className="pb-16 lg:pb-20">
+    <div className="it-about-page pb-16 lg:pb-20">
       <AboutVideoHero />
 
       <div className="pt-6 sm:pt-10 lg:pt-14">
@@ -32,10 +32,15 @@ export default function AboutPage() {
             ))}
           </div>
         </div>
+      </div>
 
-        {/* Sticky journey must not sit under an overflow-x ancestor */}
-        <OurJourney />
+      {/*
+        Sticky stacked chapters must sit as a full-bleed section with no
+        overflow-x / padding ancestors between here and the viewport scrollport.
+      */}
+      <OurJourney />
 
+      <div>
         <OurPackingList />
 
         <WhyTravelWithUs />

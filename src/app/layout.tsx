@@ -32,7 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="en"
-      className={`${poppins.variable} ${playfair.variable} ${nunito.variable} overflow-x-clip`}
+      className={`${poppins.variable} ${playfair.variable} ${nunito.variable}`}
     >
       <head>
         <link
@@ -43,9 +43,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           referrerPolicy="no-referrer"
         />
       </head>
-      <body className="min-h-dvh flex flex-col overflow-x-clip overscroll-x-none">
+      <body className="min-h-dvh flex flex-col overscroll-x-none">
         <Header />
-        <main className="flex-1 w-full min-w-0 pb-16 lg:pb-0">{children}</main>
+        {/* No overflow-x containment here — sticky Our Journey needs the viewport scrollport */}
+        <main className="relative flex-1 w-full min-w-0 overflow-visible pb-16 lg:pb-0">
+          {children}
+        </main>
         <Footer />
         <WhatsAppFloat />
         <MobileBottomNav />
