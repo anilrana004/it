@@ -1,21 +1,12 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { EffectCoverflow, Navigation, Pagination } from 'swiper/modules';
-import type { Swiper as SwiperType } from 'swiper';
+import { useEffect, useRef, useState } from 'react';
 import { photos } from '@/lib/media';
 
-import 'swiper/css';
-import 'swiper/css/effect-coverflow';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-
 /**
- * What’s packed — JustWravel “Memories for Life” 3D coverflow
- * https://www.justwravel.com/about
- * Swiper coverflow + muted center video; same Indian Treks journeys.
+ * Trail memories — large cards, native horizontal snap on phone,
+ * stronger 3D fan on desktop. Same journey links as before.
  */
 
 type Journey = {
@@ -87,104 +78,120 @@ function embedUrl(id: string) {
 
 export default function PackedJourneysMemories() {
   const [active, setActive] = useState(0);
+  const railRef = useRef<HTMLDivElement | null>(null);
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  useEffect(() => {
+    const rail = railRef.current;
+    if (!rail) return;
+
+    const nodes = cardRefs.current.filter(Boolean) as HTMLDivElement[];
+    const io = new IntersectionObserver(
+      (entries) => {
+        const best = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (!best) return;
+        const idx = nodes.indexOf(best.target as HTMLDivElement);
+        if (idx >= 0) setActive(idx);
+      },
+      { root: rail, threshold: [0.55, 0.7] },
+    );
+    nodes.forEach((n) => io.observe(n));
+    return () => io.disconnect();
+  }, []);
+
+  const goTo = (index: number) => {
+    const next = (index + JOURNEYS.length) % JOURNEYS.length;
+    setActive(next);
+    cardRefs.current[next]?.scrollIntoView({
+      behavior: 'smooth',
+      inline: 'center',
+      block: 'nearest',
+    });
+  };
+
   const current = JOURNEYS[active] ?? JOURNEYS[0];
 
   return (
-    <div className="it-pack-mem" aria-label="What's packed — journeys">
+    <div className="it-pack-mem" aria-label="Memories from the trail">
       <div className="it-pack-mem__head">
         <p className="it-pack-mem__kicker">Videos</p>
         <h3 className="it-pack-mem__title">Memories from the trail</h3>
       </div>
 
-      <div className="it-pack-mem__shell">
-        <Swiper
-          className="it-pack-mem__swiper"
-          modules={[EffectCoverflow, Navigation, Pagination]}
-          effect="coverflow"
-          grabCursor
-          centeredSlides
-          slidesPerView="auto"
-          speed={700}
-          simulateTouch
-          allowTouchMove
-          touchRatio={1.15}
-          threshold={6}
-          resistanceRatio={0.7}
-          navigation
-          pagination={{ clickable: true }}
-          coverflowEffect={{
-            rotate: 48,
-            stretch: -28,
-            depth: 220,
-            modifier: 1.15,
-            slideShadows: false,
-          }}
-          breakpoints={{
-            0: {
-              coverflowEffect: {
-                rotate: 18,
-                stretch: -8,
-                depth: 120,
-                modifier: 1,
-                slideShadows: false,
-              },
-            },
-            640: {
-              coverflowEffect: {
-                rotate: 36,
-                stretch: -18,
-                depth: 180,
-                modifier: 1.05,
-                slideShadows: false,
-              },
-            },
-            1024: {
-              coverflowEffect: {
-                rotate: 48,
-                stretch: -28,
-                depth: 220,
-                modifier: 1.15,
-                slideShadows: false,
-              },
-            },
-            1400: {
-              coverflowEffect: {
-                rotate: 52,
-                stretch: -36,
-                depth: 260,
-                modifier: 1.2,
-                slideShadows: false,
-              },
-            },
-          }}
-          onSwiper={(swiper: SwiperType) => setActive(swiper.activeIndex)}
-          onSlideChange={(swiper: SwiperType) => setActive(swiper.activeIndex)}
+      <div className="it-pack-mem__stage">
+        <button
+          type="button"
+          className="it-pack-mem__nav it-pack-mem__nav--prev"
+          aria-label="Previous"
+          onClick={() => goTo(active - 1)}
         >
+          <i className="fa-solid fa-chevron-left" aria-hidden />
+        </button>
+
+        <div ref={railRef} className="it-pack-mem__rail">
           {JOURNEYS.map((item, i) => {
             const isActive = i === active;
             return (
-              <SwiperSlide key={item.id} className="it-pack-mem__slide">
-                <div className={`it-pack-mem__panel${isActive ? ' is-active' : ''}`}>
-                  {isActive ? (
-                    <iframe
-                      className="it-pack-mem__media"
-                      src={embedUrl(item.youtubeId)}
-                      title={item.title}
-                      allow="autoplay; encrypted-media; picture-in-picture"
-                      allowFullScreen
-                    />
-                  ) : (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img className="it-pack-mem__media" src={item.image} alt={item.title} loading="lazy" />
-                  )}
-                  {!isActive ? (
-                    <span className="it-pack-mem__caption">{item.title}</span>
-                  ) : null}
-                </div>
-              </SwiperSlide>
+              <div
+                key={item.id}
+                ref={(el) => {
+                  cardRefs.current[i] = el;
+                }}
+                className={`it-pack-mem__card${isActive ? ' is-active' : ''}`}
+                onClick={() => {
+                  if (!isActive) goTo(i);
+                }}
+                role="group"
+                aria-label={item.title}
+              >
+                {isActive ? (
+                  <iframe
+                    className="it-pack-mem__media"
+                    src={embedUrl(item.youtubeId)}
+                    title={item.title}
+                    allow="autoplay; encrypted-media; picture-in-picture"
+                    allowFullScreen
+                  />
+                ) : (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    className="it-pack-mem__media"
+                    src={item.image}
+                    alt={item.title}
+                    loading="lazy"
+                    draggable={false}
+                  />
+                )}
+                {!isActive ? <span className="it-pack-mem__caption">{item.title}</span> : null}
+              </div>
             );
           })}
-        </Swiper>
+        </div>
+
+        <button
+          type="button"
+          className="it-pack-mem__nav it-pack-mem__nav--next"
+          aria-label="Next"
+          onClick={() => goTo(active + 1)}
+        >
+          <i className="fa-solid fa-chevron-right" aria-hidden />
+        </button>
+      </div>
+
+      <div className="it-pack-mem__dots" role="tablist" aria-label="Memory slides">
+        {JOURNEYS.map((item, i) => (
+          <button
+            key={item.id}
+            type="button"
+            role="tab"
+            aria-selected={i === active}
+            className={`it-pack-mem__dot${i === active ? ' is-active' : ''}`}
+            aria-label={item.title}
+            onClick={() => goTo(i)}
+          />
+        ))}
       </div>
 
       <div className="it-pack-mem__cta-wrap">

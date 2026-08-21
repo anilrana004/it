@@ -7,8 +7,8 @@ import PackedJourneysMemories from './PackedJourneysMemories';
 import './our-packing-list.css';
 
 /**
- * Our Packing List — journey categories (native horizontal scroll on phone)
- * + Memories coverflow. No founder/team duplication.
+ * Our Packing List — journey categories (not team).
+ * Native horizontal snap scroll so phones swipe reliably.
  */
 
 const PACKED = [
@@ -86,14 +86,14 @@ export default function OurPackingList() {
             Our Packing List <em>!!</em>
           </h2>
           <p className="it-pack__lead">
-            Everything we pack into an Indian Treks departure. Swipe the cards, then tap one to open
-            that journey.
+            Everything we pack into an Indian Treks departure. Swipe the cards, then tap to open a
+            journey.
           </p>
         </header>
       </div>
 
       <div className="it-pack__cats" aria-label="Packed journey categories">
-        <div className="it-pack__cats-track">
+        <div className="it-pack__cats-rail">
           {PACKED.map((item) => (
             <Link
               key={item.id}
