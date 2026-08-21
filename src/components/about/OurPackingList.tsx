@@ -3,12 +3,14 @@
 import Link from 'next/link';
 import { useEffect, useId, useState } from 'react';
 import { photos } from '@/lib/media';
+import PackedJourneysMemories from './PackedJourneysMemories';
 import './our-packing-list.css';
 
 /**
- * Our Packing List — UI mirrored from
- * https://roopkundheaven.in/about-us/ “Meet The Team”
- * (portrait cards + modal), Indian Treks green.
+ * Our Packing List:
+ * - Crew cards: Roopkund Heaven “Meet The Team”
+ * - What’s packed: JustWravel “VIDEOS / Memories for Life” carousel
+ *   https://www.justwravel.com/about
  */
 
 type Person = {
@@ -47,63 +49,6 @@ const CREW: Person[] = [
     ],
   },
 ];
-
-const KIT = [
-  {
-    id: 'treks',
-    badge: 'Treks',
-    title: 'Himalayan Treks',
-    role: 'Guided routes',
-    exp: 'Easy weekends to high passes',
-    href: '/treks',
-    img: photos.kedarkantha,
-  },
-  {
-    id: 'snow',
-    badge: 'Winter',
-    title: 'Snow Trails',
-    role: 'Cold season',
-    exp: 'Frozen lakes & white ridges',
-    href: '/treks',
-    img: photos.snow,
-  },
-  {
-    id: 'yatra',
-    badge: 'Yatra',
-    title: 'Sacred Yatras',
-    role: 'Pilgrim journeys',
-    exp: 'Faith meets mountain care',
-    href: '/yatra',
-    img: photos.yatra,
-  },
-  {
-    id: 'flowers',
-    badge: 'UNESCO',
-    title: 'Valley of Flowers',
-    role: 'Monsoon magic',
-    exp: 'Alpine meadows in bloom',
-    href: '/treks/valley-of-flowers',
-    img: photos.vof,
-  },
-  {
-    id: 'nepal',
-    badge: 'Abroad',
-    title: 'Nepal & Abroad',
-    role: 'International',
-    exp: 'Beyond the Indian Himalaya',
-    href: '/international-getaways',
-    img: photos.ebc,
-  },
-  {
-    id: 'custom',
-    badge: 'Custom',
-    title: 'Custom Trips',
-    role: 'Your dates',
-    exp: 'Built around your pace',
-    href: '/customized',
-    img: photos.chopta,
-  },
-] as const;
 
 export default function OurPackingList() {
   const titleId = useId();
@@ -203,33 +148,9 @@ export default function OurPackingList() {
           </Link>
         </div>
 
-        <div className="it-pack__kit-head">
-          <div className="it-pack__kicker it-pack__kicker--sm">What&apos;s packed</div>
-          <h3 className="it-pack__kit-title">
-            Tap a journey to <span>open it</span>
-          </h3>
-        </div>
-
-        <div className="it-pack__grid it-pack__grid--kit" aria-label="Journeys packed">
-          {KIT.map((item) => (
-            <Link key={item.id} href={item.href} className="it-pack__card it-pack__card--kit">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={item.img} alt="" loading="lazy" />
-              <div className="it-pack__badge">{item.badge}</div>
-              <div className="it-pack__card-body">
-                <h3 className="it-pack__name">{item.title}</h3>
-                <p className="it-pack__role">{item.role}</p>
-                <div className="it-pack__line">
-                  <span className="it-pack__exp">{item.exp}</span>
-                  <span className="it-pack__arrow" aria-hidden>
-                    <i className="fa-solid fa-arrow-right" />
-                  </span>
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
       </div>
+
+      <PackedJourneysMemories />
 
       <div
         className={`it-pack__modal${active ? ' is-open' : ''}`}
