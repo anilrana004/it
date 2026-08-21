@@ -36,24 +36,24 @@
 }
 
 :root {
-  /* Palette stays Indian Treks. Roles follow JustWravel color theory:
+  /* Palette stays Indian Treks. Roles follow IndiaHikes color theory:
      60% canvas (photo / white / wash), 30% ink & overlays, 10% brand spark. */
-  --jw-primary: #16a34a;
-  --jw-primary-hover: #15803d;
-  --jw-primary-active: #166534;
-  --jw-spark: #4ade80;          /* highlight on dark photos — same job as JW yellow */
-  --jw-wash: #4ade80;           /* mobile page canvas — same job as JW yellow wash */
-  --jw-wash-mid: #86efac;
-  --jw-wash-soft: #dcfce7;
-  --jw-wash-mist: #f0fdf4;
-  --jw-secondary: #1666d9;
-  --jw-bg: #f3f4f6;
-  --jw-text: #000000;
-  --jw-text-secondary: #666666;
-  --jw-border: #212529;
-  --jw-accent-green: #16a34a;
-  --jw-accent-blue: #007aff;
-  --jw-surface: #ffffff;
+  --ih-primary: #16a34a;
+  --ih-primary-hover: #15803d;
+  --ih-primary-active: #166534;
+  --ih-spark: #4ade80;          /* highlight on dark photos — same job as IndiaHikes accent */
+  --ih-wash: #4ade80;           /* mobile page canvas — same job as IndiaHikes accent wash */
+  --ih-wash-mid: #86efac;
+  --ih-wash-soft: #dcfce7;
+  --ih-wash-mist: #f0fdf4;
+  --ih-secondary: #1666d9;
+  --ih-bg: #f3f4f6;
+  --ih-text: #000000;
+  --ih-text-secondary: #666666;
+  --ih-border: #212529;
+  --ih-accent-green: #16a34a;
+  --ih-accent-blue: #007aff;
+  --ih-surface: #ffffff;
 }
 
 html {
@@ -73,8 +73,8 @@ html {
 body.it-body,
 body {
   font-family: var(--font-sans);
-  color: var(--jw-text);
-  background: var(--jw-bg);
+  color: var(--ih-text);
+  background: var(--ih-bg);
   font-size: 14px;
   line-height: 1.6;
   font-weight: 400;
@@ -121,7 +121,7 @@ svg {
 }
 
 :focus-visible {
-  outline: 2px solid var(--jw-primary);
+  outline: 2px solid var(--ih-primary);
   outline-offset: 2px;
   border-radius: var(--radius-subtle);
 }
@@ -172,22 +172,22 @@ svg {
   text-decoration: none;
   white-space: nowrap;
 }
-.btn:focus-visible { outline: 2px solid var(--jw-primary); outline-offset: 2px; }
+.btn:focus-visible { outline: 2px solid var(--ih-primary); outline-offset: 2px; }
 .btn:disabled { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
 
-.btn-primary { background: var(--jw-primary); color: #ffffff; border-radius: var(--radius-button); padding: 8px 16px; }
-.btn-primary:hover:not(:disabled) { background: var(--jw-primary-hover); }
+.btn-primary { background: var(--ih-primary); color: #ffffff; border-radius: var(--radius-button); padding: 8px 16px; }
+.btn-primary:hover:not(:disabled) { background: var(--ih-primary-hover); }
 
-.btn-pill { background: var(--jw-secondary); color: var(--jw-text); border-radius: var(--radius-pill); padding: 12px 12px; }
-.btn-pill:hover:not(:disabled) { background: var(--jw-secondary-hover); }
+.btn-pill { background: var(--ih-secondary); color: var(--ih-text); border-radius: var(--radius-pill); padding: 12px 12px; }
+.btn-pill:hover:not(:disabled) { background: var(--ih-secondary-hover); }
 
-.btn-filled-2 { background: var(--jw-secondary); color: #ffffff; border-radius: 34px; padding: 12px 26px; font-size: 16px; font-weight: 500; }
-.btn-filled-2:hover:not(:disabled) { background: var(--jw-secondary-hover); }
+.btn-filled-2 { background: var(--ih-secondary); color: #ffffff; border-radius: 34px; padding: 12px 26px; font-size: 16px; font-weight: 500; }
+.btn-filled-2:hover:not(:disabled) { background: var(--ih-secondary-hover); }
 
-.btn-ghost { background: transparent; color: var(--jw-border); border-radius: var(--radius-pill); padding: 8px 24px; font-size: 14px; font-weight: 600; }
+.btn-ghost { background: transparent; color: var(--ih-border); border-radius: var(--radius-pill); padding: 8px 24px; font-size: 14px; font-weight: 600; }
 .btn-ghost:hover:not(:disabled) { background: rgba(0,0,0,0.05); }
 
-.btn-ghost-dark { background: transparent; color: var(--jw-text); border-radius: var(--radius-pill); padding: 8px 24px; font-size: 14px; font-weight: 500; }
+.btn-ghost-dark { background: transparent; color: var(--ih-text); border-radius: var(--radius-pill); padding: 8px 24px; font-size: 14px; font-weight: 500; }
 .btn-ghost-dark:hover:not(:disabled) { background: rgba(0,0,0,0.05); }
 
 /* ====== Input Base ====== */
@@ -195,19 +195,19 @@ svg {
   font-family: var(--font-sans);
   font-size: 14px;
   padding: 8px 12px;
-  border: 1px solid var(--jw-border);
+  border: 1px solid var(--ih-border);
   border-radius: var(--radius-button);
   background: #fff;
-  color: var(--jw-text);
+  color: var(--ih-text);
   transition: border-color 0.15s, box-shadow 0.15s;
   width: 100%;
   outline: none;
 }
-.input::placeholder { color: var(--jw-text-secondary); }
-.input:focus-visible { border-color: var(--jw-primary); box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.15); }
-.input:disabled { background: var(--jw-bg); opacity: 0.6; }
+.input::placeholder { color: var(--ih-text-secondary); }
+.input:focus-visible { border-color: var(--ih-primary); box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.15); }
+.input:disabled { background: var(--ih-bg); opacity: 0.6; }
 .input--error { border-color: #e74c3c; }
 
 /* ====== Card Base ====== */
-.card { background: var(--jw-surface); border-radius: var(--radius-card); transition: box-shadow 0.15s; }
+.card { background: var(--ih-surface); border-radius: var(--radius-card); transition: box-shadow 0.15s; }
 .card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }

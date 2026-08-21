@@ -423,7 +423,7 @@
   transition: width 0.25s ease, max-width 0.25s ease, box-shadow 0.25s ease, border-radius 0.25s ease, left 0.25s ease, transform 0.25s ease;
 }
 
-/* Desktop header stays visible (JustWravel flow), so the section nav parks
+/* Desktop header stays visible (IndiaHikes flow), so the section nav parks
    under it. Below 1024px the site header still hides, so this sits at top: 0. */
 .kg-sticky-nav.is-stuck {
   position: fixed;

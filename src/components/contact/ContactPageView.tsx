@@ -13,7 +13,9 @@ import {
   CONTACT_GROUP_SIZES,
   CONTACT_MONTHS,
   CONTACT_STATS,
+  CONTACT_TEAMS,
   CONTACT_TREK_OPTIONS,
+  type ContactTeamId,
 } from '@/lib/contact-content';
 import './contact-page.css';
 
@@ -22,6 +24,7 @@ type FormState = {
   lastName: string;
   email: string;
   phone: string;
+  team: ContactTeamId | '';
   trek: string;
   month: string;
   groupSize: string;
@@ -33,6 +36,7 @@ const emptyForm: FormState = {
   lastName: '',
   email: '',
   phone: '',
+  team: '',
   trek: '',
   month: '',
   groupSize: '',
@@ -54,18 +58,25 @@ function faqCatId(cat: string) {
   return 'logistics';
 }
 
+function teamLabel(id: ContactTeamId | '') {
+  return CONTACT_TEAMS.find((t) => t.id === id)?.formLabel || 'Not specified';
+}
+
 /**
- * Contact UI copied from https://roopkundheaven.in/contact-us/
- * (structure, spacing, typography) with Indian Treks brand tokens.
+ * Contact UI — RH structure with Indian Treks brand tokens.
+ * Team pathways solve “which department?” without dumping walls of text.
  */
 export default function ContactPageView() {
   const [form, setForm] = useState<FormState>(emptyForm);
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const [error, setError] = useState('');
+  const [activeTeam, setActiveTeam] = useState<ContactTeamId>('trekking');
   const [faqCat, setFaqCat] = useState<(typeof FAQ_CATS)[number]['id']>('all');
   const [faqQuery, setFaqQuery] = useState('');
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+
+  const selectedTeam = CONTACT_TEAMS.find((t) => t.id === activeTeam) ?? CONTACT_TEAMS[1];
 
   const setField =
     (key: keyof FormState) =>
@@ -73,6 +84,14 @@ export default function ContactPageView() {
       setForm((prev) => ({ ...prev, [key]: e.target.value }));
       if (error) setError('');
     };
+
+  const goToForm = (teamId: ContactTeamId) => {
+    setActiveTeam(teamId);
+    setForm((prev) => ({ ...prev, team: teamId }));
+    window.requestAnimationFrame(() => {
+      document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -88,7 +107,8 @@ export default function ContactPageView() {
           email: form.email.trim(),
           phone: form.phone.trim(),
           message: [
-            `Trek: ${form.trek || 'Not specified'}`,
+            `Team: ${teamLabel(form.team)}`,
+            `Interest: ${form.trek || 'Not specified'}`,
             `Preferred month: ${form.month || 'Not specified'}`,
             `Group size: ${form.groupSize || 'Not specified'}`,
             '',
@@ -132,11 +152,11 @@ export default function ContactPageView() {
         <h1>
           Let&apos;s Plan Your
           <br />
-          <em>Perfect Trek</em>
+          <em>Next Journey</em>
         </h1>
         <p>
-          Whether you have questions about routes, seasons, or bookings — our mountain experts are
-          ready to guide you every step of the way.
+          Treks, pilgrimage travel, customized tours, or B2B partnerships — tell us what you are
+          planning and we&apos;ll connect you with the right team.
         </p>
 
         <div className="ct-hero-peaks" aria-hidden="true">
@@ -180,7 +200,7 @@ export default function ContactPageView() {
             <div>
               <div className="ct-card-label">Email Us</div>
               <div className="ct-card-val">
-                <a href={mailtoUrl('Trek enquiry from Indian Treks website')}>{CONTACT.email}</a>
+                <a href={mailtoUrl('Enquiry from Indian Treks website')}>{CONTACT.email}</a>
               </div>
               <div className="ct-card-sub">{CONTACT.replySla}</div>
             </div>
@@ -210,6 +230,90 @@ export default function ContactPageView() {
         </div>
       </div>
 
+      {/* TEAM PATHWAYS — pick who to contact */}
+      <section className="ct-teams" aria-labelledby="ct-teams-heading">
+        <div className="ct-wrap">
+          <div className="ct-sec-head ct-teams-head">
+            <div className="ct-sec-eyebrow">How Can We Help?</div>
+            <h2 id="ct-teams-heading">Choose the Right Team</h2>
+            <p>
+              Pick a pathway below to see how we can support you — then send a message and we&apos;ll
+              route it to the right department.
+            </p>
+          </div>
+
+          <div className="ct-team-tabs" role="tablist" aria-label="Contact teams">
+            {CONTACT_TEAMS.map((team) => {
+              const selected = activeTeam === team.id;
+              return (
+                <button
+                  key={team.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={selected}
+                  id={`ct-tab-${team.id}`}
+                  className={`ct-team-tab${selected ? ' is-active' : ''}`}
+                  onClick={() => setActiveTeam(team.id)}
+                >
+                  <span className="ct-team-tab-ico" aria-hidden>
+                    <i className={`fa-solid ${team.icon}`} />
+                  </span>
+                  <span className="ct-team-tab-copy">
+                    <span className="ct-team-tab-label">{team.section}</span>
+                    <span className="ct-team-tab-title">{team.title}</span>
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+
+          <div
+            className="ct-team-panel"
+            role="tabpanel"
+            aria-labelledby={`ct-tab-${selectedTeam.id}`}
+          >
+            <div className="ct-team-panel-main">
+              <p className="ct-team-audience">{selectedTeam.audience}</p>
+              {selectedTeam.intro.map((para) => (
+                <p key={para.slice(0, 48)} className="ct-team-para">
+                  {para}
+                </p>
+              ))}
+              <p className="ct-team-prompt">{selectedTeam.prompt}</p>
+              <div className="ct-team-actions">
+                <button
+                  type="button"
+                  className="ct-team-cta"
+                  onClick={() => goToForm(selectedTeam.id)}
+                >
+                  <i className="fa-solid fa-paper-plane" aria-hidden /> {selectedTeam.cta}
+                </button>
+                <a
+                  className="ct-team-wa"
+                  href={whatsappUrl(selectedTeam.waPrefill)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <i className="fa-brands fa-whatsapp" aria-hidden /> WhatsApp
+                </a>
+              </div>
+            </div>
+
+            <aside className="ct-team-helps">
+              <h3>{selectedTeam.helpsTitle}</h3>
+              <ul>
+                {selectedTeam.helpsWith.map((item) => (
+                  <li key={item}>
+                    <i className="fa-solid fa-check" aria-hidden />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </aside>
+          </div>
+        </div>
+      </section>
+
       {/* MAIN GRID — form + aside */}
       <section className="ct-main-bg">
         <div className="ct-wrap">
@@ -217,10 +321,10 @@ export default function ContactPageView() {
             <div className="ct-form-box" id="contact-form">
               <div className="ct-sec-head">
                 <div className="ct-sec-eyebrow">Send a Message</div>
-                <h2>Plan Your Trek With Us</h2>
+                <h2>Tell Us What You&apos;re Planning</h2>
                 <p>
-                  Fill in your details and one of our trek experts will get back to you with a
-                  personalised itinerary and quote.
+                  Share a few details and we&apos;ll route your enquiry to the right team — with a
+                  personalised reply within 24 hours.
                 </p>
               </div>
 
@@ -274,14 +378,30 @@ export default function ContactPageView() {
                   />
                 </div>
                 <div className="ct-field ct-form-full">
-                  <label htmlFor="ct-trek">Which Trek Are You Interested In?</label>
+                  <label htmlFor="ct-team">Which Team Should We Connect You With?</label>
                   <select
-                    id="ct-trek"
+                    id="ct-team"
                     required
-                    value={form.trek}
-                    onChange={setField('trek')}
+                    value={form.team}
+                    onChange={(e) => {
+                      const id = e.target.value as ContactTeamId | '';
+                      setForm((prev) => ({ ...prev, team: id }));
+                      if (id) setActiveTeam(id);
+                      if (error) setError('');
+                    }}
                   >
-                    <option value="">Select a trek or region…</option>
+                    <option value="">Select a team…</option>
+                    {CONTACT_TEAMS.map((t) => (
+                      <option key={t.id} value={t.id}>
+                        {t.formLabel}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="ct-field ct-form-full">
+                  <label htmlFor="ct-trek">What Are You Interested In?</label>
+                  <select id="ct-trek" required value={form.trek} onChange={setField('trek')}>
+                    <option value="">Select a trek, yatra, or partnership…</option>
                     {CONTACT_TREK_OPTIONS.map((t) => (
                       <option key={t} value={t}>
                         {t}
@@ -303,7 +423,7 @@ export default function ContactPageView() {
                 <div className="ct-field">
                   <label htmlFor="ct-group">Group Size</label>
                   <select id="ct-group" value={form.groupSize} onChange={setField('groupSize')}>
-                    <option value="">No. of trekkers…</option>
+                    <option value="">No. of travellers…</option>
                     {CONTACT_GROUP_SIZES.map((g) => (
                       <option key={g} value={g}>
                         {g}
@@ -316,7 +436,7 @@ export default function ContactPageView() {
                   <textarea
                     id="ct-message"
                     required
-                    placeholder="Tell us about your experience level, special requirements, or any questions you have…"
+                    placeholder="Tell us about dates, destinations, group details, or partnership requirements…"
                     value={form.message}
                     onChange={setField('message')}
                   />
@@ -381,7 +501,7 @@ export default function ContactPageView() {
                   <span>Quick replies, 7 days a week</span>
                 </div>
                 <a
-                  href={whatsappUrl(`Hi ${CONTACT.brand}! I have a quick trek question.`)}
+                  href={whatsappUrl(selectedTeam.waPrefill)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="ct-wa-btn"
@@ -489,20 +609,23 @@ export default function ContactPageView() {
       <section className="ct-strip">
         <div className="ct-strip-noise" aria-hidden="true" />
         <h2>
-          Still Have Questions? <em>We&apos;re Here For You.</em>
+          Your Journey Starts With <em>a Conversation.</em>
         </h2>
-        <p>Our team of experienced mountain guides is just a call or message away.</p>
+        <p>
+          Unsure which team to contact? Reach out anyway — we&apos;ll guide you to the right next
+          step.
+        </p>
         <div className="ct-strip-btns">
           <a
             className="ct-strip-btn ct-strip-btn-primary"
-            href={whatsappUrl(`Hi ${CONTACT.brand}! I still have a few questions.`)}
+            href={whatsappUrl(`Hi ${CONTACT.brand}! I need help planning my journey.`)}
             target="_blank"
             rel="noopener noreferrer"
           >
             <i className="fa-brands fa-whatsapp" aria-hidden /> WhatsApp Us Now
           </a>
-          <a className="ct-strip-btn ct-strip-btn-ghost" href={telUrl()}>
-            <i className="fa-solid fa-phone" aria-hidden /> Call {CONTACT.phoneDisplay}
+          <a className="ct-strip-btn ct-strip-btn-ghost" href="#contact-form">
+            <i className="fa-solid fa-envelope" aria-hidden /> Contact Indian Treks
           </a>
         </div>
       </section>

@@ -56,7 +56,7 @@ function CatAvatar({ src, label }: { src: string; label: string }) {
 }
 
 /**
- * JustWravel-style category row:
+ * IndiaHikes-style category row:
  * continuous auto-crawl + finger/mouse scroll + seamless infinite loop.
  */
 export default function CategoryScroller({ items }: { items: CategoryItem[] }) {

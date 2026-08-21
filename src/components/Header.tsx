@@ -113,7 +113,7 @@ export default function Header() {
       return;
     }
 
-    // JustWravel flow: sticky solid bar only after leaving the top of the page
+    // IndiaHikes flow: sticky solid bar only after leaving the top of the page
     const SHOW_AFTER = 48;
     const update = () => {
       setNavSolid(window.scrollY > SHOW_AFTER ? 1 : 0);
@@ -133,7 +133,7 @@ export default function Header() {
   const searchListRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
-  // Hero in-flow bar dispatches these (JustWravel: logo/menu live in the brand wash)
+  // Hero in-flow bar dispatches these (IndiaHikes: logo/menu live in the brand wash)
   useEffect(() => {
     const openMenu = () => setIsOpen(true);
     const openSearch = () => setMobSearch(true);
@@ -266,7 +266,7 @@ export default function Header() {
 
   return (
     <div ref={headerRef}>
-      {/* Desktop header — JustWravel flow: always-visible white bar. Hero
+      {/* Desktop header — IndiaHikes flow: always-visible white bar. Hero
           content is padded below it; the bar never hides or dissolves. */}
       <header className="fixed left-0 top-0 z-50 hidden w-full bg-white shadow-sm lg:block">
         <div className="flex h-16 items-center justify-between gap-4 px-6 xl:px-10 2xl:px-14">
@@ -333,7 +333,7 @@ export default function Header() {
       {isHome && <div aria-hidden className="hidden h-16 shrink-0 lg:block" />}
 
       {/*
-        Mobile header (JustWravel flow):
+        Mobile header (IndiaHikes flow):
         - Homepage top: hidden  -  logo/menu live in the brand wash (document flow)
         - After scroll: solid brand-wash bar slides in and sticks
         - Other pages: always visible solid wash
