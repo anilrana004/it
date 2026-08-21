@@ -11,7 +11,7 @@ import { ABOUT_STATS } from '@/lib/about-content';
 
 export default function AboutPage() {
   return (
-    <div className="it-about-page pb-16 lg:pb-20">
+    <>
       <AboutVideoHero />
 
       <div className="pt-6 sm:pt-10 lg:pt-14">
@@ -27,26 +27,22 @@ export default function AboutPage() {
                 <div className="font-[family-name:var(--font-heading)] text-lg font-bold text-[#16a34a] sm:text-2xl lg:text-4xl">
                   {s.v}
                 </div>
-                <div className="mt-0.5 text-[10px] leading-snug text-gray-600 sm:text-sm">{s.l}</div>
+                <div className="mt-0.5 text-[10px] leading-snug text-gray-600 sm:text-sm">
+                  {s.l}
+                </div>
               </div>
             ))}
           </div>
         </div>
       </div>
 
-      {/*
-        Sticky stacked chapters must sit as a full-bleed section with no
-        overflow-x / padding ancestors between here and the viewport scrollport.
-      */}
+      {/* Full-bleed sticky stack — direct child of <main>, no overflow wrappers */}
       <OurJourney />
 
-      <div>
+      <div className="pb-16 lg:pb-20">
         <OurPackingList />
-
         <WhyTravelWithUs />
-
         <RecognitionCertifications />
-
         <AppreciationLetters />
 
         <div className="container mx-auto max-w-4xl px-4">
@@ -59,12 +55,17 @@ export default function AboutPage() {
             >
               Get in Touch
               <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M17 8l4 4m0 0l-4 4m4-4H3"
+                />
               </svg>
             </Link>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

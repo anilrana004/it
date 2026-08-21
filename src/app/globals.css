@@ -60,13 +60,17 @@ html {
   scroll-behavior: smooth;
   width: 100%;
   max-width: 100%;
-  /* Keep overflow-x visible so sticky “Our Journey” can pin to the viewport.
-     Horizontal spill is clipped on page shells / components instead. */
+  /*
+    Sticky journey requires overflow visible on the viewport scroll chain.
+    Clip horizontal spill on components instead of html/body/main.
+  */
   overflow-x: visible;
+  overflow-y: visible;
   overscroll-behavior-x: none;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
 }
+body.it-body,
 body {
   font-family: var(--font-sans);
   color: var(--jw-text);
@@ -77,10 +81,27 @@ body {
   width: 100%;
   max-width: 100%;
   min-height: 100dvh;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
   overflow-x: visible;
+  overflow-y: visible;
   overscroll-behavior-x: none;
   overscroll-behavior-y: none;
   position: relative;
+}
+
+/*
+  Tailwind flex-1 (= flex: 1 1 0%) breaks position:sticky inside <main>.
+  Use grow with auto basis so sticky Our Journey can pin to the viewport.
+*/
+main.it-main {
+  display: block;
+  flex: 1 0 auto;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow: visible;
 }
 
 /* Prevent iOS auto-zoom on focus (requires ≥16px). */

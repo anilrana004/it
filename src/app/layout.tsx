@@ -43,12 +43,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           referrerPolicy="no-referrer"
         />
       </head>
-      <body className="min-h-dvh flex flex-col overscroll-x-none">
+      <body className="it-body min-h-dvh overscroll-x-none">
         <Header />
-        {/* No overflow-x containment here — sticky Our Journey needs the viewport scrollport */}
-        <main className="relative flex-1 w-full min-w-0 overflow-visible pb-16 lg:pb-0">
-          {children}
-        </main>
+        {/*
+          Class it-main sets flex: 1 0 auto in globals.css.
+          Do not add Tailwind flex-1 here — flex-basis:0% breaks sticky.
+        */}
+        <main className="it-main relative pb-16 lg:pb-0">{children}</main>
         <Footer />
         <WhatsAppFloat />
         <MobileBottomNav />
