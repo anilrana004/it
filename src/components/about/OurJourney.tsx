@@ -97,7 +97,6 @@ export default function OurJourney() {
   const rootRef = useRef<HTMLElement>(null);
   const panelRefs = useRef<(HTMLDivElement | null)[]>([]);
   const rafRef = useRef(0);
-  const [active, setActive] = useState(0);
   const [reducedMotion, setReducedMotion] = useState(false);
 
   useEffect(() => {
@@ -131,8 +130,6 @@ export default function OurJourney() {
       const stickRange = Math.max(root.offsetHeight - panelH, 1);
       const scrolled = clamp(-rect.top + headerPx, 0, stickRange);
       const rawIndex = scrolled / panelH; // 0 → n-1
-      const current = Math.min(count - 1, Math.floor(rawIndex + 1e-4));
-      setActive((prev) => (prev === current ? prev : current));
 
       panelRefs.current.forEach((el, i) => {
         if (!el) return;
@@ -194,7 +191,6 @@ export default function OurJourney() {
                   ? { transform: 'translate3d(0, 0, 0)', zIndex: 1 }
                   : { zIndex: i + 1 }
             }
-            aria-hidden={reducedMotion ? undefined : i !== active}
           >
             <div className="it-sticky-journey__grid">
               <div className="it-sticky-journey__media">
@@ -228,17 +224,6 @@ export default function OurJourney() {
             </div>
           </div>
         ))}
-
-        {!reducedMotion ? (
-          <div className="it-sticky-journey__dots" aria-hidden>
-            {CHAPTERS.map((c, i) => (
-              <span
-                key={c.id}
-                className={`it-sticky-journey__dot${i === active ? ' is-active' : ''}`}
-              />
-            ))}
-          </div>
-        ) : null}
       </div>
     </section>
   );

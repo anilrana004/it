@@ -208,38 +208,6 @@
   }
 }
 
-/* Progress dots — helpful on touch devices */
-.it-sticky-journey__dots {
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  z-index: 20;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  transform: translateY(-50%);
-  pointer-events: none;
-}
-
-.it-sticky-journey__dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 999px;
-  background: rgba(22, 163, 74, 0.28);
-  transition: background 0.2s ease, transform 0.2s ease;
-}
-
-.it-sticky-journey__dot.is-active {
-  background: #16a34a;
-  transform: scale(1.25);
-}
-
-@media (min-width: 640px) {
-  .it-sticky-journey__dots {
-    right: 18px;
-  }
-}
-
 /* Reduced motion: stack chapters normally, no pin/slide */
 @media (prefers-reduced-motion: reduce) {
   .it-sticky-journey {
@@ -260,9 +228,5 @@
     height: auto;
     min-height: var(--it-journey-panel);
     will-change: auto;
-  }
-
-  .it-sticky-journey__dots {
-    display: none;
   }
 }
