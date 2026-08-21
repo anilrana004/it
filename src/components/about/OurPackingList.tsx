@@ -1,13 +1,14 @@
 'use client';
 
 import Link from 'next/link';
-import { useId, useRef } from 'react';
+import { useEffect, useId, useRef } from 'react';
 import { photos } from '@/lib/media';
 import PackedJourneysMemories from './PackedJourneysMemories';
 import './our-packing-list.css';
 
 /**
- * Our Packing List — journey categories with reliable click + horizontal swipe.
+ * Our Packing List — journey categories.
+ * Vertical page scroll must keep working; horizontal swipe only when intentional.
  */
 
 const PACKED = [
@@ -70,7 +71,7 @@ const PACKED = [
 ] as const;
 
 /** Ignore click after a horizontal drag (swipe), allow real taps. */
-function useSwipeSafeClick(threshold = 10) {
+function useSwipeSafeClick(threshold = 12) {
   const origin = useRef<{ x: number; y: number } | null>(null);
   const moved = useRef(false);
 
@@ -83,7 +84,8 @@ function useSwipeSafeClick(threshold = 10) {
       if (!origin.current) return;
       const dx = Math.abs(e.clientX - origin.current.x);
       const dy = Math.abs(e.clientY - origin.current.y);
-      if (dx > threshold || dy > threshold) moved.current = true;
+      // Only treat as swipe-drag when mostly horizontal
+      if (dx > threshold && dx > dy * 1.2) moved.current = true;
     },
     onPointerUp: () => {
       origin.current = null;
@@ -101,9 +103,32 @@ function useSwipeSafeClick(threshold = 10) {
 export default function OurPackingList() {
   const titleId = useId();
   const swipeSafe = useSwipeSafeClick();
+  const sectionRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    const root = sectionRef.current;
+    if (!root) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      root.classList.add('is-revealed');
+      return;
+    }
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          root.classList.add('is-revealed');
+          io.disconnect();
+        }
+      },
+      { threshold: 0.12, rootMargin: '0px 0px -8% 0px' },
+    );
+    io.observe(root);
+    return () => io.disconnect();
+  }, []);
 
   return (
     <section
+      ref={sectionRef}
       id="packing-list"
       className="it-pack scroll-mt-24 sm:scroll-mt-28"
       aria-labelledby={titleId}
@@ -115,8 +140,8 @@ export default function OurPackingList() {
             Our Packing List <em>!!</em>
           </h2>
           <p className="it-pack__lead">
-            Everything we pack into an Indian Treks departure. Swipe the cards, then tap to open a
-            journey.
+            Everything we pack into an Indian Treks departure. Swipe sideways for more cards — scroll
+            the page normally to keep moving through About.
           </p>
         </header>
       </div>
@@ -130,15 +155,17 @@ export default function OurPackingList() {
           onPointerCancel={swipeSafe.onPointerUp}
           onClickCapture={swipeSafe.onClickCapture}
         >
-          {PACKED.map((item) => (
+          {PACKED.map((item, i) => (
             <Link
               key={item.id}
               href={item.href}
               className={`it-pack__cat it-pack__cat--${item.tone}`}
+              style={{ '--i': i } as React.CSSProperties}
               draggable={false}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={item.img} alt="" loading="lazy" draggable={false} />
+              <span className="it-pack__cat-shine" aria-hidden />
               <span className="it-pack__cat-label">{item.label}</span>
             </Link>
           ))}

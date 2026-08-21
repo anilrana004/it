@@ -111,8 +111,11 @@ export default function PackedJourneysMemories() {
           slideToClickedSlide
           simulateTouch
           allowTouchMove
-          threshold={6}
+          threshold={8}
+          touchAngle={28}
+          touchReleaseOnEdges
           touchStartPreventDefault={false}
+          resistanceRatio={0.65}
           coverflowEffect={{
             rotate: 48,
             stretch: -28,

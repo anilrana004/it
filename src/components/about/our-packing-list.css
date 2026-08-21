@@ -1,6 +1,6 @@
 /**
- * Our Packing List — large category cards + trail memories
- * Native horizontal snap scroll (works on phone).
+ * Our Packing List — category cards + trail memories
+ * Page vertical scroll always works; horizontal only for intentional sideways swipe.
  */
 
 .it-pack {
@@ -12,7 +12,7 @@
   position: relative;
   z-index: 1;
   overflow: visible;
-  padding: 36px 0 8px;
+  padding: 40px 0 12px;
   background: #fff;
   pointer-events: auto;
   isolation: isolate;
@@ -26,7 +26,15 @@
 .it-pack__intro {
   text-align: center;
   max-width: 40rem;
-  margin: 0 auto 22px;
+  margin: 0 auto 26px;
+  opacity: 0;
+  transform: translate3d(0, 18px, 0);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+
+.it-pack.is-revealed .it-pack__intro {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
 }
 
 .it-pack__eyebrow {
@@ -64,7 +72,7 @@
 /* —— Category rail —— */
 .it-pack__cats {
   width: 100%;
-  margin: 0 auto 4px;
+  margin: 0 auto 8px;
   position: relative;
   z-index: 2;
   pointer-events: auto;
@@ -72,15 +80,17 @@
 
 .it-pack__cats-rail {
   display: flex;
-  gap: 14px;
-  padding: 8px max(16px, 4vw) 28px;
+  gap: 16px;
+  padding: 10px max(16px, 4vw) 32px;
   overflow-x: auto;
-  overflow-y: hidden;
-  scroll-snap-type: x mandatory;
+  overflow-y: visible;
+  scroll-snap-type: x proximity;
   scroll-padding-inline: max(16px, 4vw);
   -webkit-overflow-scrolling: touch;
+  /* Allow page to scroll up/down while finger is on cards */
   overscroll-behavior-x: contain;
-  touch-action: pan-x;
+  overscroll-behavior-y: auto;
+  touch-action: pan-x pan-y;
   cursor: grab;
   scrollbar-width: thin;
   scrollbar-color: rgba(22, 163, 74, 0.45) transparent;
@@ -100,43 +110,59 @@
 }
 
 .it-pack__cat {
+  --i: 0;
   position: relative;
   flex: 0 0 auto;
-  width: min(78vw, 320px);
-  height: min(62vh, 520px);
-  min-height: 380px;
-  border-radius: 0.85rem;
+  /* Balanced card size — not full-viewport so page scroll feels natural */
+  width: min(72vw, 260px);
+  aspect-ratio: 3 / 4.15;
+  height: auto;
+  min-height: 0;
+  border-radius: 1rem;
   overflow: hidden;
   text-decoration: none;
   color: inherit;
   background: #111;
   scroll-snap-align: center;
-  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.14);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 14px 32px rgba(15, 23, 42, 0.14);
+  transition:
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.35s ease,
+    opacity 0.5s ease;
   -webkit-tap-highlight-color: transparent;
   cursor: pointer;
   pointer-events: auto;
   touch-action: manipulation;
   z-index: 1;
+  opacity: 0;
+  transform: translate3d(0, 28px, 0) scale(0.96);
+}
+
+.it-pack.is-revealed .it-pack__cat {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+  transition-delay: calc(var(--i) * 55ms);
 }
 
 @media (min-width: 768px) {
   .it-pack__cat {
-    width: min(34vw, 300px);
-    height: min(64vh, 560px);
-    min-height: 440px;
+    width: min(28vw, 250px);
   }
 }
 
 @media (min-width: 1100px) {
   .it-pack__cat {
-    width: 280px;
-    height: 520px;
+    width: 240px;
   }
 }
 
 .it-pack__cat:hover {
-  box-shadow: 0 22px 44px rgba(15, 23, 42, 0.2);
+  transform: translate3d(0, -8px, 0) scale(1.02);
+  box-shadow: 0 24px 48px rgba(15, 23, 42, 0.2);
+}
+
+.it-pack.is-revealed .it-pack__cat:hover {
+  transform: translate3d(0, -8px, 0) scale(1.02);
 }
 
 .it-pack__cat:active {
@@ -150,21 +176,47 @@
   display: block;
   pointer-events: none;
   user-select: none;
+  transform: scale(1.04);
+  transition: transform 0.7s ease;
+}
+
+.it-pack__cat:hover img {
+  transform: scale(1.1);
+}
+
+.it-pack__cat-shine {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    115deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.18) 48%,
+    transparent 62%
+  );
+  transform: translateX(-120%);
+  transition: transform 0.7s ease;
+}
+
+.it-pack__cat:hover .it-pack__cat-shine {
+  transform: translateX(120%);
 }
 
 .it-pack__cat-label {
   position: absolute;
   left: 50%;
-  bottom: 8%;
-  transform: translate(-50%, 40%);
-  width: 70%;
-  max-width: 220px;
-  padding: 0.75rem 0.7rem;
-  border-radius: 0.6rem;
+  bottom: 10%;
+  transform: translate(-50%, 35%);
+  z-index: 2;
+  width: 72%;
+  max-width: 200px;
+  padding: 0.65rem 0.55rem;
+  border-radius: 0.55rem;
   text-align: center;
   color: #fff;
   font-family: var(--font-heading), ui-sans-serif, system-ui, sans-serif;
-  font-size: clamp(1rem, 3.2vw, 1.35rem);
+  font-size: clamp(0.92rem, 2.8vw, 1.15rem);
   font-weight: 800;
   line-height: 1.15;
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
@@ -181,10 +233,10 @@
 
 /* —— Memories 3D coverflow —— */
 .it-pack-mem {
-  margin-top: 20px;
-  padding: 32px 0 16px;
+  margin-top: 12px;
+  padding: 36px 0 16px;
   background: #fafafa;
-  overflow: hidden;
+  overflow: visible;
   position: relative;
   z-index: 1;
   pointer-events: auto;
@@ -222,13 +274,16 @@
   padding: 8px 0 20px;
   z-index: 1;
   pointer-events: auto;
+  /* Let vertical page scroll pass through unless clearly horizontal */
+  touch-action: pan-y pan-x;
 }
 
 .it-pack-mem__swiper {
   width: 100%;
-  padding: 28px 0 56px !important;
+  padding: 24px 0 56px !important;
   overflow: visible;
   cursor: grab;
+  touch-action: pan-y pan-x;
 }
 
 .it-pack-mem__swiper:active {
@@ -240,8 +295,8 @@
 }
 
 .it-pack-mem__slide {
-  width: min(78vw, 760px) !important;
-  height: clamp(250px, 46vw, 420px);
+  width: min(82vw, 640px) !important;
+  height: clamp(220px, 42vw, 360px);
   background: transparent;
   cursor: pointer;
   pointer-events: auto !important;
@@ -251,19 +306,22 @@
   position: relative;
   width: 100%;
   height: 100%;
-  border-radius: 1.5rem;
+  border-radius: 1.35rem;
   overflow: hidden;
-  border: 6px solid #fff;
+  border: 5px solid #fff;
   background: #111;
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.14);
-  transition: border-width 0.35s ease, box-shadow 0.35s ease;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.14);
+  transition:
+    border-width 0.35s ease,
+    box-shadow 0.35s ease,
+    transform 0.35s ease;
   pointer-events: auto;
   cursor: pointer;
 }
 
 .it-pack-mem__panel.is-active {
-  border-width: 8px;
-  box-shadow: 0 28px 60px rgba(0, 0, 0, 0.2);
+  border-width: 7px;
+  box-shadow: 0 26px 56px rgba(0, 0, 0, 0.2);
   cursor: grab;
 }
 
@@ -277,7 +335,6 @@
   user-select: none;
 }
 
-/* Keep video visual, but never let iframe steal swipe / side clicks */
 .it-pack-mem__media--video {
   pointer-events: none !important;
 }
@@ -376,8 +433,8 @@
 
 @media (min-width: 1024px) {
   .it-pack-mem {
-    margin-top: 28px;
-    padding: 44px 0 16px;
+    margin-top: 20px;
+    padding: 48px 0 18px;
   }
 
   .it-pack-mem__head {
@@ -389,25 +446,33 @@
   }
 
   .it-pack-mem__slide {
-    width: min(68vw, 880px) !important;
-    height: clamp(340px, 38vw, 456px);
+    width: min(62vw, 780px) !important;
+    height: clamp(300px, 34vw, 400px);
   }
 }
 
 @media (max-width: 640px) {
+  .it-pack {
+    padding: 28px 0 8px;
+  }
+
+  .it-pack__cat {
+    width: min(70vw, 240px);
+  }
+
   .it-pack-mem {
-    margin-top: 16px;
+    margin-top: 8px;
     padding: 24px 0 8px;
   }
 
   .it-pack-mem__slide {
-    width: min(86vw, 420px) !important;
-    height: 260px;
+    width: min(88vw, 400px) !important;
+    height: 230px;
   }
 
   .it-pack-mem__panel {
-    border-radius: 1.2rem;
-    border-width: 5px;
+    border-radius: 1.15rem;
+    border-width: 4px;
   }
 
   .it-pack-mem__panel.is-active {
@@ -427,10 +492,15 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .it-pack__intro,
   .it-pack__cat,
+  .it-pack__cat img,
+  .it-pack__cat-shine,
   .it-pack-mem__cta,
   .it-pack-mem__panel {
-    transition: none;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
   }
 
   .it-pack-mem__cta:hover {
