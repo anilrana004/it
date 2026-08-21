@@ -1,15 +1,24 @@
 'use client';
 
 import Link from 'next/link';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { EffectCoverflow, Navigation, Pagination } from 'swiper/modules';
+import type { Swiper as SwiperType } from 'swiper';
 import { photos } from '@/lib/media';
 
+import 'swiper/css';
+import 'swiper/css/effect-coverflow';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+
 /**
- * What’s packed — 3D fanned coverflow (JustWravel Memories-style depth),
- * responsive by device. Same journey content; center plays, sides click to focus.
+ * What’s packed — JustWravel “Memories for Life” 3D coverflow
+ * https://www.justwravel.com/about
+ * Swiper coverflow + muted center video; same Indian Treks journeys.
  */
 
-export type PackedJourney = {
+type Journey = {
   id: string;
   title: string;
   href: string;
@@ -17,7 +26,7 @@ export type PackedJourney = {
   image: string;
 };
 
-const JOURNEYS: PackedJourney[] = [
+const JOURNEYS: Journey[] = [
   {
     id: 'treks',
     title: 'Himalayan Treks',
@@ -76,86 +85,9 @@ function embedUrl(id: string) {
   return `https://www.youtube-nocookie.com/embed/${id}?${q.toString()}`;
 }
 
-type Layout = {
-  spacing: number;
-  angle: number;
-  depth: number;
-  scaleStep: number;
-  visible: number;
-};
-
-function useFanLayout(): Layout {
-  const [layout, setLayout] = useState<Layout>({
-    spacing: 52,
-    angle: 42,
-    depth: 120,
-    scaleStep: 0.08,
-    visible: 2,
-  });
-
-  useEffect(() => {
-    const sync = () => {
-      const w = window.innerWidth;
-      if (w < 520) {
-        setLayout({ spacing: 28, angle: 28, depth: 70, scaleStep: 0.1, visible: 1 });
-      } else if (w < 768) {
-        setLayout({ spacing: 36, angle: 34, depth: 90, scaleStep: 0.09, visible: 2 });
-      } else if (w < 1100) {
-        setLayout({ spacing: 46, angle: 38, depth: 110, scaleStep: 0.08, visible: 2 });
-      } else {
-        setLayout({ spacing: 54, angle: 44, depth: 140, scaleStep: 0.07, visible: 2 });
-      }
-    };
-    sync();
-    window.addEventListener('resize', sync);
-    return () => window.removeEventListener('resize', sync);
-  }, []);
-
-  return layout;
-}
-
 export default function PackedJourneysMemories() {
   const [active, setActive] = useState(0);
-  const layout = useFanLayout();
-  const stageRef = useRef<HTMLDivElement | null>(null);
-  const drag = useRef<{ x: number; active: boolean }>({ x: 0, active: false });
-  const reduceMotion = useRef(false);
-
-  useEffect(() => {
-    reduceMotion.current = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  }, []);
-
-  const goTo = useCallback((index: number) => {
-    const n = JOURNEYS.length;
-    setActive(((index % n) + n) % n);
-  }, []);
-
-  const onPointerDown = (e: React.PointerEvent) => {
-    drag.current = { x: e.clientX, active: true };
-    (e.currentTarget as HTMLElement).setPointerCapture?.(e.pointerId);
-  };
-
-  const onPointerUp = (e: React.PointerEvent) => {
-    if (!drag.current.active) return;
-    const dx = e.clientX - drag.current.x;
-    drag.current.active = false;
-    if (Math.abs(dx) < 40) return;
-    goTo(active + (dx < 0 ? 1 : -1));
-  };
-
-  useEffect(() => {
-    const el = stageRef.current;
-    if (!el) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowLeft') goTo(active - 1);
-      if (e.key === 'ArrowRight') goTo(active + 1);
-    };
-    el.addEventListener('keydown', onKey);
-    return () => el.removeEventListener('keydown', onKey);
-  }, [active, goTo]);
-
-  const current = JOURNEYS[active];
-  const n = JOURNEYS.length;
+  const current = JOURNEYS[active] ?? JOURNEYS[0];
 
   return (
     <div className="it-pack-mem" aria-label="What's packed — journeys">
@@ -164,100 +96,90 @@ export default function PackedJourneysMemories() {
         <h3 className="it-pack-mem__title">Tap a journey to open it</h3>
       </div>
 
-      <div
-        ref={stageRef}
-        className="it-pack-mem__fan"
-        tabIndex={0}
-        onPointerDown={onPointerDown}
-        onPointerUp={onPointerUp}
-        onPointerCancel={() => {
-          drag.current.active = false;
-        }}
-      >
-        <button
-          type="button"
-          className="it-pack-mem__nav it-pack-mem__nav--prev"
-          aria-label="Previous journey"
-          onClick={() => goTo(active - 1)}
+      <div className="it-pack-mem__shell">
+        <Swiper
+          className="it-pack-mem__swiper"
+          modules={[EffectCoverflow, Navigation, Pagination]}
+          effect="coverflow"
+          grabCursor
+          centeredSlides
+          slidesPerView="auto"
+          speed={700}
+          navigation
+          pagination={{ clickable: true }}
+          coverflowEffect={{
+            rotate: 48,
+            stretch: -28,
+            depth: 220,
+            modifier: 1.15,
+            slideShadows: false,
+          }}
+          breakpoints={{
+            0: {
+              coverflowEffect: {
+                rotate: 26,
+                stretch: -12,
+                depth: 140,
+                modifier: 1,
+                slideShadows: false,
+              },
+            },
+            640: {
+              coverflowEffect: {
+                rotate: 36,
+                stretch: -18,
+                depth: 180,
+                modifier: 1.05,
+                slideShadows: false,
+              },
+            },
+            1024: {
+              coverflowEffect: {
+                rotate: 48,
+                stretch: -28,
+                depth: 220,
+                modifier: 1.15,
+                slideShadows: false,
+              },
+            },
+            1400: {
+              coverflowEffect: {
+                rotate: 52,
+                stretch: -36,
+                depth: 260,
+                modifier: 1.2,
+                slideShadows: false,
+              },
+            },
+          }}
+          onSwiper={(swiper: SwiperType) => setActive(swiper.activeIndex)}
+          onSlideChange={(swiper: SwiperType) => setActive(swiper.activeIndex)}
         >
-          <i className="fa-solid fa-chevron-left" aria-hidden />
-        </button>
-
-        <div className="it-pack-mem__scene" aria-live="polite">
           {JOURNEYS.map((item, i) => {
-            let offset = i - active;
-            if (offset > n / 2) offset -= n;
-            if (offset < -n / 2) offset += n;
-
-            const abs = Math.abs(offset);
-            const hidden = abs > layout.visible;
-            const isActive = offset === 0;
-
-            const transform = isActive
-              ? 'translate(-50%, -50%) translateZ(0) rotateY(0deg) scale(1)'
-              : `translate(-50%, -50%) translateX(${offset * layout.spacing}%) translateZ(${-abs * layout.depth}px) rotateY(${-offset * layout.angle}deg) scale(${Math.max(0.72, 1 - abs * layout.scaleStep)})`;
-
+            const isActive = i === active;
             return (
-              <button
-                key={item.id}
-                type="button"
-                className={`it-pack-mem__card${isActive ? ' is-active' : ''}${hidden ? ' is-far' : ''}`}
-                style={{
-                  transform,
-                  zIndex: isActive ? 40 : 20 - abs,
-                  opacity: hidden ? 0 : 1,
-                  pointerEvents: hidden ? 'none' : 'auto',
-                  transition: reduceMotion.current
-                    ? 'none'
-                    : 'transform 0.65s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.35s ease',
-                }}
-                aria-pressed={isActive}
-                aria-label={item.title}
-                tabIndex={hidden ? -1 : 0}
-                onClick={() => {
-                  if (!isActive) goTo(i);
-                }}
-              >
-                {isActive ? (
-                  <iframe
-                    className="it-pack-mem__frame"
-                    src={embedUrl(item.youtubeId)}
-                    title={item.title}
-                    allow="autoplay; encrypted-media; picture-in-picture"
-                    allowFullScreen
-                  />
-                ) : (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img className="it-pack-mem__thumb" src={item.image} alt="" loading="lazy" />
-                )}
-                {!isActive ? <span className="it-pack-mem__card-label">{item.title}</span> : null}
-              </button>
+              <SwiperSlide key={item.id} className="it-pack-mem__slide">
+                <div className={`it-pack-mem__panel${isActive ? ' is-active' : ''}`}>
+                  {isActive ? (
+                    <iframe
+                      className="it-pack-mem__media"
+                      src={embedUrl(item.youtubeId)}
+                      title={item.title}
+                      allow="autoplay; encrypted-media; picture-in-picture"
+                      allowFullScreen
+                    />
+                  ) : (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img className="it-pack-mem__media" src={item.image} alt={item.title} loading="lazy" />
+                  )}
+                  {!isActive ? (
+                    <span className="it-pack-mem__caption">{item.title}</span>
+                  ) : null}
+                </div>
+              </SwiperSlide>
             );
           })}
-        </div>
-
-        <button
-          type="button"
-          className="it-pack-mem__nav it-pack-mem__nav--next"
-          aria-label="Next journey"
-          onClick={() => goTo(active + 1)}
-        >
-          <i className="fa-solid fa-chevron-right" aria-hidden />
-        </button>
-      </div>
-
-      <div className="it-pack-mem__dots" role="tablist" aria-label="Journey slides">
-        {JOURNEYS.map((item, i) => (
-          <button
-            key={item.id}
-            type="button"
-            role="tab"
-            aria-selected={i === active}
-            aria-label={item.title}
-            className={`it-pack-mem__dot${i === active ? ' is-active' : ''}`}
-            onClick={() => goTo(i)}
-          />
-        ))}
+        </Swiper>
       </div>
 
       <div className="it-pack-mem__cta-wrap">
