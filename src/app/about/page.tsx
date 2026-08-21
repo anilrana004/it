@@ -36,7 +36,7 @@ export default function AboutPage() {
         </div>
       </div>
 
-      {/* Full-bleed sticky stack — direct child of <main>, no overflow wrappers */}
+      {/* Tamsra-style vertical timeline — works on every device */}
       <OurJourney />
 
       <div className="pb-16 lg:pb-20">
