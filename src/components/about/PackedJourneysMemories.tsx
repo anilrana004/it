@@ -92,8 +92,8 @@ export default function PackedJourneysMemories() {
   return (
     <div className="it-pack-mem" aria-label="What's packed — journeys">
       <div className="it-pack-mem__head">
-        <p className="it-pack-mem__kicker">What&apos;s packed</p>
-        <h3 className="it-pack-mem__title">Tap a journey to open it</h3>
+        <p className="it-pack-mem__kicker">Videos</p>
+        <h3 className="it-pack-mem__title">Memories from the trail</h3>
       </div>
 
       <div className="it-pack-mem__shell">
