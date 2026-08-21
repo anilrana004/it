@@ -1,10 +1,7 @@
 /**
- * Sticky stacked “Our Journey” chapters.
- * Each panel is position:sticky at the same top; later panels use higher
- * z-index so they slide over earlier ones while pinned.
- *
- * Ancestors must not create an overflow scrollport
- * (no overflow-x: clip/hidden on html/body/main).
+ * Cross-device “Our Journey” scrollytelling.
+ * One sticky stage + absolute chapters that slide over each other.
+ * Uses 100svh (stable mobile viewport) — works on iOS/Android/desktop.
  */
 
 .it-sticky-journey {
@@ -12,50 +9,55 @@
   --it-journey-text: #141414;
   --it-journey-muted: #3f3f3f;
   --it-journey-header: 0px;
+  --it-journey-panel: 100svh;
+  --it-journey-count: 6;
 
+  position: relative;
   display: block;
   width: 100%;
+  /* Scroll runway: one viewport per chapter */
+  height: calc(var(--it-journey-count) * var(--it-journey-panel));
   background: var(--it-journey-bg);
   overflow: visible;
 }
 
 @media (min-width: 1024px) {
   .it-sticky-journey {
-    /* Match fixed desktop header (h-16) */
-    --it-journey-header: 4rem;
+    --it-journey-header: 4rem; /* fixed desktop header h-16 */
+    --it-journey-panel: calc(100svh - var(--it-journey-header));
   }
 }
 
-.it-sticky-journey__panel {
+.it-sticky-journey__stage {
   position: -webkit-sticky;
   position: sticky;
   top: var(--it-journey-header);
+  z-index: 1;
+  width: 100%;
+  height: var(--it-journey-panel);
+  overflow: hidden;
+  background: var(--it-journey-bg);
+}
+
+.it-sticky-journey__panel {
+  position: absolute;
+  inset: 0;
   z-index: 1;
   display: flex;
   align-items: stretch;
   justify-content: center;
   width: 100%;
-  height: 100vh;
-  height: 100svh;
-  height: 100dvh;
+  height: 100%;
   background: var(--it-journey-bg);
-  /* Avoid isolation:isolate — unnecessary stacking context noise */
+  will-change: transform;
+  transform: translate3d(0, 100%, 0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
-@media (min-width: 1024px) {
-  .it-sticky-journey__panel {
-    height: calc(100vh - var(--it-journey-header));
-    height: calc(100svh - var(--it-journey-header));
-    height: calc(100dvh - var(--it-journey-header));
-  }
+.it-sticky-journey__panel.is-static {
+  will-change: auto;
 }
-
-.it-sticky-journey__panel:nth-child(1) { z-index: 1; }
-.it-sticky-journey__panel:nth-child(2) { z-index: 2; }
-.it-sticky-journey__panel:nth-child(3) { z-index: 3; }
-.it-sticky-journey__panel:nth-child(4) { z-index: 4; }
-.it-sticky-journey__panel:nth-child(5) { z-index: 5; }
-.it-sticky-journey__panel:nth-child(6) { z-index: 6; }
 
 .it-sticky-journey__grid {
   display: grid;
@@ -99,6 +101,7 @@
   height: 100%;
   object-fit: cover;
   display: block;
+  pointer-events: none;
 }
 
 .it-sticky-journey__copy {
@@ -124,6 +127,27 @@
   .it-sticky-journey__copy {
     padding-left: 20%;
     padding-right: 20%;
+  }
+}
+
+/* Landscape phones: keep copy readable */
+@media (max-height: 480px) and (orientation: landscape) {
+  .it-sticky-journey__grid {
+    grid-template-columns: 1fr 1.1fr;
+    grid-template-rows: minmax(0, 1fr);
+  }
+
+  .it-sticky-journey__copy {
+    padding: 0.5rem 1rem;
+  }
+
+  .it-sticky-journey__body {
+    font-size: 0.75rem;
+    line-height: 1.4;
+  }
+
+  .it-sticky-journey__title {
+    font-size: 1.05rem;
   }
 }
 
@@ -184,11 +208,61 @@
   }
 }
 
+/* Progress dots — helpful on touch devices */
+.it-sticky-journey__dots {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.it-sticky-journey__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: rgba(22, 163, 74, 0.28);
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.it-sticky-journey__dot.is-active {
+  background: #16a34a;
+  transform: scale(1.25);
+}
+
+@media (min-width: 640px) {
+  .it-sticky-journey__dots {
+    right: 18px;
+  }
+}
+
+/* Reduced motion: stack chapters normally, no pin/slide */
 @media (prefers-reduced-motion: reduce) {
-  .it-sticky-journey__panel {
+  .it-sticky-journey {
+    height: auto;
+  }
+
+  .it-sticky-journey__stage {
     position: relative;
     top: auto;
     height: auto;
-    min-height: 100svh;
+    overflow: visible;
+  }
+
+  .it-sticky-journey__panel {
+    position: relative;
+    inset: auto;
+    transform: none !important;
+    height: auto;
+    min-height: var(--it-journey-panel);
+    will-change: auto;
+  }
+
+  .it-sticky-journey__dots {
+    display: none;
   }
 }

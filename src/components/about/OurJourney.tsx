@@ -1,9 +1,16 @@
+'use client';
+
+import { useEffect, useRef, useState } from 'react';
 import './our-journey.css';
 
 /**
  * UI/UX mirrored from https://www.abercrombiekent.com/about-us —
- * “Our Journey Began in Africa”: sticky stacked chapters; each panel
- * pins while the next slides over it.
+ * “Our Journey Began in Africa”.
+ *
+ * Cross-device approach (phone / tablet / desktop / iOS / Android):
+ * - Tall scroll runway (N × 100svh)
+ * - ONE sticky stage (most reliable sticky pattern across browsers)
+ * - Absolute chapters slide up over each other via scroll progress
  */
 
 const CHAPTERS = [
@@ -82,42 +89,157 @@ const CHAPTERS = [
   },
 ] as const;
 
+function clamp(n: number, min: number, max: number) {
+  return Math.min(max, Math.max(min, n));
+}
+
 export default function OurJourney() {
+  const rootRef = useRef<HTMLElement>(null);
+  const panelRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const rafRef = useRef(0);
+  const [active, setActive] = useState(0);
+  const [reducedMotion, setReducedMotion] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const sync = () => setReducedMotion(mq.matches);
+    sync();
+    mq.addEventListener?.('change', sync);
+    return () => mq.removeEventListener?.('change', sync);
+  }, []);
+
+  useEffect(() => {
+    if (reducedMotion) return;
+
+    const root = rootRef.current;
+    if (!root) return;
+
+    const count = CHAPTERS.length;
+    root.style.setProperty('--it-journey-count', String(count));
+
+    const update = () => {
+      rafRef.current = 0;
+      const rect = root.getBoundingClientRect();
+      const headerRaw = getComputedStyle(root).getPropertyValue('--it-journey-header').trim();
+      const headerPx = headerRaw.endsWith('rem')
+        ? parseFloat(headerRaw) * 16
+        : parseFloat(headerRaw) || 0;
+
+      const stage = root.querySelector('.it-sticky-journey__stage') as HTMLElement | null;
+      const panelH = Math.max(stage?.offsetHeight || 0, 1);
+      // Sticky hold distance = section height − stage height ≈ (n − 1) × panel
+      const stickRange = Math.max(root.offsetHeight - panelH, 1);
+      const scrolled = clamp(-rect.top + headerPx, 0, stickRange);
+      const rawIndex = scrolled / panelH; // 0 → n-1
+      const current = Math.min(count - 1, Math.floor(rawIndex + 1e-4));
+      setActive((prev) => (prev === current ? prev : current));
+
+      panelRefs.current.forEach((el, i) => {
+        if (!el) return;
+        el.style.zIndex = String(i + 1);
+        if (i === 0) {
+          el.style.transform = 'translate3d(0, 0, 0)';
+          return;
+        }
+        const local = clamp(rawIndex - (i - 1), 0, 1);
+        const y = (1 - local) * 100;
+        el.style.transform = `translate3d(0, ${y}%, 0)`;
+      });
+    };
+
+    const onScrollOrResize = () => {
+      if (rafRef.current) return;
+      rafRef.current = window.requestAnimationFrame(update);
+    };
+
+    update();
+    window.addEventListener('scroll', onScrollOrResize, { passive: true });
+    window.addEventListener('resize', onScrollOrResize, { passive: true });
+    window.addEventListener('orientationchange', onScrollOrResize, { passive: true });
+    // iOS toolbar show/hide
+    const vv = window.visualViewport;
+    vv?.addEventListener('resize', onScrollOrResize);
+    vv?.addEventListener('scroll', onScrollOrResize);
+
+    return () => {
+      if (rafRef.current) window.cancelAnimationFrame(rafRef.current);
+      window.removeEventListener('scroll', onScrollOrResize);
+      window.removeEventListener('resize', onScrollOrResize);
+      window.removeEventListener('orientationchange', onScrollOrResize);
+      vv?.removeEventListener('resize', onScrollOrResize);
+      vv?.removeEventListener('scroll', onScrollOrResize);
+    };
+  }, [reducedMotion]);
+
   return (
     <section
+      ref={rootRef}
       id="our-journey"
       className="it-sticky-journey scroll-mt-24 sm:scroll-mt-28"
       aria-label="Our journey"
+      style={{ ['--it-journey-count' as string]: CHAPTERS.length }}
     >
-      {CHAPTERS.map((chapter) => (
-        <div key={chapter.id} className="it-sticky-journey__panel">
-          <div className="it-sticky-journey__grid">
-            <div className="it-sticky-journey__media">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={chapter.image} alt={chapter.imageAlt} />
-            </div>
-            <div className="it-sticky-journey__copy">
-              <div className="it-sticky-journey__inner">
-                <p className="it-sticky-journey__year">{chapter.year}</p>
-                <h2 className="it-sticky-journey__title">
-                  {'accentWord' in chapter && chapter.accentWord ? (
-                    <>
-                      Roots in the <span>{chapter.accentWord}</span>
-                    </>
-                  ) : (
-                    chapter.title
-                  )}
-                </h2>
-                {chapter.paragraphs.map((p) => (
-                  <p key={p.slice(0, 32)} className="it-sticky-journey__body">
-                    {p}
-                  </p>
-                ))}
+      <div className="it-sticky-journey__stage">
+        {CHAPTERS.map((chapter, i) => (
+          <div
+            key={chapter.id}
+            ref={(el) => {
+              panelRefs.current[i] = el;
+            }}
+            className={`it-sticky-journey__panel${reducedMotion ? ' is-static' : ''}`}
+            style={
+              reducedMotion
+                ? { position: 'relative', transform: 'none', zIndex: i + 1 }
+                : i === 0
+                  ? { transform: 'translate3d(0, 0, 0)', zIndex: 1 }
+                  : { zIndex: i + 1 }
+            }
+            aria-hidden={reducedMotion ? undefined : i !== active}
+          >
+            <div className="it-sticky-journey__grid">
+              <div className="it-sticky-journey__media">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={chapter.image}
+                  alt={chapter.imageAlt}
+                  loading={i === 0 ? 'eager' : 'lazy'}
+                  decoding="async"
+                />
+              </div>
+              <div className="it-sticky-journey__copy">
+                <div className="it-sticky-journey__inner">
+                  <p className="it-sticky-journey__year">{chapter.year}</p>
+                  <h2 className="it-sticky-journey__title">
+                    {'accentWord' in chapter && chapter.accentWord ? (
+                      <>
+                        Roots in the <span>{chapter.accentWord}</span>
+                      </>
+                    ) : (
+                      chapter.title
+                    )}
+                  </h2>
+                  {chapter.paragraphs.map((p) => (
+                    <p key={p.slice(0, 32)} className="it-sticky-journey__body">
+                      {p}
+                    </p>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      ))}
+        ))}
+
+        {!reducedMotion ? (
+          <div className="it-sticky-journey__dots" aria-hidden>
+            {CHAPTERS.map((c, i) => (
+              <span
+                key={c.id}
+                className={`it-sticky-journey__dot${i === active ? ' is-active' : ''}`}
+              />
+            ))}
+          </div>
+        ) : null}
+      </div>
     </section>
   );
 }
