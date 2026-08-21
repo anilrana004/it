@@ -117,46 +117,46 @@ export default function PackedJourneysMemories() {
           touchStartPreventDefault={false}
           resistanceRatio={0.65}
           coverflowEffect={{
-            rotate: 48,
-            stretch: -28,
-            depth: 220,
-            modifier: 1.15,
+            rotate: 28,
+            stretch: -10,
+            depth: 120,
+            modifier: 1,
             slideShadows: false,
           }}
           breakpoints={{
             0: {
               coverflowEffect: {
-                rotate: 26,
-                stretch: -12,
-                depth: 140,
+                rotate: 16,
+                stretch: -6,
+                depth: 80,
                 modifier: 1,
                 slideShadows: false,
               },
             },
             640: {
               coverflowEffect: {
-                rotate: 36,
-                stretch: -18,
-                depth: 180,
-                modifier: 1.05,
+                rotate: 22,
+                stretch: -8,
+                depth: 100,
+                modifier: 1,
                 slideShadows: false,
               },
             },
             1024: {
               coverflowEffect: {
-                rotate: 48,
-                stretch: -28,
-                depth: 220,
-                modifier: 1.15,
+                rotate: 28,
+                stretch: -10,
+                depth: 120,
+                modifier: 1,
                 slideShadows: false,
               },
             },
             1400: {
               coverflowEffect: {
-                rotate: 52,
-                stretch: -36,
-                depth: 260,
-                modifier: 1.2,
+                rotate: 32,
+                stretch: -12,
+                depth: 140,
+                modifier: 1,
                 slideShadows: false,
               },
             },
