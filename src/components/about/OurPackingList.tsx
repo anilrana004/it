@@ -1,14 +1,14 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useId, useRef } from 'react';
+import { useCallback, useEffect, useId, useRef, useState } from 'react';
 import { photos } from '@/lib/media';
 import PackedJourneysMemories from './PackedJourneysMemories';
 import './our-packing-list.css';
 
 /**
  * Our Packing List — journey categories.
- * Vertical page scroll must keep working; horizontal swipe only when intentional.
+ * Center card grows large; side cards stay smaller (all breakpoints).
  */
 
 const PACKED = [
@@ -84,7 +84,6 @@ function useSwipeSafeClick(threshold = 12) {
       if (!origin.current) return;
       const dx = Math.abs(e.clientX - origin.current.x);
       const dy = Math.abs(e.clientY - origin.current.y);
-      // Only treat as swipe-drag when mostly horizontal
       if (dx > threshold && dx > dy * 1.2) moved.current = true;
     },
     onPointerUp: () => {
@@ -104,6 +103,31 @@ export default function OurPackingList() {
   const titleId = useId();
   const swipeSafe = useSwipeSafeClick();
   const sectionRef = useRef<HTMLElement | null>(null);
+  const railRef = useRef<HTMLDivElement | null>(null);
+  const cardRefs = useRef<(HTMLAnchorElement | null)[]>([]);
+  const [centerId, setCenterId] = useState(PACKED[0]?.id ?? '');
+  const raf = useRef(0);
+
+  const syncCenter = useCallback(() => {
+    const rail = railRef.current;
+    if (!rail) return;
+
+    const mid = rail.scrollLeft + rail.clientWidth / 2;
+    let bestId = PACKED[0]?.id ?? '';
+    let bestDist = Number.POSITIVE_INFINITY;
+
+    cardRefs.current.forEach((el, i) => {
+      if (!el) return;
+      const cardMid = el.offsetLeft + el.offsetWidth / 2;
+      const dist = Math.abs(cardMid - mid);
+      if (dist < bestDist) {
+        bestDist = dist;
+        bestId = PACKED[i]?.id ?? bestId;
+      }
+    });
+
+    setCenterId((prev) => (prev === bestId ? prev : bestId));
+  }, []);
 
   useEffect(() => {
     const root = sectionRef.current;
@@ -126,6 +150,34 @@ export default function OurPackingList() {
     return () => io.disconnect();
   }, []);
 
+  useEffect(() => {
+    const rail = railRef.current;
+    if (!rail) return;
+
+    const onScroll = () => {
+      cancelAnimationFrame(raf.current);
+      raf.current = requestAnimationFrame(syncCenter);
+    };
+
+    // Center first card on load so one box starts big
+    requestAnimationFrame(() => {
+      const first = cardRefs.current[0];
+      if (first) {
+        const left = first.offsetLeft - (rail.clientWidth - first.offsetWidth) / 2;
+        rail.scrollLeft = Math.max(0, left);
+      }
+      syncCenter();
+    });
+
+    rail.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    return () => {
+      cancelAnimationFrame(raf.current);
+      rail.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+    };
+  }, [syncCenter]);
+
   return (
     <section
       ref={sectionRef}
@@ -140,14 +192,15 @@ export default function OurPackingList() {
             Our Packing List <em>!!</em>
           </h2>
           <p className="it-pack__lead">
-            Everything we pack into an Indian Treks departure. Swipe sideways for more cards — scroll
-            the page normally to keep moving through About.
+            Swipe the row — whichever card lands in the center grows big. Tap it to open that
+            journey.
           </p>
         </header>
       </div>
 
       <div className="it-pack__cats" aria-label="Packed journey categories">
         <div
+          ref={railRef}
           className="it-pack__cats-rail"
           onPointerDown={swipeSafe.onPointerDown}
           onPointerMove={swipeSafe.onPointerMove}
@@ -155,20 +208,27 @@ export default function OurPackingList() {
           onPointerCancel={swipeSafe.onPointerUp}
           onClickCapture={swipeSafe.onClickCapture}
         >
-          {PACKED.map((item, i) => (
-            <Link
-              key={item.id}
-              href={item.href}
-              className={`it-pack__cat it-pack__cat--${item.tone}`}
-              style={{ '--i': i } as React.CSSProperties}
-              draggable={false}
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={item.img} alt="" loading="lazy" draggable={false} />
-              <span className="it-pack__cat-shine" aria-hidden />
-              <span className="it-pack__cat-label">{item.label}</span>
-            </Link>
-          ))}
+          {PACKED.map((item, i) => {
+            const isCenter = item.id === centerId;
+            return (
+              <Link
+                key={item.id}
+                ref={(el) => {
+                  cardRefs.current[i] = el;
+                }}
+                href={item.href}
+                className={`it-pack__cat it-pack__cat--${item.tone}${isCenter ? ' is-center' : ''}`}
+                style={{ '--i': i } as React.CSSProperties}
+                draggable={false}
+                aria-current={isCenter ? 'true' : undefined}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={item.img} alt="" loading="lazy" draggable={false} />
+                <span className="it-pack__cat-shine" aria-hidden />
+                <span className="it-pack__cat-label">{item.label}</span>
+              </Link>
+            );
+          })}
         </div>
       </div>
 

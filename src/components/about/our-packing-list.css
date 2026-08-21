@@ -76,18 +76,20 @@
   position: relative;
   z-index: 2;
   pointer-events: auto;
+  /* Room for the center card to scale up without clipping */
+  padding: 18px 0 8px;
 }
 
 .it-pack__cats-rail {
   display: flex;
-  gap: 16px;
-  padding: 10px max(16px, 4vw) 32px;
+  align-items: center;
+  gap: 18px;
+  padding: 28px max(18vw, 24px) 40px;
   overflow-x: auto;
   overflow-y: visible;
-  scroll-snap-type: x proximity;
-  scroll-padding-inline: max(16px, 4vw);
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: max(18vw, 24px);
   -webkit-overflow-scrolling: touch;
-  /* Allow page to scroll up/down while finger is on cards */
   overscroll-behavior-x: contain;
   overscroll-behavior-y: auto;
   touch-action: pan-x pan-y;
@@ -113,9 +115,8 @@
   --i: 0;
   position: relative;
   flex: 0 0 auto;
-  /* Balanced card size — not full-viewport so page scroll feels natural */
-  width: min(72vw, 260px);
-  aspect-ratio: 3 / 4.15;
+  width: min(58vw, 220px);
+  aspect-ratio: 3 / 4.1;
   height: auto;
   min-height: 0;
   border-radius: 1rem;
@@ -124,49 +125,83 @@
   color: inherit;
   background: #111;
   scroll-snap-align: center;
-  box-shadow: 0 14px 32px rgba(15, 23, 42, 0.14);
+  scroll-snap-stop: always;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.12);
   transition:
-    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 0.35s ease,
-    opacity 0.5s ease;
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.45s ease,
+    opacity 0.5s ease,
+    filter 0.45s ease;
   -webkit-tap-highlight-color: transparent;
   cursor: pointer;
   pointer-events: auto;
   touch-action: manipulation;
   z-index: 1;
   opacity: 0;
-  transform: translate3d(0, 28px, 0) scale(0.96);
+  transform: translate3d(0, 24px, 0) scale(0.86);
+  transform-origin: center center;
+  filter: saturate(0.88) brightness(0.92);
 }
 
 .it-pack.is-revealed .it-pack__cat {
+  opacity: 0.88;
+  transform: translate3d(0, 0, 0) scale(0.88);
+  transition-delay: calc(var(--i) * 45ms);
+}
+
+/* Center focus — whichever card is in the middle grows big */
+.it-pack.is-revealed .it-pack__cat.is-center {
   opacity: 1;
-  transform: translate3d(0, 0, 0) scale(1);
-  transition-delay: calc(var(--i) * 55ms);
+  z-index: 8;
+  transform: translate3d(0, 0, 0) scale(1.18);
+  filter: saturate(1.05) brightness(1);
+  box-shadow:
+    0 28px 56px rgba(15, 23, 42, 0.28),
+    0 0 0 3px rgba(22, 163, 74, 0.35);
 }
 
 @media (min-width: 768px) {
   .it-pack__cat {
-    width: min(28vw, 250px);
+    width: min(24vw, 230px);
+  }
+
+  .it-pack.is-revealed .it-pack__cat {
+    transform: translate3d(0, 0, 0) scale(0.9);
+  }
+
+  .it-pack.is-revealed .it-pack__cat.is-center {
+    transform: translate3d(0, 0, 0) scale(1.22);
+  }
+
+  .it-pack__cats-rail {
+    padding-left: max(28vw, 80px);
+    padding-right: max(28vw, 80px);
+    scroll-padding-inline: max(28vw, 80px);
   }
 }
 
 @media (min-width: 1100px) {
   .it-pack__cat {
-    width: 240px;
+    width: 220px;
+  }
+
+  .it-pack.is-revealed .it-pack__cat.is-center {
+    transform: translate3d(0, 0, 0) scale(1.24);
   }
 }
 
-.it-pack__cat:hover {
-  transform: translate3d(0, -8px, 0) scale(1.02);
-  box-shadow: 0 24px 48px rgba(15, 23, 42, 0.2);
+.it-pack.is-revealed .it-pack__cat:not(.is-center):hover {
+  transform: translate3d(0, -4px, 0) scale(0.94);
+  filter: saturate(1) brightness(1);
+  opacity: 1;
 }
 
-.it-pack.is-revealed .it-pack__cat:hover {
-  transform: translate3d(0, -8px, 0) scale(1.02);
+.it-pack.is-revealed .it-pack__cat.is-center:hover {
+  transform: translate3d(0, -6px, 0) scale(1.26);
 }
 
 .it-pack__cat:active {
-  transform: scale(0.985);
+  transform: scale(0.96);
 }
 
 .it-pack__cat img {
@@ -300,6 +335,15 @@
   background: transparent;
   cursor: pointer;
   pointer-events: auto !important;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  transform: scale(0.9);
+  opacity: 0.85;
+}
+
+.it-pack-mem__swiper .swiper-slide-active {
+  transform: scale(1.08);
+  opacity: 1;
+  z-index: 5;
 }
 
 .it-pack-mem__panel {
@@ -321,7 +365,7 @@
 
 .it-pack-mem__panel.is-active {
   border-width: 7px;
-  box-shadow: 0 26px 56px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 28px 60px rgba(0, 0, 0, 0.24);
   cursor: grab;
 }
 
