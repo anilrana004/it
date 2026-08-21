@@ -92,8 +92,8 @@
 .it-pack__cat {
   position: relative;
   flex: 0 0 auto;
-  width: min(68vw, 240px);
-  aspect-ratio: 3 / 4;
+  width: min(82vw, 300px);
+  aspect-ratio: 4 / 5;
   border-radius: 0.85rem;
   overflow: hidden;
   text-decoration: none;
@@ -115,13 +115,13 @@
   }
 
   .it-pack__cat {
-    width: min(26vw, 230px);
+    width: min(38vw, 320px);
   }
 }
 
 @media (min-width: 1100px) {
   .it-pack__cat {
-    width: 220px;
+    width: 300px;
   }
 }
 
@@ -359,7 +359,7 @@
   }
 
   .it-pack__cat {
-    width: min(72vw, 220px);
+    width: min(84vw, 280px);
   }
 
   .it-pack-mem {
