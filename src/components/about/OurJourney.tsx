@@ -4,9 +4,8 @@ import { useEffect, useRef, useState } from 'react';
 import './our-journey.css';
 
 /**
- * UI/UX from https://www.tamsraorganics.com/about — Our Journey timeline:
- * soft band, centered eyebrow + title, vertical spine, alternating cards,
- * year nodes, scroll-in reveal. Content = Indian Treks milestones.
+ * UI/UX from https://www.tamsraorganics.com/about — Our Journey timeline,
+ * refined for phone + desktop: spine fill, active nodes, clearer cards.
  */
 
 const TIMELINE = [
@@ -18,7 +17,7 @@ const TIMELINE = [
   {
     year: '2016',
     title: 'Indian Treks Is Founded',
-    desc: 'Brothers Vijay Rana and Vivek Rana founded Indian Treks in Dehradun — a company shaped by Himalayan village roots, vocal for locals, and committed to authentic, responsible mountain travel.',
+    desc: 'Brothers Vijay Rana and Vivek Rana founded Indian Treks in Dehradun — shaped by Himalayan village roots, vocal for locals, and committed to authentic, responsible mountain travel.',
   },
   {
     year: '2018',
@@ -38,71 +37,101 @@ const TIMELINE = [
   {
     year: '2026',
     title: 'Authorized & Still Growing',
-    desc: 'Recognized as an Authorized Adventure Tour Operator, with Leave No Trace and eco-tourism at the core. New routes keep coming — the promise stays the same: comfort, clarity, and memorable mountains.',
+    desc: 'Recognized as an Authorized Adventure Tour Operator, with Leave No Trace at the core. New routes keep coming — the promise stays the same: comfort, clarity, and memorable mountains.',
   },
 ] as const;
 
-function TimelineItem({
-  item,
-  index,
-}: {
-  item: (typeof TIMELINE)[number];
-  index: number;
-}) {
-  const ref = useRef<HTMLLIElement>(null);
-  const [visible, setVisible] = useState(false);
-  const isLeft = index % 2 === 0;
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduced) {
-      setVisible(true);
-      return;
-    }
-
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-          io.disconnect();
-        }
-      },
-      { threshold: 0.22, rootMargin: '0px 0px -8% 0px' },
-    );
-
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
-
-  return (
-    <li
-      ref={ref}
-      className={[
-        'it-journey__item',
-        isLeft ? 'it-journey__item--left' : 'it-journey__item--right',
-        visible ? 'is-in' : 'is-pending',
-      ].join(' ')}
-      style={{ transitionDelay: visible ? `${Math.min(index, 4) * 70}ms` : '0ms' }}
-    >
-      <div className="it-journey__node" aria-hidden>
-        {item.year.slice(2)}
-      </div>
-
-      <article className="it-journey__card">
-        <p className="it-journey__year">{item.year}</p>
-        <h3 className="it-journey__card-title">{item.title}</h3>
-        <p className="it-journey__card-desc">{item.desc}</p>
-      </article>
-
-      <div className="it-journey__spacer" aria-hidden />
-    </li>
-  );
+function clamp(n: number, min: number, max: number) {
+  return Math.min(max, Math.max(min, n));
 }
 
 export default function OurJourney() {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const itemRefs = useRef<(HTMLLIElement | null)[]>([]);
+  const fillRef = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState<boolean[]>(() => TIMELINE.map(() => false));
+  const [active, setActive] = useState(0);
+
+  useEffect(() => {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) {
+      setVisible(TIMELINE.map(() => true));
+      return;
+    }
+
+    const observers: IntersectionObserver[] = [];
+
+    itemRefs.current.forEach((el, i) => {
+      if (!el) return;
+      const io = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            setVisible((prev) => {
+              if (prev[i]) return prev;
+              const next = [...prev];
+              next[i] = true;
+              return next;
+            });
+            io.disconnect();
+          }
+        },
+        { threshold: 0.28, rootMargin: '0px 0px -10% 0px' },
+      );
+      io.observe(el);
+      observers.push(io);
+    });
+
+    return () => observers.forEach((o) => o.disconnect());
+  }, []);
+
+  useEffect(() => {
+    const track = trackRef.current;
+    const fill = fillRef.current;
+    if (!track || !fill) return;
+
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const rect = track.getBoundingClientRect();
+      const view = window.innerHeight || 1;
+      // Progress while the track crosses the middle of the viewport
+      const start = view * 0.72;
+      const end = view * 0.28;
+      const raw = (start - rect.top) / (rect.height + (start - end));
+      const progress = clamp(raw, 0, 1);
+      fill.style.height = `${progress * 100}%`;
+
+      // Active milestone = nearest item to viewport center
+      const mid = view * 0.45;
+      let best = 0;
+      let bestDist = Infinity;
+      itemRefs.current.forEach((el, i) => {
+        if (!el) return;
+        const r = el.getBoundingClientRect();
+        const dist = Math.abs(r.top + r.height * 0.35 - mid);
+        if (dist < bestDist) {
+          bestDist = dist;
+          best = i;
+        }
+      });
+      setActive((prev) => (prev === best ? prev : best));
+    };
+
+    const onScroll = () => {
+      if (raf) return;
+      raf = window.requestAnimationFrame(update);
+    };
+
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    return () => {
+      if (raf) window.cancelAnimationFrame(raf);
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+    };
+  }, []);
+
   return (
     <section
       id="our-journey"
@@ -116,17 +145,53 @@ export default function OurJourney() {
             Two Decades of Himalayan Impact
           </h2>
           <p className="it-journey__lead">
-            From ground work in the mountains to a trusted trek and yatra company — milestones that
-            shaped how Indian Treks walks with every traveler.
+            From ground work in the mountains to a trusted trek and yatra company — the milestones
+            that shaped how Indian Treks walks with every traveler.
           </p>
         </header>
 
-        <div className="it-journey__track">
-          <div className="it-journey__spine" aria-hidden />
+        <div ref={trackRef} className="it-journey__track">
+          <div className="it-journey__spine" aria-hidden>
+            <div ref={fillRef} className="it-journey__spine-fill" />
+          </div>
+
           <ol className="it-journey__list">
-            {TIMELINE.map((item, i) => (
-              <TimelineItem key={item.year} item={item} index={i} />
-            ))}
+            {TIMELINE.map((item, i) => {
+              const isLeft = i % 2 === 0;
+              const isIn = visible[i];
+              return (
+                <li
+                  key={item.year}
+                  ref={(el) => {
+                    itemRefs.current[i] = el;
+                  }}
+                  className={[
+                    'it-journey__item',
+                    isLeft ? 'it-journey__item--left' : 'it-journey__item--right',
+                    isIn ? 'is-in' : 'is-pending',
+                    active === i ? 'is-active' : '',
+                  ].join(' ')}
+                  style={{ transitionDelay: isIn ? `${Math.min(i, 3) * 60}ms` : '0ms' }}
+                >
+                  <div className="it-journey__node" aria-hidden>
+                    {item.year.slice(2)}
+                  </div>
+
+                  <article className="it-journey__card">
+                    <div className="it-journey__meta">
+                      <p className="it-journey__year">{item.year}</p>
+                      <p className="it-journey__step">
+                        Step {String(i + 1).padStart(2, '0')}
+                      </p>
+                    </div>
+                    <h3 className="it-journey__card-title">{item.title}</h3>
+                    <p className="it-journey__card-desc">{item.desc}</p>
+                  </article>
+
+                  <div className="it-journey__spacer" aria-hidden />
+                </li>
+              );
+            })}
           </ol>
         </div>
       </div>
