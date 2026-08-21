@@ -158,12 +158,12 @@
   background: rgba(15, 55, 95, 0.94);
 }
 
-/* —— Memories rail —— */
+/* —— Memories 3D coverflow —— */
 .it-pack-mem {
   margin-top: 20px;
   padding: 32px 0 16px;
   background: #fafafa;
-  overflow: visible;
+  overflow: hidden;
 }
 
 .it-pack-mem__head {
@@ -190,61 +190,39 @@
   color: #1f2937;
 }
 
-.it-pack-mem__stage {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-  gap: 0;
-  width: 100%;
-}
-
-.it-pack-mem__rail {
-  display: flex;
-  gap: 16px;
-  padding: 12px max(16px, 6vw) 20px;
-  overflow-x: auto;
-  overflow-y: hidden;
-  scroll-snap-type: x mandatory;
-  scroll-padding-inline: max(16px, 6vw);
-  -webkit-overflow-scrolling: touch;
-  overscroll-behavior-x: contain;
-  touch-action: pan-x;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(22, 163, 74, 0.4) transparent;
-}
-
-.it-pack-mem__rail::-webkit-scrollbar {
-  height: 6px;
-}
-
-.it-pack-mem__rail::-webkit-scrollbar-thumb {
-  background: rgba(22, 163, 74, 0.35);
-  border-radius: 999px;
-}
-
-.it-pack-mem__card {
+.it-pack-mem__shell {
   position: relative;
-  flex: 0 0 auto;
-  width: min(88vw, 520px);
-  height: clamp(240px, 52vw, 340px);
-  border-radius: 1.25rem;
+  width: 100%;
+  padding: 8px 0 20px;
+}
+
+.it-pack-mem__swiper {
+  width: 100%;
+  padding: 28px 0 48px !important;
+  overflow: visible;
+}
+
+.it-pack-mem__slide {
+  width: min(78vw, 760px) !important;
+  height: clamp(250px, 46vw, 420px);
+  background: transparent;
+}
+
+.it-pack-mem__panel {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 1.5rem;
   overflow: hidden;
   border: 6px solid #fff;
   background: #111;
-  scroll-snap-align: center;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.14);
-  cursor: pointer;
-  transform: scale(0.94);
-  opacity: 0.88;
-  transition: transform 0.35s ease, opacity 0.35s ease, box-shadow 0.35s ease;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.14);
+  transition: border-width 0.35s ease, box-shadow 0.35s ease;
 }
 
-.it-pack-mem__card.is-active {
-  transform: scale(1);
-  opacity: 1;
+.it-pack-mem__panel.is-active {
   border-width: 8px;
-  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.2);
-  cursor: default;
+  box-shadow: 0 28px 60px rgba(0, 0, 0, 0.2);
 }
 
 .it-pack-mem__media {
@@ -253,11 +231,6 @@
   display: block;
   object-fit: cover;
   border: 0;
-  pointer-events: none;
-}
-
-.it-pack-mem__card.is-active .it-pack-mem__media {
-  pointer-events: auto;
 }
 
 .it-pack-mem__caption {
@@ -267,61 +240,52 @@
   bottom: 12px;
   z-index: 2;
   padding: 8px 10px;
-  border-radius: 0.7rem;
+  border-radius: 0.75rem;
   background: rgba(0, 0, 0, 0.55);
   color: #fff;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 800;
   text-align: center;
   backdrop-filter: blur(6px);
 }
 
-.it-pack-mem__nav {
+.it-pack-mem__swiper .swiper-button-prev,
+.it-pack-mem__swiper .swiper-button-next {
   width: 42px;
   height: 42px;
-  margin: 0 4px;
-  border: 0;
   border-radius: 999px;
   background: #fff;
   color: #16a34a;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-  display: grid;
-  place-items: center;
-  cursor: pointer;
-  z-index: 5;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 }
 
-.it-pack-mem__nav:hover {
+.it-pack-mem__swiper .swiper-button-prev::after,
+.it-pack-mem__swiper .swiper-button-next::after {
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.it-pack-mem__swiper .swiper-button-prev:hover,
+.it-pack-mem__swiper .swiper-button-next:hover {
   background: #16a34a;
   color: #fff;
 }
 
-.it-pack-mem__dots {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  margin: 6px 0 14px;
-}
-
-.it-pack-mem__dot {
-  width: 8px;
-  height: 8px;
-  border: 0;
-  padding: 0;
-  border-radius: 999px;
+.it-pack-mem__swiper .swiper-pagination-bullet {
   background: #d1d5db;
-  cursor: pointer;
+  opacity: 1;
 }
 
-.it-pack-mem__dot.is-active {
-  width: 22px;
+.it-pack-mem__swiper .swiper-pagination-bullet-active {
   background: #16a34a;
+  width: 22px;
+  border-radius: 999px;
 }
 
 .it-pack-mem__cta-wrap {
   display: flex;
   justify-content: center;
-  padding: 0 16px 8px;
+  padding: 4px 16px 8px;
 }
 
 .it-pack-mem__cta {
@@ -337,32 +301,57 @@
   font-size: 0.92rem;
   font-weight: 800;
   box-shadow: 0 14px 28px rgba(22, 163, 74, 0.22);
+  transition: transform 0.2s ease, background 0.2s ease;
 }
 
 .it-pack-mem__cta:hover {
   background: #15803d;
+  transform: translateY(-2px);
 }
 
-@media (min-width: 900px) {
-  .it-pack-mem__card {
-    width: min(70vw, 760px);
-    height: clamp(320px, 40vw, 430px);
+@media (min-width: 1024px) {
+  .it-pack-mem {
+    margin-top: 28px;
+    padding: 44px 0 16px;
+  }
+
+  .it-pack-mem__head {
+    margin-bottom: 28px;
+  }
+
+  .it-pack-mem__kicker {
+    font-size: 0.875rem;
+  }
+
+  .it-pack-mem__slide {
+    width: min(68vw, 880px) !important;
+    height: clamp(340px, 38vw, 456px);
   }
 }
 
-@media (max-width: 700px) {
-  .it-pack-mem__nav {
+@media (max-width: 640px) {
+  .it-pack-mem {
+    margin-top: 16px;
+    padding: 24px 0 8px;
+  }
+
+  .it-pack-mem__slide {
+    width: min(86vw, 420px) !important;
+    height: 260px;
+  }
+
+  .it-pack-mem__panel {
+    border-radius: 1.2rem;
+    border-width: 5px;
+  }
+
+  .it-pack-mem__panel.is-active {
+    border-width: 6px;
+  }
+
+  .it-pack-mem__swiper .swiper-button-prev,
+  .it-pack-mem__swiper .swiper-button-next {
     display: none;
-  }
-
-  .it-pack-mem__stage {
-    grid-template-columns: 1fr;
-  }
-
-  .it-pack-mem__card {
-    width: min(90vw, 440px);
-    height: min(56vw, 280px);
-    min-height: 220px;
   }
 
   .it-pack-mem__cta {
@@ -374,8 +363,12 @@
 
 @media (prefers-reduced-motion: reduce) {
   .it-pack__cat,
-  .it-pack-mem__card,
-  .it-pack-mem__cta {
+  .it-pack-mem__cta,
+  .it-pack-mem__panel {
     transition: none;
+  }
+
+  .it-pack-mem__cta:hover {
+    transform: none;
   }
 }
