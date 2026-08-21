@@ -105,6 +105,11 @@ export default function PackedJourneysMemories() {
           centeredSlides
           slidesPerView="auto"
           speed={700}
+          simulateTouch
+          allowTouchMove
+          touchRatio={1.15}
+          threshold={6}
+          resistanceRatio={0.7}
           navigation
           pagination={{ clickable: true }}
           coverflowEffect={{
@@ -117,9 +122,9 @@ export default function PackedJourneysMemories() {
           breakpoints={{
             0: {
               coverflowEffect: {
-                rotate: 26,
-                stretch: -12,
-                depth: 140,
+                rotate: 18,
+                stretch: -8,
+                depth: 120,
                 modifier: 1,
                 slideShadows: false,
               },

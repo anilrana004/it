@@ -2,20 +2,13 @@
 
 import Link from 'next/link';
 import { useId } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, FreeMode } from 'swiper/modules';
 import { photos } from '@/lib/media';
 import PackedJourneysMemories from './PackedJourneysMemories';
 import './our-packing-list.css';
 
-import 'swiper/css';
-import 'swiper/css/free-mode';
-
 /**
- * Our Packing List — NOT another team/founder block.
- * About already covers brand + TeamSection. This section only packs journeys:
- * JustWravel-style category strip + Memories coverflow.
- * https://www.justwravel.com/about
+ * Our Packing List — journey categories (native horizontal scroll on phone)
+ * + Memories coverflow. No founder/team duplication.
  */
 
 const PACKED = [
@@ -93,39 +86,26 @@ export default function OurPackingList() {
             Our Packing List <em>!!</em>
           </h2>
           <p className="it-pack__lead">
-            Everything we pack into an Indian Treks departure: Himalayan trails, snow seasons,
-            pilgrimages, custom trips, and more. Tap any card to open that journey.
+            Everything we pack into an Indian Treks departure. Swipe the cards, then tap one to open
+            that journey.
           </p>
         </header>
       </div>
 
       <div className="it-pack__cats" aria-label="Packed journey categories">
-        <Swiper
-          className="it-pack__cats-swiper"
-          modules={[Autoplay, FreeMode]}
-          freeMode
-          grabCursor
-          loop
-          slidesPerView="auto"
-          spaceBetween={14}
-          speed={900}
-          autoplay={{ delay: 2800, disableOnInteraction: false, pauseOnMouseEnter: true }}
-          breakpoints={{
-            0: { spaceBetween: 10 },
-            768: { spaceBetween: 14 },
-            1200: { spaceBetween: 18 },
-          }}
-        >
+        <div className="it-pack__cats-track">
           {PACKED.map((item) => (
-            <SwiperSlide key={item.id} className="it-pack__cat-slide">
-              <Link href={item.href} className={`it-pack__cat it-pack__cat--${item.tone}`}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={item.img} alt="" loading="lazy" />
-                <span className="it-pack__cat-label">{item.label}</span>
-              </Link>
-            </SwiperSlide>
+            <Link
+              key={item.id}
+              href={item.href}
+              className={`it-pack__cat it-pack__cat--${item.tone}`}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={item.img} alt="" loading="lazy" draggable={false} />
+              <span className="it-pack__cat-label">{item.label}</span>
+            </Link>
           ))}
-        </Swiper>
+        </div>
       </div>
 
       <PackedJourneysMemories />
