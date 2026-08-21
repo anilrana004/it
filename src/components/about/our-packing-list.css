@@ -1,5 +1,6 @@
 /**
- * Our Packing List — balanced spacing + center-focus cards
+ * Our Packing List — category cards + trail memories
+ * Page vertical scroll always works; horizontal only for intentional sideways swipe.
  */
 
 .it-pack {
@@ -7,29 +8,27 @@
   --it-primary-dark: #15803d;
   --it-ink: #0f172a;
   --it-muted: #64748b;
-  --pack-gap: clamp(1.25rem, 3.5vw, 2rem);
-  --pack-card-gap: clamp(1.35rem, 4vw, 2.25rem);
 
   position: relative;
   z-index: 1;
   overflow: visible;
-  padding: clamp(1.75rem, 4.5vw, 2.75rem) 0 clamp(2.25rem, 5.5vw, 3.5rem);
+  padding: 32px 0 8px;
   background: #fff;
   pointer-events: auto;
   isolation: isolate;
 }
 
 .it-pack__wrap {
-  width: min(1100px, calc(100% - 2rem));
+  width: min(1100px, calc(100% - 34px));
   margin: 0 auto;
 }
 
 .it-pack__intro {
   text-align: center;
-  max-width: 36rem;
-  margin: 0 auto var(--pack-gap);
+  max-width: 38rem;
+  margin: 0 auto 12px;
   opacity: 0;
-  transform: translate3d(0, 18px, 0);
+  transform: translate3d(0, 14px, 0);
   transition: opacity 0.55s ease, transform 0.55s ease;
 }
 
@@ -39,21 +38,21 @@
 }
 
 .it-pack__eyebrow {
-  margin: 0 0 0.55rem;
-  font-size: 0.7rem;
+  margin: 0 0 8px;
+  font-size: 0.72rem;
   font-weight: 800;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--it-primary);
 }
 
 .it-pack__title {
-  margin: 0 0 0.7rem;
+  margin: 0 0 8px;
   font-family: var(--font-heading), ui-sans-serif, system-ui, sans-serif;
-  font-size: clamp(1.85rem, 5.5vw, 2.85rem);
+  font-size: clamp(1.9rem, 5.5vw, 3rem);
   font-weight: 900;
   letter-spacing: -0.04em;
-  line-height: 1.05;
+  line-height: 1.02;
   color: var(--it-ink);
 }
 
@@ -64,35 +63,31 @@
 
 .it-pack__lead {
   margin: 0 auto;
-  max-width: 40ch;
-  font-size: clamp(0.88rem, 2.2vw, 1rem);
-  line-height: 1.6;
+  max-width: 42ch;
+  font-size: clamp(0.88rem, 2.1vw, 0.98rem);
+  line-height: 1.55;
   color: var(--it-muted);
 }
 
 /* —— Category rail —— */
 .it-pack__cats {
   width: 100%;
-  margin: 0 auto;
+  margin: 0 auto 4px;
   position: relative;
   z-index: 2;
   pointer-events: auto;
-  padding: clamp(0.75rem, 2vw, 1.25rem) 0 clamp(1.25rem, 3.5vw, 2rem);
+  padding: 4px 0 0;
 }
 
 .it-pack__cats-rail {
   display: flex;
   align-items: center;
-  gap: var(--pack-card-gap);
-  /* Side insets keep a card centered; vertical padding gives scale room */
-  padding:
-    clamp(1.75rem, 4vw, 2.5rem)
-    max(14vw, 1.25rem)
-    clamp(2rem, 5vw, 3rem);
+  gap: 28px;
+  padding: 22px max(12vw, 20px) 28px;
   overflow-x: auto;
   overflow-y: visible;
   scroll-snap-type: x mandatory;
-  scroll-padding-inline: max(14vw, 1.25rem);
+  scroll-padding-inline: max(12vw, 20px);
   -webkit-overflow-scrolling: touch;
   overscroll-behavior-x: contain;
   overscroll-behavior-y: auto;
@@ -107,11 +102,11 @@
 }
 
 .it-pack__cats-rail::-webkit-scrollbar {
-  height: 5px;
+  height: 6px;
 }
 
 .it-pack__cats-rail::-webkit-scrollbar-thumb {
-  background: rgba(22, 163, 74, 0.35);
+  background: rgba(22, 163, 74, 0.4);
   border-radius: 999px;
 }
 
@@ -119,97 +114,101 @@
   --i: 0;
   position: relative;
   flex: 0 0 auto;
-  width: min(54vw, 200px);
+  width: min(56vw, 210px);
   aspect-ratio: 3 / 4;
   height: auto;
   min-height: 0;
-  margin-inline: 0.15rem;
-  border-radius: 0.95rem;
+  border-radius: 1rem;
   overflow: hidden;
   text-decoration: none;
   color: inherit;
   background: #111;
   scroll-snap-align: center;
   scroll-snap-stop: always;
-  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.1);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.12);
   transition:
     transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
     box-shadow 0.45s ease,
     opacity 0.5s ease,
-    filter 0.45s ease,
-    margin 0.45s ease;
+    filter 0.45s ease;
   -webkit-tap-highlight-color: transparent;
   cursor: pointer;
   pointer-events: auto;
   touch-action: manipulation;
   z-index: 1;
   opacity: 0;
-  transform: translate3d(0, 20px, 0) scale(0.88);
+  transform: translate3d(0, 20px, 0) scale(0.9);
   transform-origin: center center;
   filter: saturate(0.9) brightness(0.94);
 }
 
 .it-pack.is-revealed .it-pack__cat {
   opacity: 0.9;
-  transform: translate3d(0, 0, 0) scale(0.9);
+  transform: translate3d(0, 0, 0) scale(0.92);
   transition-delay: calc(var(--i) * 40ms);
 }
 
-/* Center grows — moderate scale + extra side margin so neighbors stay clear */
+/* Center focus — big, but with room from neighbors */
 .it-pack.is-revealed .it-pack__cat.is-center {
   opacity: 1;
   z-index: 8;
-  margin-inline: 0.55rem;
   transform: translate3d(0, 0, 0) scale(1.12);
   filter: saturate(1.04) brightness(1);
   box-shadow:
     0 22px 44px rgba(15, 23, 42, 0.22),
-    0 0 0 2px rgba(22, 163, 74, 0.32);
+    0 0 0 2px rgba(22, 163, 74, 0.28);
 }
 
 @media (min-width: 768px) {
+  .it-pack__intro {
+    margin-bottom: 14px;
+  }
+
   .it-pack__cat {
-    width: min(22vw, 210px);
+    width: min(22vw, 220px);
   }
 
   .it-pack.is-revealed .it-pack__cat {
-    transform: translate3d(0, 0, 0) scale(0.92);
+    transform: translate3d(0, 0, 0) scale(0.93);
   }
 
   .it-pack.is-revealed .it-pack__cat.is-center {
-    margin-inline: 0.85rem;
     transform: translate3d(0, 0, 0) scale(1.14);
   }
 
   .it-pack__cats-rail {
-    padding-left: max(26vw, 4rem);
-    padding-right: max(26vw, 4rem);
-    scroll-padding-inline: max(26vw, 4rem);
+    gap: 34px;
+    padding: 26px max(22vw, 64px) 32px;
+    scroll-padding-inline: max(22vw, 64px);
   }
 }
 
 @media (min-width: 1100px) {
   .it-pack__cat {
-    width: 200px;
+    width: 210px;
   }
 
   .it-pack.is-revealed .it-pack__cat.is-center {
     transform: translate3d(0, 0, 0) scale(1.16);
   }
+
+  .it-pack__cats-rail {
+    gap: 40px;
+  }
 }
 
 .it-pack.is-revealed .it-pack__cat:not(.is-center):hover {
-  transform: translate3d(0, -4px, 0) scale(0.95);
+  transform: translate3d(0, -4px, 0) scale(0.96);
   filter: saturate(1) brightness(1);
   opacity: 1;
 }
 
 .it-pack.is-revealed .it-pack__cat.is-center:hover {
-  transform: translate3d(0, -5px, 0) scale(1.16);
+  transform: translate3d(0, -4px, 0) scale(1.16);
 }
 
 .it-pack__cat:active {
-  transform: scale(0.96);
+  transform: scale(0.97);
 }
 
 .it-pack__cat img {
@@ -276,8 +275,8 @@
 
 /* —— Memories 3D coverflow —— */
 .it-pack-mem {
-  margin-top: clamp(0.75rem, 2vw, 1.25rem);
-  padding: clamp(2rem, 4.5vw, 3rem) 0 clamp(1.75rem, 4vw, 2.5rem);
+  margin-top: 12px;
+  padding: 36px 0 16px;
   background: #fafafa;
   overflow: visible;
   position: relative;
@@ -505,11 +504,11 @@
 
 @media (max-width: 640px) {
   .it-pack {
-    padding: 1.5rem 0 2rem;
+    padding: 28px 0 8px;
   }
 
   .it-pack__cat {
-    width: min(52vw, 190px);
+    width: min(70vw, 240px);
   }
 
   .it-pack-mem {
