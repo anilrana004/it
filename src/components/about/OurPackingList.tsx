@@ -1,17 +1,15 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { photos } from '@/lib/media';
 import './our-packing-list.css';
 
 /**
- * Our Packing List — new flow:
- * 01 Meet the crew (passport cards, swipe on phone)
- * 02 What's packed (filterable kit board, no auto-marquee)
+ * Our Packing List:
+ * 01 Meet the crew (passport cards)
+ * 02 What's packed (immersive route lanes — not a filter grid)
  */
-
-type KitGroup = 'All' | 'Treks' | 'Yatra' | 'Travel';
 
 const CREW = [
   {
@@ -35,28 +33,62 @@ const CREW = [
   },
 ] as const;
 
-const KIT: {
-  label: string;
-  href: string;
-  img: string;
-  group: Exclude<KitGroup, 'All'>;
-  tag: string;
-}[] = [
-  { label: 'Himalayan Treks', href: '/treks', img: photos.kedarkantha, group: 'Treks', tag: 'Core' },
-  { label: 'Snow Adventures', href: '/treks', img: photos.snow, group: 'Treks', tag: 'Winter' },
-  { label: 'Valley of Flowers', href: '/treks/valley-of-flowers', img: photos.vof, group: 'Treks', tag: 'Seasonal' },
-  { label: 'Hampta Pass', href: '/treks/hampta-pass', img: photos.hampta, group: 'Treks', tag: 'Pass' },
-  { label: 'Sacred Yatras', href: '/yatra', img: photos.yatra, group: 'Yatra', tag: 'Pilgrimage' },
-  { label: 'Kedarnath', href: '/yatra/kedarnath-yatra', img: photos.kedarnath, group: 'Yatra', tag: 'Jyotirlinga' },
-  { label: 'Weekend Escapes', href: '/treks?difficulty=easy', img: photos.triund, group: 'Travel', tag: 'Short' },
-  { label: 'Uttarakhand', href: '/treks?region=uttarakhand', img: photos.uttarakhand, group: 'Travel', tag: 'Region' },
-  { label: 'Himachal Trails', href: '/treks?region=himachal', img: photos.himachal, group: 'Travel', tag: 'Region' },
-  { label: 'Nepal Circuits', href: '/treks?region=nepal', img: photos.nepal, group: 'Travel', tag: 'Abroad' },
-  { label: 'International', href: '/international-getaways', img: photos.ebc, group: 'Travel', tag: 'Expedition' },
-  { label: 'Custom Trips', href: '/customized', img: photos.chopta, group: 'Travel', tag: 'Bespoke' },
-];
-
-const FILTERS: KitGroup[] = ['All', 'Treks', 'Yatra', 'Travel'];
+const ROUTES = [
+  {
+    id: 'treks',
+    pill: 'Treks',
+    title: 'Himalayan Treks',
+    desc: 'From easy weekends to high passes — guided routes across Uttarakhand, Himachal, and beyond.',
+    href: '/treks',
+    img: photos.kedarkantha,
+    cta: 'Browse treks',
+  },
+  {
+    id: 'snow',
+    pill: 'Winter',
+    title: 'Snow & Winter Trails',
+    desc: 'Frozen lakes, white ridgelines, and cold-season adventures built for first snow and seasoned boots.',
+    href: '/treks',
+    img: photos.snow,
+    cta: 'See snow trips',
+  },
+  {
+    id: 'yatra',
+    pill: 'Yatra',
+    title: 'Sacred Himalayan Yatras',
+    desc: 'Kedarnath, Do Dham, Char Dham — pilgrimage logistics with the same care as our expeditions.',
+    href: '/yatra',
+    img: photos.yatra,
+    cta: 'Explore yatras',
+  },
+  {
+    id: 'flowers',
+    pill: 'Seasonal',
+    title: 'Valley of Flowers',
+    desc: 'A UNESCO bloom season classic — meadows, monsoon colour, and carefully paced itineraries.',
+    href: '/treks/valley-of-flowers',
+    img: photos.vof,
+    cta: 'View itinerary',
+  },
+  {
+    id: 'world',
+    pill: 'Abroad',
+    title: 'Nepal & International',
+    desc: 'Everest, Annapurna, and Nepal circuits with trusted local partners and clear support.',
+    href: '/international-getaways',
+    img: photos.ebc,
+    cta: 'Go international',
+  },
+  {
+    id: 'custom',
+    pill: 'Custom',
+    title: 'Made-for-you Journeys',
+    desc: 'Private groups, corporate offsites, and tailored routes designed around your dates and pace.',
+    href: '/customized',
+    img: photos.chopta,
+    cta: 'Plan a custom trip',
+  },
+] as const;
 
 function useInViewOnce<T extends HTMLElement>() {
   const ref = useRef<T | null>(null);
@@ -123,46 +155,52 @@ function PassportCard({
   );
 }
 
-export default function OurPackingList() {
-  const [filter, setFilter] = useState<KitGroup>('All');
-  const tileRefs = useRef<(HTMLAnchorElement | null)[]>([]);
-  const [seen, setSeen] = useState<boolean[]>(() => KIT.map(() => false));
+function RouteLane({
+  route,
+  index,
+}: {
+  route: (typeof ROUTES)[number];
+  index: number;
+}) {
+  const { ref, on } = useInViewOnce<HTMLAnchorElement>();
+  const flip = index % 2 === 1;
 
-  const items = useMemo(
-    () => (filter === 'All' ? KIT : KIT.filter((k) => k.group === filter)),
-    [filter],
+  return (
+    <Link
+      ref={ref}
+      href={route.href}
+      className={`it-pack__route${flip ? ' it-pack__route--flip' : ''}${on ? ' is-in' : ''}`}
+      style={{ transitionDelay: on ? `${(index % 3) * 70}ms` : '0ms' }}
+    >
+      <div className="it-pack__route-media">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={route.img} alt="" loading="lazy" />
+      </div>
+      <div className="it-pack__route-body">
+        <div className="it-pack__route-meta">
+          <span className="it-pack__route-index">0{index + 1}</span>
+          <span className="it-pack__route-pill">{route.pill}</span>
+        </div>
+        <h3 className="it-pack__route-title">{route.title}</h3>
+        <p className="it-pack__route-desc">{route.desc}</p>
+        <span className="it-pack__route-cta">
+          {route.cta}
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden>
+            <path
+              d="M5 12h14M13 6l6 6-6 6"
+              stroke="currentColor"
+              strokeWidth="2.2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </span>
+      </div>
+    </Link>
   );
+}
 
-  useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setSeen(KIT.map(() => true));
-      return;
-    }
-
-    const observers: IntersectionObserver[] = [];
-    tileRefs.current.forEach((el, i) => {
-      if (!el) return;
-      const io = new IntersectionObserver(
-        ([e]) => {
-          if (e.isIntersecting) {
-            setSeen((prev) => {
-              if (prev[i]) return prev;
-              const next = [...prev];
-              next[i] = true;
-              return next;
-            });
-            io.disconnect();
-          }
-        },
-        { threshold: 0.15, rootMargin: '0px 0px -4% 0px' },
-      );
-      io.observe(el);
-      observers.push(io);
-    });
-
-    return () => observers.forEach((o) => o.disconnect());
-  }, [filter]);
-
+export default function OurPackingList() {
   return (
     <section
       id="packing-list"
@@ -180,8 +218,8 @@ export default function OurPackingList() {
             </h2>
           </div>
           <p className="it-pack__lead">
-            Not gear — people and journeys. Meet the crew who built Indian Treks, then browse what we
-            pack into every season of the mountains.
+            Not gear — people and journeys. Meet the crew who built Indian Treks, then walk through
+            the routes we pack for every kind of mountain traveler.
           </p>
         </div>
 
@@ -196,57 +234,15 @@ export default function OurPackingList() {
           ))}
         </div>
 
-        <div className="it-pack__kit">
-          <div className="it-pack__chapter">
-            <span className="it-pack__chapter-num">02</span>
-            <p className="it-pack__chapter-label">What&apos;s packed</p>
-          </div>
+        <div className="it-pack__chapter">
+          <span className="it-pack__chapter-num">02</span>
+          <p className="it-pack__chapter-label">What&apos;s packed</p>
+        </div>
 
-          <div className="it-pack__filters" role="tablist" aria-label="Filter journeys">
-            {FILTERS.map((f) => (
-              <button
-                key={f}
-                type="button"
-                role="tab"
-                aria-selected={filter === f}
-                className={`it-pack__filter${filter === f ? ' is-on' : ''}`}
-                onClick={() => setFilter(f)}
-              >
-                {f}
-              </button>
-            ))}
-          </div>
-
-          <div className="it-pack__board">
-            {items.length === 0 ? (
-              <p className="it-pack__empty">Nothing packed in this filter yet.</p>
-            ) : (
-              items.map((item) => {
-                const idx = KIT.findIndex((k) => k.label === item.label);
-                return (
-                  <Link
-                    key={item.label}
-                    href={item.href}
-                    ref={(el) => {
-                      if (idx >= 0) tileRefs.current[idx] = el;
-                    }}
-                    className={`it-pack__tile${seen[idx] ? ' is-in' : ''}`}
-                    style={{
-                      transitionDelay: seen[idx] ? `${(idx % 4) * 55}ms` : '0ms',
-                    }}
-                  >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={item.img} alt="" loading="lazy" />
-                    <div className="it-pack__tile-shade" aria-hidden />
-                    <div className="it-pack__tile-copy">
-                      <p className="it-pack__tile-tag">{item.tag}</p>
-                      <p className="it-pack__tile-name">{item.label}</p>
-                    </div>
-                  </Link>
-                );
-              })
-            )}
-          </div>
+        <div className="it-pack__routes" aria-label="Packed journeys">
+          {ROUTES.map((route, i) => (
+            <RouteLane key={route.id} route={route} index={i} />
+          ))}
         </div>
       </div>
     </section>
