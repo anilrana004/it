@@ -192,8 +192,7 @@ export default function OurPackingList() {
             Our Packing List <em>!!</em>
           </h2>
           <p className="it-pack__lead">
-            Swipe the row — whichever card lands in the center grows big. Tap it to open that
-            journey.
+            Swipe to browse — the center card grows. Tap to open that journey.
           </p>
         </header>
       </div>
