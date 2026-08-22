@@ -5,7 +5,6 @@ import { useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { EffectCoverflow, Navigation, Pagination } from 'swiper/modules';
 import type { Swiper as SwiperType } from 'swiper';
-import { photos } from '@/lib/media';
 
 import 'swiper/css';
 import 'swiper/css/effect-coverflow';
@@ -13,10 +12,8 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
 /**
- * Videos / Memories — 3D coverflow with working pointer:
- * - side slides clickable (slideToClickedSlide)
- * - iframe does not steal swipe/clicks
- * - nav + pagination stay above the stage
+ * Trail Highlights from the Community — video coverflow.
+ * Side slides use official YouTube thumbnails (`i.ytimg.com`); center slide autoplays muted.
  */
 
 type Journey = {
@@ -24,51 +21,44 @@ type Journey = {
   title: string;
   href: string;
   youtubeId: string;
-  image: string;
 };
 
 const JOURNEYS: Journey[] = [
   {
-    id: 'treks',
-    title: 'Himalayan Treks',
-    href: '/treks',
-    youtubeId: 'sNDtl6HIQ7Y',
-    image: photos.kedarkantha,
+    id: 'kedarkantha',
+    title: 'Kedarkantha Trek',
+    href: '/treks/kedarkantha',
+    youtubeId: '97J3LIF3VAI',
   },
   {
-    id: 'snow',
-    title: 'Snow Trails',
-    href: '/treks',
-    youtubeId: 'DJwxrGD7R2w',
-    image: photos.snow,
+    id: 'kuari-pass',
+    title: 'Kuari Pass Trek',
+    href: '/treks/kuari-pass',
+    youtubeId: 'rmuuxRaCSH0',
   },
   {
     id: 'yatra',
     title: 'Sacred Yatras',
     href: '/yatra',
-    youtubeId: 'r1COghljrtg',
-    image: photos.yatra,
+    youtubeId: 'EuRs_GP29Lo',
   },
   {
     id: 'flowers',
-    title: 'Valley of Flowers',
+    title: 'Valley of Flowers Trek',
     href: '/treks/valley-of-flowers',
-    youtubeId: 'DJjleyyCehY',
-    image: photos.vof,
+    youtubeId: 'qrMyYGaJA0s',
   },
   {
     id: 'nepal',
     title: 'Nepal & Abroad',
     href: '/international-getaways',
-    youtubeId: 'Enn8Eci72Vw',
-    image: photos.ebc,
+    youtubeId: '8efveLZ3E24',
   },
   {
-    id: 'custom',
-    title: 'Custom Trips',
-    href: '/customized',
-    youtubeId: 'OuqA0EJZaz4',
-    image: photos.chopta,
+    id: 'chopta',
+    title: 'Chopta Tungnath Trek',
+    href: '/treks/chopta-tungnath',
+    youtubeId: '1v8ThiFzp9U',
   },
 ];
 
@@ -86,15 +76,20 @@ function embedUrl(id: string) {
   return `https://www.youtube-nocookie.com/embed/${id}?${q.toString()}`;
 }
 
+/** Official YouTube still — hq is reliably available for every public video */
+function thumbUrl(id: string) {
+  return `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
+}
+
 export default function PackedJourneysMemories() {
   const [active, setActive] = useState(0);
   const current = JOURNEYS[active] ?? JOURNEYS[0];
 
   return (
-    <div className="it-pack-mem" aria-label="Memories from the trail">
+    <div className="it-pack-mem" aria-label="Trail Highlights from the Community">
       <div className="it-pack-mem__head">
         <p className="it-pack-mem__kicker">Videos</p>
-        <h3 className="it-pack-mem__title">Memories from the trail</h3>
+        <h3 className="it-pack-mem__title">Trail Highlights from the Community</h3>
       </div>
 
       <div className="it-pack-mem__shell">
@@ -166,6 +161,7 @@ export default function PackedJourneysMemories() {
         >
           {JOURNEYS.map((item, i) => {
             const isActive = i === active;
+
             return (
               <SwiperSlide key={item.id} className="it-pack-mem__slide">
                 <div
@@ -184,14 +180,19 @@ export default function PackedJourneysMemories() {
                       tabIndex={-1}
                     />
                   ) : (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      className="it-pack-mem__media"
-                      src={item.image}
-                      alt={item.title}
-                      loading="lazy"
-                      draggable={false}
-                    />
+                    <>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        className="it-pack-mem__media"
+                        src={thumbUrl(item.youtubeId)}
+                        alt=""
+                        loading="lazy"
+                        draggable={false}
+                      />
+                      <span className="it-pack-mem__play" aria-hidden>
+                        <i className="fa-solid fa-play" />
+                      </span>
+                    </>
                   )}
                   {!isActive ? (
                     <span className="it-pack-mem__caption">{item.title}</span>

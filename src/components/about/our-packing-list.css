@@ -262,6 +262,29 @@
   pointer-events: none !important;
 }
 
+.it-pack-mem__play {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  background: rgba(0, 0, 0, 0.28);
+}
+
+.it-pack-mem__play i {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  font-size: 0.95rem;
+  padding-left: 3px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+}
+
 .it-pack-mem__caption {
   position: absolute;
   left: 12px;
