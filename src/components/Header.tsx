@@ -2,9 +2,11 @@
 import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
-import { Menu, X, Phone, Search, ChevronDown, User, Sparkles, Mountain, SunMedium, ArrowRight } from 'lucide-react';
+import { Menu, X, Phone, Search, ChevronDown, User, Sparkles, Star, Mail, Mountain, SunMedium, ArrowRight } from 'lucide-react';
 import { treks } from '@/lib/data';
 import BrandLogo from '@/components/BrandLogo';
+import { CONTACT, mailtoUrl, telUrl, whatsappUrl } from '@/lib/contact';
+import { DESK_HEADER_H, DESK_MAIN_H, DESK_TOP_H, CHROME_HIDDEN_CLASS } from '@/lib/layout';
 import { isSupportHubPath } from '@/lib/support-hub-nav';
 import { isCorporateHubPath, PROGRAMS_NAV_DROPDOWN } from '@/lib/corporate-hub-nav';
 import {
@@ -12,9 +14,31 @@ import {
   SPECIAL_PROGRAMS_NAV_DROPDOWN,
 } from '@/lib/special-programs-hub-nav';
 
-const navItems = [
+/** Desktop top utility strip — contact left, quick links right */
+const TOP_STRIP_LINKS = [
+  { label: 'Home', href: '/' },
+  { label: 'About Us', href: '/about' },
+  { label: 'Contact Us', href: '/contact' },
+  { label: 'FAQ', href: '/faqs' },
+  { label: 'Reviews', href: '/reviews' },
+  { label: 'Payment Policy', href: '/payment-policy' },
+  { label: 'Blogs', href: '/blog' },
+] as const;
+
+type NavItem = {
+  label: string;
+  href: string;
+  dropdown?: { l: string; h: string }[];
+  sale?: boolean;
+  star?: boolean;
+  shortLabel?: string;
+};
+
+const navItems: NavItem[] = [
   {
-    label: 'Group Trips', href: '/group-trips',
+    label: 'Group Trips',
+    shortLabel: 'Group',
+    href: '/group-trips',
     dropdown: [
       { l: 'Backpacking Trips', h: '/#backpacking' },
       { l: 'Treks', h: '/treks' },
@@ -35,39 +59,66 @@ const navItems = [
       { l: 'Honeymoon Trips', h: '/honeymoon' },
     ],
   },
-  { label: 'Bucket List Sale', href: '/bucket-list-sale', sale: true },
+  { label: 'Bucket List Sale', shortLabel: 'Sale', href: '/bucket-list-sale', sale: true },
   { label: 'Trending', href: '/trending' },
   {
+    label: 'Sacred Yatra',
+    shortLabel: 'Yatra',
+    href: '/yatra',
+    dropdown: [
+      { l: 'All Sacred Yatras', h: '/yatra' },
+      { l: 'Kedarnath Yatra', h: '/yatra/kedarnath-yatra' },
+      { l: 'Badrinath Yatra', h: '/yatra/badrinath-yatra' },
+      { l: 'Do Dham Yatra', h: '/yatra/do-dham' },
+      { l: 'Char Dham Yatra', h: '/yatra/char-dham' },
+      { l: 'Panch Kedar Yatra', h: '/yatra/panch-kedar' },
+    ],
+  },
+  {
     label: 'Learning Programs',
+    shortLabel: 'Learning',
     href: '/corporate',
     dropdown: PROGRAMS_NAV_DROPDOWN,
   },
   {
-    label: 'Special Programs ⭐',
+    label: 'Special Programs',
+    shortLabel: 'Special',
     href: '/special-programs',
     dropdown: SPECIAL_PROGRAMS_NAV_DROPDOWN,
+    star: true,
   },
   {
     label: 'More', href: '#',
     dropdown: [
-      { l: 'About Us', h: '/about' },
-      { l: 'Contact Us', h: '/contact' },
-      { l: 'Help Centre', h: '/help-centre' },
+      { l: 'How to Prepare', h: '/how-to-prepare' },
+      { l: 'Fitness Training Plan', h: '/fitness-training-plan' },
+      { l: 'Altitude Sickness Guide', h: '/altitude-sickness-guide' },
       { l: 'Careers With Us', h: '/careers' },
-      { l: 'Our Blogs', h: '/blog' },
+      { l: 'Help Centre', h: '/help-centre' },
     ],
   },
 ];
 
 const mobileLinkSections = [
   {
-    title: 'Company',
+    title: 'Sacred Yatra',
     links: [
-      { l: 'About Us', h: '/about' },
-      { l: 'Contact Us', h: '/contact' },
-      { l: 'Help Centre', h: '/help-centre' },
+      { l: 'All Sacred Yatras', h: '/yatra' },
+      { l: 'Kedarnath Yatra', h: '/yatra/kedarnath-yatra' },
+      { l: 'Badrinath Yatra', h: '/yatra/badrinath-yatra' },
+      { l: 'Do Dham Yatra', h: '/yatra/do-dham' },
+      { l: 'Char Dham Yatra', h: '/yatra/char-dham' },
+      { l: 'Panch Kedar Yatra', h: '/yatra/panch-kedar' },
+    ],
+  },
+  {
+    title: 'Trek Preparation',
+    links: [
+      { l: 'How to Prepare', h: '/how-to-prepare' },
+      { l: 'Fitness Training Plan', h: '/fitness-training-plan' },
+      { l: 'Altitude Sickness Guide', h: '/altitude-sickness-guide' },
       { l: 'Careers With Us', h: '/careers' },
-      { l: 'Our Blogs', h: '/blog' },
+      { l: 'Help Centre', h: '/help-centre' },
     ],
   },
   {
@@ -86,7 +137,7 @@ const mobileLinkSections = [
     links: PROGRAMS_NAV_DROPDOWN,
   },
   {
-    title: 'Special Programs ⭐',
+    title: 'Special Programs',
     links: SPECIAL_PROGRAMS_NAV_DROPDOWN,
   },
   {
@@ -99,12 +150,57 @@ const mobileLinkSections = [
   },
 ];
 
-function Dropdown({ items, onClose }: { items: { l: string; h: string }[]; onClose: () => void }) {
+const deskNavLink =
+  'inline-flex h-7 items-center gap-0.5 whitespace-nowrap rounded-md px-1.5 text-[11px] font-medium text-white/95 transition-colors hover:bg-white/10 hover:text-white xl:gap-0.5 xl:px-2 xl:text-[11.5px] 2xl:px-2.5 2xl:text-[12px]';
+
+function NavLabel({
+  label,
+  shortLabel,
+  star,
+}: {
+  label: string;
+  shortLabel?: string;
+  star?: boolean;
+}) {
   return (
-    <div className="absolute top-full left-0 mt-1 bg-white rounded-xl shadow-xl border border-gray-100 py-2 min-w-[220px] z-50" role="menu">
-      {items.map(item => (
-        <Link key={item.l} href={item.h} onClick={onClose} role="menuitem"
-          className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 hover:text-[#16a34a] transition-colors">
+    <span className="inline-flex items-center gap-0.5">
+      {shortLabel ? (
+        <>
+          <span className="2xl:hidden">{shortLabel}</span>
+          <span className="hidden 2xl:inline">{label}</span>
+        </>
+      ) : (
+        label
+      )}
+      {star ? (
+        <Star className="h-2.5 w-2.5 shrink-0 fill-amber-400 text-amber-400" aria-hidden />
+      ) : null}
+    </span>
+  );
+}
+
+function Dropdown({
+  items,
+  onClose,
+  align = 'left',
+}: {
+  items: { l: string; h: string }[];
+  onClose: () => void;
+  align?: 'left' | 'right';
+}) {
+  return (
+    <div
+      className={`absolute top-full z-50 mt-1 min-w-[240px] rounded-xl border border-gray-100 bg-white py-2 shadow-xl ${align === 'right' ? 'right-0' : 'left-0'}`}
+      role="menu"
+    >
+      {items.map((item) => (
+        <Link
+          key={item.l}
+          href={item.h}
+          onClick={onClose}
+          role="menuitem"
+          className="block px-4 py-2.5 text-sm text-gray-700 transition-colors hover:bg-gray-50 hover:text-[#16a34a]"
+        >
           {item.l}
         </Link>
       ))}
@@ -145,8 +241,13 @@ export default function Header() {
     return () => window.removeEventListener('scroll', update);
   }, [isHome]);
 
-  /** Mobile only: slides the wash bar away while reading down, back in on the way up. */
+  /** Hide chrome while scrolling down; reveal on scroll up (Roopkund Heaven pattern). */
   const [hidden, setHidden] = useState(false);
+
+  useEffect(() => {
+    document.documentElement.classList.toggle(CHROME_HIDDEN_CLASS, hidden);
+    return () => document.documentElement.classList.remove(CHROME_HIDDEN_CLASS);
+  }, [hidden]);
 
   const [mobSearch, setMobSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -174,19 +275,27 @@ export default function Header() {
       return;
     }
 
-    const mq = window.matchMedia('(max-width: 1023px)');
-    const HIDE_AFTER = 120;
+    const HIDE_AFTER = 72;
     let last = window.scrollY;
     let frame = 0;
 
     const update = () => {
       frame = 0;
-      if (!mq.matches) {
+      const current = Math.max(0, window.scrollY);
+      const delta = current - last;
+
+      // Always show near the top of the page
+      if (current <= HIDE_AFTER) {
         setHidden(false);
-        return;
+      } else if (delta > 4) {
+        // Scrolling down → hide (Roopkund Heaven / industry standard)
+        setHidden(true);
+        setOpenDropdown(null);
+      } else if (delta < -4) {
+        // Scrolling up → show
+        setHidden(false);
       }
-      const current = window.scrollY;
-      setHidden(current > last && current > HIDE_AFTER);
+
       last = current;
     };
 
@@ -195,16 +304,10 @@ export default function Header() {
       frame = window.requestAnimationFrame(update);
     };
 
-    const onBreakpoint = () => {
-      if (!mq.matches) setHidden(false);
-    };
-
     window.addEventListener('scroll', onScroll, { passive: true });
-    mq.addEventListener('change', onBreakpoint);
     return () => {
       if (frame) window.cancelAnimationFrame(frame);
       window.removeEventListener('scroll', onScroll);
-      mq.removeEventListener('change', onBreakpoint);
     };
   }, [blockHide]);
 
@@ -240,6 +343,12 @@ export default function Header() {
       el?.scrollIntoView({ block: 'nearest' });
     }
   }, [searchIdx]);
+
+  useEffect(() => {
+    if (!mobSearch) return;
+    const t = window.setTimeout(() => searchRef.current?.focus(), 50);
+    return () => window.clearTimeout(t);
+  }, [mobSearch]);
 
   const closeDropdown = useCallback(() => setOpenDropdown(null), []);
 
@@ -292,71 +401,211 @@ export default function Header() {
 
   return (
     <div ref={headerRef}>
-      {/* Desktop header — IndiaHikes flow: always-visible white bar. Hero
-          content is padded below it; the bar never hides or dissolves. */}
-      <header className="fixed left-0 top-0 z-50 hidden w-full bg-white shadow-sm lg:block">
-        <div className="flex h-16 items-center justify-between gap-4 px-6 xl:px-10 2xl:px-14">
-          <Link href="/" className="shrink-0">
-            <BrandLogo className="h-9 w-auto max-w-[200px] object-contain object-left" />
+      {/* Desktop: compact dark-green chrome. Fixed + reserved spacer = no overlap.
+          Hide on scroll-down / show on scroll-up (Roopkund Heaven pattern). */}
+      <header
+        className="fixed left-0 top-0 z-50 hidden w-full lg:block"
+        style={{
+          height: DESK_HEADER_H,
+          transform: hidden ? 'translateY(-110%)' : 'translateY(0)',
+          transition: 'transform 0.28s cubic-bezier(0.22, 1, 0.36, 1)',
+          willChange: 'transform',
+        }}
+      >
+        {/* Top utility strip — contact left, quick links right */}
+        <div
+          className="flex items-center justify-between gap-6 px-5 xl:px-8 2xl:px-12"
+          style={{ height: DESK_TOP_H, background: '#062816' }}
+          aria-label="Utility links"
+        >
+          <div className="flex min-w-0 items-center gap-2.5 text-[11px] font-medium text-white xl:gap-3 xl:text-[12px]">
+            <a
+              href={whatsappUrl()}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 transition-opacity hover:opacity-85"
+              aria-label={`WhatsApp ${CONTACT.phoneDisplay}`}
+            >
+              <i className="fa-brands fa-whatsapp text-[13px] text-[#25D366]" aria-hidden />
+              <span className="whitespace-nowrap">+{CONTACT.phoneWa}</span>
+            </a>
+            <span className="text-white/35 select-none" aria-hidden>
+              |
+            </span>
+            <a
+              href={mailtoUrl()}
+              className="inline-flex min-w-0 items-center gap-1.5 transition-opacity hover:opacity-85"
+            >
+              <Mail className="h-3 w-3 shrink-0 text-white/90" aria-hidden />
+              <span className="truncate">{CONTACT.email}</span>
+            </a>
+          </div>
+
+          <nav
+            className="hidden items-center gap-0 text-[10px] font-semibold uppercase tracking-[0.08em] text-white sm:flex xl:text-[11px]"
+            aria-label="Quick links"
+          >
+            {TOP_STRIP_LINKS.map((item, i) => (
+              <span key={item.href} className="inline-flex items-center">
+                {i > 0 ? (
+                  <span className="mx-2 text-white/35 select-none xl:mx-2.5" aria-hidden>
+                    |
+                  </span>
+                ) : null}
+                <Link
+                  href={item.href}
+                  className="whitespace-nowrap transition-opacity hover:opacity-80"
+                >
+                  {item.label}
+                </Link>
+              </span>
+            ))}
+          </nav>
+        </div>
+
+        {/* Main nav bar */}
+        <div
+          className="grid items-stretch"
+          style={{
+            height: DESK_MAIN_H,
+            background: 'linear-gradient(180deg, #0b4a28 0%, #0a3d22 100%)',
+            gridTemplateColumns: 'auto minmax(0, 1fr) auto',
+          }}
+        >
+          <Link
+            href="/"
+            className="flex h-full items-center bg-white px-3 shadow-[4px_0_12px_rgba(0,0,0,0.12)] xl:px-4"
+            aria-label="Indian Treks home"
+          >
+            <BrandLogo className="h-6 w-auto max-w-[130px] object-contain object-left xl:h-7 xl:max-w-[160px] 2xl:max-w-[180px]" />
           </Link>
 
-          <nav className="flex items-center justify-center gap-0.5">
-            {navItems.map((item: any) => (
-              <div key={item.label}
-                className="relative"
+          <nav
+            className="flex min-w-0 items-center justify-center gap-0 overflow-x-clip px-1.5 xl:gap-0.5 xl:px-2 2xl:px-3"
+            aria-label="Primary"
+          >
+            {navItems.map((item) => (
+              <div
+                key={item.label}
+                className="relative shrink-0"
                 onMouseEnter={() => item.dropdown && handleMouseEnter(item.label)}
-                onMouseLeave={handleMouseLeave}>
+                onMouseLeave={handleMouseLeave}
+              >
                 {item.sale ? (
-                  <Link href={item.href}
-                    className="inline-flex items-center gap-1.5 px-4 py-1.5 text-sm font-bold text-white bg-[#16a34a] rounded-full hover:bg-[#15803d] transition-all duration-300 shadow-lg shadow-[#16a34a]/25">
-                    <Sparkles className="w-3.5 h-3.5" />
-                    {item.label}
+                  <Link
+                    href={item.href}
+                    className="mx-0.5 inline-flex h-7 items-center gap-1 whitespace-nowrap rounded-full bg-[#16a34a] px-2.5 text-[11px] font-bold text-white shadow-md shadow-black/20 transition-colors hover:bg-[#15803d] xl:mx-1 xl:px-3 xl:text-[11.5px] 2xl:text-[12px]"
+                  >
+                    <Sparkles className="h-3 w-3 shrink-0" />
+                    <span className="2xl:hidden">{item.shortLabel ?? item.label}</span>
+                    <span className="hidden 2xl:inline">{item.label}</span>
                   </Link>
                 ) : item.dropdown ? (
-                  <button type="button"
+                  <button
+                    type="button"
                     onClick={() => setOpenDropdown(openDropdown === item.label ? null : item.label)}
-                    aria-expanded={openDropdown === item.label} aria-haspopup="true"
-                    className="inline-flex items-center gap-1 px-3 xl:px-4 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-50 hover:text-[#16a34a] transition-colors">
-                    {item.label}
-                    <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${openDropdown === item.label ? 'rotate-180' : ''}`} />
+                    aria-expanded={openDropdown === item.label}
+                    aria-haspopup="true"
+                    className={deskNavLink}
+                  >
+                    <NavLabel label={item.label} shortLabel={item.shortLabel} star={item.star} />
+                    <ChevronDown
+                      className={`h-3 w-3 shrink-0 text-white/80 transition-transform duration-200 ${openDropdown === item.label ? 'rotate-180' : ''}`}
+                    />
                   </button>
                 ) : (
-                  <Link href={item.href}
-                    className="inline-flex items-center gap-1 px-3 xl:px-4 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-50 hover:text-[#16a34a] transition-colors">
-                    {item.label}
+                  <Link href={item.href} className={deskNavLink}>
+                    <NavLabel label={item.label} shortLabel={item.shortLabel} star={item.star} />
                   </Link>
                 )}
                 {item.dropdown && openDropdown === item.label && (
-                  <div onMouseEnter={() => { if (closeTimer.current) clearTimeout(closeTimer.current); setOpenDropdown(item.label); }}
-                    onMouseLeave={handleMouseLeave}>
-                    <Dropdown items={item.dropdown} onClose={() => { closeDropdown(); }} />
+                  <div
+                    onMouseEnter={() => {
+                      if (closeTimer.current) clearTimeout(closeTimer.current);
+                      setOpenDropdown(item.label);
+                    }}
+                    onMouseLeave={handleMouseLeave}
+                  >
+                    <Dropdown
+                      items={item.dropdown}
+                      onClose={closeDropdown}
+                      align={
+                        item.label === 'More' || item.label === 'Special Programs'
+                          ? 'right'
+                          : 'left'
+                      }
+                    />
                   </div>
                 )}
               </div>
             ))}
           </nav>
 
-          <div className="flex shrink-0 items-center gap-2.5">
-            <a href="tel:+919797972175"
-              className="flex items-center gap-2 text-sm font-medium text-gray-700 hover:text-[#16a34a] px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors">
-              <Phone className="w-4 h-4" /> Call Us
+          <div className="flex shrink-0 items-center gap-1.5 px-2 xl:gap-2 xl:px-3 2xl:gap-2.5 2xl:px-4">
+            <form
+              role="search"
+              className="flex h-8 max-w-[min(100%,280px)] items-center rounded-full border border-white/20 bg-white pl-2.5 pr-0.5 shadow-sm"
+              onSubmit={(e) => {
+                e.preventDefault();
+                setOpenDropdown(null);
+                setMobSearch(true);
+                setSearchIdx(-1);
+                requestAnimationFrame(() => searchRef.current?.focus());
+              }}
+            >
+              <Search className="h-3.5 w-3.5 shrink-0 text-gray-400" aria-hidden />
+              <input
+                type="search"
+                name="q"
+                autoComplete="off"
+                aria-label="Search treks and routes"
+                placeholder="Search treks, route"
+                value={searchQuery}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  setSearchIdx(-1);
+                }}
+                onFocus={() => setOpenDropdown(null)}
+                className="min-w-0 flex-1 bg-transparent px-1.5 text-[11px] text-gray-800 outline-none placeholder:text-gray-400 xl:w-[132px] xl:flex-none 2xl:w-[168px] 2xl:text-[12px]"
+              />
+              <button
+                type="submit"
+                className="inline-flex h-7 shrink-0 items-center gap-1 rounded-full bg-[#16a34a] px-2.5 text-[11px] font-bold text-white shadow-sm transition-colors hover:bg-[#15803d] xl:px-3"
+              >
+                Search
+                <ArrowRight className="h-3 w-3" aria-hidden />
+              </button>
+            </form>
+
+            <a
+              href={whatsappUrl()}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`WhatsApp ${CONTACT.phoneDisplay}`}
+              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[#bbf7d0] bg-white text-[#25D366] shadow-sm transition-colors hover:bg-[#f0fdf4]"
+            >
+              <i className="fa-brands fa-whatsapp text-[15px]" aria-hidden />
             </a>
-            <button type="button" aria-label="Search" className="w-9 h-9 flex items-center justify-center bg-[#16a34a] text-white rounded-full hover:bg-[#15803d] transition-colors shadow-sm">
-              <Search className="w-4 h-4" />
-            </button>
-            <Link href="/login"
-              className="flex items-center gap-2 text-sm font-medium text-gray-700 hover:text-[#16a34a] px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors">
-              <User className="w-4 h-4" />
-              <span>Login</span>
+
+            <Link
+              href="/login"
+              className="inline-flex h-8 shrink-0 items-center gap-1.5 rounded-full border border-[#16a34a] bg-white px-2.5 text-[11px] font-bold text-[#16a34a] shadow-sm transition-colors hover:bg-[#f0fdf4] xl:px-3 xl:text-[12px]"
+            >
+              <User className="h-3.5 w-3.5 shrink-0" aria-hidden />
+              Login
             </Link>
           </div>
         </div>
       </header>
 
-      {/* Homepage desktop: fixed bar is out of flow — push the hero below it
-          so the page never paints under the navbar. Other routes keep their
-          own lg:pt-* offsets. */}
-      {isHome && <div aria-hidden className="hidden h-16 shrink-0 lg:block" />}
+      {/* Homepage desktop: reserve space under fixed header (no overlap; no jump when chrome hides) */}
+      {isHome && (
+        <div
+          aria-hidden
+          className="hidden shrink-0 lg:block"
+          style={{ height: DESK_HEADER_H }}
+        />
+      )}
 
       {/*
         Mobile header (IndiaHikes flow):
@@ -411,19 +660,19 @@ export default function Header() {
           </div>
           <div className="flex-1 overflow-y-auto pb-8">
             <div className="p-4 space-y-0.5">
-              {navItems.map((item: any) => (
+              {navItems.map((item) => (
                 <div key={item.label}>
                   {item.dropdown ? (
                     <div>
                       <button type="button" onClick={() => toggleMobileSubmenu(item.label)}
                         aria-expanded={mobileOpen.includes(item.label)}
                         className="w-full flex items-center justify-between px-4 py-3.5 text-sm font-medium text-gray-800 rounded-xl hover:bg-gray-50 transition-colors">
-                        {item.label}
+                        <NavLabel label={item.label} star={item.star} />
                         <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${mobileOpen.includes(item.label) ? 'rotate-180' : ''}`} />
                       </button>
                       {mobileOpen.includes(item.label) && (
                         <div className="ml-4 pl-3 border-l-2 border-gray-100 space-y-0.5 mb-1">
-                          {item.dropdown.map((sub: any) => (
+                          {item.dropdown.map((sub) => (
                             <Link key={sub.l} href={sub.h} onClick={closeMobile}
                               className="block px-4 py-2.5 text-sm text-gray-600 hover:bg-gray-50 rounded-lg transition-colors">
                               {sub.l}
@@ -440,7 +689,7 @@ export default function Header() {
                   ) : (
                     <Link href={item.href} onClick={closeMobile}
                       className="block px-4 py-3.5 text-sm font-medium text-gray-800 hover:bg-gray-50 rounded-xl transition-colors">
-                      {item.label}
+                      <NavLabel label={item.label} star={item.star} />
                     </Link>
                   )}
                 </div>
@@ -521,39 +770,84 @@ export default function Header() {
         </div>
       )}
 
-      {/* Mobile Search Overlay */}
+      {/* Search overlay — desktop + mobile */}
       {mobSearch && (
-        <div className="fixed inset-0 z-[100] flex items-start justify-center pt-[15vh] bg-black/60 backdrop-blur-sm lg:hidden"
-          onClick={e => { if (e.target === e.currentTarget) { setMobSearch(false); setSearchQuery(''); } }}>
-          <div className="w-full max-w-lg mx-4 bg-white rounded-2xl shadow-2xl shadow-black/30 overflow-hidden">
-            <div className="flex items-center gap-2 px-4 py-3 border-b border-gray-100">
-              <Search className="w-5 h-5 text-[#16a34a] shrink-0" />
-              <input ref={searchRef} type="text" autoComplete="off" aria-label="Search treks & yatras"
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label="Search treks and yatras"
+          className="fixed inset-0 z-[100] flex items-start justify-center bg-black/60 pt-[12vh] backdrop-blur-sm lg:pt-[18vh]"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              setMobSearch(false);
+              setSearchQuery('');
+              setSearchIdx(-1);
+            }
+          }}
+        >
+          <div className="mx-4 w-full max-w-lg overflow-hidden rounded-2xl bg-white shadow-2xl shadow-black/30 lg:max-w-xl">
+            <div className="flex items-center gap-2 border-b border-gray-100 px-4 py-3">
+              <Search className="h-5 w-5 shrink-0 text-[#16a34a]" />
+              <input
+                ref={searchRef}
+                type="text"
+                autoComplete="off"
+                aria-label="Search treks & yatras"
                 placeholder="Search treks, yatras, destinations..."
-                value={searchQuery} onChange={e => { setSearchQuery(e.target.value); setSearchIdx(-1); }}
+                value={searchQuery}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  setSearchIdx(-1);
+                }}
                 onKeyDown={handleSearchKeyDown}
-                className="flex-1 bg-transparent outline-none text-base text-gray-800 placeholder:text-gray-400" />
-              <button type="button" onClick={() => { setMobSearch(false); setSearchQuery(''); }}
-                className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition-colors">
-                <X className="w-5 h-5" />
+                className="flex-1 bg-transparent text-base text-gray-800 outline-none placeholder:text-gray-400"
+              />
+              <button
+                type="button"
+                onClick={() => {
+                  setMobSearch(false);
+                  setSearchQuery('');
+                  setSearchIdx(-1);
+                }}
+                className="flex h-8 w-8 items-center justify-center rounded-full text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600"
+                aria-label="Close search"
+              >
+                <X className="h-5 w-5" />
               </button>
             </div>
-            <div ref={searchListRef} className="max-h-[50vh] overflow-y-auto py-2">
+            <div ref={searchListRef} className="max-h-[50vh] overflow-y-auto py-2 lg:max-h-[55vh]">
               {searchQuery.trim() && searchResults.length === 0 && (
                 <div className="px-5 py-8 text-center">
-                  <Search className="w-8 h-8 mx-auto text-gray-300 mb-2" />
-                  <p className="text-sm text-gray-400">No results found for &ldquo;{searchQuery}&rdquo;</p>
-                  <p className="text-xs text-gray-300 mt-1">Try a different search term</p>
+                  <Search className="mx-auto mb-2 h-8 w-8 text-gray-300" />
+                  <p className="text-sm text-gray-400">
+                    No results found for &ldquo;{searchQuery}&rdquo;
+                  </p>
+                  <p className="mt-1 text-xs text-gray-300">Try a different search term</p>
                 </div>
               )}
               {!searchQuery.trim() && (
                 <div className="px-5 py-8 text-center">
-                  <Mountain className="w-8 h-8 mx-auto text-gray-300 mb-2" />
-                  <p className="text-sm text-gray-400">Type to search treks & yatras</p>
-                  <div className="flex flex-wrap justify-center gap-1.5 mt-4">
-                    {['Valley of Flowers', 'Kedarkantha', 'Everest', 'Hampta Pass', 'Kedarnath', 'Triund'].map(tag => (
-                      <button key={tag} type="button" onClick={() => { setSearchQuery(tag); setSearchIdx(-1); searchRef.current?.focus(); }}
-                        className="text-xs bg-gray-100 hover:bg-[#16a34a]/10 hover:text-[#166534] text-gray-500 px-3 py-1.5 rounded-full transition-colors">
+                  <Mountain className="mx-auto mb-2 h-8 w-8 text-gray-300" />
+                  <p className="text-sm text-gray-400">Type to search treks &amp; yatras</p>
+                  <div className="mt-4 flex flex-wrap justify-center gap-1.5">
+                    {[
+                      'Valley of Flowers',
+                      'Kedarkantha',
+                      'Everest',
+                      'Hampta Pass',
+                      'Kedarnath',
+                      'Triund',
+                    ].map((tag) => (
+                      <button
+                        key={tag}
+                        type="button"
+                        onClick={() => {
+                          setSearchQuery(tag);
+                          setSearchIdx(-1);
+                          searchRef.current?.focus();
+                        }}
+                        className="rounded-full bg-gray-100 px-3 py-1.5 text-xs text-gray-500 transition-colors hover:bg-[#16a34a]/10 hover:text-[#166534]"
+                      >
                         {tag}
                       </button>
                     ))}
@@ -561,21 +855,33 @@ export default function Header() {
                 </div>
               )}
               {searchResults.map((s, i) => (
-                <button key={s.id} type="button" onClick={() => goSearch(s.id, s.type)}
+                <button
+                  key={s.id}
+                  type="button"
+                  onClick={() => goSearch(s.id, s.type)}
                   onMouseEnter={() => setSearchIdx(i)}
-                  className={`w-full flex items-center gap-3 px-5 py-3 text-left transition-colors ${i === searchIdx ? 'bg-[#16a34a]/10' : 'hover:bg-gray-50'}`}>
-                  <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${s.type === 'yatra' ? 'bg-[#166534] text-[#dcfce7]' : 'bg-[#dcfce7] text-[#16a34a]'}`}>
-                    {s.type === 'yatra' ? <SunMedium className="w-5 h-5" /> : <Mountain className="w-5 h-5" />}
+                  className={`flex w-full items-center gap-3 px-5 py-3 text-left transition-colors ${i === searchIdx ? 'bg-[#16a34a]/10' : 'hover:bg-gray-50'}`}
+                >
+                  <div
+                    className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${s.type === 'yatra' ? 'bg-[#166534] text-[#dcfce7]' : 'bg-[#dcfce7] text-[#16a34a]'}`}
+                  >
+                    {s.type === 'yatra' ? (
+                      <SunMedium className="h-5 w-5" />
+                    ) : (
+                      <Mountain className="h-5 w-5" />
+                    )}
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="text-sm font-semibold text-gray-900 truncate">{s.title}</div>
-                    <div className="text-xs text-gray-400 truncate">{s.sub}</div>
+                  <div className="min-w-0 flex-1">
+                    <div className="truncate text-sm font-semibold text-gray-900">{s.title}</div>
+                    <div className="truncate text-xs text-gray-400">{s.sub}</div>
                   </div>
-                  <div className="flex items-center gap-1 shrink-0">
-                    <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${s.type === 'yatra' ? 'bg-[#166534] text-white' : 'bg-[#dcfce7] text-[#166534]'}`}>
+                  <div className="flex shrink-0 items-center gap-1">
+                    <span
+                      className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${s.type === 'yatra' ? 'bg-[#166534] text-white' : 'bg-[#dcfce7] text-[#166534]'}`}
+                    >
                       {s.type === 'yatra' ? 'Yatra' : 'Trek'}
                     </span>
-                    <ArrowRight className="w-4 h-4 text-gray-300" />
+                    <ArrowRight className="h-4 w-4 text-gray-300" />
                   </div>
                 </button>
               ))}

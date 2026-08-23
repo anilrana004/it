@@ -100,9 +100,10 @@ export const cancellationPolicyRows: [string, string][] = [
   ['No show / departure missed', 'No refund is usually applicable once reporting is missed without prior written coordination.'],
 ];
 
-export const addOns: { id: 'offloading' | 'insurance'; name: string; price: number; icon: string }[] = [
-  { id: 'offloading', name: 'Backpack Offloading', price: 1200, icon: 'fa-solid fa-briefcase' },
+export const addOns: { id: 'offloading' | 'insurance' | 'jumbo'; name: string; price: number; icon: string }[] = [
+  { id: 'offloading', name: 'Backpack Offloading', price: 1600, icon: 'fa-solid fa-briefcase' },
   { id: 'insurance', name: 'Insurance', price: 210, icon: 'fa-solid fa-shield-halved' },
+  { id: 'jumbo', name: 'Jumbo bag', price: 2500, icon: 'fa-solid fa-briefcase' },
 ];
 
 export const detailTestimonials: {

@@ -23,6 +23,7 @@ import {
   baseCamp,
   staysLabel,
 } from '@/lib/trek-detail-content';
+import { DESK_HEADER_H, MOBILE_HEADER_H, CHROME_HIDDEN_CLASS } from '@/lib/layout';
 import './trek-detail.css';
 
 const navLinks = [
@@ -40,6 +41,74 @@ const navLinks = [
 
 const inr = (n: number) => `₹${n.toLocaleString('en-IN')}`;
 
+/** Roopkund Heaven booking card: pricing tiers surface as occupancy pills. */
+const OCCUPANCY_LABEL: Record<string, string> = {
+  Economic: 'Triple Sharing',
+  Standard: 'Twin Sharing',
+  Premium: 'Single Occupancy',
+};
+
+function occupancyLabel(tierName: string) {
+  return OCCUPANCY_LABEL[tierName] ?? tierName;
+}
+
+/** Drag-to-scroll for month / date / addon strips (Roopkund Heaven pattern). */
+function useDragScroll(ref: React.RefObject<HTMLDivElement | null>) {
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    let active = false;
+    let startX = 0;
+    let origin = 0;
+    let moved = false;
+
+    const onDown = (e: PointerEvent) => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
+      active = true;
+      moved = false;
+      startX = e.clientX;
+      origin = el.scrollLeft;
+      el.classList.add('bk-dragging');
+      el.setPointerCapture?.(e.pointerId);
+    };
+
+    const onMove = (e: PointerEvent) => {
+      if (!active) return;
+      const dx = e.clientX - startX;
+      if (Math.abs(dx) > 3) moved = true;
+      el.scrollLeft = origin - dx;
+    };
+
+    const onUp = (e: PointerEvent) => {
+      if (!active) return;
+      active = false;
+      el.classList.remove('bk-dragging');
+      el.releasePointerCapture?.(e.pointerId);
+    };
+
+    const onClickCapture = (e: MouseEvent) => {
+      if (!moved) return;
+      e.preventDefault();
+      e.stopPropagation();
+      moved = false;
+    };
+
+    el.addEventListener('pointerdown', onDown);
+    el.addEventListener('pointermove', onMove);
+    el.addEventListener('pointerup', onUp);
+    el.addEventListener('pointercancel', onUp);
+    el.addEventListener('click', onClickCapture, true);
+    return () => {
+      el.removeEventListener('pointerdown', onDown);
+      el.removeEventListener('pointermove', onMove);
+      el.removeEventListener('pointerup', onUp);
+      el.removeEventListener('pointercancel', onUp);
+      el.removeEventListener('click', onClickCapture, true);
+    };
+  }, [ref]);
+}
+
 /** Maps a difficulty grade onto the level-badge colour classes. */
 function levelClass(difficulty: string): 'easy' | 'moderate' | 'difficult' {
   if (/^easy$/i.test(difficulty) || /easy to moderate/i.test(difficulty)) return 'easy';
@@ -48,7 +117,7 @@ function levelClass(difficulty: string): 'easy' | 'moderate' | 'difficult' {
 }
 
 const dateTagClass: Record<TrekBatch['status'], string> = {
-  available: '',
+  available: 'bk-tag-open',
   'filling-fast': 'bk-tag-filling-fast',
   'almost-full': 'bk-tag-limited',
   'sold-out': 'bk-tag-closed',
@@ -246,9 +315,11 @@ function paragraphs(text: string): string[] {
 export default function TrekDetailContent({
   trek,
   type,
+  initialGuests = 1,
 }: {
   trek: Trek;
   type: 'trek' | 'yatra';
+  initialGuests?: number;
 }) {
   const router = useRouter();
   const isYatra = type === 'yatra';
@@ -289,9 +360,15 @@ export default function TrekDetailContent({
   // ---- Booking state ------------------------------------------------------
   const [tierName, setTierName] = useState(trek.pricing[0]?.name ?? 'Economic');
   const pickupOptions = useMemo(() => {
-    const start = (trek.startEndPoint || trek.location).split(/\s+to\s+/i)[0].trim();
-    const camp = baseCamp(trek);
-    return [...new Set([start, camp].filter(Boolean))];
+    const raw = (trek.startEndPoint || trek.location || '').trim();
+    const parts = raw
+      .split(/\s+to\s+/i)
+      .map((p) => p.trim())
+      .filter(Boolean);
+    if (parts.length >= 2 && parts[0].toLowerCase() !== parts[1].toLowerCase()) {
+      return [...new Set(parts)];
+    }
+    return [...new Set([parts[0] || trek.state, baseCamp(trek)].filter(Boolean))];
   }, [trek]);
   const [pickup, setPickup] = useState(pickupOptions[0] ?? trek.state);
   const months = useMemo(() => [...new Set(batches.map((b) => b.monthLabel))], [batches]);
@@ -307,17 +384,28 @@ export default function TrekDetailContent({
     [batches, months],
   );
   const [openMonth, setOpenMonth] = useState<string | null>(months[0] ?? null);
-  const [men, setMen] = useState(1);
+  const [men, setMen] = useState(() => Math.min(20, Math.max(1, Math.floor(initialGuests) || 1)));
   const [women, setWomen] = useState(0);
   const [picked, setPicked] = useState<Set<string>>(() => new Set());
 
   const tier = trek.pricing.find((p) => p.name === tierName) ?? trek.pricing[0];
   const basePrice = tier?.price ?? 0;
+  /** City / gateway pickup (2nd pill) adds transport — Roopkund Heaven pattern. */
+  const pickupSurcharge =
+    pickupOptions.length > 1 && pickup === pickupOptions[1] ? 2000 : 0;
+  const unitPrice = basePrice + pickupSurcharge;
   const persons = Math.max(1, men + women);
   const addOnTotal = addOns
     .filter((a) => picked.has(a.id))
     .reduce((sum, a) => sum + a.price, 0);
-  const total = basePrice * persons + addOnTotal * persons;
+  const total = unitPrice * persons + addOnTotal * persons;
+
+  const monthsRef = useRef<HTMLDivElement>(null);
+  const datesRef = useRef<HTMLDivElement>(null);
+  const addonsRef = useRef<HTMLDivElement>(null);
+  useDragScroll(monthsRef);
+  useDragScroll(datesRef);
+  useDragScroll(addonsRef);
   const startingPrice = Math.min(...trek.pricing.map((p) => p.price));
 
   const selectedBatch =
@@ -341,9 +429,8 @@ export default function TrekDetailContent({
   }, [monthBatches]);
 
   // ---- Sticky section nav -------------------------------------------------
-  // Mirrors the reference behaviour: the nav only detaches once the shell it
-  // sits in has scrolled past the top of the viewport, and the booking card
-  // parks itself just under whatever height the nav ends up being.
+  // Roopkund Heaven flow: site chrome hides on scroll-down / shows on scroll-up.
+  // Section nav parks under the chrome when visible, and at the top when hidden.
   const shellRef = useRef<HTMLDivElement>(null);
   const navRef = useRef<HTMLElement>(null);
   const bookingStickyRef = useRef<HTMLDivElement>(null);
@@ -356,23 +443,32 @@ export default function TrekDetailContent({
     let frame = 0;
     let isStuck = false;
 
+    const headerOffset = () => {
+      const chromeHidden = document.documentElement.classList.contains(CHROME_HIDDEN_CLASS);
+      if (window.innerWidth >= 1024) {
+        return chromeHidden ? 0 : DESK_HEADER_H;
+      }
+      return chromeHidden ? 0 : MOBILE_HEADER_H;
+    };
+
     const update = () => {
       frame = 0;
       const shell = shellRef.current;
       const nav = navRef.current;
       if (!shell || !nav) return;
 
-      const headerOffset = window.innerWidth >= 1024 ? 64 : 0;
-      isStuck = shell.getBoundingClientRect().top <= headerOffset;
+      const offset = headerOffset();
+      isStuck = shell.getBoundingClientRect().top <= offset;
       setStuck(isStuck);
 
       const booking = bookingStickyRef.current;
       if (booking) {
-        booking.style.top = window.innerWidth <= 767 ? '' : `${headerOffset + nav.offsetHeight + 18}px`;
+        booking.style.top =
+          window.innerWidth <= 767 ? '' : `${offset + nav.offsetHeight + 18}px`;
       }
 
       if (sections.length) {
-        const checkpoint = window.scrollY + (isStuck ? headerOffset + 110 : 150);
+        const checkpoint = window.scrollY + (isStuck ? offset + 110 : 150);
         let current = sections[0].id;
         for (const section of sections) {
           if (section.getBoundingClientRect().top + window.scrollY <= checkpoint) {
@@ -391,10 +487,13 @@ export default function TrekDetailContent({
     update();
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onScroll);
+    const mo = new MutationObserver(onScroll);
+    mo.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
     return () => {
       if (frame) window.cancelAnimationFrame(frame);
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onScroll);
+      mo.disconnect();
     };
   }, []);
 
@@ -473,16 +572,21 @@ export default function TrekDetailContent({
     const params = new URLSearchParams({ pkg: tierName });
     if (selectedBatch) params.set('date', selectedBatch.startDate);
     params.set('persons', String(persons));
+    params.set('pickup', pickup);
+    if (pickupSurcharge) params.set('pickupFee', String(pickupSurcharge));
     return `/booking/${trek.id}?${params.toString()}`;
   };
 
   const enquire = () => {
     const lines = [
       `Hi Indian Treks! I'd like details for ${trek.title} (${trek.duration}).`,
-      `Package: ${tierName}`,
+      `Occupancy: ${occupancyLabel(tierName)}`,
       selectedBatch ? `Preferred date: ${selectedBatch.label}` : '',
-      `Travellers: ${persons}`,
+      `Travellers: ${persons} (Men ${men}, Women ${women})`,
       `Pickup: ${pickup}`,
+      picked.size
+        ? `Add-ons: ${addOns.filter((a) => picked.has(a.id)).map((a) => a.name).join(', ')}`
+        : '',
     ].filter(Boolean);
     window.open(whatsappUrl(lines.join('\n')), '_blank', 'noopener,noreferrer');
   };
@@ -1221,16 +1325,16 @@ export default function TrekDetailContent({
                 </div>
 
                 <div className="bk-price-row">
-                  <span className="bk-price-main">{inr(basePrice)}</span>
+                  <span className="bk-price-main">{inr(unitPrice)}</span>
                   {tier?.originalPrice && (
-                    <span className="bk-price-old">{inr(tier.originalPrice)}</span>
+                    <span className="bk-price-old">{inr(tier.originalPrice + pickupSurcharge)}</span>
                   )}
                   {tier?.badge && <span className="bk-savings-badge">{tier.badge}</span>}
                 </div>
 
                 <hr className="bk-dashed" />
 
-                <div className="bk-sec">Package</div>
+                <div className="bk-sec">Occupancy</div>
                 <div className="bk-pills">
                   {trek.pricing.map((p) => (
                     <button
@@ -1239,7 +1343,7 @@ export default function TrekDetailContent({
                       className={`bk-pill${tierName === p.name ? ' bk-active' : ''}`}
                       onClick={() => setTierName(p.name)}
                     >
-                      {p.name}
+                      {occupancyLabel(p.name)}
                     </button>
                   ))}
                 </div>
@@ -1262,7 +1366,7 @@ export default function TrekDetailContent({
                 <div className="bk-dates">
                   <div className="bk-date-row">
                     <div className="bk-date-caption">Choose Month</div>
-                    <div className="bk-months">
+                    <div className="bk-months" ref={monthsRef}>
                       {months.map((m) => (
                         <button
                           type="button"
@@ -1278,7 +1382,7 @@ export default function TrekDetailContent({
 
                   <div className="bk-date-row">
                     <div className="bk-date-caption">Choose Date</div>
-                    <div className="bk-month-dates">
+                    <div className="bk-month-dates" ref={datesRef}>
                       {monthBatches.map((b) => {
                         const soldOut = b.status === 'sold-out';
                         return (
@@ -1290,12 +1394,12 @@ export default function TrekDetailContent({
                             onClick={() => !soldOut && setBatchId(b.id)}
                           >
                             <div className="bk-dd">
-                              {new Date(b.startDate).toLocaleDateString('en-IN', {
+                              {new Date(b.startDate + 'T12:00:00').toLocaleDateString('en-IN', {
                                 day: '2-digit',
                                 month: 'short',
                               })}
                             </div>
-                            <span className={`bk-date-tag ${dateTagClass[b.status]}`}>
+                            <span className={`bk-date-tag ${dateTagClass[b.status]}`.trim()}>
                               {dateTagLabel[b.status]}
                             </span>
                           </button>
@@ -1338,7 +1442,7 @@ export default function TrekDetailContent({
                 </div>
 
                 <div className="bk-sec">Add ons</div>
-                <div className="bk-addon-strip">
+                <div className="bk-addon-strip" ref={addonsRef}>
                   {addOns.map((addon) => (
                     <button
                       type="button"
@@ -1366,20 +1470,14 @@ export default function TrekDetailContent({
                   <span>{inr(total)}</span>
                 </div>
 
-                <p className="bk-note">
-                  {persons} traveller{persons > 1 ? 's' : ''} · {tierName} package
-                  {selectedBatch ? ` · ${selectedBatch.label}` : ''}. Deposit of{' '}
-                  {inr(tier?.deposit ?? 0)} confirms your seat.
-                </p>
-
                 <div className="bk-cta-row">
                   <button type="button" className="bk-btn-book" onClick={() => router.push(bookingHref())}>
                     <i className="fa-solid fa-cart-shopping" aria-hidden /> Book Now
                   </button>
                   <span className="bk-or">or</span>
                   <button type="button" className="bk-btn-enq" onClick={enquire}>
-                    <span className="bk-wa">
-                      <i className="fa-brands fa-whatsapp" aria-hidden />
+                    <span className="bk-wa" aria-hidden="true">
+                      <i className="fa-regular fa-envelope" />
                     </span>
                     Enquire Now
                   </button>

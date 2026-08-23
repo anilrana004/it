@@ -4,14 +4,16 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import {
   Search, Star, Users, Award, Shield,
-  ArrowRight, MapPin, Calendar, Heart, ChevronDown,
+  ArrowRight, Calendar, Heart,
   Mountain, Footprints, SunMedium, Quote, X, Menu,
 } from 'lucide-react';
 import { treks } from '@/lib/data';
 import { photos } from '@/lib/media';
 import BrandLogo from '@/components/BrandLogo';
+import { DESK_HEADER_H } from '@/lib/layout';
 import Banners from '@/components/Banners';
 import CategoryScroller from '@/components/home/CategoryScroller';
+import HeroSearchBar from '@/components/home/HeroSearchBar';
 
 const mobBanners = [
   { image: photos.himachal, title: 'Himachal Adventures', subtitle: 'Hampta Pass – Triund – Bhrigu Lake & more', cta: 'Explore Himachal', href: '/treks?region=himachal' },
@@ -71,9 +73,6 @@ export default function Hero() {
   const [collabFade, setCollabFade] = useState(true);
   const [deskSlide, setDeskSlide] = useState(0);
   const [destSlide, setDestSlide] = useState(0);
-  const [dest, setDest] = useState('');
-  const [date, setDate] = useState('');
-  const [pax, setPax] = useState('');
   const [showSearch, setShowSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchIdx, setSearchIdx] = useState(-1);
@@ -166,7 +165,10 @@ export default function Hero() {
   };
 
   const desktop = (
-    <section className="relative flex min-h-[640px] h-[min(92vh,920px)] w-full flex-col overflow-hidden">
+    <section
+      className="relative flex min-h-[560px] w-full flex-col overflow-hidden lg:min-h-[640px]"
+      style={{ height: `min(calc(100dvh - ${DESK_HEADER_H}px), 820px)` }}
+    >
       {/* Background image layer */}
       {deskSlides.map((s, i) => (
         <div key={s.id}
@@ -256,33 +258,7 @@ export default function Hero() {
 
       {/* Search bar - in normal flow so it never covers CTAs */}
       <div className="relative z-10 shrink-0 container mx-auto px-4 pb-3 pt-1">
-        <div className="bg-white rounded-2xl p-3 shadow-2xl shadow-black/20">
-          <div className="flex flex-row gap-2">
-            <div className="flex-1 flex items-center gap-2 px-3 py-3 bg-gray-50 rounded-xl">
-              <MapPin className="w-4 h-4 text-[#16a34a] shrink-0" />
-              <input type="text" aria-label="Destination" placeholder="Where do you want to go?" value={dest}
-                onChange={e => { setDest(e.target.value); setSearchQuery(e.target.value); }}
-                onKeyDown={e => { if (e.key === 'Enter') { setShowSearch(true); } }}
-                className="flex-1 bg-transparent outline-none text-sm text-gray-800 placeholder:text-gray-400" />
-              <ChevronDown className="w-4 h-4 text-gray-400 shrink-0" />
-            </div>
-            <div className="flex-1 flex items-center gap-2 px-3 py-3 bg-gray-50 rounded-xl">
-              <Calendar className="w-4 h-4 text-[#16a34a] shrink-0" />
-              <input type="text" aria-label="Travel date" placeholder="When - Select Date" value={date} onChange={e => setDate(e.target.value)}
-                className="flex-1 bg-transparent outline-none text-sm text-gray-800 placeholder:text-gray-400" />
-            </div>
-            <div className="w-40 flex items-center gap-2 px-3 py-3 bg-gray-50 rounded-xl">
-              <Users className="w-4 h-4 text-[#16a34a] shrink-0" />
-              <input type="text" aria-label="Travelers" placeholder="Travelers" value={pax} onChange={e => setPax(e.target.value)}
-                className="flex-1 bg-transparent outline-none text-sm text-gray-800 placeholder:text-gray-400" />
-            </div>
-            <button type="button" onClick={() => setShowSearch(true)}
-              className="flex items-center justify-center gap-2 bg-[#16a34a] hover:bg-[#15803d] text-white font-semibold px-6 py-3 rounded-xl transition-all shadow-lg shadow-[#16a34a]/30 text-sm whitespace-nowrap shrink-0">
-              <Search className="w-4 h-4" />
-              Search
-            </button>
-          </div>
-        </div>
+        <HeroSearchBar />
       </div>
 
       {/* Dots + hashtag */}

@@ -8,9 +8,24 @@ export function generateStaticParams() {
   return treks.filter((t) => t.type === 'yatra').map((t) => ({ id: t.id }));
 }
 
-export default async function YatraDetailPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function YatraDetailPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ id: string }>;
+  searchParams?: Promise<{ guests?: string; date?: string }>;
+}) {
   const { id } = await params;
+  const sp = await searchParams;
   const trek = getTrekById(id);
   if (!trek) notFound();
-  return <TrekDetailContent trek={trek} type={trek.type === 'yatra' ? 'yatra' : 'trek'} />;
+  const guests = Number(sp?.guests || '');
+  const initialGuests = Number.isFinite(guests) && guests >= 1 ? Math.min(20, Math.floor(guests)) : 1;
+  return (
+    <TrekDetailContent
+      trek={trek}
+      type={trek.type === 'yatra' ? 'yatra' : 'trek'}
+      initialGuests={initialGuests}
+    />
+  );
 }

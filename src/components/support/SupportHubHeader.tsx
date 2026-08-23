@@ -2,21 +2,34 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useCallback, useEffect, useId, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useRef, useState, type CSSProperties } from 'react';
 import BrandLogo from '@/components/BrandLogo';
 import { CONTACT, mailtoUrl, telUrl, whatsappUrl } from '@/lib/contact';
+import { DESK_HEADER_H, DESK_MAIN_H, DESK_TOP_H } from '@/lib/layout';
 import { SUPPORT_HUB_LINKS, supportHubActive } from '@/lib/support-hub-nav';
 import './support-hub.css';
 
+/** Same utility strip as home — contact left, quick links right */
+const TOP_STRIP_LINKS = [
+  { label: 'Home', href: '/' },
+  { label: 'About Us', href: '/about' },
+  { label: 'Contact Us', href: '/contact' },
+  { label: 'FAQ', href: '/faqs' },
+  { label: 'Reviews', href: '/reviews' },
+  { label: 'Payment Policy', href: '/payment-policy' },
+  { label: 'Blogs', href: '/blog' },
+] as const;
+
 /**
- * Exoticamp-style support header: glass bar, logo left, text nav right.
- * Carries Safety → About Us plus phone / WhatsApp / email without the bulky 3-row stack.
+ * Help Centre hub header — desktop matches home dark-green chrome;
+ * support section links stay the same.
  */
 export default function SupportHubHeader() {
   const pathname = usePathname();
   const headerRef = useRef<HTMLElement>(null);
   const menuId = useId();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [hidden, setHidden] = useState(false);
 
   useEffect(() => {
     document.body.classList.add('it-support-mode');
@@ -61,10 +74,92 @@ export default function SupportHubHeader() {
     };
   }, [menuOpen]);
 
+  useEffect(() => {
+    if (menuOpen) {
+      setHidden(false);
+      return;
+    }
+
+    const HIDE_AFTER = 72;
+    let last = window.scrollY;
+    let frame = 0;
+
+    const update = () => {
+      frame = 0;
+      const current = Math.max(0, window.scrollY);
+      const delta = current - last;
+      if (current <= HIDE_AFTER) setHidden(false);
+      else if (delta > 4) setHidden(true);
+      else if (delta < -4) setHidden(false);
+      last = current;
+    };
+
+    const onScroll = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(update);
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      window.removeEventListener('scroll', onScroll);
+    };
+  }, [menuOpen]);
+
   const closeMenu = useCallback(() => setMenuOpen(false), []);
+  const helpWa = whatsappUrl('Hi Indian Treks! I need help with a booking.');
+  const onHelpCentre = supportHubActive(pathname, '/help-centre');
 
   return (
-    <header ref={headerRef} className="it-support-hub" aria-label="Help Centre">
+    <header
+      ref={headerRef}
+      className={`it-support-hub${hidden ? ' is-hidden' : ''}`}
+      aria-label="Help Centre"
+      style={
+        {
+          '--sh-desk-top-h': `${DESK_TOP_H}px`,
+          '--sh-desk-main-h': `${DESK_MAIN_H}px`,
+          '--sh-desk-header-h': `${DESK_HEADER_H}px`,
+        } as CSSProperties
+      }
+    >
+      <div className="it-support-hub__top" aria-label="Utility links">
+        <div className="it-support-hub__top-inner">
+          <div className="it-support-hub__top-contact">
+            <a
+              href={helpWa}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="it-support-hub__top-wa"
+              aria-label={`WhatsApp ${CONTACT.phoneDisplay}`}
+            >
+              <i className="fa-brands fa-whatsapp" aria-hidden />
+              <span>+{CONTACT.phoneWa}</span>
+            </a>
+            <span className="it-support-hub__top-sep" aria-hidden>
+              |
+            </span>
+            <a href={mailtoUrl()} className="it-support-hub__top-mail">
+              <i className="fa-solid fa-envelope" aria-hidden />
+              <span>{CONTACT.email}</span>
+            </a>
+          </div>
+
+          <nav className="it-support-hub__top-nav" aria-label="Quick links">
+            {TOP_STRIP_LINKS.map((item, i) => (
+              <span key={item.href} className="it-support-hub__top-nav-item">
+                {i > 0 ? (
+                  <span className="it-support-hub__top-sep" aria-hidden>
+                    |
+                  </span>
+                ) : null}
+                <Link href={item.href}>{item.label}</Link>
+              </span>
+            ))}
+          </nav>
+        </div>
+      </div>
+
       <div className="it-support-hub__bar">
         <div className="it-support-hub__inner">
           <div className="it-support-hub__brand-group">
@@ -78,9 +173,9 @@ export default function SupportHubHeader() {
             </Link>
             <Link
               href="/help-centre"
-              className={`it-support-hub__brand-tag${supportHubActive(pathname, '/help-centre') ? ' is-active' : ''}`}
+              className={`it-support-hub__brand-tag${onHelpCentre ? ' is-active' : ''}`}
               onClick={closeMenu}
-              aria-current={supportHubActive(pathname, '/help-centre') ? 'page' : undefined}
+              aria-current={onHelpCentre ? 'page' : undefined}
             >
               Help Centre
             </Link>
@@ -119,7 +214,7 @@ export default function SupportHubHeader() {
               Treks
             </Link>
             <a
-              href={whatsappUrl('Hi Indian Treks! I need help with a booking.')}
+              href={helpWa}
               className="it-support-hub__icon-btn it-support-hub__icon-btn--primary"
               target="_blank"
               rel="noopener noreferrer"
@@ -170,7 +265,7 @@ export default function SupportHubHeader() {
           <div className="it-support-hub__drawer-cta">
             <a
               className="it-support-hub__drawer-btn it-support-hub__drawer-btn--primary"
-              href={whatsappUrl('Hi Indian Treks! I need help with a booking.')}
+              href={helpWa}
               target="_blank"
               rel="noopener noreferrer"
               onClick={closeMenu}
