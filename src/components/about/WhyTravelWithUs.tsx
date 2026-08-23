@@ -1,3 +1,5 @@
+import WhyChooseVideo from '@/components/WhyChooseVideo';
+
 /**
  * UI/UX mirrored from https://roopkundheaven.in/about-us/ — “Why Travel With Us”:
  * centered kicker + accent title + subcopy, 4 feature cards with top accent bar,
@@ -47,12 +49,7 @@ const FEATURES = [
   },
 ] as const;
 
-/** Scenic Himalaya loop — muted autoplay, same embed pattern as Roopkund Heaven */
-const YOUTUBE_ID = 'sNDtl6HIQ7Y';
-
 export default function WhyTravelWithUs() {
-  const embedSrc = `https://www.youtube-nocookie.com/embed/${YOUTUBE_ID}?autoplay=1&mute=1&controls=0&rel=0&modestbranding=1&playsinline=1&loop=1&playlist=${YOUTUBE_ID}`;
-
   return (
     <section className="it-whyus" aria-labelledby="it-whyus-title">
       <style>{`
@@ -65,6 +62,8 @@ export default function WhyTravelWithUs() {
           --it-text: #141414;
           --it-wrap: 1180px;
           padding: 60px 0;
+          background:
+            radial-gradient(80% 42% at 50% 100%, rgba(220, 252, 231, 0.9), transparent 72%);
         }
 
         .it-whyus * { box-sizing: border-box; }
@@ -180,36 +179,6 @@ export default function WhyTravelWithUs() {
           color: #3f3f3f;
         }
 
-        .it-whyus__video {
-          margin-top: 28px;
-          border-radius: 22px;
-          overflow: hidden;
-          position: relative;
-          border: 1px solid var(--it-border);
-          box-shadow: 0 20px 60px rgba(22, 163, 74, 0.15);
-          background: #0b0b0b;
-        }
-
-        .it-whyus__video::before {
-          content: "";
-          position: absolute;
-          inset: 0;
-          background:
-            radial-gradient(600px 300px at 10% 10%, rgba(22, 163, 74, 0.25), transparent),
-            radial-gradient(600px 300px at 90% 0%, rgba(74, 222, 128, 0.18), transparent);
-          z-index: 1;
-          pointer-events: none;
-        }
-
-        .it-whyus__video iframe {
-          width: 100%;
-          height: 520px;
-          border: 0;
-          position: relative;
-          z-index: 2;
-          display: block;
-        }
-
         @media (max-width: 1100px) {
           .it-whyus__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
           .it-whyus__title { font-size: 34px; }
@@ -227,11 +196,6 @@ export default function WhyTravelWithUs() {
             gap: 10px;
           }
           .it-whyus__card { padding: 14px; border-radius: 14px; }
-          .it-whyus__video {
-            margin-top: 22px;
-            border-radius: 14px;
-          }
-          .it-whyus__video iframe { height: 52vw; min-height: 200px; max-height: 240px; }
         }
       `}</style>
 
@@ -261,15 +225,7 @@ export default function WhyTravelWithUs() {
           ))}
         </div>
 
-        <div className="it-whyus__video">
-          <iframe
-            src={embedSrc}
-            title="Experience the real Himalayas with Indian Treks"
-            allow="autoplay; encrypted-media; picture-in-picture"
-            allowFullScreen
-            loading="lazy"
-          />
-        </div>
+        <WhyChooseVideo />
       </div>
     </section>
   );

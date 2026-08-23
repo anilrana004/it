@@ -1,4 +1,5 @@
 import { Award, Heart, Users } from 'lucide-react';
+import WhyChooseVideo from '@/components/WhyChooseVideo';
 
 const features = [
   {
@@ -47,6 +48,10 @@ export default function WhyChooseUs() {
               </div>
             </div>
           ))}
+        </div>
+
+        <div className="mb-8 lg:mb-10">
+          <WhyChooseVideo className="it-whyvid--flush" />
         </div>
 
         <div className="bg-gradient-to-r from-[#000000] to-[#000000] rounded-2xl p-6 lg:p-10 text-white flex flex-col lg:flex-row items-center justify-between gap-6">
