@@ -5,6 +5,12 @@ import { useRouter, usePathname } from 'next/navigation';
 import { Menu, X, Phone, Search, ChevronDown, User, Sparkles, Mountain, SunMedium, ArrowRight } from 'lucide-react';
 import { treks } from '@/lib/data';
 import BrandLogo from '@/components/BrandLogo';
+import { isSupportHubPath } from '@/lib/support-hub-nav';
+import { isCorporateHubPath, PROGRAMS_NAV_DROPDOWN } from '@/lib/corporate-hub-nav';
+import {
+  isSpecialProgramsHubPath,
+  SPECIAL_PROGRAMS_NAV_DROPDOWN,
+} from '@/lib/special-programs-hub-nav';
 
 const navItems = [
   {
@@ -24,7 +30,6 @@ const navItems = [
   {
     label: 'Customized', href: '#',
     dropdown: [
-      { l: 'Corporate Tours', h: '/corporate' },
       { l: 'Domestic Tours', h: '/domestic-tours' },
       { l: 'International Getaways', h: '/international-getaways' },
       { l: 'Honeymoon Trips', h: '/honeymoon' },
@@ -32,17 +37,24 @@ const navItems = [
   },
   { label: 'Bucket List Sale', href: '/bucket-list-sale', sale: true },
   { label: 'Trending', href: '/trending' },
-  { label: 'Corporate', href: '/corporate' },
+  {
+    label: 'Programs',
+    href: '/corporate',
+    dropdown: PROGRAMS_NAV_DROPDOWN,
+  },
+  {
+    label: 'Special Programs ⭐',
+    href: '/special-programs',
+    dropdown: SPECIAL_PROGRAMS_NAV_DROPDOWN,
+  },
   {
     label: 'More', href: '#',
     dropdown: [
       { l: 'About Us', h: '/about' },
       { l: 'Contact Us', h: '/contact' },
-      { l: 'Career With Us', h: '/careers' },
-      { l: 'Campus Ambassador Program', h: '/campus-ambassador' },
+      { l: 'Help Centre', h: '/help-centre' },
+      { l: 'Careers With Us', h: '/careers' },
       { l: 'Our Blogs', h: '/blog' },
-      { l: 'Newsletter', h: '/newsletter' },
-      { l: 'Payment Policy', h: '/payment-policy' },
     ],
   },
 ];
@@ -53,11 +65,9 @@ const mobileLinkSections = [
     links: [
       { l: 'About Us', h: '/about' },
       { l: 'Contact Us', h: '/contact' },
+      { l: 'Help Centre', h: '/help-centre' },
+      { l: 'Careers With Us', h: '/careers' },
       { l: 'Our Blogs', h: '/blog' },
-      { l: 'Career With Us', h: '/careers' },
-      { l: 'Campus Ambassador Program', h: '/campus-ambassador' },
-      { l: 'Newsletter', h: '/newsletter' },
-      { l: 'Payment Policy', h: '/payment-policy' },
     ],
   },
   {
@@ -72,9 +82,16 @@ const mobileLinkSections = [
     ],
   },
   {
+    title: 'Programs',
+    links: PROGRAMS_NAV_DROPDOWN,
+  },
+  {
+    title: 'Special Programs ⭐',
+    links: SPECIAL_PROGRAMS_NAV_DROPDOWN,
+  },
+  {
     title: 'Customized Trips',
     links: [
-      { l: 'Corporate Tours', h: '/corporate' },
       { l: 'Domestic Tours', h: '/domestic-tours' },
       { l: 'International Getaways', h: '/international-getaways' },
       { l: 'Honeymoon Trips', h: '/honeymoon' },
@@ -96,6 +113,11 @@ function Dropdown({ items, onClose }: { items: { l: string; h: string }[]; onClo
 }
 
 export default function Header() {
+  const pathname = usePathname();
+  const isSupportHub = isSupportHubPath(pathname);
+  const isCorporateHub = isCorporateHubPath(pathname);
+  const isSpecialProgramsHub = isSpecialProgramsHubPath(pathname);
+
   const [isOpen, setIsOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState<string[]>([]);
@@ -104,7 +126,7 @@ export default function Header() {
   const [navSolid, setNavSolid] = useState(0);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const headerRef = useRef<HTMLDivElement>(null);
-  const pathname = usePathname();
+  const router = useRouter();
   const isHome = pathname === '/';
 
   useEffect(() => {
@@ -131,7 +153,6 @@ export default function Header() {
   const [searchIdx, setSearchIdx] = useState(-1);
   const searchRef = useRef<HTMLInputElement>(null);
   const searchListRef = useRef<HTMLDivElement>(null);
-  const router = useRouter();
 
   // Hero in-flow bar dispatches these (IndiaHikes: logo/menu live in the brand wash)
   useEffect(() => {
@@ -263,6 +284,11 @@ export default function Header() {
   const toggleMobileSubmenu = useCallback((label: string) => {
     setMobileOpen(prev => prev.includes(label) ? prev.filter(l => l !== label) : [...prev, label]);
   }, []);
+
+  /** Support / corporate hub pages use their own dedicated headers */
+  if (isSupportHub || isCorporateHub || isSpecialProgramsHub) {
+    return null;
+  }
 
   return (
     <div ref={headerRef}>

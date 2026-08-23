@@ -1,0 +1,230 @@
+'use client';
+
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useCallback, useEffect, useId, useRef, useState } from 'react';
+import BrandLogo from '@/components/BrandLogo';
+import { CONTACT, mailtoUrl, telUrl, whatsappUrl } from '@/lib/contact';
+import { SUPPORT_HUB_LINKS, supportHubActive } from '@/lib/support-hub-nav';
+import './support-hub.css';
+
+/**
+ * Exoticamp-style support header: glass bar, logo left, text nav right.
+ * Carries Safety → About Us plus phone / WhatsApp / email without the bulky 3-row stack.
+ */
+export default function SupportHubHeader() {
+  const pathname = usePathname();
+  const headerRef = useRef<HTMLElement>(null);
+  const menuId = useId();
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    document.body.classList.add('it-support-mode');
+    return () => document.body.classList.remove('it-support-mode');
+  }, []);
+
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setMenuOpen(false);
+    };
+    document.addEventListener('keydown', onKey);
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.body.style.overflow = '';
+    };
+  }, [menuOpen]);
+
+  useEffect(() => {
+    const el = headerRef.current;
+    if (!el) return;
+
+    const syncHeight = () => {
+      document.documentElement.style.setProperty(
+        '--sh-header-height',
+        `${el.offsetHeight}px`,
+      );
+    };
+
+    syncHeight();
+    const ro = new ResizeObserver(syncHeight);
+    ro.observe(el);
+    window.addEventListener('resize', syncHeight);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener('resize', syncHeight);
+    };
+  }, [menuOpen]);
+
+  const closeMenu = useCallback(() => setMenuOpen(false), []);
+
+  return (
+    <header ref={headerRef} className="it-support-hub" aria-label="Help Centre">
+      <div className="it-support-hub__bar">
+        <div className="it-support-hub__inner">
+          <div className="it-support-hub__brand-group">
+            <Link
+              href="/"
+              className="it-support-hub__logo-link"
+              onClick={closeMenu}
+              aria-label="Indian Treks — back to home"
+            >
+              <BrandLogo className="it-support-hub__logo" />
+            </Link>
+            <Link
+              href="/help-centre"
+              className={`it-support-hub__brand-tag${supportHubActive(pathname, '/help-centre') ? ' is-active' : ''}`}
+              onClick={closeMenu}
+              aria-current={supportHubActive(pathname, '/help-centre') ? 'page' : undefined}
+            >
+              Help Centre
+            </Link>
+          </div>
+
+          <nav className="it-support-hub__nav" aria-label="Support sections">
+            {SUPPORT_HUB_LINKS.map((item) => {
+              const active = supportHubActive(pathname, item.href);
+              return (
+                <Link
+                  key={item.id}
+                  href={item.href}
+                  className={`it-support-hub__link${active ? ' is-active' : ''}`}
+                  aria-current={active ? 'page' : undefined}
+                  title={item.navLabel ? item.label : undefined}
+                >
+                  {item.navLabel ? (
+                    <>
+                      <span className="it-support-hub__link-text it-support-hub__link-text--short">
+                        {item.navLabel}
+                      </span>
+                      <span className="it-support-hub__link-text it-support-hub__link-text--full">
+                        {item.label}
+                      </span>
+                    </>
+                  ) : (
+                    item.label
+                  )}
+                </Link>
+              );
+            })}
+          </nav>
+
+          <div className="it-support-hub__actions">
+            <Link href="/treks" className="it-support-hub__treks" title="Back to treks">
+              Treks
+            </Link>
+            <a
+              href={whatsappUrl('Hi Indian Treks! I need help with a booking.')}
+              className="it-support-hub__icon-btn it-support-hub__icon-btn--primary"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="WhatsApp us"
+              title="WhatsApp us"
+            >
+              <i className="fa-brands fa-whatsapp" aria-hidden />
+            </a>
+            <a
+              href={mailtoUrl('Booking help — Indian Treks')}
+              className="it-support-hub__icon-btn it-support-hub__icon-btn--desk"
+              aria-label="Email us"
+              title="Email us"
+            >
+              <i className="fa-solid fa-envelope" aria-hidden />
+            </a>
+            <a
+              href={telUrl()}
+              className="it-support-hub__icon-btn"
+              aria-label={`Call ${CONTACT.phoneDisplay}`}
+              title={CONTACT.phoneDisplay}
+            >
+              <i className="fa-solid fa-phone" aria-hidden />
+            </a>
+            <button
+              type="button"
+              className="it-support-hub__menu-btn"
+              aria-expanded={menuOpen}
+              aria-controls={menuId}
+              aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+              onClick={() => setMenuOpen((o) => !o)}
+            >
+              <i className={`fa-solid ${menuOpen ? 'fa-xmark' : 'fa-bars'}`} aria-hidden />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div
+        id={menuId}
+        className={`it-support-hub__drawer${menuOpen ? ' is-open' : ''}`}
+        hidden={!menuOpen}
+      >
+        <div className="it-support-hub__drawer-panel">
+          <p className="it-support-hub__drawer-kicker">Need help with booking?</p>
+          <p className="it-support-hub__drawer-lead">We are here to support you</p>
+
+          <div className="it-support-hub__drawer-cta">
+            <a
+              className="it-support-hub__drawer-btn it-support-hub__drawer-btn--primary"
+              href={whatsappUrl('Hi Indian Treks! I need help with a booking.')}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={closeMenu}
+            >
+              <i className="fa-brands fa-whatsapp" aria-hidden />
+              WhatsApp us
+            </a>
+            <a
+              className="it-support-hub__drawer-btn"
+              href={mailtoUrl('Booking help — Indian Treks')}
+              onClick={closeMenu}
+            >
+              <i className="fa-solid fa-envelope" aria-hidden />
+              Email
+            </a>
+            <a className="it-support-hub__drawer-btn" href={telUrl()} onClick={closeMenu}>
+              <i className="fa-solid fa-phone" aria-hidden />
+              {CONTACT.phoneDisplay}
+            </a>
+          </div>
+
+          <nav className="it-support-hub__drawer-nav" aria-label="Support sections">
+            {SUPPORT_HUB_LINKS.map((item) => {
+              const active = supportHubActive(pathname, item.href);
+              return (
+                <Link
+                  key={item.id}
+                  href={item.href}
+                  className={`it-support-hub__drawer-link${active ? ' is-active' : ''}`}
+                  aria-current={active ? 'page' : undefined}
+                  onClick={closeMenu}
+                >
+                  <i className={`fa-solid ${item.icon}`} aria-hidden />
+                  {item.label}
+                </Link>
+              );
+            })}
+          </nav>
+
+          <Link href="/treks" className="it-support-hub__drawer-back" onClick={closeMenu}>
+            <i className="fa-solid fa-arrow-left" aria-hidden />
+            Back to treks
+          </Link>
+        </div>
+      </div>
+
+      {menuOpen ? (
+        <button
+          type="button"
+          className="it-support-hub__backdrop"
+          aria-label="Close menu"
+          onClick={closeMenu}
+        />
+      ) : null}
+    </header>
+  );
+}

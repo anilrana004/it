@@ -4,6 +4,9 @@ import { MessageCircle, Share2 } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import HelpAssistant from '@/components/HelpAssistant';
 import { whatsappUrl } from '@/lib/contact';
+import { isSupportHubPath } from '@/lib/support-hub-nav';
+import { isCorporateHubPath } from '@/lib/corporate-hub-nav';
+import { isSpecialProgramsHubPath } from '@/lib/special-programs-hub-nav';
 
 function hasDetailChrome(path: string) {
   if (path.startsWith('/booking/')) return true;
@@ -22,7 +25,7 @@ export default function WhatsAppFloat() {
   const [assistantOpen, setAssistantOpen] = useState(false);
   const detail = hasDetailChrome(path);
 
-  if (isAdminPath(path)) return null;
+  if (isAdminPath(path) || isSupportHubPath(path) || isCorporateHubPath(path) || isSpecialProgramsHubPath(path)) return null;
 
   const handleShare = async () => {
     try {

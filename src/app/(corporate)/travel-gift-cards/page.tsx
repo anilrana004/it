@@ -18,7 +18,7 @@ export default function GiftCardsPage() {
   };
 
   return (
-    <div className="pt-20 lg:pt-28 pb-12 lg:pb-20">
+    <div className="pt-0 pb-12 lg:pb-20">
       {/* Hero */}
       <section className="relative h-[35vh] min-h-[220px] overflow-hidden mb-8">
         <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80" alt="Gift Cards" className="w-full h-full object-cover" />

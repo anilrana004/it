@@ -40,7 +40,7 @@ export default function CorporatePage() {
   };
 
   return (
-    <div className="pt-24 lg:pt-28 pb-12 lg:pb-20">
+    <div className="pb-12 lg:pb-20">
       {/* Hero */}
       <section className="bg-gradient-to-r from-[#000000] to-[#000000] py-12 lg:py-20 mb-10 lg:mb-16">
         <div className="container mx-auto text-center">
@@ -48,7 +48,7 @@ export default function CorporatePage() {
           <h1 className="font-[family-name:var(--font-heading)] text-3xl lg:text-5xl font-bold text-white mb-3">Corporate Tours & Retreats</h1>
           <p className="text-white/70 text-sm lg:text-lg max-w-2xl mx-auto mb-6">Build stronger teams, reward your employees, and create unforgettable experiences with Indian Treks&apos; corporate adventure programs.</p>
           <div className="flex flex-wrap justify-center gap-3">
-            <a href="tel:+919999999999" className="inline-flex items-center gap-2 bg-[#16a34a] hover:bg-[#15803d] text-white font-semibold px-6 py-3 rounded-full transition-all text-sm">Call Us Now</a>
+            <a href="tel:+919797972175" className="inline-flex items-center gap-2 bg-[#16a34a] hover:bg-[#15803d] text-white font-semibold px-6 py-3 rounded-full transition-all text-sm">Call Us Now</a>
             <a href="mailto:corporate@indiantreks.com" className="inline-flex items-center gap-2 bg-white/10 border border-white/30 text-white font-semibold px-6 py-3 rounded-full hover:bg-white/20 transition-all text-sm">Email Us</a>
           </div>
         </div>

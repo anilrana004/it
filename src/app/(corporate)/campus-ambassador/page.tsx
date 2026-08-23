@@ -11,7 +11,7 @@ const perks = [
 
 export default function CampusAmbassadorPage() {
   return (
-    <div className="pt-24 lg:pt-28 pb-12 lg:pb-20">
+    <div className="pb-12 lg:pb-20">
       <section className="relative h-[38vh] min-h-[240px] overflow-hidden mb-10">
         <img src={photos.uttarakhand} alt="Campus Ambassador" referrerPolicy="no-referrer" className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-r from-black/75 to-black/30 flex items-center">

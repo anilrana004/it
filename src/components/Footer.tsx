@@ -45,8 +45,13 @@ const companyLinks = [
   { label: 'Home', href: '/' },
   { label: 'About Us', href: '/about' },
   { label: 'Contact Us', href: '/contact' },
+  { label: 'Help Centre', href: '/help-centre' },
+  { label: 'FAQs', href: '/faqs' },
+  { label: 'Safety', href: '/safety' },
   { label: 'Reviews', href: '/reviews' },
   { label: 'Blogs', href: '/blog' },
+  { label: 'News & Media', href: '/news' },
+  { label: 'Affiliates', href: '/affiliates' },
 ];
 
 const exploreLinks = [
@@ -216,7 +221,10 @@ export default function Footer() {
             <div className="rhf-policy-links">
               <Link href="/privacy">Privacy Policy</Link>
               <Link href="/terms">Terms &amp; Conditions</Link>
-              <Link href="/payment-policy">Cancellation &amp; Refund Policy</Link>
+              <Link href="/payment-policy">Payment Policy</Link>
+              <Link href="/cancellation-policy">Cancellation &amp; Refund</Link>
+              <Link href="/help-centre">Help Centre</Link>
+              <Link href="/faqs">FAQs</Link>
             </div>
           </div>
 

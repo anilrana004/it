@@ -490,11 +490,13 @@
   box-shadow: 0 2px 10px rgba(16, 24, 40, 0.04);
 }
 .it-ct .ct-trust-num {
-  font-family: var(--font-head);
-  font-size: 1.6rem;
-  font-weight: 700;
+  font-family: var(--font-body);
+  font-size: clamp(1.35rem, 2.2vw, 1.65rem);
+  font-weight: 800;
+  letter-spacing: 0.01em;
   color: var(--primary);
-  line-height: 1;
+  line-height: 1.15;
+  white-space: nowrap;
 }
 .it-ct .ct-trust-lbl {
   font-size: 11px;

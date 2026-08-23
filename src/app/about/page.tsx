@@ -7,11 +7,12 @@ import AboutVideoHero from '@/components/about/AboutVideoHero';
 import WhyTravelWithUs from '@/components/about/WhyTravelWithUs';
 import RecognitionCertifications from '@/components/about/RecognitionCertifications';
 import AppreciationLetters from '@/components/about/AppreciationLetters';
+import SupportHubPageShell from '@/components/support/SupportHubPageShell';
 import { ABOUT_STATS } from '@/lib/about-content';
 
 export default function AboutPage() {
   return (
-    <>
+    <SupportHubPageShell>
       <AboutVideoHero />
 
       <div className="pt-6 sm:pt-10 lg:pt-14">
@@ -36,7 +37,6 @@ export default function AboutPage() {
         </div>
       </div>
 
-      {/* Tamsra-style vertical timeline — works on every device */}
       <OurJourney />
 
       <div className="pb-16 lg:pb-20">
@@ -66,6 +66,6 @@ export default function AboutPage() {
           </div>
         </div>
       </div>
-    </>
+    </SupportHubPageShell>
   );
 }
