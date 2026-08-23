@@ -1,4 +1,4 @@
-/** Programs hub navigation — corporate, campus, schools, gifting (careers is standalone in main nav) */
+/** Learning Programs hub navigation — corporate, campus, schools, gifting (careers is standalone in main nav) */
 
 export type CorporateHubId = 'corporate' | 'campus' | 'schools' | 'gifts';
 
@@ -38,7 +38,7 @@ export const CORPORATE_HUB_LINKS: {
   },
 ];
 
-/** Main-site Programs dropdown */
+/** Main-site Learning Programs dropdown */
 export const PROGRAMS_NAV_DROPDOWN = CORPORATE_HUB_LINKS.map((item) => ({
   l: item.label,
   h: item.href,

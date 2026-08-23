@@ -72,7 +72,7 @@ export default function CorporateHubHeader() {
   const onProgramsHub = isCorporateHubPath(pathname);
 
   return (
-    <header ref={headerRef} className="it-corporate-hub" aria-label="Programs">
+    <header ref={headerRef} className="it-corporate-hub" aria-label="Learning Programs">
       <div className="it-corporate-hub__bar">
         <div className="it-corporate-hub__inner">
           <div className="it-corporate-hub__brand-group">
@@ -90,11 +90,11 @@ export default function CorporateHubHeader() {
               onClick={closeMenu}
               aria-current={onProgramsHub ? 'page' : undefined}
             >
-              Programs
+              Learning Programs
             </Link>
           </div>
 
-          <nav className="it-corporate-hub__nav" aria-label="Programs">
+          <nav className="it-corporate-hub__nav" aria-label="Learning Programs">
             {CORPORATE_HUB_LINKS.map((item) => {
               const active = corporateHubActive(pathname, item.href);
               return (
@@ -172,7 +172,7 @@ export default function CorporateHubHeader() {
         hidden={!menuOpen}
       >
         <div className="it-corporate-hub__drawer-panel">
-          <p className="it-corporate-hub__drawer-kicker">Programs &amp; partnerships</p>
+          <p className="it-corporate-hub__drawer-kicker">Learning Programs &amp; partnerships</p>
           <p className="it-corporate-hub__drawer-lead">Corporate tours, campus, schools &amp; gifting</p>
 
           <div className="it-corporate-hub__drawer-cta">
@@ -200,7 +200,7 @@ export default function CorporateHubHeader() {
             </a>
           </div>
 
-          <nav className="it-corporate-hub__drawer-nav" aria-label="Programs">
+          <nav className="it-corporate-hub__drawer-nav" aria-label="Learning Programs">
             {CORPORATE_HUB_LINKS.map((item) => {
               const active = corporateHubActive(pathname, item.href);
               return (

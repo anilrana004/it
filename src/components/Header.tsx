@@ -38,7 +38,7 @@ const navItems = [
   { label: 'Bucket List Sale', href: '/bucket-list-sale', sale: true },
   { label: 'Trending', href: '/trending' },
   {
-    label: 'Programs',
+    label: 'Learning Programs',
     href: '/corporate',
     dropdown: PROGRAMS_NAV_DROPDOWN,
   },
@@ -82,7 +82,7 @@ const mobileLinkSections = [
     ],
   },
   {
-    title: 'Programs',
+    title: 'Learning Programs',
     links: PROGRAMS_NAV_DROPDOWN,
   },
   {
