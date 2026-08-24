@@ -57,6 +57,10 @@ export const SUPPORT_HUB_PATHS = [
 ] as const;
 
 export function isSupportHubPath(pathname: string) {
+  // Blog listing uses the support hub chrome; article pages use the main site navbar
+  // (same pattern as /how-to-prepare).
+  if (pathname.startsWith('/blog/')) return false;
+
   return SUPPORT_HUB_PATHS.some(
     (base) => pathname === base || pathname.startsWith(`${base}/`),
   );

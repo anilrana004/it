@@ -81,10 +81,10 @@ export const SPECIAL_PROGRAMS: SpecialProgram[] = [
     heroImage: photos.kedarkantha,
     eyebrow: 'Safe & supportive groups',
     lead:
-      'Women-led departures with trained trek leaders, hygienic stays, and a welcoming on-trail culture — popular with solo travellers and first-time trekkers.',
+      'Women-led Himalayan departures with trained trek leaders, clear safety culture, and a welcoming trail community — popular with solo travellers and first-time women trekkers.',
     highlights: [
-      'Female-friendly camp and briefing protocols',
-      'Mixed-support teams with experienced trek leaders',
+      'Women-friendly camp and briefing protocols',
+      'Supportive groups for solo travellers',
       'Clear pace planning and safety checkpoints',
     ],
     filter: (t) =>
@@ -123,11 +123,11 @@ export const SPECIAL_PROGRAMS: SpecialProgram[] = [
     heroImage: photos.vof,
     eyebrow: 'Kids & parents welcome',
     lead:
-      'Weekend-friendly and school-holiday treks with manageable trails, engaging scenery, and stays suited for families travelling together.',
+      'School-holiday and weekend-friendly Himalayan treks with manageable trails, engaging scenery, and stays suited for parents and children travelling together.',
     highlights: [
-      'Age guidance on every trek card',
+      'Age-aware route recommendations',
       'Nutritious meals and hygienic camps',
-      'Routes with photo-friendly meadows and lakes',
+      'Shared milestones the whole family can celebrate',
     ],
     filter: (t) =>
       isTrek(t) &&
@@ -144,11 +144,11 @@ export const SPECIAL_PROGRAMS: SpecialProgram[] = [
     heroImage: photos.triund,
     eyebrow: 'First Himalayan trek',
     lead:
-      'Start your trekking journey on well-marked trails with gradual climbs, shorter days, and treks our leaders love for newcomers.',
+      'Start your Himalayan journey on well-marked trails with gradual climbs, shorter days, and departures our leaders love recommending to first-timers.',
     highlights: [
       'Easy & easy-to-moderate grades',
-      'Pre-trek fitness tips shared after booking',
-      'Ideal stepping stones before high-altitude treks',
+      'Clear pre-trek fitness guidance',
+      'Ideal stepping stones before higher adventures',
     ],
     filter: (t) =>
       isTrek(t) &&

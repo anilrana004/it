@@ -6,11 +6,26 @@ import Footer from "@/components/Footer";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
 import MobileBottomNav from "@/components/MobileBottomNav";
 
-const poppins = Poppins({ subsets: ["latin"], weight: ["400","500","600","700","800"], variable: "--font-poppins" });
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  style: ["normal", "italic"],
+  variable: "--font-poppins",
+});
 
 /** Detail pages use a Playfair/Nunito pairing for headings and body copy. */
-const playfair = Playfair_Display({ subsets: ["latin"], weight: ["600","700","800","900"], variable: "--font-playfair" });
-const nunito = Nunito({ subsets: ["latin"], weight: ["400","600","700","800","900"], variable: "--font-nunito" });
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  weight: ["600", "700", "800", "900"],
+  style: ["normal", "italic"],
+  variable: "--font-playfair",
+});
+const nunito = Nunito({
+  subsets: ["latin"],
+  weight: ["400", "600", "700", "800", "900"],
+  style: ["normal", "italic"],
+  variable: "--font-nunito",
+});
 
 export const metadata: Metadata = {
   title: "Indian Treks - Himalayan Treks, Yatras & Adventure Travel",

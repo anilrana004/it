@@ -12,8 +12,8 @@
   --color-text-secondary: #666666;
   --color-border: #212529;
   --color-surface: #ffffff;
-  --font-sans: 'Poppins', ui-sans-serif, system-ui, sans-serif;
-  --font-heading: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-poppins), 'Poppins', ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-poppins), 'Poppins', ui-sans-serif, system-ui, sans-serif;
   --text-display: 86px;
   --text-h1: 78px;
   --text-h2: 40px;

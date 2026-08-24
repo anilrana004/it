@@ -47,7 +47,6 @@ const navItems: NavItem[] = [
       { l: 'Domestic Tours', h: '/domestic-tours' },
       { l: 'International Getaways', h: '/international-getaways' },
       { l: 'Upcoming Trips', h: '/#upcoming-trips' },
-      { l: 'Sale of the Season', h: '/bucket-list-sale' },
       { l: 'Weekend Trips', h: '/treks?difficulty=easy' },
     ],
   },
@@ -129,7 +128,6 @@ const mobileLinkSections = [
       { l: 'Biking Trips', h: '/biking' },
       { l: 'Upcoming Trips', h: '/#upcoming-trips' },
       { l: 'International Trips', h: '/international-getaways' },
-      { l: 'Sale of the Season', h: '/bucket-list-sale' },
     ],
   },
   {

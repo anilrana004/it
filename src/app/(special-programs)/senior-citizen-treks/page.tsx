@@ -1,14 +1,12 @@
 import type { Metadata } from 'next';
-import SpecialProgramPageView from '@/components/special-programs/SpecialProgramPageView';
-import { getSpecialProgram } from '@/lib/special-programs-content';
-
-const program = getSpecialProgram('senior-citizen')!;
+import SeniorCitizenTreksPageView from '@/components/special-programs/SeniorCitizenTreksPageView';
 
 export const metadata: Metadata = {
-  title: `${program.title} | Indian Treks`,
-  description: program.lead,
+  title: 'Senior Citizen Treks | Indian Treks',
+  description:
+    'Senior citizen treks by Indian Treks with gentler pacing, senior-friendly route choices, extra support, and curated Himalayan departures for older travellers.',
 };
 
 export default function SeniorCitizenTreksPage() {
-  return <SpecialProgramPageView program={program} />;
+  return <SeniorCitizenTreksPageView />;
 }

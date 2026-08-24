@@ -5,11 +5,24 @@ import { CalendarDays, Info } from 'lucide-react';
 import { difficultyTone, type ListingTrek } from '@/lib/treks-listing';
 
 /** Indiahikes-style trek card for mobile carousels & curated sections. */
-export default function TrekInfoCard({ trek }: { trek: ListingTrek }) {
+export default function TrekInfoCard({
+  trek,
+  fill = false,
+}: {
+  trek: ListingTrek;
+  /** Stretch to grid cell instead of fixed carousel width */
+  fill?: boolean;
+}) {
   const meta = `${trek.days} Days · ${trek.difficulty} · ${trek.maxAltitude}`;
 
   return (
-    <article className="flex h-full w-[78vw] max-w-[300px] shrink-0 flex-col overflow-hidden rounded-2xl border border-gray-200/90 bg-white shadow-sm sm:w-[280px]">
+    <article
+      className={
+        fill
+          ? 'flex h-full w-full flex-col overflow-hidden rounded-2xl border border-gray-200/90 bg-white shadow-sm'
+          : 'flex h-full w-[78vw] max-w-[300px] shrink-0 flex-col overflow-hidden rounded-2xl border border-gray-200/90 bg-white shadow-sm sm:w-[280px]'
+      }
+    >
       <Link href={trek.href} className="relative block aspect-[16/11] overflow-hidden bg-gray-100">
         <img
           src={trek.cover}

@@ -1,3 +1,9 @@
+import {
+  FAMILY_TREKKING_CONTENT,
+  FAMILY_TREKKING_SEO,
+  FAMILY_TREKKING_SLUG,
+} from '@/lib/blog-content/family-trekking-in-india';
+
 export interface BlogPost {
   slug: string;
   title: string;
@@ -7,6 +13,12 @@ export interface BlogPost {
   author: string;
   image: string;
   content: string;
+  /** Meta description for SEO when present. */
+  description?: string;
+  /** Optional <title> override. */
+  seoTitle?: string;
+  /** When true, content is rendered as lightweight markdown. */
+  markdown?: boolean;
   /** Trek / yatra / trip ids this post is specifically about. */
   treks?: string[];
   regions?: string[];
@@ -37,6 +49,33 @@ const MONTHS_SHORT = [
 ];
 
 export const blogPosts: BlogPost[] = [
+  {
+    slug: FAMILY_TREKKING_SLUG,
+    title: 'What Happens When Families Trek Together? The Deeper Benefits of Family Trekking',
+    seoTitle: FAMILY_TREKKING_SEO.title,
+    description: FAMILY_TREKKING_SEO.description,
+    publishedAt: '2026-08-24',
+    read: '18 min read',
+    author: 'Indian Treks Team',
+    image: 'https://images.unsplash.com/photo-1551632811-561732d1e306?w=1200&h=600&fit=crop',
+    markdown: true,
+    types: ['trek'],
+    regions: ['uttarakhand'],
+    treks: ['nag-tibba', 'chopta-tungnath', 'dayara-bugyal', 'kedarkantha', 'valley-of-flowers'],
+    keywords: [
+      'family',
+      'children',
+      'kids',
+      'parents',
+      'uttarakhand',
+      'beginner',
+      'nag tibba',
+      'chopta',
+      'dayara',
+      'kedarkantha',
+    ],
+    content: FAMILY_TREKKING_CONTENT,
+  },
   {
     slug: 'first-himalayan-trek',
     title: '5 Essential Tips for Your First Himalayan Trek',

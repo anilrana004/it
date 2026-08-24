@@ -299,9 +299,30 @@
   color: var(--prep-green-mid);
 }
 
+.it-prep__toc-list a.is-active {
+  color: var(--prep-green-deep);
+  border-left-color: var(--prep-green);
+  background: linear-gradient(90deg, rgba(22, 163, 74, 0.1), transparent 85%);
+}
+
 .it-prep__toc-list a:focus-visible {
   outline: 2px solid var(--prep-green);
   outline-offset: 2px;
+}
+
+.it-prep__toc-back {
+  margin: 1.25rem 0 0;
+}
+
+.it-prep__toc-back a {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--prep-green-deep);
+  text-decoration: none;
+}
+
+.it-prep__toc-back a:hover {
+  text-decoration: underline;
 }
 
 /* —— Highlights —— */
@@ -417,6 +438,97 @@
 
 .it-prep__section p:last-child {
   margin-bottom: 0;
+}
+
+.it-prep__section h3 {
+  margin: 1rem 0 0.45rem;
+  font-size: 1.02rem;
+  font-weight: 800;
+  line-height: 1.35;
+  color: var(--prep-ink);
+}
+
+.it-prep__section a {
+  color: var(--prep-green-deep);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.it-prep__section a:hover {
+  color: var(--prep-green);
+}
+
+.it-prep__section strong {
+  color: var(--prep-ink);
+  font-weight: 800;
+}
+
+/* —— Blog inline / break figures —— */
+.it-blog__stack {
+  display: contents;
+}
+
+.it-blog__figure {
+  margin: 1.1rem 0 0.35rem;
+}
+
+.it-blog__figure--break {
+  margin: 0.15rem 0;
+  padding: 0;
+  animation: it-prep-rise 0.55s ease both;
+}
+
+.it-blog__figure-frame {
+  overflow: hidden;
+  border-radius: 1rem;
+  border: 1px solid var(--prep-line);
+  box-shadow: 0 12px 32px rgba(10, 40, 24, 0.08);
+  background: #0b1f14;
+  aspect-ratio: 16 / 9;
+}
+
+.it-blog__figure--break .it-blog__figure-frame {
+  aspect-ratio: 21 / 9;
+  border-radius: 1.15rem;
+  box-shadow: 0 16px 40px rgba(10, 40, 24, 0.1);
+}
+
+@media (max-width: 720px) {
+  .it-blog__figure--break .it-blog__figure-frame {
+    aspect-ratio: 16 / 10;
+  }
+}
+
+.it-blog__figure-frame img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.55s ease;
+}
+
+.it-blog__figure:hover .it-blog__figure-frame img {
+  transform: scale(1.03);
+}
+
+.it-prep__section-title + .it-blog__figure {
+  margin-top: 0.85rem;
+}
+
+.it-prep__section .it-blog__figure:last-child {
+  margin-bottom: 0;
+}
+
+.it-blog__figure figcaption {
+  margin: 0.55rem 0 0;
+  padding: 0 0.15rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--prep-muted);
+  text-align: center;
 }
 
 .it-prep__list {

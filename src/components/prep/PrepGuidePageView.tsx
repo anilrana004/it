@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import type { PrepGuide, PrepSection } from '@/lib/prep-guides-content';
+import PrepTocNav from '@/components/prep/PrepTocNav';
 import './prep-guides.css';
 
 function Callout({
@@ -168,16 +169,12 @@ export default function PrepGuidePageView({ guide }: { guide: PrepGuide }) {
       </header>
 
       <div className="it-prep__wrap it-prep__wrap--solo">
-        <aside className="it-prep__toc" aria-label="On this page">
-          <p className="it-prep__toc-label">On this page</p>
-          <ul className="it-prep__toc-list">
-            {guide.sections.map((section) => (
-              <li key={section.id}>
-                <a href={`#${section.id}`}>{section.title.replace(/^\d+\.\s*/, '')}</a>
-              </li>
-            ))}
-          </ul>
-        </aside>
+        <PrepTocNav
+          items={guide.sections.map((section) => ({
+            id: section.id,
+            title: section.title.replace(/^\d+\.\s*/, ''),
+          }))}
+        />
 
         <div>
           <div className="it-prep__highlights" aria-label="Guide highlights">

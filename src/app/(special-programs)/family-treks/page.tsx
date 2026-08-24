@@ -1,14 +1,12 @@
 import type { Metadata } from 'next';
-import SpecialProgramPageView from '@/components/special-programs/SpecialProgramPageView';
-import { getSpecialProgram } from '@/lib/special-programs-content';
-
-const program = getSpecialProgram('family')!;
+import FamilyTreksPageView from '@/components/special-programs/FamilyTreksPageView';
 
 export const metadata: Metadata = {
-  title: `${program.title} | Indian Treks`,
-  description: program.lead,
+  title: 'Family Treks in the Himalayas | Kids & Parents Welcome | Indian Treks',
+  description:
+    'Plan a family-friendly Himalayan trek with manageable trails, scenic meadows, and shared adventure designed for parents and children travelling together.',
 };
 
 export default function FamilyTreksPage() {
-  return <SpecialProgramPageView program={program} />;
+  return <FamilyTreksPageView />;
 }
