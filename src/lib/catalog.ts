@@ -123,7 +123,7 @@ export function getUpcomingCatalog(limit = 12) {
   const merged = [...domestic.slice(0, 8), ...international.slice(0, 4)].slice(0, limit);
   return merged.map((t, i) => {
     const card = toCatalogCard(t);
-    const month = ['Sep', 'Sep', 'Oct', 'Oct', 'Nov', 'Nov'][i % 6];
+    const month = ['Aug', 'Aug', 'Sep', 'Sep', 'Oct', 'Oct'][i % 6];
     const start = 5 + (i % 20);
     return {
       ...card,

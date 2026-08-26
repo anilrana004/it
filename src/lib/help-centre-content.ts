@@ -90,6 +90,14 @@ export const HELP_CENTRE_TOPICS: HelpCentreTopic[] = [
     icon: 'fa-rotate-left',
     group: 'policies',
   },
+  {
+    id: 'fraud',
+    title: 'Beware of Fraudulent Activities',
+    description: 'Spot fake websites, unofficial payments, and scam commission offers.',
+    href: '/beware-of-fraudulent-activities',
+    icon: 'fa-triangle-exclamation',
+    group: 'policies',
+  },
 ];
 
 export const HELP_CENTRE_GROUPS: {

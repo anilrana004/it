@@ -8,11 +8,19 @@ import BrandLogo from '@/components/BrandLogo';
 import { CONTACT, mailtoUrl, telUrl, whatsappUrl } from '@/lib/contact';
 import { DESK_HEADER_H, DESK_MAIN_H, DESK_TOP_H, CHROME_HIDDEN_CLASS } from '@/lib/layout';
 import { isSupportHubPath } from '@/lib/support-hub-nav';
-import { isCorporateHubPath, PROGRAMS_NAV_DROPDOWN } from '@/lib/corporate-hub-nav';
+import { isCorporateHubPath } from '@/lib/corporate-hub-nav';
+import { isSpecialProgramsHubPath } from '@/lib/special-programs-hub-nav';
 import {
-  isSpecialProgramsHubPath,
-  SPECIAL_PROGRAMS_NAV_DROPDOWN,
-} from '@/lib/special-programs-hub-nav';
+  CUSTOMIZED_RICH,
+  GROUP_TRIPS_RICH,
+  LEARNING_RICH,
+  MORE_RICH,
+  SPECIAL_RICH,
+  TRENDING_RICH,
+  YATRA_RICH,
+  type RichNavItem,
+} from '@/lib/nav-rich-menu';
+import RichNavDropdown from '@/components/nav/RichNavDropdown';
 
 /** Desktop top utility strip — contact left, quick links right */
 const TOP_STRIP_LINKS = [
@@ -28,7 +36,7 @@ const TOP_STRIP_LINKS = [
 type NavItem = {
   label: string;
   href: string;
-  dropdown?: { l: string; h: string }[];
+  richMenu?: RichNavItem[];
   sale?: boolean;
   star?: boolean;
   shortLabel?: string;
@@ -39,114 +47,47 @@ const navItems: NavItem[] = [
     label: 'Group Trips',
     shortLabel: 'Group',
     href: '/group-trips',
-    dropdown: [
-      { l: 'Backpacking Trips', h: '/#backpacking' },
-      { l: 'Treks', h: '/treks' },
-      { l: 'Biking Trips', h: '/biking' },
-      { l: 'Honeymoon Trips', h: '/honeymoon' },
-      { l: 'Domestic Tours', h: '/domestic-tours' },
-      { l: 'International Getaways', h: '/international-getaways' },
-      { l: 'Upcoming Trips', h: '/#upcoming-trips' },
-      { l: 'Weekend Trips', h: '/treks?difficulty=easy' },
-    ],
+    richMenu: GROUP_TRIPS_RICH,
   },
   {
-    label: 'Customized', href: '#',
-    dropdown: [
-      { l: 'Domestic Tours', h: '/domestic-tours' },
-      { l: 'International Getaways', h: '/international-getaways' },
-      { l: 'Honeymoon Trips', h: '/honeymoon' },
-    ],
+    label: 'Customized',
+    href: '#',
+    richMenu: CUSTOMIZED_RICH,
   },
   { label: 'Bucket List Sale', shortLabel: 'Sale', href: '/bucket-list-sale', sale: true },
-  { label: 'Trending', href: '/trending' },
+  {
+    label: 'Trending',
+    href: '/trending',
+    richMenu: TRENDING_RICH,
+  },
   {
     label: 'Sacred Yatra',
     shortLabel: 'Yatra',
     href: '/yatra',
-    dropdown: [
-      { l: 'All Sacred Yatras', h: '/yatra' },
-      { l: 'Kedarnath Yatra', h: '/yatra/kedarnath-yatra' },
-      { l: 'Badrinath Yatra', h: '/yatra/badrinath-yatra' },
-      { l: 'Do Dham Yatra', h: '/yatra/do-dham' },
-      { l: 'Char Dham Yatra', h: '/yatra/char-dham' },
-      { l: 'Panch Kedar Yatra', h: '/yatra/panch-kedar' },
-    ],
+    richMenu: YATRA_RICH,
   },
   {
     label: 'Learning Programs',
     shortLabel: 'Learning',
     href: '/corporate',
-    dropdown: PROGRAMS_NAV_DROPDOWN,
+    richMenu: LEARNING_RICH,
   },
   {
     label: 'Special Programs',
     shortLabel: 'Special',
     href: '/special-programs',
-    dropdown: SPECIAL_PROGRAMS_NAV_DROPDOWN,
+    richMenu: SPECIAL_RICH,
     star: true,
   },
   {
-    label: 'More', href: '#',
-    dropdown: [
-      { l: 'How to Prepare', h: '/how-to-prepare' },
-      { l: 'Fitness Training Plan', h: '/fitness-training-plan' },
-      { l: 'Altitude Sickness Guide', h: '/altitude-sickness-guide' },
-      { l: 'Careers With Us', h: '/careers' },
-      { l: 'Help Centre', h: '/help-centre' },
-    ],
+    label: 'More',
+    href: '#',
+    richMenu: MORE_RICH,
   },
 ];
 
-const mobileLinkSections = [
-  {
-    title: 'Sacred Yatra',
-    links: [
-      { l: 'All Sacred Yatras', h: '/yatra' },
-      { l: 'Kedarnath Yatra', h: '/yatra/kedarnath-yatra' },
-      { l: 'Badrinath Yatra', h: '/yatra/badrinath-yatra' },
-      { l: 'Do Dham Yatra', h: '/yatra/do-dham' },
-      { l: 'Char Dham Yatra', h: '/yatra/char-dham' },
-      { l: 'Panch Kedar Yatra', h: '/yatra/panch-kedar' },
-    ],
-  },
-  {
-    title: 'Trek Preparation',
-    links: [
-      { l: 'How to Prepare', h: '/how-to-prepare' },
-      { l: 'Fitness Training Plan', h: '/fitness-training-plan' },
-      { l: 'Altitude Sickness Guide', h: '/altitude-sickness-guide' },
-      { l: 'Careers With Us', h: '/careers' },
-      { l: 'Help Centre', h: '/help-centre' },
-    ],
-  },
-  {
-    title: 'Group Tours',
-    links: [
-      { l: 'Backpacking Trips', h: '/#backpacking' },
-      { l: 'Treks', h: '/treks' },
-      { l: 'Biking Trips', h: '/biking' },
-      { l: 'Upcoming Trips', h: '/#upcoming-trips' },
-      { l: 'International Trips', h: '/international-getaways' },
-    ],
-  },
-  {
-    title: 'Learning Programs',
-    links: PROGRAMS_NAV_DROPDOWN,
-  },
-  {
-    title: 'Special Programs',
-    links: SPECIAL_PROGRAMS_NAV_DROPDOWN,
-  },
-  {
-    title: 'Customized Trips',
-    links: [
-      { l: 'Domestic Tours', h: '/domestic-tours' },
-      { l: 'International Getaways', h: '/international-getaways' },
-      { l: 'Honeymoon Trips', h: '/honeymoon' },
-    ],
-  },
-];
+/** Extra mobile accordion — keep empty of anything already in primary navItems. */
+const mobileLinkSections: { title: string; links: { l: string; h: string }[] }[] = [];
 
 const deskNavLink =
   'inline-flex h-7 items-center gap-0.5 whitespace-nowrap rounded-md px-1.5 text-[11px] font-medium text-white/95 transition-colors hover:bg-white/10 hover:text-white xl:gap-0.5 xl:px-2 xl:text-[11.5px] 2xl:px-2.5 2xl:text-[12px]';
@@ -174,35 +115,6 @@ function NavLabel({
         <Star className="h-2.5 w-2.5 shrink-0 fill-amber-400 text-amber-400" aria-hidden />
       ) : null}
     </span>
-  );
-}
-
-function Dropdown({
-  items,
-  onClose,
-  align = 'left',
-}: {
-  items: { l: string; h: string }[];
-  onClose: () => void;
-  align?: 'left' | 'right';
-}) {
-  return (
-    <div
-      className={`absolute top-full z-50 mt-1 min-w-[240px] rounded-xl border border-gray-100 bg-white py-2 shadow-xl ${align === 'right' ? 'right-0' : 'left-0'}`}
-      role="menu"
-    >
-      {items.map((item) => (
-        <Link
-          key={item.l}
-          href={item.h}
-          onClick={onClose}
-          role="menuitem"
-          className="block px-4 py-2.5 text-sm text-gray-700 transition-colors hover:bg-gray-50 hover:text-[#16a34a]"
-        >
-          {item.l}
-        </Link>
-      ))}
-    </div>
   );
 }
 
@@ -486,7 +398,7 @@ export default function Header() {
               <div
                 key={item.label}
                 className="relative shrink-0"
-                onMouseEnter={() => item.dropdown && handleMouseEnter(item.label)}
+                onMouseEnter={() => item.richMenu && handleMouseEnter(item.label)}
                 onMouseLeave={handleMouseLeave}
               >
                 {item.sale ? (
@@ -498,7 +410,7 @@ export default function Header() {
                     <span className="2xl:hidden">{item.shortLabel ?? item.label}</span>
                     <span className="hidden 2xl:inline">{item.label}</span>
                   </Link>
-                ) : item.dropdown ? (
+                ) : item.richMenu ? (
                   <button
                     type="button"
                     onClick={() => setOpenDropdown(openDropdown === item.label ? null : item.label)}
@@ -516,7 +428,7 @@ export default function Header() {
                     <NavLabel label={item.label} shortLabel={item.shortLabel} star={item.star} />
                   </Link>
                 )}
-                {item.dropdown && openDropdown === item.label && (
+                {item.richMenu && openDropdown === item.label && (
                   <div
                     onMouseEnter={() => {
                       if (closeTimer.current) clearTimeout(closeTimer.current);
@@ -524,8 +436,8 @@ export default function Header() {
                     }}
                     onMouseLeave={handleMouseLeave}
                   >
-                    <Dropdown
-                      items={item.dropdown}
+                    <RichNavDropdown
+                      items={item.richMenu}
                       onClose={closeDropdown}
                       align={
                         item.label === 'More' || item.label === 'Special Programs'
@@ -660,7 +572,7 @@ export default function Header() {
             <div className="p-4 space-y-0.5">
               {navItems.map((item) => (
                 <div key={item.label}>
-                  {item.dropdown ? (
+                  {item.richMenu ? (
                     <div>
                       <button type="button" onClick={() => toggleMobileSubmenu(item.label)}
                         aria-expanded={mobileOpen.includes(item.label)}
@@ -669,13 +581,40 @@ export default function Header() {
                         <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${mobileOpen.includes(item.label) ? 'rotate-180' : ''}`} />
                       </button>
                       {mobileOpen.includes(item.label) && (
-                        <div className="ml-4 pl-3 border-l-2 border-gray-100 space-y-0.5 mb-1">
-                          {item.dropdown.map((sub) => (
-                            <Link key={sub.l} href={sub.h} onClick={closeMobile}
-                              className="block px-4 py-2.5 text-sm text-gray-600 hover:bg-gray-50 rounded-lg transition-colors">
-                              {sub.l}
-                            </Link>
-                          ))}
+                        <div className="mt-1 mb-2 space-y-0.5 rounded-xl border border-gray-100 bg-white p-1 shadow-sm">
+                          {item.richMenu.map((sub) => {
+                            const Icon = sub.Icon;
+                            return (
+                              <Link
+                                key={sub.id}
+                                href={sub.href}
+                                onClick={closeMobile}
+                                className="group flex items-center gap-2 rounded-lg px-2 py-1.5 transition-colors hover:bg-gray-50"
+                              >
+                                <span
+                                  className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border ${sub.iconTile}`}
+                                >
+                                  <Icon className={`h-3.5 w-3.5 ${sub.iconColor}`} aria-hidden />
+                                </span>
+                                <span className="min-w-0 flex-1">
+                                  <span className="flex flex-wrap items-center gap-1">
+                                    <span className="text-[12px] font-semibold leading-tight text-gray-900">
+                                      {sub.title}
+                                    </span>
+                                    {sub.live ? (
+                                      <span className="rounded bg-red-500 px-1 py-px text-[7px] font-bold uppercase leading-none tracking-wide text-white">
+                                        Live!
+                                      </span>
+                                    ) : null}
+                                  </span>
+                                  <span className="mt-px block text-[10px] leading-snug text-gray-500">
+                                    {sub.subtitle}
+                                  </span>
+                                </span>
+                                <ChevronDown className="h-3 w-3 shrink-0 -rotate-90 text-gray-400" aria-hidden />
+                              </Link>
+                            );
+                          })}
                         </div>
                       )}
                     </div>
@@ -712,28 +651,30 @@ export default function Header() {
               </div>
             </div>
 
-            <div className="px-4 mt-4 space-y-0.5">
-              {mobileLinkSections.map((s, i) => (
-                <div key={s.title} className="border-b border-gray-100">
-                  <button type="button" onClick={() => setMobileAccordion(mobileAccordion === i ? null : i)}
-                    aria-expanded={mobileAccordion === i}
-                    className="w-full flex items-center justify-between py-3.5 px-1 text-sm font-semibold text-gray-800">
-                    {s.title}
-                    <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${mobileAccordion === i ? 'rotate-180' : ''}`} />
-                  </button>
-                  {mobileAccordion === i && (
-                    <div className="pb-3 space-y-1 px-1">
-                      {s.links.map(l => (
-                        <Link key={l.l} href={l.h} onClick={closeMobile}
-                          className="block text-sm text-gray-500 hover:text-[#16a34a] py-1.5">
-                          {l.l}
-                        </Link>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
+            {mobileLinkSections.length > 0 ? (
+              <div className="px-4 mt-4 space-y-0.5">
+                {mobileLinkSections.map((s, i) => (
+                  <div key={s.title} className="border-b border-gray-100">
+                    <button type="button" onClick={() => setMobileAccordion(mobileAccordion === i ? null : i)}
+                      aria-expanded={mobileAccordion === i}
+                      className="w-full flex items-center justify-between py-3.5 px-1 text-sm font-semibold text-gray-800">
+                      {s.title}
+                      <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${mobileAccordion === i ? 'rotate-180' : ''}`} />
+                    </button>
+                    {mobileAccordion === i && (
+                      <div className="pb-3 space-y-1 px-1">
+                        {s.links.map(l => (
+                          <Link key={l.l} href={l.h} onClick={closeMobile}
+                            className="block text-sm text-gray-500 hover:text-[#16a34a] py-1.5">
+                            {l.l}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            ) : null}
 
             <div className="px-4 mt-6 mb-4">
               <div className="flex flex-wrap items-center justify-center gap-3">

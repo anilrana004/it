@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { TEAM_INTRO, TEAM_LEADERS } from '@/lib/about-content';
+import { TEAM_FEATURED, TEAM_INTRO } from '@/lib/about-content';
 
 /** Team content from https://indiantreks.in/about-us/ — Meet Our Team At Indiantreks */
 export default function TeamSection() {
@@ -13,11 +13,11 @@ export default function TeamSection() {
         <p className="mt-3 text-sm leading-relaxed text-gray-600 sm:mt-4">{TEAM_INTRO}</p>
       </div>
 
-      <div className="grid grid-cols-1 gap-8 sm:gap-10 md:grid-cols-3 md:gap-8">
-        {TEAM_LEADERS.map((member) => (
+      <div className="grid grid-cols-1 gap-8 sm:gap-10 md:grid-cols-2 md:gap-10 lg:gap-12">
+        {TEAM_FEATURED.map((member) => (
           <article
             key={member.id}
-            className="flex flex-col items-center text-center sm:items-start sm:text-left"
+            className="flex flex-col items-center text-center"
           >
             <div className="mb-3 h-[120px] w-[120px] overflow-hidden rounded-sm bg-gray-100 sm:mb-4 sm:h-[140px] sm:w-[140px]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -50,9 +50,12 @@ export default function TeamSection() {
         <Link
           href="/team"
           title="our team"
-          className="inline-flex w-full max-w-sm items-center justify-center border border-[#16a34a] bg-[#16a34a] px-6 py-3 text-sm font-semibold tracking-wide text-white transition-colors hover:bg-[#15803d] sm:w-auto sm:max-w-none sm:px-9 sm:py-2.5"
+          className="inline-flex w-full max-w-sm items-center justify-center gap-2 rounded-full bg-[#16a34a] px-8 py-3.5 text-sm font-semibold tracking-wide text-white shadow-sm shadow-[#16a34a]/25 transition-all hover:bg-[#15803d] hover:shadow-md hover:shadow-[#16a34a]/30 sm:w-auto sm:max-w-none sm:px-10"
         >
           MEET THE REST OF THE TEAM
+          <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden>
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
         </Link>
       </div>
     </section>

@@ -12,7 +12,7 @@ export default function BestSellers() {
   const items = data[activeTab] || [];
 
   return (
-    <section className="py-8 lg:py-16 bg-white">
+    <section id="best-sellers" className="py-8 lg:py-16 bg-white">
       <div className="container mx-auto">
         <div className="bg-[#16a34a] rounded-xl p-4 lg:p-6 mb-6 lg:mb-8 text-white flex flex-col lg:flex-row lg:items-center justify-between gap-3">
           <div className="flex items-center gap-3">
@@ -29,7 +29,7 @@ export default function BestSellers() {
             <p className="text-[#16a34a] font-semibold text-xs lg:text-sm tracking-widest uppercase mb-1">BEST SELLERS</p>
             <h2 className="text-xl lg:text-3xl font-bold text-[#000000]">Our Best Selling Trips</h2>
           </div>
-          <Link href="/treks" className="text-[#16a34a] text-sm font-semibold hover:text-[#15803d] whitespace-nowrap">View All Best Sellers &rarr;</Link>
+          <Link href="/best-sellers" className="text-[#16a34a] text-sm font-semibold hover:text-[#15803d] whitespace-nowrap">View All Best Sellers &rarr;</Link>
         </div>
         <div className="flex gap-2 overflow-x-auto scrollbar-none pb-2 -mx-4 px-4 lg:mx-0 lg:px-0 mb-6">
           {tabs.map((t) => (

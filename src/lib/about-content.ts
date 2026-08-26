@@ -6,13 +6,28 @@ export const ABOUT_STATS = [
   { v: 'Since 2016', l: 'Trusted Company' },
 ] as const;
 
-export const TEAM_LEADERS = [
+export type TeamMember = {
+  id: string;
+  name: string;
+  role: string;
+  image: string;
+  bio: string;
+  highlights?: readonly string[];
+};
+
+/** Featured on About page — Founder & CEO only (rest of team on /team). */
+export const TEAM_FEATURED: readonly TeamMember[] = [
   {
     id: 'vijay-singh-rana',
     name: 'Mr Vijay Singh Rana',
     role: 'Founder, Indiantreks',
     image: 'https://indiantreks.in/wp-content/uploads/2023/02/Vijay-Singh-Rana-Indian-Treks.jpg',
     bio: 'Mr Vijay Singh Rana, Founder of Indiantreks, is an M.A. graduate. Indiantreks was established as a direct consequence of their enthusiasm for travelling across the globe. Long before Indian Treks was founded, Mr. Vijay Rana had already been working on the ground in trekking and mountaineering since 2005. With over two decades of hands-on Himalayan experience, he has led and supported hundreds of treks, expeditions, and outdoor programs across Uttarakhand, Himachal Pradesh, and Ladakh. When most organizations focused only on numbers, he prioritized the quality of work, safety, and real mountain experience.',
+    highlights: [
+      'Founded Indian Treks from field experience since 2005',
+      '20+ years across Uttarakhand, Himachal & Ladakh',
+      'Safety-first culture over volume-led tourism',
+    ],
   },
   {
     id: 'vivek-rana',
@@ -21,7 +36,19 @@ export const TEAM_LEADERS = [
     image:
       'https://indiantreks.in/wp-content/uploads/2025/02/WhatsApp-Image-2025-02-02-at-1.52.36-PM-1024x983.jpeg',
     bio: 'Mr. Vivek Rana, who hails from the remote Osla village in the western Garhwal Himalayas and has a cumulative experience of 15 years working in this field as a mountain guide, is the Chief Executive Officer of Indiantreks. He completed his Bachelor of Business Administration and Bachelor of Arts degrees, and has completed many treks across Uttarakhand, Himachal, and Ladakh — including Kalindi Khal, Bali Pass, Borasu Pass, Rupin Pass, Valley of Flowers, and Kedarkantha. He completed his Advance Mountaineering Course from the Nehru Institute of Mountaineering and a Wilderness Medicine course from a nationally renowned institute.',
+    highlights: [
+      'From Osla village, western Garhwal Himalayas',
+      'Advance Mountaineering Course — NIM',
+      'Wilderness Medicine certified · 15 years guiding',
+    ],
   },
+];
+
+/** @deprecated Prefer TEAM_FEATURED for About; kept for any older imports. */
+export const TEAM_LEADERS = TEAM_FEATURED;
+
+export const TEAM_ROSTER: readonly TeamMember[] = [
+  ...TEAM_FEATURED,
   {
     id: 'lalita-rana',
     name: 'Mrs. Lalita Rana',
@@ -30,10 +57,6 @@ export const TEAM_LEADERS = [
       'https://indiantreks.in/wp-content/uploads/2025/02/WhatsApp-Image-2025-02-01-at-1.59.59-PM-926x1024.jpeg',
     bio: 'Mrs. Lalita Rana has been with Vivek Ji from the very beginning. With an excellent academic and athletic background, she completed both basic and advanced computer courses and achieved her Master of Arts degree. She is NCC-certified and manages office work while assisting the Finance and Accounts Department. She has completed Har Ki Dun, Kedarkantha, Ruinsara Lake, Satopanth Lake, Gaumukh Tapovan, Hampta Pass, Chopta Tungnath, Nag Tibba, Deoban, and many more treks.',
   },
-] as const;
-
-export const TEAM_ROSTER = [
-  ...TEAM_LEADERS,
   {
     id: 'sanjay-rawat',
     name: 'Mr. Sanjay Rawat',
@@ -105,7 +128,8 @@ export const TEAM_ROSTER = [
     image: 'https://indiantreks.in/wp-content/uploads/2025/02/WhatsApp-Image-2025-02-01-at-3.44.44-PM.jpeg',
     bio: 'Sildar Panwar, a senior trek leader at Indiantreks, has over 10 years of experience leading trekkers through the Himalayas. His leadership includes iconic High Mountain Pass Treks like Bali Pass, Lamkhaga Pass, Rupin Pass, Barasu Pass, and Valley of Flowers Trek.',
   },
-] as const;
+];
+
 
 export const TEAM_INTRO =
   'Because of our committed team of specialists that put in a lot of effort and are professionals in their field, we are only able to provide our customers with excellent experiences. We are a group of around 50 individuals, the majority of whom come from a variety of communities located in the Indian Himalayas. More than 20 of our employees are qualified and experienced guides or tour leaders, and they are all housed under one roof.';

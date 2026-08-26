@@ -1,92 +1,12 @@
-'use client';
-import { useState } from 'react';
-import Link from 'next/link';
-import { Star, Clock, MapPin, Zap, Tag, Timer } from 'lucide-react';
+import TrendingLandingPageView from '@/components/trending/TrendingLandingPageView';
+import { bucketListSaleLandingConfig } from '@/lib/bucket-list-sale-content';
 
-const categories = ['All Deals', 'Domestic', 'International', 'Winter Treks', 'Summer Treks', 'Biking'];
-
-const deals = [
-  { title: 'Valley of Flowers Trek', loc: 'Joshimath → Rishikesh', dur: '6D/5N', price: 8999, origPrice: 11999, rating: '4.8', rev: '8k+', img: 'https://res.cloudinary.com/pg8uhzw0/image/upload/f_auto,q_auto,w_420,h_280,c_fill,g_auto/v1785367489/pexels-unaizat97-8673607_anl07u.jpg', href: '/treks/valley-of-flowers', badge: '25% OFF' },
-  { title: 'Kedarkantha Trek', loc: 'Sankri → Dehradun', dur: '5D/4N', price: 6999, origPrice: 8999, rating: '4.9', rev: '10k+', img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', href: '/treks/kedarkantha', badge: '22% OFF' },
-  { title: 'Hampta Pass Trek', loc: 'Manali → Manali', dur: '5D/4N', price: 8499, origPrice: 10999, rating: '4.7', rev: '8k+', img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', href: '/treks/hampta-pass', badge: '23% OFF' },
-  { title: 'Annapurna Base Camp', loc: 'Pokhara → Pokhara', dur: '8D/7N', price: 34999, origPrice: 42999, rating: '4.9', rev: '15k+', img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', href: '/treks/annapurna-base-camp', badge: '19% OFF' },
-  { title: 'Everest Base Camp', loc: 'Lukla → Lukla', dur: '13D/12N', price: 74999, origPrice: 89999, rating: '4.9', rev: '20k+', img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', href: '/treks/everest-base-camp', badge: '17% OFF' },
-  { title: 'Kedarnath Yatra', loc: 'Rishikesh → Rishikesh', dur: '6D/5N', price: 9999, origPrice: 12999, rating: '4.8', rev: '12k+', img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', href: '/yatra/kedarnath-yatra', badge: '23% OFF' },
-  { title: 'Chopta Tungnath', loc: 'Rishikesh → Rishikesh', dur: '4D/3N', price: 5999, origPrice: 7999, rating: '4.7', rev: '7k+', img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', href: '/treks/chopta-tungnath', badge: '25% OFF' },
-  { title: 'Triund Trek', loc: 'Mcleodganj → Mcleodganj', dur: '3D/2N', price: 2499, origPrice: 3999, rating: '4.6', rev: '15k+', img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', href: '/treks/mcleodganj-trek', badge: '38% OFF' },
-  { title: 'Har Ki Dun Trek', loc: 'Dehradun → Dehradun', dur: '6D/5N', price: 8999, origPrice: 10999, rating: '4.8', rev: '5k+', img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', href: '/treks/har-ki-dun', badge: '18% OFF' },
-  { title: 'Rupin Pass Trek', loc: 'Shimla → Dehradun', dur: '7D/6N', price: 11999, origPrice: 14999, rating: '4.8', rev: '6k+', img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', href: '/treks/rupin-pass', badge: '20% OFF' },
-  { title: 'Do Dham Yatra', loc: 'Rishikesh → Rishikesh', dur: '7D/6N', price: 14999, origPrice: 18999, rating: '4.8', rev: '8k+', img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', href: '/yatra/do-dham', badge: '21% OFF' },
-  { title: 'Nepal Backpacking', loc: 'Kathmandu → Kathmandu', dur: '10D/9N', price: 34999, origPrice: 42999, rating: '4.8', rev: '6k+', img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', href: '/treks/nepal-backpacking', badge: '19% OFF' },
-  { title: 'Bhrigu Lake Trek', loc: 'Manali → Manali', dur: '3D/2N', price: 4999, origPrice: 6499, rating: '4.6', rev: '6k+', img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', href: '/treks/bhrigu-lake', badge: '23% OFF' },
-  { title: 'Kheerganga Trek', loc: 'Kasol → Kasol', dur: '3D/2N', price: 3499, origPrice: 4999, rating: '4.5', rev: '8k+', img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', href: '/treks/kheerganga', badge: '30% OFF' },
-];
+export const metadata = {
+  title: 'Bucket List Sale | Up to 40% Off Treks & Yatras | Indian Treks',
+  description:
+    'Limited-period Bucket List Sale on Himalayan treks, sacred yatras, weekend escapes and Nepal adventures — up to 40% off with Indian Treks.',
+};
 
 export default function BucketListSalePage() {
-  const [cat, setCat] = useState('All Deals');
-  return (
-    <div className="pt-24 lg:pt-28 pb-12 lg:pb-20">
-      <section className="bg-gradient-to-r from-[#16a34a] via-[#15803d] to-[#166534] py-10 lg:py-16 mb-8 lg:mb-12">
-        <div className="container mx-auto text-center">
-          <div className="flex items-center justify-center gap-3 mb-3">
-            <Zap className="w-6 h-6 lg:w-8 lg:h-8 text-yellow-300" />
-            <h1 className="font-[family-name:var(--font-heading)] text-3xl lg:text-5xl font-bold text-white">Bucket List Sale</h1>
-          </div>
-          <p className="text-white/80 text-sm lg:text-lg mb-2">Limited Period Discounts on Handpicked Trips</p>
-          <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-full px-5 py-2 text-white font-bold text-lg lg:text-2xl">
-            <Timer className="w-5 h-5" /> UP TO 40% OFF
-          </div>
-          <p className="text-white/60 text-xs lg:text-sm mt-4">Hurry! These deals won&apos;t last long. Book now and save big on your dream adventure.</p>
-        </div>
-      </section>
-
-      <div className="container mx-auto">
-        <div className="flex gap-2 overflow-x-auto scrollbar-none pb-2 -mx-4 px-4 lg:mx-0 lg:px-0 mb-6">
-          {categories.map(c => (
-            <button key={c} onClick={() => setCat(c)}
-              className={`shrink-0 px-5 py-1.5 rounded-full text-xs lg:text-sm font-medium transition-all ${cat===c?'bg-[#16a34a] text-white':'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}>{c}</button>
-          ))}
-        </div>
-
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-  {[
-    { v: '14', l: 'Active Deals' },
-    { v: '40%', l: 'Max Discount' },
-    { v: '₹2,499', l: 'Starting From' },
-    { v: 'Limited', l: 'Sale Ends Soon' },
-  ].map(s => (
-            <div key={s.l} className="bg-gradient-to-br from-[#16a34a]/10 to-[#16a34a]/5 rounded-xl p-4 text-center border border-[#16a34a]/20">
-              <div className="font-bold text-lg lg:text-2xl text-[#16a34a]">{s.v}</div>
-              <div className="text-[11px] lg:text-xs text-gray-600">{s.l}</div>
-            </div>
-          ))}
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
-          {deals.map(t => (
-            <Link key={t.title} href={t.href} className="group rounded-xl overflow-hidden transition-all relative aspect-[4/5]">
-              <img src={t.img} alt={t.title} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-              <div className="absolute top-3 left-3 bg-[#16a34a] text-white text-[10px] lg:text-xs font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
-                <Tag className="w-3 h-3" />{t.badge}
-              </div>
-              <div className="absolute bottom-0 left-0 right-0 p-3 lg:p-4">
-                <div className="flex items-center gap-1 text-white/70 text-[10px] lg:text-xs mb-1"><MapPin className="w-3 h-3" />{t.loc}</div>
-                <h3 className="font-semibold text-sm lg:text-base text-white group-hover:text-[#16a34a] transition-colors line-clamp-1">{t.title}</h3>
-                <div className="flex items-center gap-2 text-[11px] lg:text-xs text-white/60 mt-1 mb-2">
-                  <Clock className="w-3 h-3" />{t.dur}<span className="text-white/20">|</span>
-                  <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />{t.rating} ({t.rev})
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-[#16a34a] font-bold text-sm lg:text-base">₹{t.price.toLocaleString()}</span>
-                  <span className="text-white/50 text-xs line-through">₹{t.origPrice.toLocaleString()}</span>
-                  <span className="ml-auto bg-red-500/80 text-white text-[10px] font-bold px-1.5 py-0.5 rounded animate-pulse">{t.badge}</span>
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
+  return <TrendingLandingPageView config={bucketListSaleLandingConfig} />;
 }

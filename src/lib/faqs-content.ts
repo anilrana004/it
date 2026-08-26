@@ -144,6 +144,13 @@ export const FAQ_ITEMS: FaqItem[] = [
       'Carry personal medicines, a headlamp/torch, sunscreen, cap, sturdy trekking shoes, layered clothing, reusable water bottle, and ID proofs. For winter/high altitude add thermals and a warm jacket. We share a full packing list after booking.',
   },
   {
+    id: 'support-fraud',
+    category: 'support',
+    question: 'How do I stay safe from fake Indian Treks websites or payment scams?',
+    answer:
+      `Only pay through our official website (${CONTACT.officialSite}) or bank / UPI details shared by the Indian Treks team. Never pay on lookalike domains, personal UPI IDs, or Telegram “offers”. If you see a scam, email ${CONTACT.fraudEmail} and contact your bank immediately. Read the full advisory on the Beware of Fraudulent Activities page.`,
+  },
+  {
     id: 'support-after',
     category: 'support',
     question: 'What should I do if I need support after booking?',

@@ -5,10 +5,12 @@ import { photos } from '@/lib/media';
 const categories = [
   { title: 'Himalayan Treks', desc: 'Valley of Flowers, Kedarkantha, Hampta & more', href: '/treks', img: photos.uttarakhand, icon: Mountain },
   { title: 'Sacred Yatras', desc: 'Kedarnath, Do Dham, Char Dham pilgrimages', href: '/yatra', img: photos.yatra, icon: Heart },
-  { title: 'Backpacking Trips', desc: 'Kasol, Manali, Spiti & Nepal circuits', href: '/#backpacking', img: photos.himachal, icon: Users },
+  { title: 'Backpacking Trips', desc: 'Kasol, Manali, Spiti & Nepal circuits', href: '/backpacking', img: photos.himachal, icon: Users },
   { title: 'Biking Expeditions', desc: 'Mountain roads, group rides & scenic routes', href: '/biking', img: photos.snow, icon: Bike },
-  { title: 'Domestic Tours', desc: 'Curated India packages for every group', href: '/domestic-tours', img: photos.chopta, icon: Users },
-  { title: 'International Getaways', desc: 'Nepal, EBC, Annapurna & beyond', href: '/international-getaways', img: photos.nepal, icon: Mountain },
+  { title: 'Weekend Trips', desc: '2–3 day escapes — Triund, Nag Tibba & more', href: '/weekend-trips', img: photos.triund, icon: Mountain },
+  // Available under Customized / Trending — keep routes for later:
+  // { title: 'Domestic Tours', desc: 'Curated India packages for every group', href: '/domestic-tours', img: photos.chopta, icon: Users },
+  // { title: 'International Getaways', desc: 'Nepal, EBC, Annapurna & beyond', href: '/international-getaways', img: photos.nepal, icon: Mountain },
 ];
 
 export default function GroupTripsPage() {

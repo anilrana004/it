@@ -1,0 +1,37 @@
+/** Single-row horizontal trip carousel — used on all landing section pages */
+.landing-trip-row {
+  display: flex;
+  align-items: stretch;
+  gap: 1rem;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 0.5rem;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 0.4rem;
+}
+
+.landing-trip-row::-webkit-scrollbar {
+  display: none;
+}
+
+.landing-trip-row > * {
+  flex: 0 0 auto;
+  width: min(78vw, 300px);
+  max-width: 300px;
+  scroll-snap-align: start;
+}
+
+@media (min-width: 640px) {
+  .landing-trip-row > * {
+    width: 280px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .landing-trip-row > * {
+    width: 300px;
+  }
+}

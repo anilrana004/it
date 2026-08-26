@@ -1198,3 +1198,53 @@ body.it-support-mode .it-main {
     transition: none;
   }
 }
+
+/* Beware of Fraudulent Activities */
+.it-fraud .it-support-page__title {
+  color: #1a1a1a;
+}
+
+.it-fraud__eyebrow {
+  color: #dc2626 !important;
+}
+
+.it-fraud__hero .it-support-page__lead {
+  max-width: 40rem;
+}
+
+.it-fraud__block p strong {
+  color: #111;
+  font-weight: 800;
+}
+
+.it-fraud .it-support-page__card a {
+  color: #dc2626;
+  font-weight: 800;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.it-fraud .it-support-page__card a:hover {
+  color: #b91c1c;
+}
+
+.it-fraud__report {
+  border-color: rgba(220, 38, 38, 0.22);
+  background: #fff7f7;
+}
+
+.it-fraud__report h2 {
+  color: #b91c1c;
+}
+
+.it-fraud__section-head {
+  margin: 1.35rem 0 0.85rem;
+}
+
+.it-fraud__section-head h2 {
+  margin: 0;
+  font-family: var(--font-playfair), Georgia, serif;
+  font-size: clamp(1.25rem, 3vw, 1.6rem);
+  font-weight: 700;
+  color: #1a1a1a;
+}

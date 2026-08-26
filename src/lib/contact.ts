@@ -5,6 +5,8 @@ export const CONTACT = {
   phoneTel: '+919797972175',
   phoneWa: '919797972175',
   email: 'contact@indiantreks.com',
+  fraudEmail: 'fraudalerts@indiantreks.com',
+  officialSite: 'www.indiantreks.com',
   hours: 'Mon–Sat, 10:00 AM – 7:00 PM IST',
   hoursShort: 'Mon – Sat',
   hoursDetail: '10:00 AM – 7:00 PM IST',

@@ -98,7 +98,7 @@ export default function Backpacking() {
             <p className="text-[#16a34a] font-semibold text-xs lg:text-sm tracking-widest uppercase mb-1">BACKPACKING</p>
             <h2 className="text-xl lg:text-3xl font-bold text-[#000000]">Backpacking Destinations</h2>
           </div>
-          <Link href="/treks" className="text-[#16a34a] text-sm font-semibold hover:text-[#15803d] whitespace-nowrap">View All Backpacking &rarr;</Link>
+          <Link href="/backpacking" className="text-[#16a34a] text-sm font-semibold hover:text-[#15803d] whitespace-nowrap">View All Backpacking &rarr;</Link>
         </div>
 
         <div className="flex gap-2 overflow-x-auto scrollbar-none pb-2 px-4 lg:px-0 mb-6" style={{ scrollbarWidth: 'none' }}>

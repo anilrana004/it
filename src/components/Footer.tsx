@@ -56,9 +56,10 @@ const companyLinks = [
 
 const exploreLinks = [
   { label: 'Upcoming Treks', href: '/treks' },
-  { label: 'Weekend Treks', href: '/treks?difficulty=easy' },
+  { label: 'Weekend Treks', href: '/weekend-trips' },
   { label: 'Snow Treks', href: '/treks/kedarkantha' },
   { label: 'Group Trips', href: '/group-trips' },
+  { label: 'Backpacking Trips', href: '/backpacking' },
   { label: 'Biking Trips', href: '/biking' },
 ];
 
@@ -71,6 +72,10 @@ function WhatsAppIcon({ className }: { className?: string }) {
       />
     </svg>
   );
+}
+
+function FraudLight() {
+  return <span className="rhf-fraud-light" aria-hidden />;
 }
 
 export default function Footer() {
@@ -134,15 +139,9 @@ export default function Footer() {
             <ul className="rhf-links">
               {companyLinks.map((link) => (
                 <li key={link.label}>
-                  {link.href ? (
-                    <Link href={link.href}>
-                      <ChevronRight strokeWidth={2.5} /> {link.label}
-                    </Link>
-                  ) : (
-                    <span className="rhf-link-text" aria-disabled="true">
-                      <ChevronRight strokeWidth={2.5} /> {link.label}
-                    </span>
-                  )}
+                  <Link href={link.href}>
+                    <ChevronRight strokeWidth={2.5} /> {link.label}
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -225,6 +224,10 @@ export default function Footer() {
               <Link href="/cancellation-policy">Cancellation &amp; Refund</Link>
               <Link href="/help-centre">Help Centre</Link>
               <Link href="/faqs">FAQs</Link>
+              <Link href="/beware-of-fraudulent-activities" className="rhf-fraud-link">
+                <FraudLight />
+                Beware of Fraudulent Activities
+              </Link>
             </div>
           </div>
 

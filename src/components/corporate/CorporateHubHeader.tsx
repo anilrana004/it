@@ -2,9 +2,10 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useCallback, useEffect, useId, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useRef, useState, type CSSProperties } from 'react';
 import BrandLogo from '@/components/BrandLogo';
-import { CONTACT, telUrl, whatsappUrl } from '@/lib/contact';
+import { CONTACT, mailtoUrl, telUrl, whatsappUrl } from '@/lib/contact';
+import { DESK_HEADER_H, DESK_MAIN_H, DESK_TOP_H } from '@/lib/layout';
 import {
   CORPORATE_HUB_LINKS,
   corporateHubActive,
@@ -13,12 +14,27 @@ import {
 } from '@/lib/corporate-hub-nav';
 import './corporate-hub.css';
 
-/** Dedicated corporate-section header — mirrors Help Centre hub pattern */
+/** Same utility strip as home — contact left, quick links right */
+const TOP_STRIP_LINKS = [
+  { label: 'Home', href: '/' },
+  { label: 'About Us', href: '/about' },
+  { label: 'Contact Us', href: '/contact' },
+  { label: 'FAQ', href: '/faqs' },
+  { label: 'Reviews', href: '/reviews' },
+  { label: 'Payment Policy', href: '/payment-policy' },
+  { label: 'Blogs', href: '/blog' },
+] as const;
+
+/**
+ * Learning Programs hub header — desktop matches home dark-green chrome;
+ * section links stay corporate / campus / schools / gifts.
+ */
 export default function CorporateHubHeader() {
   const pathname = usePathname();
   const headerRef = useRef<HTMLElement>(null);
   const menuId = useId();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [hidden, setHidden] = useState(false);
 
   useEffect(() => {
     document.body.classList.add('it-corporate-mode');
@@ -63,16 +79,99 @@ export default function CorporateHubHeader() {
     };
   }, [menuOpen]);
 
+  /** Hide on scroll-down / show on scroll-up — matches home chrome */
+  useEffect(() => {
+    if (menuOpen) {
+      setHidden(false);
+      return;
+    }
+
+    const HIDE_AFTER = 72;
+    let last = window.scrollY;
+    let frame = 0;
+
+    const update = () => {
+      frame = 0;
+      const current = Math.max(0, window.scrollY);
+      const delta = current - last;
+      if (current <= HIDE_AFTER) setHidden(false);
+      else if (delta > 4) setHidden(true);
+      else if (delta < -4) setHidden(false);
+      last = current;
+    };
+
+    const onScroll = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(update);
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      window.removeEventListener('scroll', onScroll);
+    };
+  }, [menuOpen]);
+
   const closeMenu = useCallback(() => setMenuOpen(false), []);
 
   const corpWa = whatsappUrl(
     'Hi Indian Treks! I am interested in your programs (corporate, campus, or school).',
   );
-
   const onProgramsHub = isCorporateHubPath(pathname);
 
   return (
-    <header ref={headerRef} className="it-corporate-hub" aria-label="Learning Programs">
+    <header
+      ref={headerRef}
+      className={`it-corporate-hub${hidden ? ' is-hidden' : ''}`}
+      aria-label="Learning Programs"
+      style={
+        {
+          '--ch-desk-top-h': `${DESK_TOP_H}px`,
+          '--ch-desk-main-h': `${DESK_MAIN_H}px`,
+          '--ch-desk-header-h': `${DESK_HEADER_H}px`,
+        } as CSSProperties
+      }
+    >
+      <div className="it-corporate-hub__top" aria-label="Utility links">
+        <div className="it-corporate-hub__top-inner">
+          <div className="it-corporate-hub__top-contact">
+            <a
+              href={corpWa}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="it-corporate-hub__top-wa"
+              aria-label={`WhatsApp ${CONTACT.phoneDisplay}`}
+            >
+              <i className="fa-brands fa-whatsapp" aria-hidden />
+              <span>+{CONTACT.phoneWa}</span>
+            </a>
+            <span className="it-corporate-hub__top-sep" aria-hidden>
+              |
+            </span>
+            <a
+              href={mailtoUrl('Learning Programs enquiry — Indian Treks')}
+              className="it-corporate-hub__top-mail"
+            >
+              <i className="fa-solid fa-envelope" aria-hidden />
+              <span>{CONTACT.email}</span>
+            </a>
+          </div>
+
+          <nav className="it-corporate-hub__top-nav" aria-label="Quick links">
+            {TOP_STRIP_LINKS.map((item, i) => (
+              <span key={item.href} className="it-corporate-hub__top-nav-item">
+                {i > 0 ? (
+                  <span className="it-corporate-hub__top-sep" aria-hidden>
+                    |
+                  </span>
+                ) : null}
+                <Link href={item.href}>{item.label}</Link>
+              </span>
+            ))}
+          </nav>
+        </div>
+      </div>
+
       <div className="it-corporate-hub__bar">
         <div className="it-corporate-hub__inner">
           <div className="it-corporate-hub__brand-group">
@@ -173,7 +272,9 @@ export default function CorporateHubHeader() {
       >
         <div className="it-corporate-hub__drawer-panel">
           <p className="it-corporate-hub__drawer-kicker">Learning Programs &amp; partnerships</p>
-          <p className="it-corporate-hub__drawer-lead">Corporate tours, campus, schools &amp; gifting</p>
+          <p className="it-corporate-hub__drawer-lead">
+            Corporate tours, campus, schools &amp; gifting
+          </p>
 
           <div className="it-corporate-hub__drawer-cta">
             <a

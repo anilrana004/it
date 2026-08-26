@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { Sparkles, Globe, MapPin, Users } from 'lucide-react';
 
 const filters = [
-  { label: 'New Launches', href: '/treks', icon: Sparkles },
+  { label: 'New Launches', href: '/new-launches', icon: Sparkles },
   { label: 'International', href: '/treks?region=nepal', icon: Globe },
   { label: 'India', href: '/treks?region=india', icon: MapPin },
   { label: 'Group Trips', href: '/treks', icon: Users },

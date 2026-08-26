@@ -1,0 +1,250 @@
+import { photos } from '@/lib/media';
+import type { LpLandingContent } from '@/lib/corporate/learning-program-types';
+
+export const schoolLanding: LpLandingContent = {
+  variant: 'school',
+  hero: {
+    eyebrow: 'Educational outings',
+    title: 'School Programs in the Himalayas',
+    lead: 'Safe, curriculum-aligned outdoor learning — where students grow confidence, curiosity, and care for nature',
+    image: photos.uttarakhand,
+    primaryCta: 'Plan a school trip',
+    primaryWhatsapp:
+      'Hi Indian Treks! I want to plan a school program / educational outing in the Himalayas.',
+    secondaryCta: 'Play video',
+    youtubeId: '9vb3QfUth58',
+  },
+  brands: {
+    kicker: 'Partner schools',
+    title: 'Trusted by Schools Across the Country',
+    intro: 'Schools that choose structured outdoor learning over one-off picnic trips.',
+    items: Array.from({ length: 8 }, (_, i) => ({
+      id: `school-brand-${i + 1}`,
+      name: 'School partner',
+    })),
+  },
+  benefits: {
+    kicker: 'Why it works',
+    title: 'How do students benefit from school treks?',
+    intro: 'Away from classrooms and screens, students:',
+    items: [
+      'Learn geography, ecology, and culture by experiencing them firsthand',
+      'Build confidence through achievable outdoor challenges',
+      'Practise teamwork, empathy, and peer leadership',
+      'Develop resilience when weather and trails don’t go to plan',
+      'Reconnect with nature in a guided, age-appropriate way',
+      'Return with shared memories that strengthen class bonds',
+    ],
+    image: photos.chopta,
+    imageAlt: 'Students on a guided Himalayan school trek',
+  },
+  whyBetter: {
+    kicker: 'Beyond the usual picnic',
+    title: 'Why school treks beat regular excursion trips',
+    items: [
+      {
+        title: 'Learning with purpose',
+        body: 'Trails are designed around outcomes — leadership, environment, and teamwork — not just sightseeing.',
+      },
+      {
+        title: 'Age-appropriate challenge',
+        body: 'Routes, distances, and altitudes are matched to grade levels so students stretch safely, not struggle.',
+      },
+      {
+        title: 'Structured facilitation',
+        body: 'Briefings, buddy systems, and reflection circles turn trail moments into lasting lessons.',
+      },
+      {
+        title: 'Safety systems schools can trust',
+        body: 'Trained leaders, medical kits, parent communication, and clear emergency protocols.',
+      },
+      {
+        title: 'Teacher partnership',
+        body: 'We plan with educators — itineraries, consent workflows, and learning goals stay aligned.',
+      },
+      {
+        title: 'Memories that outlast the term',
+        body: 'Shared summits and camp evenings become the stories students retell for years.',
+      },
+    ],
+  },
+  reviews: {
+    kicker: 'School voices',
+    title: 'What teachers and parents have to say',
+    intro: 'Educators who chose mountains over malls for meaningful student growth.',
+    items: [
+      {
+        id: 'meera-t',
+        name: 'Meera Sharma',
+        role: 'Principal, Delhi NCR',
+        short: 'Our students returned more confident and kinder to each other. The safety briefings put parents at ease.',
+        full: 'Our students returned more confident and kinder to each other. The safety briefings put parents at ease from day one. Leaders were patient with mixed fitness levels, and the reflection sessions tied beautifully to our life-skills curriculum. We are already blocking dates for next year.',
+      },
+      {
+        id: 'arun-t',
+        name: 'Arun Patel',
+        role: 'Activity Coordinator',
+        short: 'Far better than a hotel excursion. Students practised real teamwork on trail.',
+        full: 'Far better than a hotel excursion. Students practised real teamwork on trail — helping, waiting, encouraging. Logistics were clear, meals were reliable, and teachers felt supported rather than overloaded.',
+      },
+      {
+        id: 'neha-p',
+        name: 'Neha Kapoor',
+        role: 'Parent',
+        short: 'I was nervous sending my daughter. Daily updates and caring leaders changed that completely.',
+        full: 'I was nervous sending my daughter on her first overnight trek. Daily updates and caring leaders changed that completely. She came home tired, proud, and full of stories — and already asking about the next trip.',
+      },
+      {
+        id: 'vikram-t',
+        name: 'Vikram Singh',
+        role: 'Geography Teacher',
+        short: 'Glaciers, rivers, and villages became living lessons. Curriculum finally felt real.',
+        full: 'Glaciers, rivers, and villages became living lessons. Curriculum finally felt real. The itinerary left room for observation and discussion without rushing the group.',
+      },
+      {
+        id: 'anita-t',
+        name: 'Anita Desai',
+        role: 'Vice Principal',
+        short: 'Professional planning from consent forms to summit day. Highly recommended for senior school.',
+        full: 'Professional planning from consent forms to summit day. Highly recommended for senior school batches looking for growth, not just entertainment.',
+      },
+      {
+        id: 'rahul-s',
+        name: 'Rahul (Class 10)',
+        role: 'Student',
+        short: 'Hardest and best school trip ever. We all helped each other to the top.',
+        full: 'Hardest and best school trip ever. We all helped each other to the top. I learned I can do more than I thought — and that my classmates are stronger together.',
+      },
+    ],
+  },
+  difficulties: {
+    kicker: 'The real challenge',
+    title: 'What makes school outdoor trips hard to get right?',
+    intro: 'Schools want impact and parents want safety — getting both takes intentional design.',
+    items: [
+      'Balancing adventure with age-appropriate difficulty and altitude',
+      'Keeping mixed fitness groups together without leaving anyone behind',
+      'Clear parent communication, consent, and medical readiness',
+      'Turning “fun outing” into measurable learning without killing joy',
+    ],
+    image: photos.triund,
+    imageAlt: 'School group pausing on a scenic Himalayan trail',
+  },
+  programmes: {
+    kicker: 'Our programmes for schools',
+    title: 'Designed with educators, run with care',
+    intro: 'From day outings to multi-day camps — choose the format that fits your academic calendar.',
+    enquirePrefix: 'Hi Indian Treks! I’m interested in the school programme:',
+    items: [
+      {
+        id: 'nature-camp',
+        title: 'Nature & environment camps',
+        blurb: 'Forest walks, biodiversity sessions, and sustainability workshops for middle and senior school.',
+        duration: '2–3 Days',
+        location: 'Uttarakhand / Himachal foothills',
+        overview:
+          'Students explore ecosystems hands-on with guided activities, journaling, and leave-no-trace practices — ideal for environment clubs and science weeks.',
+        image: photos.vof,
+      },
+      {
+        id: 'leadership-trail',
+        title: 'Leadership & team trails',
+        blurb: 'Moderate day hikes and overnight camps that build confidence, teamwork, and resilience.',
+        duration: '2–4 Days',
+        location: 'UK & HP',
+        overview:
+          'Buddy systems, trail challenges, and evening circles help students practise peer leadership in a safe outdoor setting.',
+        image: photos.chopta,
+      },
+      {
+        id: 'heritage-geo',
+        title: 'Heritage & geography tours',
+        blurb: 'Curriculum-linked journeys covering culture, rivers, terrain, and mountain geography.',
+        duration: '3–5 Days',
+        location: 'Uttarakhand',
+        overview:
+          'Teachers get a learning frame; students get lived geography — villages, valleys, and landscapes that textbooks can’t fully capture.',
+        image: photos.kedarkantha,
+      },
+    ],
+  },
+  treks: {
+    kicker: 'School-friendly routes',
+    title: 'Popular UK & HP trails for school batches',
+    intro: 'Approachable Himalayan routes that work well for supervised student groups.',
+    note: 'Final route selection depends on grade, fitness, season, and school policies. We’ll recommend safely.',
+    ids: [
+      'nag-tibba',
+      'chopta-tungnath',
+      'dayara-bugyal',
+      'kheerganga',
+      'mcleodganj-trek',
+      'kedarkantha',
+      'bhrigu-lake',
+      'kuari-pass',
+      'valley-of-flowers',
+      'beas-kund',
+    ],
+  },
+  gallery: {
+    kicker: 'On the trail',
+    title: 'Outdoor learning in the mountains',
+    items: [
+      { src: photos.chopta, alt: 'Students hiking a ridge trail' },
+      { src: photos.triund, alt: 'School camp under mountain skies' },
+      { src: photos.vof, alt: 'Nature learning in alpine meadows' },
+      { src: photos.kedarkantha, alt: 'Shared summit moment for a school batch' },
+    ],
+  },
+  cta: {
+    kicker: 'Plan with educators',
+    title: 'Looking for a school trip that is safe, meaningful, and memorable?',
+    body: 'Share your grade range, preferred month, and learning goals — we’ll propose a clear itinerary.',
+    primaryWhatsapp:
+      'Hi Indian Treks! Please help us design a school program for our students.',
+    primaryLabel: 'WhatsApp us',
+    secondaryHref: '#inquiry',
+    secondaryLabel: 'Request a proposal',
+  },
+  articles: {
+    kicker: 'Guides for schools',
+    title: 'Helpful reading before you plan',
+    items: [
+      {
+        title: 'How to prepare students for their first trek',
+        href: '/how-to-prepare',
+        image: photos.triund,
+        read: '8 min read',
+      },
+      {
+        title: 'Fitness basics for young trekkers',
+        href: '/fitness-training-plan',
+        image: photos.chopta,
+        read: '7 min read',
+      },
+      {
+        title: 'Altitude awareness for school groups',
+        href: '/altitude-sickness-guide',
+        image: photos.uttarakhand,
+        read: '6 min read',
+      },
+      {
+        title: 'Family trekking benefits',
+        href: '/blog/family-trekking-in-india',
+        image: photos.hampta,
+        read: '18 min read',
+      },
+    ],
+  },
+  inquiry: {
+    kicker: 'Plan with us',
+    title: 'Request a school proposal',
+    intro: 'Tell us your school, grade range, and dates — we’ll send a tailored outdoor learning plan.',
+    orgLabel: 'School name',
+    sizeLabel: 'Group size (students)',
+    sizeOptions: ['20–40', '41–60', '61–80', '81–100', '100+'],
+    programmeLabel: 'Preferred programme',
+    whatsappFallback: 'Hi Indian Treks! Please help us plan a school trek.',
+    successBody: 'Your enquiry has been received. Our schools team will reach out within 24 hours.',
+  },
+};

@@ -77,7 +77,7 @@ export default function UpcomingTrips() {
             <p className="text-[#16a34a] font-semibold text-xs lg:text-sm tracking-[0.25em] uppercase mb-1">UPCOMING TRIPS</p>
             <h2 className="text-xl lg:text-3xl font-bold text-[#000000]">Upcoming Group Trips</h2>
           </div>
-          <Link href="/treks" className="text-[#16a34a] text-sm font-semibold hover:text-[#15803d] transition-colors whitespace-nowrap">View All Upcoming Trips &rarr;</Link>
+          <Link href="/upcoming-trips" className="text-[#16a34a] text-sm font-semibold hover:text-[#15803d] transition-colors whitespace-nowrap">View All Upcoming Trips &rarr;</Link>
         </div>
 
         <div className="flex gap-2 overflow-x-auto scrollbar-none pb-2 px-4 lg:px-0 mb-6" style={{ scrollbarWidth: 'none' }}>

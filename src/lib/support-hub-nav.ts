@@ -52,6 +52,7 @@ export const SUPPORT_HUB_PATHS = [
   '/affiliates',
   '/payment-policy',
   '/cancellation-policy',
+  '/beware-of-fraudulent-activities',
   '/blog',
   '/about',
 ] as const;

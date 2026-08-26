@@ -21,7 +21,7 @@ import {
   Sparkles,
 } from 'lucide-react';
 import TrekCuratedSection from '@/components/treks/TrekCuratedSection';
-import { DESK_HEADER_H } from '@/lib/layout';
+import { DESK_HEADER_H, MOBILE_HEADER_H } from '@/lib/layout';
 import {
   CURATED_SECTIONS,
   DIFFICULTIES,
@@ -39,6 +39,7 @@ import {
 import type { SpecialProgramId } from '@/lib/special-programs-content';
 import type { Trek } from '@/lib/data';
 import { CONTACT, telUrl } from '@/lib/contact';
+import './treks-explorer.css';
 
 type Filters = {
   q: string;
@@ -454,34 +455,35 @@ export default function AllTreksExplorer({
           </form>
         </section>
 
-        {/* Sticky quick filters on phone */}
-        <div className="sticky top-14 z-30 border-b border-gray-100 bg-white/95 backdrop-blur-md">
-          <div
-            className="flex gap-2 overflow-x-auto px-4 py-2.5 scrollbar-none"
-            style={{ scrollbarWidth: 'none' }}
-          >
-            {[
-              { label: 'All', on: browsing, go: () => clearAll() },
-              { label: 'Beginner', on: filters.experience === 'beginner', go: () => update({ experience: filters.experience === 'beginner' ? null : 'beginner' }) },
-              { label: 'Winter', on: filters.season === 'winter', go: () => update({ season: filters.season === 'winter' ? null : 'winter' }) },
-              { label: 'Uttarakhand', on: filters.region === 'uttarakhand', go: () => update({ region: filters.region === 'uttarakhand' ? null : 'uttarakhand' }) },
-              { label: 'Himachal', on: filters.region === 'himachal', go: () => update({ region: filters.region === 'himachal' ? null : 'himachal' }) },
-              { label: 'Easy', on: filters.difficulty === 'Easy', go: () => update({ difficulty: filters.difficulty === 'Easy' ? null : 'Easy' }) },
-              { label: 'Nepal', on: filters.region === 'nepal', go: () => update({ region: filters.region === 'nepal' ? null : 'nepal' }) },
-            ].map((chip) => (
-              <button
-                key={chip.label}
-                type="button"
-                onClick={chip.go}
-                className={`shrink-0 rounded-full px-3.5 py-1.5 text-[12px] font-semibold transition-colors ${
-                  chip.on
-                    ? 'bg-[#16a34a] text-white'
-                    : 'bg-gray-100 text-gray-700'
-                }`}
-              >
-                {chip.label}
-              </button>
-            ))}
+        {/* Sticky quick filters — floating pill shell (same language as landing sticky nav) */}
+        <div
+          className="it-treks-quick"
+          style={{ ['--it-mob-header' as string]: `${MOBILE_HEADER_H}px` }}
+        >
+          <div className="it-treks-quick__shell">
+            <p className="it-treks-quick__label">Filter</p>
+            <div className="it-treks-quick__track" role="tablist" aria-label="Quick trek filters">
+              {[
+                { label: 'All', on: browsing, go: () => clearAll() },
+                { label: 'Beginner', on: filters.experience === 'beginner', go: () => update({ experience: filters.experience === 'beginner' ? null : 'beginner' }) },
+                { label: 'Winter', on: filters.season === 'winter', go: () => update({ season: filters.season === 'winter' ? null : 'winter' }) },
+                { label: 'Uttarakhand', on: filters.region === 'uttarakhand', go: () => update({ region: filters.region === 'uttarakhand' ? null : 'uttarakhand' }) },
+                { label: 'Himachal', on: filters.region === 'himachal', go: () => update({ region: filters.region === 'himachal' ? null : 'himachal' }) },
+                { label: 'Easy', on: filters.difficulty === 'Easy', go: () => update({ difficulty: filters.difficulty === 'Easy' ? null : 'Easy' }) },
+                { label: 'Nepal', on: filters.region === 'nepal', go: () => update({ region: filters.region === 'nepal' ? null : 'nepal' }) },
+              ].map((chip) => (
+                <button
+                  key={chip.label}
+                  type="button"
+                  role="tab"
+                  aria-selected={chip.on}
+                  onClick={chip.go}
+                  className={`it-treks-quick__chip${chip.on ? ' is-active' : ''}`}
+                >
+                  {chip.label}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 
