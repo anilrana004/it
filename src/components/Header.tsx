@@ -128,7 +128,7 @@ export default function Header() {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState<string[]>([]);
   const [mobileAccordion, setMobileAccordion] = useState<number | null>(null);
-  /** 0 = dissolved into hero, 1 = solid brand-wash bar (homepage only) */
+  /** 0 = dissolved into green hero wash, 1 = white sticky bar (homepage only) */
   const [navSolid, setNavSolid] = useState(0);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const headerRef = useRef<HTMLDivElement>(null);
@@ -141,7 +141,7 @@ export default function Header() {
       return;
     }
 
-    // IndiaHikes flow: sticky solid bar only after leaving the top of the page
+    // Sticky white bar only after leaving the top of the homepage (green hero chrome).
     const SHOW_AFTER = 48;
     const update = () => {
       setNavSolid(window.scrollY > SHOW_AFTER ? 1 : 0);
@@ -221,7 +221,7 @@ export default function Header() {
     };
   }, [blockHide]);
 
-  /** Homepage mobile: hide fixed bar until scroll. Other pages: always solid. */
+  /** Homepage mobile: hide fixed bar until scroll (green hero chrome shows instead). Other pages: always solid white. */
   const showFixedMobile = !isHome || navSolid > 0 || isOpen;
 
   const searchItems = useMemo(() =>
@@ -519,16 +519,15 @@ export default function Header() {
 
       {/*
         Mobile header (IndiaHikes flow):
-        - Homepage top: hidden  -  logo/menu live in the brand wash (document flow)
-        - After scroll: solid brand-wash bar slides in and sticks
-        - Other pages: always visible solid wash
+        - Homepage top: hidden — logo/menu live in the green hero wash (document flow)
+        - After scroll (and all other pages): solid white sticky bar
       */}
       <header
         className={`fixed left-0 top-0 w-full lg:hidden ${isOpen ? 'z-[70]' : 'z-50'}`}
         style={{
-          backgroundColor: '#4ade80',
-          boxShadow: showFixedMobile ? '0 1px 8px rgba(22,163,74,0.18)' : 'none',
-          borderBottom: showFixedMobile ? '1px solid #22c55e' : 'none',
+          backgroundColor: '#ffffff',
+          boxShadow: showFixedMobile ? '0 1px 10px rgba(16, 24, 20, 0.08)' : 'none',
+          borderBottom: showFixedMobile ? '1px solid #e8ece9' : 'none',
           paddingTop: 'env(safe-area-inset-top, 0px)',
           transform: showFixedMobile && !hidden ? 'translateY(0)' : 'translateY(-110%)',
           opacity: showFixedMobile && !hidden ? 1 : 0,

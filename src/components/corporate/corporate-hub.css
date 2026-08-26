@@ -1,4 +1,4 @@
-/* Learning Programs hub — desktop matches home dark-green chrome; mobile keeps wash bar */
+/* Learning Programs hub — desktop matches home dark-green chrome; mobile white bar */
 
 .it-corporate-section {
   --ch-green: var(--ih-primary, #16a34a);
@@ -165,9 +165,9 @@
 
 @media (max-width: 979px) {
   .it-corporate-hub__bar {
-    background: var(--ih-wash, #4ade80);
-    border-bottom-color: #22c55e;
-    box-shadow: 0 1px 8px rgba(22, 163, 74, 0.18);
+    background: #ffffff;
+    border-bottom-color: #e8ece9;
+    box-shadow: 0 1px 10px rgba(16, 24, 20, 0.08);
   }
 
   /* Mobile: don't slide the whole chrome away with desk scroll-hide */

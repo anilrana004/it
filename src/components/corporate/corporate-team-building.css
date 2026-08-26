@@ -834,28 +834,42 @@
   border-color: var(--corp-green);
 }
 
+/* Horizontal trek row — phone + desktop (Learning Programs) */
 .it-corp__trek-grid {
-  display: grid;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: stretch;
   gap: 1rem;
-  grid-template-columns: repeat(1, minmax(0, 1fr));
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 0.5rem;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding-bottom: 0.4rem;
 }
 
-@media (min-width: 560px) {
-  .it-corp__trek-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+.it-corp__trek-grid::-webkit-scrollbar {
+  display: none;
+}
+
+.it-corp__trek-grid > * {
+  flex: 0 0 auto;
+  width: min(78vw, 300px);
+  max-width: 300px;
+  scroll-snap-align: start;
+}
+
+@media (min-width: 640px) {
+  .it-corp__trek-grid > * {
+    width: 280px;
   }
 }
 
-@media (min-width: 900px) {
-  .it-corp__trek-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1.15rem;
-  }
-}
-
-@media (min-width: 1100px) {
-  .it-corp__trek-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+@media (min-width: 1024px) {
+  .it-corp__trek-grid > * {
+    width: 300px;
   }
 }
 

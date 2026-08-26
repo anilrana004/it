@@ -2,6 +2,7 @@ import Link from 'next/link';
 import TrekCard from '@/components/TrekCard';
 import type { SpecialProgram } from '@/lib/special-programs-content';
 import { treksForProgram } from '@/lib/special-programs-content';
+import '@/components/landing/landing-trip-row.css';
 
 export default function SpecialProgramPageView({ program }: { program: SpecialProgram }) {
   const list = treksForProgram(program);
@@ -59,7 +60,7 @@ export default function SpecialProgramPageView({ program }: { program: SpecialPr
         </div>
 
         {list.length > 0 ? (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6">
+          <div className="landing-trip-row">
             {list.map((trek) => <TrekCard key={trek.id} trek={trek} />)}
           </div>
         ) : (
