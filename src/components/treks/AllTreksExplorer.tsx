@@ -685,15 +685,11 @@ export default function AllTreksExplorer({
             </div>
           </div>
 
-          <div className="flex items-start gap-8">
-            <aside className="w-[260px] shrink-0">
+          <div className="flex gap-8">
+            <aside className="w-[260px] shrink-0 self-stretch">
               <div
-                className="overflow-y-auto rounded-2xl border border-gray-200/90 bg-white p-4 shadow-sm"
-                style={{
-                  position: 'sticky',
-                  top: DESK_HEADER_H + 12,
-                  maxHeight: `calc(100dvh - ${DESK_HEADER_H + 20}px)`,
-                }}
+                className="it-treks-desk-filters"
+                style={{ ['--it-desk-header' as string]: `${DESK_HEADER_H}px` }}
               >
                 {filterPanel}
               </div>

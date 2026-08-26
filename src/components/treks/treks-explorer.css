@@ -147,3 +147,23 @@ html.it-chrome-hidden .it-treks-quick__shell {
   background: #16a34a;
   transform: translateX(-50%);
 }
+
+/* Desktop sidebar filters — stick for full page scroll + chrome-hide sync */
+.it-treks-desk-filters {
+  position: sticky;
+  top: calc(var(--it-desk-header, 80px) + 12px);
+  max-height: calc(100dvh - var(--it-desk-header, 80px) - 20px);
+  overflow-y: auto;
+  border-radius: 1rem;
+  border: 1px solid rgba(229, 231, 235, 0.95);
+  background: #fff;
+  padding: 1rem;
+  box-shadow: 0 1px 2px rgba(16, 32, 24, 0.04);
+  transition: top 0.28s cubic-bezier(0.22, 1, 0.36, 1), max-height 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 30;
+}
+
+html.it-chrome-hidden .it-treks-desk-filters {
+  top: 12px;
+  max-height: calc(100dvh - 24px);
+}
