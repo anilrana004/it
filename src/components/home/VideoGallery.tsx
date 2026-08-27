@@ -1,29 +1,13 @@
 'use client';
 
-import { useRef, useState } from 'react';
-import { ChevronLeft, ChevronRight, Play } from 'lucide-react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { EffectCoverflow } from 'swiper/modules';
-import type { Swiper as SwiperType } from 'swiper';
-
-import 'swiper/css';
-import 'swiper/css/effect-coverflow';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import {
+  FEATURED_VIDEOS,
+  carouselOffset,
+  type FeaturedVideo,
+} from '@/lib/featured-videos';
 import './video-gallery.css';
-
-type MemoryVideo = {
-  id: string;
-  title: string;
-  youtubeId: string;
-};
-
-const MEMORIES: MemoryVideo[] = [
-  { id: 'kedarkantha', title: 'Kedarkantha Trek', youtubeId: '97J3LIF3VAI' },
-  { id: 'kuari-pass', title: 'Kuari Pass Trek', youtubeId: 'rmuuxRaCSH0' },
-  { id: 'yatra', title: 'Sacred Yatras', youtubeId: 'EuRs_GP29Lo' },
-  { id: 'flowers', title: 'Valley of Flowers', youtubeId: 'qrMyYGaJA0s' },
-  { id: 'nepal', title: 'Nepal & Abroad', youtubeId: '8efveLZ3E24' },
-  { id: 'chopta', title: 'Chopta Tungnath', youtubeId: '1v8ThiFzp9U' },
-];
 
 function embedUrl(id: string) {
   const q = new URLSearchParams({
@@ -43,137 +27,182 @@ function thumbUrl(id: string) {
   return `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
 }
 
-function VideoPanel({ item, isActive }: { item: MemoryVideo; isActive: boolean }) {
+function CardCaption({ video }: { video: FeaturedVideo }) {
   return (
-    <div
-      className={`it-vid-mem__panel${isActive ? ' is-active' : ''}`}
-      role="button"
-      tabIndex={0}
-      aria-label={isActive ? `${item.title} (playing)` : `Show ${item.title}`}
-    >
-      <div className="it-vid-mem__bezel">
-        <div className="it-vid-mem__frame">
-          {isActive ? (
+    <div className="it-vid-mem__caption">
+      <span className="it-vid-mem__caption-en">{video.captionEn}</span>
+      <span className="it-vid-mem__caption-hi">{video.captionHi}</span>
+    </div>
+  );
+}
+
+function VideoCardFill({
+  video,
+  isActive,
+}: {
+  video: FeaturedVideo;
+  isActive: boolean;
+}) {
+  const [loading, setLoading] = useState(isActive);
+
+  useEffect(() => {
+    if (isActive) setLoading(true);
+  }, [video.id, isActive]);
+
+  return (
+    <div className="it-vid-mem__fill" style={{ background: video.gradient }}>
+      {isActive ? (
+        <>
+          {loading ? <span className="it-vid-mem__loading" aria-hidden /> : null}
+          <div className="it-vid-mem__media-wrap">
             <iframe
-              className="it-vid-mem__media it-vid-mem__media--video"
-              src={embedUrl(item.youtubeId)}
-              title={item.title}
+              className="it-vid-mem__media"
+              src={embedUrl(video.youtubeId)}
+              title={video.captionEn}
               allow="autoplay; encrypted-media; picture-in-picture"
               allowFullScreen
               tabIndex={-1}
+              onLoad={() => setLoading(false)}
             />
-          ) : (
-            <>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                className="it-vid-mem__media"
-                src={thumbUrl(item.youtubeId)}
-                alt=""
-                loading="lazy"
-                draggable={false}
-              />
-              <span className="it-vid-mem__play" aria-hidden>
-                <Play className="h-5 w-5" fill="currentColor" />
-              </span>
-            </>
-          )}
-        </div>
-      </div>
+          </div>
+        </>
+      ) : (
+        <>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            className="it-vid-mem__thumb"
+            src={thumbUrl(video.youtubeId)}
+            alt=""
+            loading="lazy"
+            draggable={false}
+          />
+          <span className="it-vid-mem__play" aria-hidden>
+            <svg viewBox="0 0 24 24" aria-hidden>
+              <path d="M8 5v14l11-7z" />
+            </svg>
+          </span>
+        </>
+      )}
+
+      <span className="it-vid-mem__badge">{video.badge}</span>
+      <CardCaption video={video} />
     </div>
   );
 }
 
 export default function VideoGallery() {
-  const swiperRef = useRef<SwiperType | null>(null);
+  const touchStartX = useRef(0);
   const [active, setActive] = useState(0);
-  const activeId = MEMORIES[active]?.id;
+
+  const total = FEATURED_VIDEOS.length;
+  const activeVideo = FEATURED_VIDEOS[active] ?? FEATURED_VIDEOS[0];
+
+  const goTo = useCallback(
+    (index: number) => {
+      setActive(((index % total) + total) % total);
+    },
+    [total],
+  );
+
+  const goNext = useCallback(() => goTo(active + 1), [active, goTo]);
+  const goPrev = useCallback(() => goTo(active - 1), [active, goTo]);
+
+  const onKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        goPrev();
+      }
+      if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        goNext();
+      }
+    },
+    [goNext, goPrev],
+  );
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0]?.clientX ?? 0;
+  };
+
+  const onTouchEnd = (e: React.TouchEvent) => {
+    const dx = (e.changedTouches[0]?.clientX ?? 0) - touchStartX.current;
+    if (dx > 48) goPrev();
+    if (dx < -48) goNext();
+  };
 
   return (
-    <section className="it-vid-mem" aria-labelledby="memories-for-life-title">
-      <div className="it-vid-mem__head">
-        <p className="it-vid-mem__kicker">Videos</p>
-        <h2 id="memories-for-life-title" className="it-vid-mem__title">
-          Memories for Life
-        </h2>
-        <p className="it-vid-mem__lead">50+ moments from our wravelers on trail</p>
-      </div>
+    <section className="it-vid-mem" aria-labelledby="featured-videos-title">
+      <div className="it-vid-mem__inner">
+        <header className="it-vid-mem__head">
+          <p className="it-vid-mem__kicker">Videos</p>
+          <h2 id="featured-videos-title" className="it-vid-mem__title">
+            Trails We&apos;ve Walked
+          </h2>
+        </header>
 
-      <div className="it-vid-mem__shell">
-        <Swiper
-          className="it-vid-mem__swiper"
-          modules={[EffectCoverflow]}
-          effect="coverflow"
-          grabCursor
-          centeredSlides
-          loop
-          slidesPerView="auto"
-          speed={580}
-          slideToClickedSlide
-          simulateTouch
-          allowTouchMove
-          threshold={6}
-          touchAngle={35}
-          resistanceRatio={0.72}
-          watchSlidesProgress
-          coverflowEffect={{
-            rotate: 0,
-            stretch: -26,
-            depth: 220,
-            modifier: 1.1,
-            slideShadows: false,
-          }}
-          breakpoints={{
-            768: {
-              coverflowEffect: {
-                rotate: 22,
-                stretch: -8,
-                depth: 120,
-                modifier: 1.05,
-                slideShadows: false,
-              },
-            },
-            1024: {
-              coverflowEffect: {
-                rotate: 28,
-                stretch: -8,
-                depth: 130,
-                modifier: 1.05,
-                slideShadows: false,
-              },
-            },
-          }}
-          onSwiper={(swiper) => {
-            swiperRef.current = swiper;
-            setActive(swiper.realIndex);
-          }}
-          onSlideChange={(swiper) => {
-            setActive(swiper.realIndex);
-          }}
-        >
-          {MEMORIES.map((item) => (
-            <SwiperSlide key={item.id} className="it-vid-mem__slide">
-              <VideoPanel item={item} isActive={item.id === activeId} />
-            </SwiperSlide>
-          ))}
-        </Swiper>
+        <div className="it-vid-mem__stage-wrap">
+          <div
+            className="it-vid-mem__stage"
+            role="region"
+            aria-roledescription="carousel"
+            aria-label="Featured travel videos"
+            tabIndex={0}
+            onKeyDown={onKeyDown}
+            onTouchStart={onTouchStart}
+            onTouchEnd={onTouchEnd}
+          >
+            <p className="it-vid-mem__status" aria-live="polite" aria-atomic="true">
+              Video {active + 1} of {total}: {activeVideo.captionEn}
+            </p>
 
-        <div className="it-vid-mem__nav">
-          <button
-            type="button"
-            className="it-vid-mem__nav-btn"
-            aria-label="Previous video"
-            onClick={() => swiperRef.current?.slidePrev()}
-          >
-            <ChevronLeft className="h-5 w-5" strokeWidth={2.5} />
-          </button>
-          <button
-            type="button"
-            className="it-vid-mem__nav-btn"
-            aria-label="Next video"
-            onClick={() => swiperRef.current?.slideNext()}
-          >
-            <ChevronRight className="h-5 w-5" strokeWidth={2.5} />
-          </button>
+            {FEATURED_VIDEOS.map((video, index) => {
+              const offset = carouselOffset(index, active, total);
+              if (Math.abs(offset) > 2) return null;
+
+              const isActive = offset === 0;
+
+              return (
+                <button
+                  key={video.id}
+                  type="button"
+                  className={`it-vid-mem__card${isActive ? ' it-vid-mem__card--active' : ''}`}
+                  data-offset={offset}
+                  style={{ '--it-vid-pos': offset } as React.CSSProperties}
+                  aria-label={
+                    isActive
+                      ? `${video.captionEn}, currently playing`
+                      : `Show video: ${video.captionEn}`
+                  }
+                  aria-current={isActive ? 'true' : undefined}
+                  onClick={() => {
+                    if (!isActive) goTo(index);
+                  }}
+                >
+                  <VideoCardFill video={video} isActive={isActive} />
+                </button>
+              );
+            })}
+          </div>
+
+          <nav className="it-vid-mem__nav" aria-label="Carousel controls">
+            <button
+              type="button"
+              className="it-vid-mem__nav-btn"
+              aria-label="Previous video"
+              onClick={goPrev}
+            >
+              <ChevronLeft size={18} strokeWidth={2.4} aria-hidden />
+            </button>
+            <button
+              type="button"
+              className="it-vid-mem__nav-btn"
+              aria-label="Next video"
+              onClick={goNext}
+            >
+              <ChevronRight size={18} strokeWidth={2.4} aria-hidden />
+            </button>
+          </nav>
         </div>
       </div>
     </section>
