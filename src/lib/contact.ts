@@ -113,6 +113,15 @@ export const CONTACT = {
   addressLine1: 'Kargi Chowk, Narayan Vihar',
   addressLine2: 'Dehradun, Uttarakhand',
   addressFull: 'Kargi Chowk, Narayan Vihar, Dehradun, Uttarakhand',
+
+  /** Public Google Business profile — used on reviews page for verification links */
+  googleReviews: {
+    rating: 4.8,
+    ratingDisplay: '4.8',
+    countDisplay: '3,200+',
+    travellersDisplay: '50K+',
+    mapsQuery: 'Indian Treks Kargi Chowk Dehradun Uttarakhand',
+  },
 } as const;
 
 export const SOCIAL_LINKS = [
@@ -136,6 +145,16 @@ export function mapsDirectionsUrl(office: ContactOffice = primaryOffice) {
 /** iframe embed — no API key required */
 export function mapsEmbedUrl(office: ContactOffice = primaryOffice) {
   return `https://maps.google.com/maps?q=${encodeURIComponent(office.mapQuery)}&z=15&output=embed`;
+}
+
+/** Opens Indian Treks on Google Maps — travellers can read and verify public reviews */
+export function googleReviewsVerifyUrl() {
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(CONTACT.googleReviews.mapsQuery)}`;
+}
+
+/** Same listing — Google shows the “Write a review” action on the business profile */
+export function googleWriteReviewUrl() {
+  return googleReviewsVerifyUrl();
 }
 
 /** Default booking WhatsApp with optional prefill text */

@@ -818,3 +818,42 @@ export const treksArticles: LandingArticle[] = [
         image: photos.chopta,
       },
 ];
+
+export const careersArticles: LandingArticle[] = [
+  groupTravel
+    ? toArticle(
+        groupTravel,
+        'The same spirit of camaraderie and adventure that shapes how we work at Indian Treks.',
+      )
+    : {
+        href: '/blog',
+        title: 'Why Group Travel is the Best Way to Explore the Himalayas',
+        read: '5 min read',
+        excerpt: 'Community, safety and shared journeys on trail.',
+        image: photos.himachal,
+      },
+  firstTrek
+    ? toArticle(
+        firstTrek,
+        'Preparation, pacing and mindset — lessons from the trail that translate to any role.',
+      )
+    : {
+        href: '/blog',
+        title: '5 Essential Tips for Your First Himalayan Trek',
+        read: '6 min read',
+        excerpt: 'Prepare well before you go.',
+        image: photos.uttarakhand,
+      },
+  familyTrek
+    ? toArticle(
+        familyTrek,
+        'How meaningful travel experiences connect families — and the teams who make them happen.',
+      )
+    : {
+        href: '/blog',
+        title: 'What Happens When Families Trek Together?',
+        read: '18 min read',
+        excerpt: 'The deeper benefits of family trekking.',
+        image: photos.chopta,
+      },
+];
