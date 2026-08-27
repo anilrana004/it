@@ -334,7 +334,7 @@ export default function Header() {
       {/* Desktop: compact dark-green chrome. Fixed + reserved spacer = no overlap.
           Hide on scroll-down / show on scroll-up (Roopkund Heaven pattern). */}
       <header
-        className="fixed left-0 top-0 z-50 hidden w-full lg:block"
+        className="fixed left-0 top-0 z-50 hidden w-full overflow-visible lg:block"
         style={{
           height: DESK_HEADER_H,
           transform: hidden ? 'translateY(-110%)' : 'translateY(0)',
@@ -395,7 +395,7 @@ export default function Header() {
 
         {/* Main nav bar */}
         <div
-          className="grid items-stretch"
+          className="grid items-stretch overflow-visible"
           style={{
             height: DESK_MAIN_H,
             background: 'linear-gradient(180deg, #0b4a28 0%, #0a3d22 100%)',
@@ -411,15 +411,15 @@ export default function Header() {
           </Link>
 
           {/*
-            Center nav when space allows; overflow clips from the right edge so
-            the logo and first link never shift or get cut off.
+            Center nav — keep overflow visible so rich dropdown panels can extend
+            below the bar; compact labels + search sizing prevent horizontal crowding.
           */}
           <nav
-            className="relative z-0 grid min-w-0 grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center overflow-hidden px-1 xl:px-1.5 min-[1760px]:px-2"
+            className={`relative grid min-w-0 grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center overflow-visible px-1 xl:px-1.5 min-[1760px]:px-2 ${openDropdown ? 'z-30' : 'z-10'}`}
             aria-label="Primary"
           >
             <div aria-hidden="true" />
-            <div className="flex max-w-full items-center justify-center gap-0 overflow-hidden xl:gap-0.5">
+            <div className="flex max-w-full items-center justify-center gap-0 xl:gap-0.5">
             {navItems.map((item) => (
               <div
                 key={item.label}
@@ -457,6 +457,7 @@ export default function Header() {
                 )}
                 {item.richMenu && openDropdown === item.label && (
                   <div
+                    className={`absolute top-full z-[100] pt-1 ${item.label === 'More' || item.label === 'Special Programs' ? 'right-0' : 'left-0'}`}
                     onMouseEnter={() => {
                       if (closeTimer.current) clearTimeout(closeTimer.current);
                       setOpenDropdown(item.label);

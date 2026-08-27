@@ -15,7 +15,7 @@ export default function RichNavDropdown({
 }) {
   return (
     <div
-      className={`absolute top-full z-50 mt-1 w-[min(calc(100vw-2rem),16.5rem)] rounded-xl border border-gray-100 bg-white p-1 shadow-xl shadow-black/10 ${align === 'right' ? 'right-0' : 'left-0'}`}
+      className={`relative w-[min(calc(100vw-2rem),16.5rem)] rounded-xl border border-gray-100 bg-white p-1 shadow-xl shadow-black/10 ${align === 'right' ? 'ml-auto' : ''}`}
       role="menu"
     >
       {items.map((item) => {
