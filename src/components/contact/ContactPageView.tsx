@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useMemo, useState, type ChangeEvent, type FormEvent } from 'react';
 import {
   CONTACT,
@@ -51,6 +52,37 @@ const FAQ_CATS = [
   { id: 'safety', label: 'Safety' },
   { id: 'logistics', label: 'Logistics' },
 ] as const;
+
+const CONTACT_TRUST_PILLARS = [
+  {
+    icon: 'fa-shield-halved',
+    title: 'Trusted by Thousands',
+    sub: 'Safe & reliable journeys',
+  },
+  {
+    icon: 'fa-users',
+    title: 'Expert Local Team',
+    sub: 'Experienced & passionate',
+  },
+  {
+    icon: 'fa-heart',
+    title: 'Customized For You',
+    sub: 'Trips that fit your needs',
+  },
+  {
+    icon: 'fa-leaf',
+    title: 'Sustainable Travel',
+    sub: 'Responsible & eco-friendly',
+  },
+] as const;
+
+const CT_HERO_PHOTOS = [
+  'https://images.unsplash.com/photo-1551632811-561732d1e306?w=400&h=480&fit=crop',
+  'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=400&h=480&fit=crop',
+] as const;
+
+const CT_CONNECT_IMAGE =
+  'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=1200&h=600&fit=crop';
 
 function faqCatId(cat: string) {
   if (cat === 'Booking') return 'booking';
@@ -143,118 +175,202 @@ export default function ContactPageView() {
 
   return (
     <div className="it-ct">
-      {/* HERO */}
+      {/* HERO — light editorial layout with decorative accents */}
       <section className="ct-hero">
-        <div className="ct-hero-noise" aria-hidden="true" />
-
-        <div className="ct-hero-badge">
-          <i className="fa-solid fa-mountain" aria-hidden /> {CONTACT.brand} — Contact Us
+        <div className="ct-hero-deco ct-hero-deco--photos" aria-hidden="true">
+          <div className="ct-hero-polaroids">
+            {CT_HERO_PHOTOS.map((src, i) => (
+              <div key={src} className={`ct-hero-polaroid ct-hero-polaroid--${i + 1}`}>
+                <Image src={src} alt="" width={120} height={140} />
+              </div>
+            ))}
+            <span className="ct-hero-stamp">
+              <i className="fa-solid fa-mountain-sun" aria-hidden />
+              Adventure
+              <br />
+              Awaits
+            </span>
+          </div>
         </div>
-        <h1>
-          Let&apos;s Plan Your
-          <br />
-          <em>Next Journey</em>
-        </h1>
-        <p>
-          Treks, pilgrimage travel, customized tours, or B2B partnerships — tell us what you are
-          planning and we&apos;ll connect you with the right team.
-        </p>
 
-        <div className="ct-hero-peaks" aria-hidden="true">
-          <svg viewBox="0 0 1440 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M0,70 L0,50 L80,20 L140,42 L220,10 L300,38 L360,15 L440,36 L520,5 L600,32 L680,12 L760,40 L840,18 L920,42 L1000,8 L1080,35 L1160,14 L1240,40 L1320,22 L1440,48 L1440,70 Z"
-              fill="rgba(255,250,250,.06)"
-            />
-            <path
-              d="M0,70 L0,58 L100,32 L180,52 L260,28 L360,52 L440,30 L560,55 L640,25 L740,50 L820,28 L920,54 L1020,30 L1100,52 L1200,34 L1320,56 L1440,38 L1440,70 Z"
-              fill="rgba(255,250,250,.09)"
-            />
-            <path
-              d="M0,70 L0,65 L120,44 L240,62 L360,46 L480,64 L600,44 L720,62 L840,44 L960,62 L1080,46 L1200,62 L1320,48 L1440,60 L1440,70 Z"
-              fill="#faf9f7"
-            />
-          </svg>
+        <div className="ct-hero-deco ct-hero-deco--note" aria-hidden="true">
+          <div className="ct-hero-sticky">
+            <span className="ct-hero-sticky-tape" />
+            <p>Every journey begins with a conversation.</p>
+          </div>
+          <span className="ct-hero-plane-trail">
+            <svg viewBox="0 0 120 40" fill="none" aria-hidden="true">
+              <path
+                d="M4 28 C 28 8, 52 32, 116 12"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeDasharray="4 5"
+                strokeLinecap="round"
+              />
+            </svg>
+            <i className="fa-regular fa-paper-plane" aria-hidden />
+          </span>
+        </div>
+
+        <div className="ct-hero-inner">
+          <div className="ct-hero-badge">
+            <i className="fa-solid fa-mountain" aria-hidden /> {CONTACT.brand} — Contact Us
+          </div>
+          <h1>
+            Let&apos;s Plan Your
+            <br />
+            <em>Next Journey</em>
+          </h1>
+          <p>
+            Treks, pilgrimage travel, customized tours, or B2B partnerships — tell us what you are
+            planning and we&apos;ll connect you with the right team.
+          </p>
         </div>
       </section>
 
-      {/* CONTACT CARDS */}
-      <div className="ct-wrap">
-        <div className="ct-cards-row">
-          <div className="ct-card">
-            <div className="ct-card-ico">
-              <i className="fa-solid fa-phone" aria-hidden />
-            </div>
-            <div>
-              <div className="ct-card-label">Booking</div>
-              <div className="ct-card-val ct-card-val--stack">
-                {CONTACT.phones.booking.map((phone) => (
-                  <a key={phone.tel} href={telUrl(phone.tel)}>
-                    {phone.display}
-                  </a>
-                ))}
-              </div>
-              <div className="ct-card-sub">Available {CONTACT.hours}</div>
-            </div>
-          </div>
-
-          <div className="ct-card">
-            <div className="ct-card-ico">
-              <i className="fa-solid fa-headset" aria-hidden />
-            </div>
-            <div>
-              <div className="ct-card-label">Support</div>
-              <div className="ct-card-val">
-                <a href={telUrl(CONTACT.phones.support.tel)}>{CONTACT.phones.support.display}</a>
-              </div>
-              <div className="ct-card-sub">On-trip help &amp; post-booking queries</div>
-            </div>
-          </div>
-
-          <div className="ct-card">
-            <div className="ct-card-ico">
-              <i className="fa-solid fa-envelope-open-text" aria-hidden />
-            </div>
-            <div>
-              <div className="ct-card-label">Email Us</div>
-              <div className="ct-card-val ct-card-val--stack">
-                <a href={mailtoUrl('Enquiry from Indian Treks website', undefined, CONTACT.emails.primary)}>
-                  {CONTACT.emails.primary}
+      {/* CONTACT CARDS + CONNECT BANNER + TRUST STRIP */}
+      <div className="ct-wrap ct-wrap--cards">
+        <div className="ct-cards-grid">
+          <article className="ct-info-card ct-info-card--sketch-peaks">
+            <header className="ct-info-card__head">
+              <span className="ct-info-card__ico ct-info-card__ico--green">
+                <i className="fa-solid fa-phone" aria-hidden />
+              </span>
+              <span className="ct-info-card__label">Booking</span>
+            </header>
+            <div className="ct-info-card__body">
+              {CONTACT.phones.booking.map((phone) => (
+                <a key={phone.tel} href={telUrl(phone.tel)} className="ct-info-card__link">
+                  {phone.display}
                 </a>
-                <a href={mailtoUrl(undefined, undefined, CONTACT.emails.vivek)}>
-                  {CONTACT.emails.vivek}
-                </a>
-                <a href={mailtoUrl(undefined, undefined, CONTACT.emails.explore)}>
-                  {CONTACT.emails.explore}
-                </a>
-              </div>
-              <div className="ct-card-sub">{CONTACT.replySla}</div>
+              ))}
             </div>
-          </div>
+            <footer className="ct-info-card__foot">
+              <i className="fa-regular fa-clock" aria-hidden />
+              Available {CONTACT.hours}
+            </footer>
+          </article>
 
-          {CONTACT.offices.map((office) => (
-            <div key={office.id} className="ct-card">
-              <div className="ct-card-ico">
-                <i className="fa-solid fa-map-pin" aria-hidden />
-              </div>
-              <div>
-                <div className="ct-card-label">{office.label}</div>
-                <div className="ct-card-val">{office.line1}</div>
-                <div className="ct-card-sub">{office.line2}</div>
-              </div>
+          <article className="ct-info-card ct-info-card--sketch-peaks">
+            <header className="ct-info-card__head">
+              <span className="ct-info-card__ico ct-info-card__ico--amber">
+                <i className="fa-solid fa-headset" aria-hidden />
+              </span>
+              <span className="ct-info-card__label ct-info-card__label--amber">Support</span>
+            </header>
+            <div className="ct-info-card__body">
+              <a href={telUrl(CONTACT.phones.support.tel)} className="ct-info-card__link">
+                {CONTACT.phones.support.display}
+              </a>
+              <p className="ct-info-card__hint">On-trip help &amp; post-booking queries</p>
+            </div>
+          </article>
+
+          <article className="ct-info-card ct-info-card--sketch-peaks">
+            <header className="ct-info-card__head">
+              <span className="ct-info-card__ico ct-info-card__ico--green">
+                <i className="fa-solid fa-envelope-open-text" aria-hidden />
+              </span>
+              <span className="ct-info-card__label">Email Us</span>
+            </header>
+            <div className="ct-info-card__body">
+              <a
+                href={mailtoUrl('Enquiry from Indian Treks website', undefined, CONTACT.emails.primary)}
+                className="ct-info-card__link"
+              >
+                {CONTACT.emails.primary}
+              </a>
+              <a href={mailtoUrl(undefined, undefined, CONTACT.emails.vivek)} className="ct-info-card__link">
+                {CONTACT.emails.vivek}
+              </a>
+              <a href={mailtoUrl(undefined, undefined, CONTACT.emails.explore)} className="ct-info-card__link">
+                {CONTACT.emails.explore}
+              </a>
+            </div>
+            <footer className="ct-info-card__foot">
+              <i className="fa-solid fa-shield-halved" aria-hidden />
+              {CONTACT.replySla}
+            </footer>
+          </article>
+
+          <article className="ct-info-card ct-info-card--sketch-dehradun">
+            <header className="ct-info-card__head">
+              <span className="ct-info-card__ico ct-info-card__ico--green">
+                <i className="fa-solid fa-location-dot" aria-hidden />
+              </span>
+              <span className="ct-info-card__label">{CONTACT.offices[0].label}</span>
+            </header>
+            <div className="ct-info-card__body">
+              <p className="ct-info-card__addr">{CONTACT.offices[0].line1}</p>
+              <p className="ct-info-card__addr">{CONTACT.offices[0].line2}</p>
+            </div>
+          </article>
+
+          <article className="ct-info-card ct-info-card--sketch-bridge">
+            <header className="ct-info-card__head">
+              <span className="ct-info-card__ico ct-info-card__ico--green">
+                <i className="fa-solid fa-location-dot" aria-hidden />
+              </span>
+              <span className="ct-info-card__label">{CONTACT.offices[1].label}</span>
+            </header>
+            <div className="ct-info-card__body">
+              <p className="ct-info-card__addr">{CONTACT.offices[1].line1}</p>
+              <p className="ct-info-card__addr">{CONTACT.offices[1].line2}</p>
+            </div>
+          </article>
+
+          <article className="ct-info-card ct-info-card--sketch-clock">
+            <header className="ct-info-card__head">
+              <span className="ct-info-card__ico ct-info-card__ico--green">
+                <i className="fa-regular fa-clock" aria-hidden />
+              </span>
+              <span className="ct-info-card__label">Working Hours</span>
+            </header>
+            <div className="ct-info-card__body">
+              <p className="ct-info-card__hours">{CONTACT.hoursShort}</p>
+              <p className="ct-info-card__addr">{CONTACT.hoursDetail}</p>
+            </div>
+            <footer className="ct-info-card__foot ct-info-card__foot--quote">
+              <i className="fa-regular fa-sun" aria-hidden />
+              Let&apos;s make your next journey unforgettable.
+            </footer>
+          </article>
+
+          <article className="ct-connect-card">
+            <Image
+              src={CT_CONNECT_IMAGE}
+              alt=""
+              fill
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className="ct-connect-card__img"
+            />
+            <div className="ct-connect-card__overlay" aria-hidden="true" />
+            <div className="ct-connect-card__copy">
+              <h2>We&apos;re Here to Help</h2>
+              <p>
+                Have questions or need a custom plan? Reach out anytime — our team is just a call or
+                email away.
+              </p>
+              <button type="button" className="ct-connect-card__btn" onClick={() => goToForm('general')}>
+                <i className="fa-solid fa-arrow-right" aria-hidden />
+                Let&apos;s Connect
+              </button>
+            </div>
+          </article>
+        </div>
+
+        <div className="ct-trust-strip" aria-label="Why travellers choose us">
+          {CONTACT_TRUST_PILLARS.map((item) => (
+            <div key={item.title} className="ct-trust-strip__item">
+              <span className="ct-trust-strip__ico">
+                <i className={`fa-solid ${item.icon}`} aria-hidden />
+              </span>
+              <span className="ct-trust-strip__copy">
+                <strong>{item.title}</strong>
+                <span>{item.sub}</span>
+              </span>
             </div>
           ))}
-
-          <div className="ct-card">
-            <div className="ct-card-ico">
-              <i className="fa-regular fa-clock" aria-hidden />
-            </div>
-            <div>
-              <div className="ct-card-label">Working Hours</div>
-              <div className="ct-card-val">{CONTACT.hoursShort}</div>
-              <div className="ct-card-sub">{CONTACT.hoursDetail}</div>
-            </div>
-          </div>
         </div>
       </div>
 
