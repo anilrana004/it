@@ -285,15 +285,69 @@ export type CuratedSection = {
   filter?: (t: ListingTrek) => boolean;
 };
 
+/** Featured autumn treks — editorial pick for Sep–Nov departures. */
+export const AUTUMN_TOP_TREK_IDS = [
+  'har-ki-dun',
+  'phulara-ridge',
+  'chopta-tungnath',
+  'bali-pass',
+  'roopkund',
+  'hampta-pass',
+  'gulabi-kantha',
+  'gaumukh-tapovan',
+  'nag-tibba',
+  'ali-bedni-bugyal',
+] as const;
+
+/** Per-month display order — varied so each autumn month feels fresh in filters. */
+export const AUTUMN_MONTH_ORDERS: Record<number, readonly string[]> = {
+  8: [
+    'nag-tibba',
+    'har-ki-dun',
+    'phulara-ridge',
+    'chopta-tungnath',
+    'gulabi-kantha',
+    'ali-bedni-bugyal',
+    'hampta-pass',
+    'roopkund',
+    'bali-pass',
+    'gaumukh-tapovan',
+  ],
+  9: [
+    'hampta-pass',
+    'roopkund',
+    'bali-pass',
+    'gaumukh-tapovan',
+    'phulara-ridge',
+    'har-ki-dun',
+    'chopta-tungnath',
+    'ali-bedni-bugyal',
+    'gulabi-kantha',
+    'nag-tibba',
+  ],
+  10: [
+    'gulabi-kantha',
+    'ali-bedni-bugyal',
+    'har-ki-dun',
+    'phulara-ridge',
+    'chopta-tungnath',
+    'nag-tibba',
+    'bali-pass',
+    'gaumukh-tapovan',
+    'hampta-pass',
+    'roopkund',
+  ],
+};
+
 /** Editorial sections inspired by Indiahikes upcoming-treks — Indian Treks content. */
 export const CURATED_SECTIONS: CuratedSection[] = [
   {
     id: 'autumn',
     title: 'Top Treks in September, October & November',
     info:
-      'Autumn is one of the most loved trekking seasons in the Indian Himalayas — clear skies, crisp air, and dust-free trails. Book early for Hampta Pass, Valley of Flowers shoulder batches, and classic Uttarakhand trails.',
+      'Autumn is one of the most loved trekking seasons in the Indian Himalayas — clear skies, crisp air, and dust-free trails. Har Ki Dun, Phulara Ridge, Chopta–Chandrashila, Bali Pass, Roopkund, Hampta Pass, Gulabi Kantha, Gaumukh–Tapovan, Nag Tibba, and Ali–Bedni Bugyal are our top picks for Sep–Nov.',
     href: '/treks?season=autumn',
-    filter: (t) => t.seasons.includes('autumn') || t.openMonths.some((m) => [8, 9, 10].includes(m)),
+    trekIds: [...AUTUMN_TOP_TREK_IDS],
   },
   {
     id: 'beginners',
@@ -344,16 +398,39 @@ export const CURATED_SECTIONS: CuratedSection[] = [
   },
 ];
 
-export function resolveCuratedTreks(section: CuratedSection, all: ListingTrek[], limit = 8) {
+export function resolveCuratedTreks(
+  section: CuratedSection,
+  all: ListingTrek[],
+  options?: { limit?: number; month?: number | null },
+) {
+  const limit = options?.limit ?? 8;
+  const month = options?.month ?? null;
+
   let list: ListingTrek[];
-  if (section.trekIds?.length) {
+  let preserveOrder = false;
+
+  if (section.id === 'autumn') {
+    const order =
+      month !== null && AUTUMN_MONTH_ORDERS[month]
+        ? AUTUMN_MONTH_ORDERS[month]
+        : AUTUMN_TOP_TREK_IDS;
+    const map = new Map(all.map((t) => [t.id, t]));
+    list = order.map((id) => map.get(id)).filter(Boolean) as ListingTrek[];
+    preserveOrder = true;
+  } else if (section.trekIds?.length) {
     const map = new Map(all.map((t) => [t.id, t]));
     list = section.trekIds.map((id) => map.get(id)).filter(Boolean) as ListingTrek[];
+    preserveOrder = true;
   } else if (section.filter) {
     list = all.filter(section.filter);
   } else {
     list = all;
   }
+
+  if (preserveOrder) {
+    return list.slice(0, limit);
+  }
+
   return list
     .slice()
     .sort((a, b) => Number(b.rating) - Number(a.rating))

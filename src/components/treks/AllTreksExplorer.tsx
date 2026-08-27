@@ -301,9 +301,12 @@ export default function AllTreksExplorer({
     () =>
       CURATED_SECTIONS.map((section) => ({
         section,
-        treks: resolveCuratedTreks(section, filtered, 8),
+        treks: resolveCuratedTreks(section, filtered, {
+          limit: section.id === 'autumn' ? 10 : 8,
+          month: filters.month,
+        }),
       })).filter((b) => b.treks.length > 0),
-    [filtered],
+    [filtered, filters.month],
   );
 
   const filterPanel = (
