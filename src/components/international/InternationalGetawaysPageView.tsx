@@ -1,18 +1,14 @@
 'use client';
 
 import { useEffect, useState, type CSSProperties } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import {
-  ArrowDown,
   ArrowRight,
   Check,
   Globe,
   MapPin,
-  MessageCircle,
 } from 'lucide-react';
 import { DESK_HEADER_H, MOBILE_HEADER_H } from '@/lib/layout';
-import { photos } from '@/lib/media';
 import { whatsappUrl } from '@/lib/contact';
 import {
   internationalDiscoveryOptions,
@@ -28,6 +24,7 @@ import {
 } from '@/lib/landing-social-content';
 import LandingReviewsBlog from '@/components/landing/LandingReviewsBlog';
 import LandingTripCard from '@/components/landing/LandingTripCard';
+import InternationalHero, { internationalSearchTripId } from '@/components/international/InternationalHero';
 import './international-getaways.css';
 
 function scrollToId(id: string) {
@@ -113,48 +110,28 @@ export default function InternationalGetawaysPageView() {
     '--bp-mob-top': stickyTopMobile,
   } as CSSProperties;
 
+  const handleHeroSearch = ({
+    trek,
+    when,
+    who,
+  }: {
+    trek: string;
+    when: string;
+    who: string;
+  }) => {
+    const tripId = internationalSearchTripId(trek);
+    if (tripId) scrollToId(tripId);
+    else scrollToId('international-treks');
+    void when;
+    void who;
+  };
+
   return (
     <div className="it-ig" style={pageVars}>
-      <section className="it-ig__hero">
-        <div className="it-ig__hero-media">
-          <Image
-            src={photos.ebc}
-            alt=""
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover"
-          />
-        </div>
-        <div className="it-ig__hero-overlay" />
-        <div className="it-ig__hero-inner">
-          <p className="it-ig__eyebrow">International Treks · Nepal</p>
-          <h1>International Getaways</h1>
-          <p className="it-ig__lead">
-            Legendary Himalayan trails beyond the border — Everest Base Camp, Annapurna Base Camp
-            and the Annapurna Circuit, planned from India with permits, lodges and trusted leaders.
-          </p>
-          <div className="it-ig__hero-actions">
-            <button
-              type="button"
-              className="it-ig__btn it-ig__btn--primary"
-              onClick={() => scrollToId('international-treks')}
-            >
-              Explore Treks
-              <ArrowDown className="h-4 w-4" aria-hidden />
-            </button>
-            <a
-              className="it-ig__btn it-ig__btn--ghost"
-              href={whatsappUrl('Hi Indian Treks! I want to know more about international treks in Nepal.')}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <MessageCircle className="h-4 w-4" aria-hidden />
-              WhatsApp us
-            </a>
-          </div>
-        </div>
-      </section>
+      <InternationalHero
+        onBrowse={() => scrollToId('international-treks')}
+        onSearch={handleHeroSearch}
+      />
 
       <div id="ig-sticky-sentinel" className="it-ig__sticky-sentinel" aria-hidden />
       <nav

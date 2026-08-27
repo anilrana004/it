@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import type { PrepGuide, PrepSection } from '@/lib/prep-guides-content';
+import PrepPremiumHero from '@/components/prep/PrepPremiumHero';
 import PrepTocNav from '@/components/prep/PrepTocNav';
 import './prep-guides.css';
 
@@ -142,31 +143,35 @@ function GuideSections({ sections }: { sections: PrepSection[] }) {
 export default function PrepGuidePageView({ guide }: { guide: PrepGuide }) {
   return (
     <article className="it-prep">
-      <header className="it-prep__hero">
-        <div className="it-prep__hero-media" aria-hidden>
-          <img src={guide.heroImage} alt="" referrerPolicy="no-referrer" />
-          <div className="it-prep__hero-shade" />
-        </div>
-        <div className="it-prep__hero-inner">
-          <p className="it-prep__brand">Indian Treks</p>
-          <p className="it-prep__eyebrow">
-            <i className={`fa-solid ${guide.icon}`} aria-hidden />
-            {guide.eyebrow}
-          </p>
-          <h1 className="it-prep__title">{guide.title}</h1>
-          <p className="it-prep__lead">{guide.lead}</p>
-          <div className="it-prep__meta">
-            <span className="it-prep__meta-chip">
-              <i className="fa-regular fa-clock" aria-hidden />
-              {guide.readTime}
-            </span>
-            <span className="it-prep__meta-chip">
-              <i className="fa-solid fa-book-open" aria-hidden />
-              Field-tested guidance
-            </span>
+      {guide.premiumHero ? (
+        <PrepPremiumHero guide={guide} />
+      ) : (
+        <header className="it-prep__hero">
+          <div className="it-prep__hero-media" aria-hidden>
+            <img src={guide.heroImage} alt="" referrerPolicy="no-referrer" />
+            <div className="it-prep__hero-shade" />
           </div>
-        </div>
-      </header>
+          <div className="it-prep__hero-inner">
+            <p className="it-prep__brand">Indian Treks</p>
+            <p className="it-prep__eyebrow">
+              <i className={`fa-solid ${guide.icon}`} aria-hidden />
+              {guide.eyebrow}
+            </p>
+            <h1 className="it-prep__title">{guide.title}</h1>
+            <p className="it-prep__lead">{guide.lead}</p>
+            <div className="it-prep__meta">
+              <span className="it-prep__meta-chip">
+                <i className="fa-regular fa-clock" aria-hidden />
+                {guide.readTime}
+              </span>
+              <span className="it-prep__meta-chip">
+                <i className="fa-solid fa-book-open" aria-hidden />
+                Field-tested guidance
+              </span>
+            </div>
+          </div>
+        </header>
+      )}
 
       <div className="it-prep__wrap it-prep__wrap--solo">
         <PrepTocNav
@@ -177,14 +182,16 @@ export default function PrepGuidePageView({ guide }: { guide: PrepGuide }) {
         />
 
         <div>
-          <div className="it-prep__highlights" aria-label="Guide highlights">
-            {guide.highlights.map((h) => (
-              <div key={h.label} className="it-prep__highlight">
-                <span className="it-prep__highlight-label">{h.label}</span>
-                <span className="it-prep__highlight-value">{h.value}</span>
-              </div>
-            ))}
-          </div>
+          {!guide.premiumHero ? (
+            <div className="it-prep__highlights" aria-label="Guide highlights">
+              {guide.highlights.map((h) => (
+                <div key={h.label} className="it-prep__highlight">
+                  <span className="it-prep__highlight-label">{h.label}</span>
+                  <span className="it-prep__highlight-value">{h.value}</span>
+                </div>
+              ))}
+            </div>
+          ) : null}
 
           <GuideSections sections={guide.sections} />
 

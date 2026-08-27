@@ -12,11 +12,8 @@ import {
   Send,
 } from 'lucide-react';
 import BrandLogo from '@/components/BrandLogo';
+import { CONTACT, SOCIAL_LINKS, telUrl, whatsappUrl, mailtoUrl } from '@/lib/contact';
 import './footer.css';
-
-const WA_URL =
-  'https://wa.me/919797972175?text=' +
-  encodeURIComponent("Hi Indian Treks! I'm interested in a trek.");
 
 const trustItems = [
   {
@@ -55,9 +52,14 @@ const companyLinks = [
 ];
 
 const exploreLinks = [
-  { label: 'Upcoming Treks', href: '/treks' },
-  { label: 'Weekend Treks', href: '/weekend-trips' },
+  { label: 'Himalayan Treks', href: '/treks' },
+  { label: 'Best Sellers', href: '/best-sellers' },
+  { label: 'Weekend Trips', href: '/weekend-trips' },
   { label: 'Snow Treks', href: '/treks/kedarkantha' },
+  { label: 'Sacred Yatras', href: '/yatra' },
+  { label: 'Domestic Tours', href: '/domestic-tours' },
+  { label: 'International Getaways', href: '/international-getaways' },
+  { label: 'Beginner-Friendly Treks', href: '/beginner-friendly-treks' },
   { label: 'Group Trips', href: '/group-trips' },
   { label: 'Backpacking Trips', href: '/backpacking' },
   { label: 'Biking Trips', href: '/biking' },
@@ -74,11 +76,49 @@ function WhatsAppIcon({ className }: { className?: string }) {
   );
 }
 
+function SocialIcon({ id }: { id: (typeof SOCIAL_LINKS)[number]['id'] }) {
+  if (id === 'instagram') {
+    return (
+      <svg viewBox="0 0 24 24" aria-hidden>
+        <path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 01-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 017.8 2m-.2 2A3.6 3.6 0 004 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 003.6-3.6V7.6C20 5.61 18.39 4 16.4 4H7.6m9.65 1.5a1.25 1.25 0 110 2.5 1.25 1.25 0 010-2.5M12 7a5 5 0 110 10 5 5 0 010-10m0 2a3 3 0 100 6 3 3 0 000-6z" />
+      </svg>
+    );
+  }
+  if (id === 'facebook') {
+    return (
+      <svg viewBox="0 0 24 24" aria-hidden>
+        <path d="M14 13.5h2.5l1-4H14v-2c0-1.03 0-2 2-2h1.5V2.14c-.326-.043-1.557-.14-2.857-.14C11.928 2 10 3.657 10 6.7v2.8H7v4h3V22h4v-8.5z" />
+      </svg>
+    );
+  }
+  if (id === 'youtube') {
+    return (
+      <svg viewBox="0 0 24 24" aria-hidden>
+        <path d="M10 15l5.19-3L10 9v6m11.56-7.83c.13.47.22 1.1.28 1.9.07.8.1 1.49.1 2.09L22 12c0 2.19-.16 3.8-.44 4.83-.25.9-.83 1.48-1.73 1.73-.47.13-1.33.22-2.65.28-1.3.07-2.49.1-3.59.1L12 19c-4.19 0-6.8-.16-7.83-.44-.9-.25-1.48-.83-1.73-1.73-.13-.47-.22-1.1-.28-1.9-.07-.8-.1-1.49-.1-2.09L2 12c0-2.19.16-3.8.44-4.83.25-.9.83-1.48 1.73-1.73.47-.13 1.33-.22 2.65-.28 1.3-.07 2.49-.1 3.59-.1L12 5c4.19 0 6.8.16 7.83.44.9.25 1.48.83 1.73 1.73z" />
+      </svg>
+    );
+  }
+  if (id === 'linkedin') {
+    return (
+      <svg viewBox="0 0 24 24" aria-hidden>
+        <path d="M6.94 5a2 2 0 11-4-.002 2 2 0 014 .002zM7 8.48H3V21h4V8.48zm6.32 0H9.34V21h3.94v-6.57c0-3.66 4.77-4 4.77 0V21H22v-7.93c0-6.17-7.06-5.94-8.72-2.91l.04-1.68z" />
+      </svg>
+    );
+  }
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden>
+      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1.5 15.5h-3v-6h3v6zm0-7h-3V7h3v3.5z" />
+    </svg>
+  );
+}
+
 function FraudLight() {
   return <span className="rhf-fraud-light" aria-hidden />;
 }
 
 export default function Footer() {
+  const waPrimary = whatsappUrl("Hi Indian Treks! I'm interested in a trek.");
+
   return (
     <footer className="rhf-footer pb-[62px] lg:pb-0">
       <div className="rhf-wrap">
@@ -125,7 +165,7 @@ export default function Footer() {
               </span>
             </div>
             <div className="rhf-btn-row">
-              <a className="rhf-btn rhf-btn-primary" href={WA_URL} target="_blank" rel="noopener noreferrer">
+              <a className="rhf-btn rhf-btn-primary" href={waPrimary} target="_blank" rel="noopener noreferrer">
                 <WhatsAppIcon /> Plan Your Trek
               </a>
               <Link className="rhf-btn rhf-btn-light" href="/contact">
@@ -169,32 +209,57 @@ export default function Footer() {
           <div className="rhf-card">
             <h4 className="rhf-title">Get in Touch</h4>
             <div className="rhf-contact-list">
+              {CONTACT.offices.map((office) => (
+                <div key={office.id} className="rhf-contact-item">
+                  <div className="rhf-contact-icon">
+                    <MapPin strokeWidth={2.2} />
+                  </div>
+                  <div className="rhf-contact-content">
+                    <strong>{office.label}</strong>
+                    {office.line1}, {office.line2}
+                  </div>
+                </div>
+              ))}
+
               <div className="rhf-contact-item">
                 <div className="rhf-contact-icon">
-                  <MapPin strokeWidth={2.2} />
+                  <Phone strokeWidth={2.2} />
                 </div>
                 <div className="rhf-contact-content">
-                  <strong>Office Address</strong>
-                  B-42, 2nd Floor, Tower- B, The Corenthum, Block A, Sector 62, Noida, Uttar Pradesh
-                  201301
+                  <strong>Booking</strong>
+                  {CONTACT.phones.booking.map((phone) => (
+                    <a key={phone.tel} href={telUrl(phone.tel)}>
+                      {phone.display}
+                    </a>
+                  ))}
                 </div>
               </div>
+
+              <div className="rhf-contact-item">
+                <div className="rhf-contact-icon">
+                  <Phone strokeWidth={2.2} />
+                </div>
+                <div className="rhf-contact-content">
+                  <strong>Support</strong>
+                  <a href={telUrl(CONTACT.phones.support.tel)}>{CONTACT.phones.support.display}</a>
+                </div>
+              </div>
+
               <div className="rhf-contact-item">
                 <div className="rhf-contact-icon">
                   <Mail strokeWidth={2.2} />
                 </div>
                 <div className="rhf-contact-content">
                   <strong>Email</strong>
-                  <a href="mailto:contact@indiantreks.com">contact@indiantreks.com</a>
-                </div>
-              </div>
-              <div className="rhf-contact-item">
-                <div className="rhf-contact-icon">
-                  <Phone strokeWidth={2.2} />
-                </div>
-                <div className="rhf-contact-content">
-                  <strong>Call Us</strong>
-                  <a href="tel:+919797972175">+91-9797 972 175</a>
+                  <a href={mailtoUrl(undefined, undefined, CONTACT.emails.primary)}>
+                    {CONTACT.emails.primary}
+                  </a>
+                  <a href={mailtoUrl(undefined, undefined, CONTACT.emails.vivek)}>
+                    {CONTACT.emails.vivek}
+                  </a>
+                  <a href={mailtoUrl(undefined, undefined, CONTACT.emails.explore)}>
+                    {CONTACT.emails.explore}
+                  </a>
                 </div>
               </div>
             </div>
@@ -234,53 +299,21 @@ export default function Footer() {
           <div className="rhf-bottom-card">
             <h5 className="rhf-subtitle">Connect With Us</h5>
             <div className="rhf-socials">
-              <a
-                className="rhf-ig"
-                href="https://www.instagram.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Instagram"
-              >
-                <svg viewBox="0 0 24 24" aria-hidden>
-                  <path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 01-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 017.8 2m-.2 2A3.6 3.6 0 004 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 003.6-3.6V7.6C20 5.61 18.39 4 16.4 4H7.6m9.65 1.5a1.25 1.25 0 110 2.5 1.25 1.25 0 010-2.5M12 7a5 5 0 110 10 5 5 0 010-10m0 2a3 3 0 100 6 3 3 0 000-6z" />
-                </svg>
-              </a>
-              <a
-                className="rhf-fb"
-                href="https://www.facebook.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Facebook"
-              >
-                <svg viewBox="0 0 24 24" aria-hidden>
-                  <path d="M14 13.5h2.5l1-4H14v-2c0-1.03 0-2 2-2h1.5V2.14c-.326-.043-1.557-.14-2.857-.14C11.928 2 10 3.657 10 6.7v2.8H7v4h3V22h4v-8.5z" />
-                </svg>
-              </a>
-              <a
-                className="rhf-yt"
-                href="https://www.youtube.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="YouTube"
-              >
-                <svg viewBox="0 0 24 24" aria-hidden>
-                  <path d="M10 15l5.19-3L10 9v6m11.56-7.83c.13.47.22 1.1.28 1.9.07.8.1 1.49.1 2.09L22 12c0 2.19-.16 3.8-.44 4.83-.25.9-.83 1.48-1.73 1.73-.47.13-1.33.22-2.65.28-1.3.07-2.49.1-3.59.1L12 19c-4.19 0-6.8-.16-7.83-.44-.9-.25-1.48-.83-1.73-1.73-.13-.47-.22-1.1-.28-1.9-.07-.8-.1-1.49-.1-2.09L2 12c0-2.19.16-3.8.44-4.83.25-.9.83-1.48 1.73-1.73.47-.13 1.33-.22 2.65-.28 1.3-.07 2.49-.1 3.59-.1L12 5c4.19 0 6.8.16 7.83.44.9.25 1.48.83 1.73 1.73z" />
-                </svg>
-              </a>
-              <a
-                className="rhf-li"
-                href="https://www.linkedin.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="LinkedIn"
-              >
-                <svg viewBox="0 0 24 24" aria-hidden>
-                  <path d="M6.94 5a2 2 0 11-4-.002 2 2 0 014 .002zM7 8.48H3V21h4V8.48zm6.32 0H9.34V21h3.94v-6.57c0-3.66 4.77-4 4.77 0V21H22v-7.93c0-6.17-7.06-5.94-8.72-2.91l.04-1.68z" />
-                </svg>
-              </a>
+              {SOCIAL_LINKS.map((link) => (
+                <a
+                  key={link.id}
+                  className={`rhf-${link.id === 'youtube' ? 'yt' : link.id === 'linkedin' ? 'li' : link.id === 'facebook' ? 'fb' : link.id === 'quora' ? 'quora' : 'ig'}`}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={link.label}
+                >
+                  <SocialIcon id={link.id} />
+                </a>
+              ))}
               <a
                 className="rhf-wa"
-                href={WA_URL}
+                href={CONTACT.whatsapp.business.url}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="WhatsApp"

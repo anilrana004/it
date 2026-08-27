@@ -16,6 +16,7 @@ import {
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
 import TrekInfoCard from '@/components/treks/TrekInfoCard';
+import CorporatePremiumHero from '@/components/corporate/CorporatePremiumHero';
 import { CONTACT, mailtoUrl, telUrl, whatsappUrl } from '@/lib/contact';
 import type { LpLandingContent } from '@/lib/corporate/learning-program-types';
 import { getTrekById } from '@/lib/data';
@@ -106,41 +107,71 @@ export default function LearningProgramLandingView({
 
   return (
     <div className="it-corp">
-      <section className="it-corp__hero">
-        <div className="it-corp__hero-media" aria-hidden>
-          <Image src={content.hero.image} alt="" fill priority sizes="100vw" />
-        </div>
-        <div className="it-corp__hero-shade" />
-        <div className="it-corp__hero-inner">
-          <p className="it-corp__eyebrow">{content.hero.eyebrow}</p>
-          <h1>{content.hero.title}</h1>
-          <p className="it-corp__hero-lead">{content.hero.lead}</p>
-          <div className="it-corp__hero-actions">
-            {content.hero.youtubeId ? (
-              <button
-                type="button"
-                className="it-corp__btn it-corp__btn--ghost"
-                onClick={() => setShowVideo(true)}
-              >
-                <i className="fa-solid fa-play" aria-hidden />
-                {content.hero.secondaryCta || 'Play video'}
-              </button>
-            ) : content.hero.secondaryCta ? (
-              <a className="it-corp__btn it-corp__btn--ghost" href="#programmes">
-                {content.hero.secondaryCta}
-              </a>
-            ) : null}
-            <a
-              className="it-corp__btn it-corp__btn--primary"
-              href={whatsappUrl(content.hero.primaryWhatsapp)}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {content.hero.primaryCta}
-            </a>
+      {content.premiumHero ? (
+        <CorporatePremiumHero
+          image={content.hero.image}
+          hero={content.premiumHero}
+          primaryCta={content.hero.primaryCta}
+          primaryWhatsapp={content.hero.primaryWhatsapp}
+          primaryHref={content.variant === 'gift' ? '#gift-purchase' : undefined}
+          onPlayVideo={
+            content.hero.youtubeId ? () => setShowVideo(true) : undefined
+          }
+          secondaryCta={content.hero.secondaryCta}
+          secondaryHref={
+            content.variant === 'gift'
+              ? '#programmes'
+              : content.hero.secondaryCta && !content.hero.youtubeId
+                ? '#programmes'
+                : undefined
+          }
+          panelLabel={
+            content.variant === 'campus'
+              ? 'Ambassador benefits'
+              : content.variant === 'school'
+                ? 'School program benefits'
+                : content.variant === 'gift'
+                  ? 'Gift card benefits'
+                  : 'Program benefits'
+          }
+        />
+      ) : (
+        <section className="it-corp__hero">
+          <div className="it-corp__hero-media" aria-hidden>
+            <Image src={content.hero.image} alt="" fill priority sizes="100vw" />
           </div>
-        </div>
-      </section>
+          <div className="it-corp__hero-shade" />
+          <div className="it-corp__hero-inner">
+            <p className="it-corp__eyebrow">{content.hero.eyebrow}</p>
+            <h1>{content.hero.title}</h1>
+            <p className="it-corp__hero-lead">{content.hero.lead}</p>
+            <div className="it-corp__hero-actions">
+              {content.hero.youtubeId ? (
+                <button
+                  type="button"
+                  className="it-corp__btn it-corp__btn--ghost"
+                  onClick={() => setShowVideo(true)}
+                >
+                  <i className="fa-solid fa-play" aria-hidden />
+                  {content.hero.secondaryCta || 'Play video'}
+                </button>
+              ) : content.hero.secondaryCta ? (
+                <a className="it-corp__btn it-corp__btn--ghost" href="#programmes">
+                  {content.hero.secondaryCta}
+                </a>
+              ) : null}
+              <a
+                className="it-corp__btn it-corp__btn--primary"
+                href={whatsappUrl(content.hero.primaryWhatsapp)}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {content.hero.primaryCta}
+              </a>
+            </div>
+          </div>
+        </section>
+      )}
 
       {showVideo && content.hero.youtubeId ? (
         <section className="it-corp__section it-corp__section--soft">

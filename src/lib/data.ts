@@ -482,7 +482,7 @@ const baseTreks: Trek[] = [
     days: 4,
     maxAltitude: "12,073 ft",
     difficulty: "Easy to Moderate",
-    bestSeason: "March - June, September - November",
+    bestSeason: "March - June, September - December",
     distance: "20 km",
     rating: "4.7",
     reviewCount: "7k+",

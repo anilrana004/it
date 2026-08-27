@@ -11,6 +11,51 @@ import { photos } from '@/lib/media';
 
 export const womenOnlyLanding: SplLandingContent = {
   programId: 'women-only',
+  premiumHero: {
+    badge: 'Special programmes',
+    titleMain: 'Special Treks for',
+    titleAccent: 'Women',
+    tagline: {
+      before: 'Travel freely. Trek ',
+      highlight: 'confidently',
+      after: '. Belong completely.',
+    },
+    lead: 'Women-focused Himalayan departures designed for safety, sisterhood, and the quiet confidence that comes from walking with a supportive all-women group.',
+    trustLine: 'Trusted by 50,000+ women across India',
+    avatars: [
+      'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&auto=format&fit=crop&w=80&h=80&q=80',
+      'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=80&h=80&q=80',
+      'https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&auto=format&fit=crop&w=80&h=80&q=80',
+      'https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&auto=format&fit=crop&w=80&h=80&q=80',
+    ],
+    pathTagline: 'Stronger together, higher forever.',
+    panelKicker: 'Built for comfort & trust',
+    panel: [
+      {
+        title: 'Women-friendly camp & briefing protocols',
+        sub: 'Thoughtfully planned camps with privacy, comfort & care',
+      },
+      {
+        title: 'Experienced leaders with safety-first culture',
+        sub: 'Trained, certified & empathetic leaders who prioritize your safety',
+      },
+      {
+        title: 'A group that feels supportive from day one',
+        sub: 'Like-minded women. Shared stories. Lifelong connections.',
+      },
+      {
+        title: 'Clear protocols, thoughtful pacing & constant support',
+        sub: 'From start to summit — we’ve got your back',
+      },
+    ],
+    panelPromise: 'Safe. Supported. Stronger together. That’s the Indian Treks promise.',
+    features: [
+      { title: 'Handpicked Treks', sub: 'Scenic, safe & suitable for all fitness levels' },
+      { title: 'Safety First', sub: '24/7 support, medical backup & certified guides' },
+      { title: 'Women-Led Experiences', sub: 'Curated by women, for women. Every detail matters.' },
+      { title: 'Responsible Travel', sub: 'Eco-conscious treks that give back to the mountains' },
+    ],
+  },
   hero: {
     titleBefore: 'Special Treks',
     titleEm: 'for Women',

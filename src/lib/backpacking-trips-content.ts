@@ -1,4 +1,5 @@
 import { photos } from '@/lib/media';
+import type { GroupJourneyPremiumHeroConfig } from '@/lib/group-journey-hero-types';
 
 export type BackpackingRegionId =
   | 'uttarakhand'
@@ -216,9 +217,37 @@ export const backpackingDiscoveryOptions = [
 ] as const;
 
 export const backpackingStickyNav = [
-  { id: 'explore-regions', label: 'Backpacking' },
-  ...backpackingRegions.map((r) => ({ id: r.id, label: r.shortName })),
+  { id: 'explore-regions', label: 'Backpacking', icon: 'mountain' as const },
+  ...backpackingRegions.map((r) => ({
+    id: r.id,
+    label: r.shortName,
+    icon: 'mountain' as const,
+  })),
 ] as const;
+
+export type BackpackingPremiumFeature = {
+  title: string;
+  sub: string;
+};
+
+export const backpackingPremiumHero = {
+  badgePrimary: 'Group journeys',
+  badgeSecondary: 'Flexible routes',
+  titleLine1: 'Backpacking',
+  titleLine2: 'Trips',
+  leadBefore: 'Travel beyond the usual tourist routes. Explore India through ',
+  leadHighlight: 'flexible, social and experience-focused',
+  leadAfter: ' backpacking journeys.',
+  primaryCtaLabel: 'Explore Trips',
+  primaryCtaTargetId: 'explore-regions',
+  whatsappMsg: 'Hi Indian Treks! I want to know more about backpacking trips.',
+  features: [
+    { title: 'Small Groups', sub: 'Better connections, richer experiences' },
+    { title: 'Flexible Routes', sub: 'Choose your path, travel your way' },
+    { title: 'Experience First', sub: 'Real culture, real stories, real you' },
+    { title: 'Safe & Trusted', sub: 'Verified stays, trusted partners' },
+  ] as const satisfies GroupJourneyPremiumHeroConfig['features'],
+} satisfies GroupJourneyPremiumHeroConfig;
 
 export function tripsForRegion(regionId: BackpackingRegionId): BackpackingTrip[] {
   return backpackingTrips.filter((t) => t.regionId === regionId);

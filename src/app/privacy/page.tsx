@@ -1,3 +1,5 @@
+import { CONTACT } from '@/lib/contact';
+
 export default function PrivacyPage() {
   return (
     <div className="pt-20 lg:pt-28 pb-12 lg:pb-20">
@@ -12,7 +14,7 @@ export default function PrivacyPage() {
           <h3 className="font-bold text-gray-900 text-lg">Data Security</h3>
           <p>We implement industry-standard security measures to protect your data. We do not share your personal information with third parties except as necessary to fulfill your booking.</p>
           <h3 className="font-bold text-gray-900 text-lg">Contact Us</h3>
-          <p>For privacy-related queries, contact us at privacy@indiantreks.com.</p>
+          <p>For privacy-related queries, contact us at {CONTACT.emails.primary}.</p>
         </div>
       </div>
     </div>

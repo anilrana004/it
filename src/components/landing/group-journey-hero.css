@@ -1,0 +1,300 @@
+.it-gj__hero {
+  position: relative;
+  min-height: min(88vh, 44rem);
+  display: flex;
+  align-items: stretch;
+  overflow: clip;
+  background: #062816;
+}
+
+.it-gj__hero-media,
+.it-gj__hero-overlay {
+  position: absolute;
+  inset: 0;
+}
+
+.it-gj__hero-media img {
+  object-position: center 35%;
+}
+
+.it-gj__hero-glow {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 12% 22%, rgba(74, 222, 128, 0.14) 0, transparent 42%),
+    radial-gradient(circle at 88% 18%, rgba(251, 191, 36, 0.08) 0, transparent 36%);
+}
+
+.it-gj__hero-overlay {
+  background:
+    linear-gradient(108deg, rgba(4, 20, 12, 0.94) 0%, rgba(4, 20, 12, 0.72) 42%, rgba(4, 20, 12, 0.22) 62%, rgba(4, 20, 12, 0.48) 100%),
+    linear-gradient(180deg, rgba(4, 20, 12, 0.08) 0%, rgba(4, 20, 12, 0.88) 100%);
+}
+
+.it-gj__hero-shell {
+  position: relative;
+  z-index: 2;
+  width: min(1180px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding:
+    calc(5.5rem + env(safe-area-inset-top, 0px))
+    0
+    5.5rem;
+  display: grid;
+  gap: 1.75rem;
+  align-content: end;
+}
+
+@media (min-width: 1024px) {
+  .it-gj__hero-shell {
+    padding:
+      calc(6.75rem + env(safe-area-inset-top, 0px))
+      0
+      6rem;
+    gap: 2rem;
+  }
+}
+
+.it-gj__hero-copy {
+  max-width: 40rem;
+  color: #fff;
+}
+
+.it-gj__hero-badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem 0.85rem;
+  margin-bottom: 1rem;
+}
+
+.it-gj__hero-badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.42rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid rgba(134, 239, 172, 0.32);
+  background: rgba(4, 31, 18, 0.55);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  font-size: 0.64rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #bbf7d0;
+}
+
+.it-gj__hero-badge-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.64rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.it-gj__hero-badge-text svg {
+  color: #4ade80;
+  fill: rgba(74, 222, 128, 0.25);
+}
+
+.it-gj__hero-title {
+  margin: 0;
+  display: grid;
+  gap: 0.1rem;
+  font-family: var(--font-heading), var(--font-poppins), sans-serif;
+  font-size: clamp(2.65rem, 6vw, 4.25rem);
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+}
+
+.it-gj__hero-title-line {
+  display: block;
+  color: #fff;
+}
+
+.it-gj__hero-title-line--accent {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  width: fit-content;
+}
+
+.it-gj__hero-title-dashes {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.18rem;
+  margin-left: 0.15rem;
+}
+
+.it-gj__hero-title-dashes span {
+  display: block;
+  width: 1.15rem;
+  height: 3px;
+  border-radius: 999px;
+  background: #4ade80;
+}
+
+.it-gj__hero-title-dashes span:nth-child(2) {
+  width: 0.85rem;
+  opacity: 0.75;
+}
+
+.it-gj__hero-title-dashes span:nth-child(3) {
+  width: 0.55rem;
+  opacity: 0.5;
+}
+
+.it-gj__hero-title-rule {
+  display: block;
+  width: min(100%, 18rem);
+  height: 0.42em;
+  max-height: 1.15rem;
+  margin: 0.35rem 0 0.95rem;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 280 16' preserveAspectRatio='none'%3E%3Cpath d='M2 11 C48 4, 96 14, 142 7 S228 3, 278 9' fill='none' stroke='%234ade80' stroke-width='4.5' stroke-linecap='round'/%3E%3C/svg%3E")
+    left center / 100% 100% no-repeat;
+}
+
+.it-gj__hero-lead {
+  margin: 0;
+  font-size: 1.02rem;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.78);
+  max-width: 36rem;
+}
+
+.it-gj__hero-lead strong {
+  color: #4ade80;
+  font-weight: 700;
+}
+
+.it-gj__hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.65rem;
+}
+
+.it-gj__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 999px;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.it-gj__btn:hover {
+  transform: translateY(-1px);
+}
+
+.it-gj__btn--primary {
+  gap: 0.65rem;
+  padding: 0.72rem 0.72rem 0.72rem 1.35rem;
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  color: #fff;
+  box-shadow:
+    0 0 0 1px rgba(134, 239, 172, 0.2),
+    0 12px 28px rgba(22, 163, 74, 0.28);
+}
+
+.it-gj__btn--primary:hover {
+  background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+}
+
+.it-gj__btn-icon-circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.it-gj__btn--ghost {
+  gap: 0.45rem;
+  padding: 0.8rem 1.35rem;
+  border: 1px solid rgba(255, 255, 255, 0.42);
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.it-gj__btn--ghost:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.55);
+}
+
+.it-gj__hero-features {
+  display: grid;
+  gap: 0.75rem;
+  padding: 1rem;
+  border-radius: 1.15rem;
+  border: 1px solid rgba(134, 239, 172, 0.16);
+  background: rgba(4, 31, 18, 0.58);
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.22);
+}
+
+@media (min-width: 640px) {
+  .it-gj__hero-features {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .it-gj__hero-features {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.55rem;
+    padding: 1.1rem 0.85rem;
+  }
+}
+
+.it-gj__hero-feature {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
+  min-width: 0;
+  padding: 0.55rem 0.45rem;
+}
+
+.it-gj__hero-feature-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.15rem;
+  height: 2.15rem;
+  border-radius: 999px;
+  background: rgba(22, 163, 74, 0.18);
+  color: #86efac;
+  box-shadow: 0 0 16px rgba(74, 222, 128, 0.14);
+}
+
+.it-gj__hero-feature strong {
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1.25;
+  color: #fff;
+}
+
+.it-gj__hero-feature span:last-child {
+  font-size: 0.66rem;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.58);
+}

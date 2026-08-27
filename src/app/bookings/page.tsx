@@ -7,6 +7,7 @@ import {
   MessageCircle, Ban, CheckCircle2, Hourglass, XCircle, Compass,
 } from 'lucide-react';
 import { treks } from '@/lib/data';
+import { CONTACT, telUrl, whatsappChannelUrl } from '@/lib/contact';
 import { cancelMyBooking, getMyBookings, type BookingStatus, type MyBooking } from '@/lib/my-bookings';
 
 const tabs: { key: BookingStatus | 'all'; label: string }[] = [
@@ -163,7 +164,10 @@ export default function BookingsPage() {
                           View trek <ChevronRight className="w-3.5 h-3.5" />
                         </Link>
                         <a
-                          href={`https://wa.me/919797972175?text=${encodeURIComponent(`Hi Indian Treks, I need help with booking ${b.id} (${trek.title}).`)}`}
+                          href={whatsappChannelUrl(
+                            'support',
+                            `Hi Indian Treks, I need help with booking ${b.id} (${trek.title}).`,
+                          )}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 px-3 py-2 rounded-full transition-colors"
@@ -171,7 +175,7 @@ export default function BookingsPage() {
                           <MessageCircle className="w-3.5 h-3.5 text-emerald-600" /> Support
                         </a>
                         <a
-                          href="tel:+919797972175"
+                          href={telUrl(CONTACT.phones.support.tel)}
                           className="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 px-3 py-2 rounded-full transition-colors"
                         >
                           <Phone className="w-3.5 h-3.5 text-[#16a34a]" /> Call

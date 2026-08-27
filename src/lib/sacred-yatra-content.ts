@@ -180,10 +180,50 @@ export const sacredYatraDiscoveryOptions = [
   },
 ] as const;
 
-export const sacredYatraStickyNav = [
-  { id: 'explore-yatra', label: 'Spiritual' },
-  ...sacredYatraGroups.map((g) => ({ id: g.id, label: g.shortName })),
-] as const;
+export type SacredYatraStickyNavIcon = 'landmark' | 'temple' | 'route' | 'trishul';
+
+export const sacredYatraStickyNav: readonly {
+  id: string;
+  label: string;
+  icon: SacredYatraStickyNavIcon;
+}[] = [
+  { id: 'explore-yatra', label: 'Spiritual', icon: 'landmark' },
+  ...sacredYatraGroups.map((g) => ({
+    id: g.id,
+    label: g.shortName,
+    icon:
+      g.id === 'classic-dham'
+        ? ('temple' as const)
+        : g.id === 'temple-circuits'
+          ? ('route' as const)
+          : ('trishul' as const),
+  })),
+];
+
+export const sacredYatraHero = {
+  badgeMain: 'Spiritual journeys',
+  badgePill: 'Himalayan shrines',
+  titleMain: 'Sacred',
+  titleAccent: 'Yatras',
+  highlights: [
+    { label: 'Ancient Routes' },
+    { label: 'Divine Energy' },
+    { label: 'Peace of Mind' },
+  ],
+  whatsappSub: 'Plan your pilgrimage with us',
+  stats: [
+    { value: 'Trusted by 80K+ Pilgrims', label: 'Families & solo pilgrims served' },
+    { value: 'Expert Guides 100%', label: 'Experienced yatra leaders on every trip' },
+    { value: 'Well Planned Routes', label: 'Temple timings & road logistics handled' },
+    { value: 'Safe & Comfortable', label: 'Group support from start to darshan' },
+  ],
+  features: [
+    { title: 'Divine Destinations', sub: 'Handpicked sacred places in the Himalayas' },
+    { title: 'Well Planned Routes', sub: 'Smooth travel with the best itineraries' },
+    { title: 'Spiritual Experience', sub: 'Feel peace, devotion & positive energy' },
+    { title: '24/7 Support', sub: "We're with you at every step of your journey" },
+  ],
+} as const;
 
 export function tripsForYatraGroup(groupId: SacredYatraGroupId): SacredYatraTrip[] {
   return sacredYatraTrips.filter((t) => t.groupId === groupId);

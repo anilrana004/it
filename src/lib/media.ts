@@ -21,6 +21,22 @@ export const photos = {
   snow: u('photo-1483728642387-6c3bdd6c93e5', 1400, 900),
   vof: cld('v1785367489/pexels-unaizat97-8673607_anl07u.jpg'),
   kedarkantha: cld('v1785399843/pexels-sanket-barik-2808574-7846473_efonvw.jpg'),
+  /** Women-only special program hero — golden-hour ridge trekkers */
+  womenTrek: u('photo-1551632811-561732d1e306', 1400, 900),
+  seniorTrek: u('photo-1464822759023-fed622ff2c3b', 1400, 900),
+  familyTrek: u('photo-1506905925346-21bda4d32df4', 1400, 900),
+  beginnerTrek: u('photo-1454496522488-7a8e488e8606', 1400, 900),
+  /** Trek preparation guide hero — hiker on a mountain ridge */
+  prepHero: u('photo-1517824809574-7c93d6a3c0c0', 1400, 900),
+  fitnessHero: u('photo-1483728642387-6c3bdd6c93e5', 1400, 900),
+  /** Biking trips hero — mountain highway ride */
+  bikingHero: u('photo-1486870591958-9b9d0d1dda99', 1400, 900),
+  /** Weekend trips hero — Dhauladhar ridge */
+  weekendHero: u('photo-1454496522488-7a8e488e8606', 1400, 900),
+  /** Backpacking trips hero — ridge trekker at sunrise */
+  backpackingHero: u('photo-1517824809574-7c93d6a3c0c0', 1400, 900),
+  /** Altitude sickness guide — trekker above cloud sea */
+  altitudeHero: u('photo-1506905925346-21bda4d32df4', 1400, 900),
   /** Designed promo creative (copy/CTA baked into the asset) — do not crop aggressively */
   choptaSale:
     'https://res.cloudinary.com/pg8uhzw0/image/upload/f_auto,q_auto/v1787222468/Screenshot_2026-08-20_161024_qsice7.png',

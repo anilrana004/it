@@ -12,7 +12,6 @@ import {
 import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import {
-  Filter,
   Search,
   SlidersHorizontal,
   X,
@@ -32,13 +31,23 @@ import {
   REGIONS,
   SEASONS,
   resolveCuratedTreks,
+  type CuratedSection,
   type ListingTrek,
   type SeasonId,
   type TopCategory,
 } from '@/lib/treks-listing';
+import {
+  buildFilterCuratedSection,
+  getFilterView,
+  resolveFilterTreks,
+} from '@/lib/trek-filter-views';
 import type { SpecialProgramId } from '@/lib/special-programs-content';
 import type { Trek } from '@/lib/data';
 import { CONTACT, telUrl } from '@/lib/contact';
+import { treksArticles, treksReviews } from '@/lib/landing-social-content';
+import LandingReviewsBlog from '@/components/landing/LandingReviewsBlog';
+import TreksWhySection from '@/components/treks/TreksWhySection';
+import TreksDesktopHero from '@/components/treks/TreksDesktopHero';
 import './treks-explorer.css';
 
 type Filters = {
@@ -100,19 +109,19 @@ function FilterSection({
 }) {
   const [open, setOpen] = useState(defaultOpen);
   return (
-    <div className="border-b border-gray-100 py-4 first:pt-0 last:border-b-0 last:pb-0">
+    <div className="it-treks-filter-section">
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="flex w-full items-center justify-between gap-2 text-left"
+        className="it-treks-filter-section__toggle"
         aria-expanded={open}
       >
-        <span className="text-[13px] font-bold tracking-tight text-gray-900">{title}</span>
+        <span className="it-treks-filter-section__title">{title}</span>
         <ChevronDown
-          className={`h-4 w-4 shrink-0 text-gray-400 transition-transform ${open ? 'rotate-180' : ''}`}
+          className={`it-treks-filter-section__chevron${open ? ' is-open' : ''}`}
         />
       </button>
-      {open && <div className="mt-3 space-y-1.5">{children}</div>}
+      {open && <div className="it-treks-filter-section__body">{children}</div>}
     </div>
   );
 }
@@ -121,20 +130,18 @@ function Chip({
   active,
   onClick,
   children,
+  compact,
 }: {
   active: boolean;
   onClick: () => void;
   children: ReactNode;
+  compact?: boolean;
 }) {
   return (
     <button
       type="button"
       onClick={onClick}
-      className={`w-full rounded-lg px-2.5 py-2.5 text-left text-[12px] leading-snug transition-colors ${
-        active
-          ? 'bg-[#16a34a] font-semibold text-white'
-          : 'bg-gray-50 text-gray-700 hover:bg-[#f0fdf4] hover:text-[#166534]'
-      }`}
+      className={`it-treks-filter-chip${active ? ' is-active' : ''}${compact ? ' is-compact' : ''}`}
     >
       {children}
     </button>
@@ -218,6 +225,16 @@ export default function AllTreksExplorer({
     setMobileFilters(false);
   };
 
+  /** Scroll to the trek grid (mobile + desktop targets). */
+  const scrollToTreks = useCallback(() => {
+    window.requestAnimationFrame(() => {
+      document.getElementById('curated-treks')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      document
+        .getElementById('curated-treks-desktop')
+        ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }, []);
+
   /** Apply a category tile in-place (same page) and scroll to the trek list. */
   const applyCategoryHref = useCallback(
     (href: string) => {
@@ -226,16 +243,27 @@ export default function AllTreksExplorer({
       setSearchDraft(next.q);
       setFilters(next);
       syncUrl(next);
-      window.requestAnimationFrame(() => {
-        document
-          .getElementById('curated-treks')
-          ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        document
-          .getElementById('curated-treks-desktop')
-          ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      });
+      scrollToTreks();
     },
-    [syncUrl],
+    [scrollToTreks, syncUrl],
+  );
+
+  const selectMonth = useCallback(
+    (index: number) => {
+      const next = filters.month === index ? null : index;
+      update({ month: next });
+      if (next !== null) scrollToTreks();
+    },
+    [filters.month, scrollToTreks, update],
+  );
+
+  const toggleFilter = useCallback(
+    <K extends keyof Filters>(key: K, value: NonNullable<Filters[K]>, current: Filters[K]) => {
+      const next = current === value ? null : value;
+      update({ [key]: next } as Partial<Filters>);
+      if (next !== null) scrollToTreks();
+    },
+    [scrollToTreks, update],
   );
 
   const activeCount = [
@@ -292,48 +320,71 @@ export default function AllTreksExplorer({
 
   const submitSearch = (e?: FormEvent) => {
     e?.preventDefault();
-    update({ q: searchDraft.trim() });
+    const q = searchDraft.trim();
+    update({ q });
+    if (q) scrollToTreks();
   };
 
-  const browsing = activeCount === 0;
+  const isFilterFocus = activeCount > 0;
+  const filterView = isFilterFocus ? getFilterView(filters) : null;
+  const showBrowseExtras = !isFilterFocus;
 
-  const curatedBlocks = useMemo(
-    () =>
-      CURATED_SECTIONS.map((section) => ({
-        section,
-        treks: resolveCuratedTreks(section, filtered, {
-          limit: section.id === 'autumn' ? 10 : 8,
-          month: filters.month,
-        }),
-      })).filter((b) => b.treks.length > 0),
-    [filtered, filters.month],
-  );
+  const curatedBlocks = useMemo(() => {
+    if (isFilterFocus && filterView) {
+      const list = resolveFilterTreks(filters, filtered);
+      if (list.length === 0) return [];
+      return [{ section: buildFilterCuratedSection(filterView), treks: list }];
+    }
+
+    return CURATED_SECTIONS.map((section) => ({
+      section,
+      treks: resolveCuratedTreks(section, filtered, {
+        limit: section.trekIds?.length ?? 8,
+        month: filters.month,
+      }),
+    })).filter((b) => b.treks.length > 0);
+  }, [filtered, filterView, filters, isFilterFocus]);
+
+  const curatedOnOpen = (section: CuratedSection) => {
+    if (isFilterFocus) return undefined;
+    if (section.id === 'summits') return undefined;
+    return () => applyCategoryHref(section.href);
+  };
+
+  const curatedLayout = (_sectionId: string) => (isFilterFocus ? 'grid' as const : 'scroll' as const);
+
+  const mobileHeroTitle = filterView?.heading ?? 'Looking for a specific trek?';
+  const mobileHeroLead =
+    filterView?.sectionTitle ??
+    'Filter by month, difficulty, season or region — or search your dream Himalayan trail.';
+  const desktopHeroTitle = filterView?.heading ?? `Upcoming Treks in ${year}`;
+  const desktopHeroLead =
+    filterView?.sectionTitle ??
+    `New year, new trails! Explore handpicked treks across the Himalayas. Start planning your ${year} adventure today.`;
+  const isDefaultDesktopHero = !isFilterFocus;
 
   const filterPanel = (
-    <div>
-      <div className="mb-1 flex items-center justify-between gap-2 pb-3">
-        <div className="flex items-center gap-2 text-[13px] font-bold text-gray-900">
-          <SlidersHorizontal className="h-4 w-4 text-[#16a34a]" />
+    <div className="it-treks-filters">
+      <div className="it-treks-filters__head">
+        <div className="it-treks-filters__title">
+          <SlidersHorizontal className="h-4 w-4" aria-hidden />
           Filter Treks
         </div>
         {activeCount > 0 && (
-          <button
-            type="button"
-            onClick={clearAll}
-            className="text-[12px] font-semibold text-[#16a34a] hover:underline"
-          >
+          <button type="button" onClick={clearAll} className="it-treks-filters__clear">
             Clear all
           </button>
         )}
       </div>
 
       <FilterSection title="Treks by Month">
-        <div className="grid grid-cols-2 gap-1.5">
+        <div className="it-treks-filter-section__grid">
           {MONTHS.map((m, i) => (
             <Chip
               key={m}
+              compact
               active={filters.month === i}
-              onClick={() => update({ month: filters.month === i ? null : i })}
+              onClick={() => selectMonth(i)}
             >
               {m.slice(0, 3)}
             </Chip>
@@ -346,7 +397,7 @@ export default function AllTreksExplorer({
           <Chip
             key={d}
             active={filters.difficulty === d}
-            onClick={() => update({ difficulty: filters.difficulty === d ? null : d })}
+            onClick={() => toggleFilter('difficulty', d, filters.difficulty)}
           >
             {d}
           </Chip>
@@ -358,9 +409,7 @@ export default function AllTreksExplorer({
           <Chip
             key={e.id}
             active={filters.experience === e.id}
-            onClick={() =>
-              update({ experience: filters.experience === e.id ? null : e.id })
-            }
+            onClick={() => toggleFilter('experience', e.id, filters.experience)}
           >
             {e.label}
           </Chip>
@@ -372,7 +421,7 @@ export default function AllTreksExplorer({
           <Chip
             key={s.id}
             active={filters.season === s.id}
-            onClick={() => update({ season: filters.season === s.id ? null : s.id })}
+            onClick={() => toggleFilter('season', s.id, filters.season)}
           >
             {s.label}
           </Chip>
@@ -384,7 +433,7 @@ export default function AllTreksExplorer({
           <Chip
             key={d.id}
             active={filters.duration === d.id}
-            onClick={() => update({ duration: filters.duration === d.id ? null : d.id })}
+            onClick={() => toggleFilter('duration', d.id, filters.duration)}
           >
             {d.label}
           </Chip>
@@ -396,7 +445,7 @@ export default function AllTreksExplorer({
           <Chip
             key={r.id}
             active={filters.region === r.id}
-            onClick={() => update({ region: filters.region === r.id ? null : r.id })}
+            onClick={() => toggleFilter('region', r.id, filters.region)}
           >
             {r.label}
           </Chip>
@@ -424,10 +473,10 @@ export default function AllTreksExplorer({
             Upcoming · {year}
           </p>
           <h1 className="mt-1.5 font-[family-name:var(--font-heading)] text-[1.65rem] font-bold leading-[1.15] text-gray-900">
-            Looking for a specific trek?
+            {mobileHeroTitle}
           </h1>
           <p className="mt-2 text-[13px] leading-relaxed text-gray-500">
-            Filter by month, difficulty, season or region — or search your dream Himalayan trail.
+            {mobileHeroLead}
           </p>
 
           <form onSubmit={submitSearch} className="mt-4 flex gap-2" role="search">
@@ -467,13 +516,13 @@ export default function AllTreksExplorer({
             <p className="it-treks-quick__label">Filter</p>
             <div className="it-treks-quick__track" role="tablist" aria-label="Quick trek filters">
               {[
-                { label: 'All', on: browsing, go: () => clearAll() },
-                { label: 'Beginner', on: filters.experience === 'beginner', go: () => update({ experience: filters.experience === 'beginner' ? null : 'beginner' }) },
-                { label: 'Winter', on: filters.season === 'winter', go: () => update({ season: filters.season === 'winter' ? null : 'winter' }) },
-                { label: 'Uttarakhand', on: filters.region === 'uttarakhand', go: () => update({ region: filters.region === 'uttarakhand' ? null : 'uttarakhand' }) },
-                { label: 'Himachal', on: filters.region === 'himachal', go: () => update({ region: filters.region === 'himachal' ? null : 'himachal' }) },
-                { label: 'Easy', on: filters.difficulty === 'Easy', go: () => update({ difficulty: filters.difficulty === 'Easy' ? null : 'Easy' }) },
-                { label: 'Nepal', on: filters.region === 'nepal', go: () => update({ region: filters.region === 'nepal' ? null : 'nepal' }) },
+                { label: 'All', on: !isFilterFocus, go: () => clearAll() },
+                { label: 'Beginner', on: filters.experience === 'beginner', go: () => toggleFilter('experience', 'beginner', filters.experience) },
+                { label: 'Winter', on: filters.season === 'winter', go: () => toggleFilter('season', 'winter', filters.season) },
+                { label: 'Uttarakhand', on: filters.region === 'uttarakhand', go: () => toggleFilter('region', 'uttarakhand', filters.region) },
+                { label: 'Himachal', on: filters.region === 'himachal', go: () => toggleFilter('region', 'himachal', filters.region) },
+                { label: 'Easy', on: filters.difficulty === 'Easy', go: () => toggleFilter('difficulty', 'Easy', filters.difficulty) },
+                { label: 'Nepal', on: filters.region === 'nepal', go: () => toggleFilter('region', 'nepal', filters.region) },
               ].map((chip) => (
                 <button
                   key={chip.label}
@@ -491,39 +540,43 @@ export default function AllTreksExplorer({
         </div>
 
         <div className="px-4 pb-10 pt-5">
-          <section className="mb-6">
-            <h2 className="text-lg font-bold text-gray-900">Explore Our Top Categories</h2>
-            <div
-              className="-mx-4 mt-3 flex gap-3 overflow-x-auto px-4 pb-1 scrollbar-none snap-x snap-mandatory"
-              style={{ scrollbarWidth: 'none' }}
-            >
-              {categories.map((c) => (
-                <button
-                  key={c.id}
-                  type="button"
-                  onClick={() => applyCategoryHref(c.href)}
-                  className="relative h-[168px] w-[42vw] max-w-[180px] shrink-0 snap-start overflow-hidden rounded-2xl text-left"
-                >
-                  <img src={c.image} alt="" className="absolute inset-0 h-full w-full object-cover" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
-                  <div className="absolute inset-x-0 bottom-0 p-2.5">
-                    <div className="text-[10px] font-semibold text-[#86efac]">{c.countLabel}</div>
-                    <div className="mt-0.5 text-[13px] font-bold leading-snug text-white">{c.title}</div>
-                  </div>
-                </button>
-              ))}
-            </div>
-          </section>
+          {showBrowseExtras && (
+            <section className="mb-6">
+              <h2 className="text-lg font-bold text-gray-900">Explore Our Top Categories</h2>
+              <div
+                className="-mx-4 mt-3 flex gap-3 overflow-x-auto px-4 pb-1 scrollbar-none snap-x snap-mandatory"
+                style={{ scrollbarWidth: 'none' }}
+              >
+                {categories.map((c) => (
+                  <button
+                    key={c.id}
+                    type="button"
+                    onClick={() => applyCategoryHref(c.href)}
+                    className="relative h-[168px] w-[42vw] max-w-[180px] shrink-0 snap-start overflow-hidden rounded-2xl text-left"
+                  >
+                    <img src={c.image} alt="" className="absolute inset-0 h-full w-full object-cover" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
+                    <div className="absolute inset-x-0 bottom-0 p-2.5">
+                      <div className="text-[10px] font-semibold text-[#86efac]">{c.countLabel}</div>
+                      <div className="mt-0.5 text-[13px] font-bold leading-snug text-white">{c.title}</div>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </section>
+          )}
 
-          <div className="mb-2 rounded-2xl border border-[#bbf7d0] bg-[#f0fdf4] p-3.5">
-            <p className="text-[13px] leading-relaxed text-[#14532d]">
-              <span className="font-bold">Tip: </span>
-              {INFO_BANNERS[1].text}{' '}
-              <Link href={INFO_BANNERS[1].href} className="font-semibold underline underline-offset-2">
-                {INFO_BANNERS[1].cta}
-              </Link>
-            </p>
-          </div>
+          {showBrowseExtras && (
+            <div className="mb-2 rounded-2xl border border-[#bbf7d0] bg-[#f0fdf4] p-3.5">
+              <p className="text-[13px] leading-relaxed text-[#14532d]">
+                <span className="font-bold">Tip: </span>
+                {INFO_BANNERS[1].text}{' '}
+                <Link href={INFO_BANNERS[1].href} className="font-semibold underline underline-offset-2">
+                  {INFO_BANNERS[1].cta}
+                </Link>
+              </p>
+            </div>
+          )}
 
           <div id="curated-treks" className="scroll-mt-28">
             {curatedBlocks.map(({ section, treks: sectionTreks }, i) => (
@@ -532,6 +585,10 @@ export default function AllTreksExplorer({
                   title={section.title}
                   info={section.info}
                   treks={sectionTreks}
+                  layout={curatedLayout(section.id)}
+                  onOpen={curatedOnOpen(section)}
+                  shareHref={section.href}
+                  sectionId={section.id}
                 />
                 {INFO_BANNERS[i + 1] && i % 2 === 0 && (
                   <div className="my-2 rounded-2xl bg-[#062816] p-3.5 text-[13px] leading-relaxed text-[#dcfce7]">
@@ -584,109 +641,83 @@ export default function AllTreksExplorer({
 
       {/* —— Desktop layout —— */}
       <div className="hidden lg:block">
-        <section className="relative overflow-hidden bg-gradient-to-br from-[#062816] via-[#0a3d22] to-[#166534]">
-          <div
-            className="pointer-events-none absolute inset-0 opacity-[0.12]"
-            style={{
-              backgroundImage:
-                'radial-gradient(circle at 20% 20%, #4ade80 0, transparent 40%), radial-gradient(circle at 80% 0%, #86efac 0, transparent 35%)',
-            }}
-          />
-          <div className="container relative mx-auto pb-11 pt-0">
-            <div style={{ height: DESK_HEADER_H + 28 }} aria-hidden />
-            <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-[#86efac]">
-              Group departures · {year}
-            </p>
-            <h1 className="max-w-3xl font-[family-name:var(--font-heading)] text-[2.75rem] font-bold leading-[1.15] text-white">
-              Upcoming Treks in {year}
-            </h1>
-            <p className="mt-3.5 max-w-2xl text-[15px] leading-relaxed text-white/75">
-              Browse every Himalayan trek we run — filter by month, difficulty, season, or region,
-              pick an upcoming batch, and book with India&apos;s trusted trekking community of
-              80,000+ travellers.
-            </p>
-
-            <form onSubmit={submitSearch} className="mt-6 flex max-w-xl gap-2" role="search">
-              <label className="relative min-w-0 flex-1">
-                <span className="sr-only">Looking for a specific trek?</span>
-                <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-                <input
-                  type="search"
-                  value={searchDraft}
-                  onChange={(e) => setSearchDraft(e.target.value)}
-                  placeholder="Looking for a specific trek?"
-                  className="h-12 w-full rounded-xl border-0 bg-white pl-10 pr-4 text-sm text-gray-900 shadow-lg outline-none placeholder:text-gray-400 focus:ring-2 focus:ring-[#4ade80]/45"
-                />
-              </label>
-              <button
-                type="submit"
-                className="inline-flex h-12 shrink-0 items-center justify-center gap-2 rounded-xl bg-[#16a34a] px-5 text-sm font-semibold text-white shadow-lg shadow-black/15 transition-colors hover:bg-[#15803d]"
-              >
-                <Filter className="h-4 w-4" />
-                Search
-              </button>
-            </form>
-          </div>
-        </section>
+        <TreksDesktopHero
+          year={year}
+          title={desktopHeroTitle}
+          lead={desktopHeroLead}
+          isDefaultHero={isDefaultDesktopHero}
+          searchDraft={searchDraft}
+          onSearchDraft={setSearchDraft}
+          onSubmitSearch={submitSearch}
+          onExplore={scrollToTreks}
+          trekCount={treks.length}
+          treks={treks}
+          showPopularPicks={showBrowseExtras}
+          headerOffset={DESK_HEADER_H}
+        />
 
         <div className="container mx-auto py-12 pb-16">
-          <section className="mb-10">
-            <div className="mb-5 flex items-end justify-between gap-3">
-              <div>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#16a34a]">
-                  Explore
-                </p>
-                <h2 className="mt-1 text-2xl font-bold leading-tight text-gray-900">
-                  Our Top Categories
-                </h2>
-              </div>
-              <Link
-                href="/special-programs"
-                className="mb-0.5 text-sm font-semibold text-[#16a34a] hover:underline"
-              >
-                Special programs →
-              </Link>
-            </div>
-            <div className="grid grid-cols-3 gap-3 xl:grid-cols-6">
-              {categories.map((c) => (
-                <button
-                  key={c.id}
-                  type="button"
-                  onClick={() => applyCategoryHref(c.href)}
-                  className="group relative aspect-[4/5] overflow-hidden rounded-2xl text-left"
+          {showBrowseExtras && (
+            <section className="mb-10">
+              <div className="mb-5 flex items-end justify-between gap-3">
+                <div>
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#16a34a]">
+                    Explore
+                  </p>
+                  <h2 className="mt-1 text-2xl font-bold leading-tight text-gray-900">
+                    Our Top Categories
+                  </h2>
+                </div>
+                <Link
+                  href="/special-programs"
+                  className="mb-0.5 text-sm font-semibold text-[#16a34a] hover:underline"
                 >
-                  <img
-                    src={c.image}
-                    alt=""
-                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
-                  <div className="absolute inset-x-0 bottom-0 p-3">
-                    <div className="text-[10px] font-semibold uppercase tracking-wide text-[#86efac]">
-                      {c.countLabel}
+                  Special programs →
+                </Link>
+              </div>
+              <div className="grid grid-cols-3 gap-3 xl:grid-cols-6">
+                {categories.map((c) => (
+                  <button
+                    key={c.id}
+                    type="button"
+                    onClick={() => applyCategoryHref(c.href)}
+                    className="group relative aspect-[4/5] overflow-hidden rounded-2xl text-left"
+                  >
+                    <img
+                      src={c.image}
+                      alt=""
+                      className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
+                    <div className="absolute inset-x-0 bottom-0 p-3">
+                      <div className="text-[10px] font-semibold uppercase tracking-wide text-[#86efac]">
+                        {c.countLabel}
+                      </div>
+                      <div className="mt-0.5 text-sm font-bold leading-snug text-white">{c.title}</div>
+                      <div className="mt-0.5 line-clamp-2 text-[11px] text-white/70">{c.subtitle}</div>
                     </div>
-                    <div className="mt-0.5 text-sm font-bold leading-snug text-white">{c.title}</div>
-                    <div className="mt-0.5 line-clamp-2 text-[11px] text-white/70">{c.subtitle}</div>
-                  </div>
-                </button>
-              ))}
-            </div>
-          </section>
+                  </button>
+                ))}
+              </div>
+            </section>
+          )}
 
-          <div className="mb-9 flex gap-3 rounded-2xl border border-[#bbf7d0] bg-[#f0fdf4] p-5 lg:items-center">
-            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#16a34a] text-white">
-              <Sparkles className="h-5 w-5" />
-            </span>
-            <div className="min-w-0">
-              <p className="text-sm font-bold text-[#14532d]">{INFO_BANNERS[0].text}</p>
-              <Link
-                href={INFO_BANNERS[0].href}
-                className="mt-1 inline-block text-sm font-semibold text-[#166534] underline underline-offset-2"
-              >
-                {INFO_BANNERS[0].cta}
-              </Link>
+          {showBrowseExtras && (
+            <div className="mb-9 flex gap-3 rounded-2xl border border-[#bbf7d0] bg-[#f0fdf4] p-5 lg:items-center">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#16a34a] text-white">
+                <Sparkles className="h-5 w-5" />
+              </span>
+              <div className="min-w-0">
+                <p className="text-sm font-bold text-[#14532d]">{INFO_BANNERS[0].text}</p>
+                <Link
+                  href={INFO_BANNERS[0].href}
+                  className="mt-1 inline-block text-sm font-semibold text-[#166534] underline underline-offset-2"
+                >
+                  {INFO_BANNERS[0].cta}
+                </Link>
+              </div>
             </div>
-          </div>
+          )}
 
           <div className="flex gap-8">
             <aside className="w-[260px] shrink-0 self-stretch">
@@ -702,7 +733,9 @@ export default function AllTreksExplorer({
               {activeCount > 0 && (
                 <div className="mb-4 flex items-center justify-between gap-3">
                   <p className="text-[13px] font-semibold text-gray-800">
-                    {filtered.length} match{filtered.length === 1 ? '' : 'es'} in categories below
+                    {filterView
+                      ? `${filtered.length} trek${filtered.length === 1 ? '' : 's'} · ${filterView.sectionTitle}`
+                      : `${filtered.length} match${filtered.length === 1 ? '' : 'es'}`}
                   </p>
                   <button
                     type="button"
@@ -720,6 +753,10 @@ export default function AllTreksExplorer({
                     title={section.title}
                     info={section.info}
                     treks={sectionTreks}
+                    layout={curatedLayout(section.id)}
+                    onOpen={curatedOnOpen(section)}
+                    shareHref={section.href}
+                    sectionId={section.id}
                   />
                 ))}
               </div>
@@ -741,32 +778,51 @@ export default function AllTreksExplorer({
         </div>
       </div>
 
+      <TreksWhySection />
+
+      <LandingReviewsBlog
+        reviews={{
+          kicker: 'Trekker reviews',
+          title: 'Stories from the trail',
+          intro:
+            'Real notes from hikers who summited Kedarkantha, crossed Hampta Pass, and found their first Himalayan views with Indian Treks.',
+          items: treksReviews,
+        }}
+        articles={{
+          kicker: 'From the blog',
+          title: 'Trek guides & tips',
+          items: treksArticles,
+        }}
+      />
+
       {mobileFilters && (
-        <div className="fixed inset-0 z-[80] lg:hidden">
+        <div className="it-treks-mob-filters fixed inset-0 z-[80] lg:hidden">
           <button
             type="button"
             aria-label="Close filters"
-            className="absolute inset-0 bg-black/50"
+            className="it-treks-mob-filters__backdrop absolute inset-0"
             onClick={() => setMobileFilters(false)}
           />
-          <div className="absolute inset-x-0 bottom-0 flex max-h-[88vh] flex-col rounded-t-3xl bg-white shadow-2xl">
-            <div className="flex h-14 shrink-0 items-center justify-between border-b border-gray-100 px-4">
-              <span className="font-bold text-gray-900">Filter Treks</span>
+          <div className="it-treks-mob-filters__sheet absolute inset-x-0 bottom-0 flex max-h-[88vh] flex-col">
+            <div className="it-treks-mob-filters__head flex h-14 shrink-0 items-center justify-between px-4">
+              <span>Filter Treks</span>
               <button
                 type="button"
                 onClick={() => setMobileFilters(false)}
-                className="rounded-full p-2 text-gray-500 hover:bg-gray-100"
+                className="it-treks-mob-filters__close rounded-full p-2"
                 aria-label="Close"
               >
                 <X className="h-5 w-5" />
               </button>
             </div>
-            <div className="flex-1 overflow-y-auto px-4 py-3">{filterPanel}</div>
-            <div className="safe-area-bottom shrink-0 border-t border-gray-100 p-4">
+            <div className="it-treks-mob-filters__body flex-1 overflow-y-auto px-4 py-3">
+              {filterPanel}
+            </div>
+            <div className="it-treks-mob-filters__foot safe-area-bottom shrink-0 p-4">
               <button
                 type="button"
                 onClick={() => setMobileFilters(false)}
-                className="flex h-12 w-full items-center justify-center rounded-xl bg-[#16a34a] text-sm font-semibold text-white hover:bg-[#15803d]"
+                className="flex h-12 w-full items-center justify-center rounded-xl text-sm font-semibold text-white"
               >
                 Show {filtered.length} treks
               </button>

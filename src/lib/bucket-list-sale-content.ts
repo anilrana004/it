@@ -103,15 +103,26 @@ const tripSections = [
 export const bucketListSaleLandingConfig: TrendingLandingConfig = {
   slug: 'bucket-list-sale',
   heroImage: photos.ebc,
-  heroEyebrow: 'Limited period · Up to 40% off',
+  heroEyebrow: 'Limited period offer · Up to 40% off',
   heroTitle: 'Bucket List Sale',
   heroLead:
     'Limited-time discounts on handpicked treks, yatras and international adventures — book your dream Himalayan trip before seats fill.',
   heroPrimaryCta: { label: 'Browse Deals', targetId: 'explore-deals' },
   heroWhatsappMsg:
     'Hi Indian Treks! I want details on the Bucket List Sale deals and current discounts.',
+  saleHero: {
+    titleMain: 'Bucket List',
+    titleAccent: 'Sale',
+    countdownEnd: '2026-09-03T23:59:59+05:30',
+    features: [
+      { title: 'Up to 40% Off', sub: 'Limited period deals' },
+      { title: 'Handpicked Trips', sub: 'Curated by experts' },
+      { title: 'Secure Booking', sub: 'Easy & safe payments' },
+      { title: '24/7 Support', sub: "We're here for you" },
+    ],
+  },
   stickyNav: [
-    { id: 'explore-deals', label: 'Deals' },
+    { id: 'explore-deals', label: 'Deals', icon: 'tag' },
     ...tripSections.map((s) => ({
       id: s.id,
       label:
@@ -121,7 +132,15 @@ export const bucketListSaleLandingConfig: TrendingLandingConfig = {
             ? 'Yatras'
             : s.id === 'international-deals'
               ? 'International'
-              : 'Weekend',
+              : 'Weekend Getaways',
+      icon:
+        s.id === 'domestic-deals'
+          ? ('mountain' as const)
+          : s.id === 'yatra-deals'
+            ? ('landmark' as const)
+            : s.id === 'international-deals'
+              ? ('globe' as const)
+              : ('calendar' as const),
     })),
   ],
   exploreSection: {

@@ -19,8 +19,24 @@ export type SplArticle = {
   read: string;
 };
 
+export type SplPremiumHero = {
+  badge: string;
+  titleMain: string;
+  titleAccent: string;
+  tagline: { before: string; highlight: string; after: string };
+  lead: string;
+  trustLine: string;
+  avatars: readonly string[];
+  pathTagline: string;
+  panelKicker: string;
+  panel: readonly { title: string; sub: string }[];
+  panelPromise: string;
+  features: readonly { title: string; sub: string }[];
+};
+
 export type SplLandingContent = {
   programId: SpecialProgramId;
+  premiumHero?: SplPremiumHero;
   hero: {
     titleBefore: string;
     titleEm: string;

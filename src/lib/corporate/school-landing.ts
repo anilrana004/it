@@ -14,6 +14,38 @@ export const schoolLanding: LpLandingContent = {
     secondaryCta: 'Play video',
     youtubeId: '9vb3QfUth58',
   },
+  premiumHero: {
+    badge: 'Educational outings',
+    titleMain: 'School Programs in the',
+    titleAccent: 'Himalayas',
+    lead: 'Safe, curriculum-aligned outdoor learning — where students grow confidence, curiosity, and care for nature.',
+    trustLine: 'Trusted by schools across India',
+    avatars: [
+      'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=80&h=80&q=80',
+      'https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&auto=format&fit=crop&w=80&h=80&q=80',
+      'https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=80&h=80&q=80',
+      'https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?ixlib=rb-4.0.3&auto=format&fit=crop&w=80&h=80&q=80',
+    ],
+    tagline: 'Learning Beyond the Classroom',
+    panel: [
+      { title: 'Safe & Supervised', sub: 'Trained leaders and clear protocols' },
+      { title: 'Curriculum Aligned', sub: 'Geography, ecology, and life skills' },
+      { title: 'Age Appropriate', sub: 'Routes matched to grade levels' },
+      { title: 'Teacher Partnership', sub: 'Planned with educators, not just operators' },
+    ],
+    stats: [
+      { value: '80+ School Groups', sub: 'Trekked With Us' },
+      { value: '4.9/5 Parent Rating', sub: 'Safety & experience' },
+      { value: '15+ Program Formats', sub: 'Day trips to multi-day camps' },
+      { value: '100% Safety First', sub: 'Medical kits & parent updates' },
+    ],
+    features: [
+      { title: 'Flexible Dates', sub: 'Aligned to your academic calendar' },
+      { title: 'All Grade Levels', sub: 'Middle to senior school batches' },
+      { title: 'Expert Facilitators', sub: 'Experienced outdoor educators' },
+      { title: 'Parent Updates', sub: 'Clear communication throughout' },
+    ],
+  },
   brands: {
     kicker: 'Partner schools',
     title: 'Trusted by Schools Across the Country',

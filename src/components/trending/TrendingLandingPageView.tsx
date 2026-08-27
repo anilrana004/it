@@ -7,17 +7,26 @@ import {
   ArrowRight,
   Calendar,
   Check,
+  Globe,
+  Landmark,
   MapPin,
   Megaphone,
   MessageCircle,
+  Mountain,
   Sparkles,
   Star,
+  Tag,
 } from 'lucide-react';
 import { DESK_HEADER_H, MOBILE_HEADER_H } from '@/lib/layout';
 import { whatsappUrl } from '@/lib/contact';
 import type { TrendingLandingConfig } from '@/lib/trending-landing-types';
 import LandingReviewsBlog from '@/components/landing/LandingReviewsBlog';
 import LandingTripCard from '@/components/landing/LandingTripCard';
+import GroupJourneyPremiumHero, {
+  weekendFeatureIcons,
+} from '@/components/landing/GroupJourneyPremiumHero';
+import TrendingPremiumHero from '@/components/trending/TrendingPremiumHero';
+import SalePremiumHero from '@/components/trending/SalePremiumHero';
 import './trending-landing.css';
 
 const DISCOVERY_ICONS = {
@@ -25,6 +34,14 @@ const DISCOVERY_ICONS = {
   calendar: Calendar,
   megaphone: Megaphone,
   sparkles: Sparkles,
+} as const;
+
+const STICKY_NAV_ICONS = {
+  tag: Tag,
+  mountain: Mountain,
+  landmark: Landmark,
+  globe: Globe,
+  calendar: Calendar,
 } as const;
 
 function scrollToId(id: string) {
@@ -43,6 +60,8 @@ export default function TrendingLandingPageView({
   const [stickyStuck, setStickyStuck] = useState(false);
 
   const DiscoveryIcon = DISCOVERY_ICONS[config.discoveryIcon];
+  const hasStickyIcons = config.stickyNav.some((item) => item.icon);
+  const hasJourneyHero = Boolean(config.journeyHero);
 
   useEffect(() => {
     const items = config.stickyNav;
@@ -118,43 +137,62 @@ export default function TrendingLandingPageView({
 
   return (
     <div className="it-tr" style={pageVars}>
-      <section className="it-tr__hero">
-        <div className="it-tr__hero-media">
-          <Image
-            src={config.heroImage}
-            alt=""
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover"
-          />
-        </div>
-        <div className="it-tr__hero-overlay" />
-        <div className="it-tr__hero-inner">
-          <p className="it-tr__eyebrow">{config.heroEyebrow}</p>
-          <h1>{config.heroTitle}</h1>
-          <p className="it-tr__lead">{config.heroLead}</p>
-          <div className="it-tr__hero-actions">
-            <button
-              type="button"
-              className="it-tr__btn it-tr__btn--primary"
-              onClick={() => scrollToId(config.heroPrimaryCta.targetId)}
-            >
-              {config.heroPrimaryCta.label}
-              <ArrowDown className="h-4 w-4" aria-hidden />
-            </button>
-            <a
-              className="it-tr__btn it-tr__btn--ghost"
-              href={whatsappUrl(config.heroWhatsappMsg)}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <MessageCircle className="h-4 w-4" aria-hidden />
-              WhatsApp us
-            </a>
+      {config.journeyHero ? (
+        <GroupJourneyPremiumHero
+          image={config.heroImage}
+          hero={config.journeyHero}
+          featureIcons={weekendFeatureIcons}
+          featuresAriaLabel="Why book a weekend trek"
+        />
+      ) : config.saleHero ? (
+        <SalePremiumHero
+          config={config}
+          onExplore={() => scrollToId(config.heroPrimaryCta.targetId)}
+        />
+      ) : config.premiumHero ? (
+        <TrendingPremiumHero
+          config={config}
+          onExplore={() => scrollToId(config.heroPrimaryCta.targetId)}
+        />
+      ) : (
+        <section className="it-tr__hero">
+          <div className="it-tr__hero-media">
+            <Image
+              src={config.heroImage}
+              alt=""
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover"
+            />
           </div>
-        </div>
-      </section>
+          <div className="it-tr__hero-overlay" />
+          <div className="it-tr__hero-inner">
+            <p className="it-tr__eyebrow">{config.heroEyebrow}</p>
+            <h1>{config.heroTitle}</h1>
+            <p className="it-tr__lead">{config.heroLead}</p>
+            <div className="it-tr__hero-actions">
+              <button
+                type="button"
+                className="it-tr__btn it-tr__btn--primary"
+                onClick={() => scrollToId(config.heroPrimaryCta.targetId)}
+              >
+                {config.heroPrimaryCta.label}
+                <ArrowDown className="h-4 w-4" aria-hidden />
+              </button>
+              <a
+                className="it-tr__btn it-tr__btn--ghost"
+                href={whatsappUrl(config.heroWhatsappMsg)}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <MessageCircle className="h-4 w-4" aria-hidden />
+                WhatsApp us
+              </a>
+            </div>
+          </div>
+        </section>
+      )}
 
       <div
         id={`${config.slug}-sticky-sentinel`}
@@ -162,24 +200,36 @@ export default function TrendingLandingPageView({
         aria-hidden
       />
       <nav
-        className={`it-tr__sticky${stickyStuck ? ' is-stuck' : ''}`}
+        className={`it-tr__sticky${stickyStuck ? ' is-stuck' : ''}${
+          hasStickyIcons ? ' it-tr__sticky--icons' : ''
+        }${hasJourneyHero ? ' it-tr__sticky--journey' : ''}`}
         aria-label={`${config.heroTitle} sections`}
       >
-        <div className="it-tr__sticky-shell">
+        <div
+          className={`it-tr__sticky-shell${
+            hasStickyIcons ? ' it-tr__sticky-shell--icons' : ''
+          }`}
+        >
           <p className="it-tr__sticky-label">Jump to</p>
           <div className="it-tr__sticky-track" role="tablist">
-            {config.stickyNav.map((item) => (
-              <button
-                key={item.id}
-                type="button"
-                role="tab"
-                aria-selected={activeId === item.id}
-                className={activeId === item.id ? 'is-active' : undefined}
-                onClick={() => scrollToId(item.id)}
-              >
-                {item.label}
-              </button>
-            ))}
+            {config.stickyNav.map((item) => {
+              const NavIcon = item.icon ? STICKY_NAV_ICONS[item.icon] : null;
+              return (
+                <button
+                  key={item.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={activeId === item.id}
+                  className={activeId === item.id ? 'is-active' : undefined}
+                  onClick={() => scrollToId(item.id)}
+                >
+                  {NavIcon ? (
+                    <NavIcon className="it-tr__sticky-icon" aria-hidden />
+                  ) : null}
+                  {item.label}
+                </button>
+              );
+            })}
           </div>
         </div>
       </nav>

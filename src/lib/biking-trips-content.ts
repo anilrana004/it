@@ -1,4 +1,5 @@
 import { photos } from '@/lib/media';
+import type { GroupJourneyPremiumHeroConfig } from '@/lib/group-journey-hero-types';
 
 export type BikingRegionId = 'ladakh' | 'spiti';
 
@@ -139,9 +140,29 @@ export const bikingDiscoveryOptions = [
 ] as const;
 
 export const bikingStickyNav = [
-  { id: 'explore-biking', label: 'Biking' },
-  ...bikingRegions.map((r) => ({ id: r.id, label: r.shortName })),
+  { id: 'explore-biking', label: 'Biking', icon: 'bike' as const },
+  ...bikingRegions.map((r) => ({ id: r.id, label: r.shortName, icon: 'mountain' as const })),
 ] as const;
+
+export const bikingPremiumHero = {
+  badgePrimary: 'Group rides',
+  badgeSecondary: 'High-altitude highways',
+  badgeIcon: 'bike' as const,
+  titleLine1: 'Biking',
+  titleLine2: 'Trips',
+  leadBefore: 'Ride Ladakh and Spiti with ',
+  leadHighlight: 'support vehicles, experienced marshals and carefully planned itineraries',
+  leadAfter: ' — built for riders who want epic roads without the logistics stress.',
+  primaryCtaLabel: 'Explore Rides',
+  primaryCtaTargetId: 'explore-biking',
+  whatsappMsg: 'Hi Indian Treks! I want to know more about biking trips.',
+  features: [
+    { title: 'Supported Rides', sub: 'Backup vehicle & marshals on every route' },
+    { title: 'High Passes', sub: 'Ladakh & Spiti highway experiences' },
+    { title: 'RE Ready', sub: 'Royal Enfield–friendly logistics' },
+    { title: 'Safe & Trusted', sub: 'Briefings, stays & route planning' },
+  ],
+} satisfies GroupJourneyPremiumHeroConfig;
 
 export function tripsForBikingRegion(regionId: BikingRegionId): BikingTrip[] {
   return bikingTrips.filter((t) => t.regionId === regionId);

@@ -1,7 +1,11 @@
 import { treks, trekDetailPath, type Trek } from '@/lib/data';
 import { getMonthlyBatches, type BatchStatus } from '@/lib/batches';
 import { trekCover, trekOriginalPrice, trekPrice, isExpedition } from '@/lib/catalog';
-import { SPECIAL_PROGRAMS, type SpecialProgramId } from '@/lib/special-programs-content';
+import {
+  BEGINNER_FRIENDLY_TREK_IDS,
+  SPECIAL_PROGRAMS,
+  type SpecialProgramId,
+} from '@/lib/special-programs-content';
 import { photos } from '@/lib/media';
 
 export const MONTHS = [
@@ -53,7 +57,7 @@ export const REGIONS: { id: Trek['region']; label: string }[] = [
 ];
 
 export const EXPERIENCES: { id: SpecialProgramId; label: string }[] = [
-  { id: 'beginner', label: 'Beginner Treks' },
+  { id: 'beginner', label: 'Beginner-Friendly Treks' },
   { id: 'family', label: 'Family Treks' },
   { id: 'women-only', label: 'Women-Only Treks' },
   { id: 'senior-citizen', label: 'Senior Treks' },
@@ -207,12 +211,12 @@ function altitudeFt(maxAltitude: string) {
 }
 
 export function getTopCategories(listings: ListingTrek[]): TopCategory[] {
-  const easy = listings.filter(
-    (t) => t.difficulty === 'Easy' || t.difficulty === 'Easy to Moderate',
-  ).length;
+  const beginner = listings.filter((t) => t.experiences.includes('beginner')).length;
   const high = listings.filter((t) => altitudeFt(t.maxAltitude) >= 14000).length;
   const autumn = listings.filter((t) => t.seasons.includes('autumn')).length;
-  const winter = listings.filter((t) => t.seasons.includes('winter')).length;
+  const winter = listings.filter((t) =>
+    DECEMBER_TOP_TREK_IDS.includes(t.id as (typeof DECEMBER_TOP_TREK_IDS)[number]),
+  ).length;
   const uk = listings.filter((t) => t.region === 'uttarakhand').length;
   const hp = listings.filter((t) => t.region === 'himachal').length;
 
@@ -227,11 +231,11 @@ export function getTopCategories(listings: ListingTrek[]): TopCategory[] {
     },
     {
       id: 'beginners',
-      title: 'Best for Beginners',
+      title: 'Best Beginner-Friendly Treks',
       subtitle: 'Gentle climbs, big mountain views',
       href: '/treks?experience=beginner',
       image: photos.triund,
-      countLabel: `${easy}+ treks`,
+      countLabel: `${beginner} treks`,
     },
     {
       id: 'high',
@@ -245,9 +249,9 @@ export function getTopCategories(listings: ListingTrek[]): TopCategory[] {
       id: 'winter',
       title: 'Top Winter Treks',
       subtitle: 'Dec · Jan · Feb snow trails',
-      href: '/treks?season=winter',
+      href: '/treks?month=11',
       image: photos.snow,
-      countLabel: `${winter} options`,
+      countLabel: `${winter} treks`,
     },
     {
       id: 'uttarakhand',
@@ -299,6 +303,17 @@ export const AUTUMN_TOP_TREK_IDS = [
   'ali-bedni-bugyal',
 ] as const;
 
+/** Featured December / peak-winter departures on the treks listing. */
+export const DECEMBER_TOP_TREK_IDS = [
+  'kedarkantha',
+  'chopta-tungnath',
+  'dayara-bugyal',
+  'kuari-pass',
+  'mcleodganj-trek',
+  'nag-tibba',
+  'pangarchulla',
+] as const;
+
 /** Per-month display order — varied so each autumn month feels fresh in filters. */
 export const AUTUMN_MONTH_ORDERS: Record<number, readonly string[]> = {
   8: [
@@ -339,6 +354,62 @@ export const AUTUMN_MONTH_ORDERS: Record<number, readonly string[]> = {
   ],
 };
 
+/** Editorial ordering when a month has a hand-picked shortlist; otherwise all open-month treks are shown. */
+export const MONTH_CURATED_TREK_IDS: Partial<Record<number, readonly string[]>> = {
+  0: DECEMBER_TOP_TREK_IDS,
+  1: DECEMBER_TOP_TREK_IDS,
+  2: DECEMBER_TOP_TREK_IDS,
+  8: AUTUMN_MONTH_ORDERS[8],
+  9: AUTUMN_MONTH_ORDERS[9],
+  10: AUTUMN_MONTH_ORDERS[10],
+  11: DECEMBER_TOP_TREK_IDS,
+};
+
+export type MonthViewContent = {
+  month: number;
+  monthName: string;
+  heading: string;
+  sectionTitle: string;
+  info: string;
+  href: string;
+};
+
+export function getMonthView(month: number): MonthViewContent {
+  const monthName = MONTHS[month];
+  return {
+    month,
+    monthName,
+    heading: monthName,
+    sectionTitle: `Best treks in ${monthName}`,
+    info: `Handpicked Himalayan departures running in ${monthName} — fixed batches, open trails, and routes matched to this month’s weather windows.`,
+    href: `/treks?month=${month}`,
+  };
+}
+
+/** Treks to display for a month filter — curated order when available, else rating-sorted open-month list. */
+export function resolveMonthTreks(month: number, monthFiltered: ListingTrek[]): ListingTrek[] {
+  const curated = MONTH_CURATED_TREK_IDS[month];
+  if (curated?.length) {
+    const map = new Map(monthFiltered.map((t) => [t.id, t]));
+    const ordered = curated.map((id) => map.get(id)).filter(Boolean) as ListingTrek[];
+    if (ordered.length > 0) return ordered;
+  }
+
+  return monthFiltered
+    .slice()
+    .sort((a, b) => Number(b.rating) - Number(a.rating) || a.title.localeCompare(b.title));
+}
+
+export function buildMonthCuratedSection(month: number): CuratedSection {
+  const view = getMonthView(month);
+  return {
+    id: `month-${month}`,
+    title: view.sectionTitle,
+    info: view.info,
+    href: view.href,
+  };
+}
+
 /** Editorial sections inspired by Indiahikes upcoming-treks — Indian Treks content. */
 export const CURATED_SECTIONS: CuratedSection[] = [
   {
@@ -351,11 +422,11 @@ export const CURATED_SECTIONS: CuratedSection[] = [
   },
   {
     id: 'beginners',
-    title: 'Best Treks for Beginners',
+    title: 'Best Beginner-Friendly Treks',
     info:
-      'These treks are perfect if you are stepping into the Himalayas for the first time. Well-paced trails, gentle climbs, and strong trail support make them ideal for first-timers, families, and anyone building confidence outdoors.',
+      'These are our recommended first Himalayan treks — well-paced trails, clear daily goals, and scenery that makes the effort feel worthwhile. Kedarkantha, Chopta–Tungnath–Chandrashila, Dayara Bugyal, Nag Tibba, Triund–Mcleodganj, Har Ki Dun, Ali Bedni Bugyal, Phulara Ridge, Kuari Pass, Gulabi Kantha, Bhrigu Lake, Sar Pass, and Pangarchulla are the only routes in this collection.',
     href: '/treks?experience=beginner',
-    filter: (t) => t.experiences.includes('beginner'),
+    trekIds: [...BEGINNER_FRIENDLY_TREK_IDS],
   },
   {
     id: 'high-altitude',
@@ -384,9 +455,9 @@ export const CURATED_SECTIONS: CuratedSection[] = [
     id: 'winter',
     title: 'Top Treks in December, January & February',
     info:
-      'Winter trekking in the Indian Himalayas has become a mainstream favourite. Snow trails, frozen meadows, and clear ridgeline views make Kedarkantha, Kuari Pass, and Chopta standout choices in peak winter.',
-    href: '/treks?season=winter',
-    filter: (t) => t.seasons.includes('winter') || t.openMonths.some((m) => [11, 0, 1, 2].includes(m)),
+      'Winter trekking in the Indian Himalayas has become a mainstream favourite. Kedarkantha, Chopta–Tungnath, Dayara Bugyal, Kuari Pass, Triund–Mcleodganj, Nag Tibba, and Pangarchulla are our top December departures — snow trails, frozen meadows, and clear ridgeline views.',
+    href: '/treks?month=11',
+    trekIds: [...DECEMBER_TOP_TREK_IDS],
   },
   {
     id: 'himachal',
@@ -416,6 +487,10 @@ export function resolveCuratedTreks(
         : AUTUMN_TOP_TREK_IDS;
     const map = new Map(all.map((t) => [t.id, t]));
     list = order.map((id) => map.get(id)).filter(Boolean) as ListingTrek[];
+    preserveOrder = true;
+  } else if (section.id === 'winter') {
+    const map = new Map(all.map((t) => [t.id, t]));
+    list = DECEMBER_TOP_TREK_IDS.map((id) => map.get(id)).filter(Boolean) as ListingTrek[];
     preserveOrder = true;
   } else if (section.trekIds?.length) {
     const map = new Map(all.map((t) => [t.id, t]));

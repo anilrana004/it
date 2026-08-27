@@ -135,6 +135,9 @@ html.it-chrome-hidden .it-bk__sticky {
   cursor: pointer;
   white-space: nowrap;
   transition: background 0.2s ease, color 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
 }
 
 .it-bk__sticky-track button:hover {
@@ -158,6 +161,33 @@ html.it-chrome-hidden .it-bk__sticky {
   border-radius: 999px;
   background: var(--bp-green);
   transform: translateX(-50%);
+}
+
+.it-bk__sticky-shell--icons {
+  width: min(920px, 100%);
+}
+
+.it-bk__sticky--icons {
+  margin-top: -2.35rem;
+}
+
+@media (min-width: 1024px) {
+  .it-bk__sticky--icons {
+    margin-top: -2.75rem;
+  }
+}
+
+.it-bk__sticky-icon {
+  width: 0.85rem;
+  height: 0.85rem;
+  flex-shrink: 0;
+  color: #8a968e;
+  transition: color 0.2s ease;
+}
+
+.it-bk__sticky-track button:hover .it-bk__sticky-icon,
+.it-bk__sticky-track button.is-active .it-bk__sticky-icon {
+  color: var(--bp-green);
 }
 
 @media (max-width: 639px) {

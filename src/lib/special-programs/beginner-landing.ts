@@ -12,6 +12,51 @@ import { photos } from '@/lib/media';
 
 export const beginnerLanding: SplLandingContent = {
   programId: 'beginner',
+  premiumHero: {
+    badge: 'Special programmes',
+    titleMain: 'Special Treks for',
+    titleAccent: 'Beginners',
+    tagline: {
+      before: 'Start simple. Walk ',
+      highlight: 'strong',
+      after: '. Fall in love with the mountains.',
+    },
+    lead: 'First Himalayan treks chosen for clear trails, gradual climbs, and leaders who know how to turn first-timers into confident mountain travellers.',
+    trustLine: 'Trusted by 30,000+ first-time trekkers across India',
+    avatars: [
+      'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=80&h=80&q=80',
+      'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?ixlib=rb-4.0.3&auto=format&fit=crop&w=80&h=80&q=80',
+      'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=80&h=80&q=80',
+      'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-4.0.3&auto=format&fit=crop&w=80&h=80&q=80',
+    ],
+    pathTagline: 'One step at a time, all the way up.',
+    panelKicker: 'Built for first steps',
+    panel: [
+      {
+        title: 'Easy & easy-to-moderate trail grades',
+        sub: 'Clear paths, gradual climbs & scenic early rewards',
+      },
+      {
+        title: 'Experienced leaders who teach on trail',
+        sub: 'Packing, pacing & altitude basics explained as you go',
+      },
+      {
+        title: 'A supportive group for first-timers',
+        sub: 'No ego climbs — learn together, celebrate together',
+      },
+      {
+        title: 'Shorter days & well-marked routes',
+        sub: 'Ideal stepping stones before bigger adventures',
+      },
+    ],
+    panelPromise: 'Curious. Supported. Summit-ready. That’s the Indian Treks promise.',
+    features: [
+      { title: 'Handpicked Treks', sub: 'Beginner-friendly UK & HP routes' },
+      { title: 'Safety First', sub: '24/7 support, medical backup & certified guides' },
+      { title: 'Learn As You Trek', sub: 'Leaders who build confidence on trail' },
+      { title: 'Responsible Travel', sub: 'Eco-conscious treks that give back to the mountains' },
+    ],
+  },
   hero: {
     titleBefore: 'Special Treks',
     titleEm: 'for Beginners',

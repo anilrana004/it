@@ -6,6 +6,7 @@ import {
   mapsEmbedUrl,
   mailtoUrl,
   telUrl,
+  whatsappChannelUrl,
   whatsappUrl,
 } from '@/lib/contact';
 import {
@@ -185,11 +186,28 @@ export default function ContactPageView() {
               <i className="fa-solid fa-phone" aria-hidden />
             </div>
             <div>
-              <div className="ct-card-label">Call Us</div>
-              <div className="ct-card-val">
-                <a href={telUrl()}>{CONTACT.phoneDisplay}</a>
+              <div className="ct-card-label">Booking</div>
+              <div className="ct-card-val ct-card-val--stack">
+                {CONTACT.phones.booking.map((phone) => (
+                  <a key={phone.tel} href={telUrl(phone.tel)}>
+                    {phone.display}
+                  </a>
+                ))}
               </div>
               <div className="ct-card-sub">Available {CONTACT.hours}</div>
+            </div>
+          </div>
+
+          <div className="ct-card">
+            <div className="ct-card-ico">
+              <i className="fa-solid fa-headset" aria-hidden />
+            </div>
+            <div>
+              <div className="ct-card-label">Support</div>
+              <div className="ct-card-val">
+                <a href={telUrl(CONTACT.phones.support.tel)}>{CONTACT.phones.support.display}</a>
+              </div>
+              <div className="ct-card-sub">On-trip help &amp; post-booking queries</div>
             </div>
           </div>
 
@@ -199,23 +217,33 @@ export default function ContactPageView() {
             </div>
             <div>
               <div className="ct-card-label">Email Us</div>
-              <div className="ct-card-val">
-                <a href={mailtoUrl('Enquiry from Indian Treks website')}>{CONTACT.email}</a>
+              <div className="ct-card-val ct-card-val--stack">
+                <a href={mailtoUrl('Enquiry from Indian Treks website', undefined, CONTACT.emails.primary)}>
+                  {CONTACT.emails.primary}
+                </a>
+                <a href={mailtoUrl(undefined, undefined, CONTACT.emails.vivek)}>
+                  {CONTACT.emails.vivek}
+                </a>
+                <a href={mailtoUrl(undefined, undefined, CONTACT.emails.explore)}>
+                  {CONTACT.emails.explore}
+                </a>
               </div>
               <div className="ct-card-sub">{CONTACT.replySla}</div>
             </div>
           </div>
 
-          <div className="ct-card">
-            <div className="ct-card-ico">
-              <i className="fa-solid fa-map-pin" aria-hidden />
+          {CONTACT.offices.map((office) => (
+            <div key={office.id} className="ct-card">
+              <div className="ct-card-ico">
+                <i className="fa-solid fa-map-pin" aria-hidden />
+              </div>
+              <div>
+                <div className="ct-card-label">{office.label}</div>
+                <div className="ct-card-val">{office.line1}</div>
+                <div className="ct-card-sub">{office.line2}</div>
+              </div>
             </div>
-            <div>
-              <div className="ct-card-label">Our Location</div>
-              <div className="ct-card-val">{CONTACT.addressLine1}</div>
-              <div className="ct-card-sub">{CONTACT.addressLine2}</div>
-            </div>
-          </div>
+          ))}
 
           <div className="ct-card">
             <div className="ct-card-ico">
@@ -488,7 +516,7 @@ export default function ContactPageView() {
                   />
                 </div>
                 <div className="ct-map-pill">
-                  <i className="fa-solid fa-location-dot" aria-hidden /> Sector 62, Noida
+                  <i className="fa-solid fa-location-dot" aria-hidden /> {CONTACT.offices[0].line2}
                 </div>
               </div>
 
@@ -498,16 +526,42 @@ export default function ContactPageView() {
                 </div>
                 <div className="ct-wa-text">
                   <strong>Chat on WhatsApp</strong>
-                  <span>Quick replies, 7 days a week</span>
+                  <span>Quick replies — booking, support &amp; trip planning</span>
                 </div>
-                <a
-                  href={whatsappUrl(selectedTeam.waPrefill)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="ct-wa-btn"
-                >
-                  <i className="fa-brands fa-whatsapp" aria-hidden /> Chat Now
-                </a>
+                <div className="ct-wa-links">
+                  <a
+                    href={whatsappUrl(selectedTeam.waPrefill)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="ct-wa-btn"
+                  >
+                    <i className="fa-brands fa-whatsapp" aria-hidden /> Book on WhatsApp
+                  </a>
+                  <a
+                    href={whatsappChannelUrl('vivek', selectedTeam.waPrefill)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="ct-wa-btn ct-wa-btn--ghost"
+                  >
+                    {CONTACT.whatsapp.vivek.label}
+                  </a>
+                  <a
+                    href={CONTACT.whatsapp.business.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="ct-wa-btn ct-wa-btn--ghost"
+                  >
+                    {CONTACT.whatsapp.business.label}
+                  </a>
+                  <a
+                    href={whatsappChannelUrl('support', selectedTeam.waPrefill)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="ct-wa-btn ct-wa-btn--ghost"
+                  >
+                    {CONTACT.whatsapp.support.label}
+                  </a>
+                </div>
               </div>
 
               <div className="ct-trust">

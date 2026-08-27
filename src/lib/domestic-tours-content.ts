@@ -231,10 +231,31 @@ export const domesticPackages: DomesticPackage[] = [
 ];
 
 export const domesticStats = [
-  { label: 'Incredible Destinations', value: '6+' },
-  { label: 'Curated Packages', value: '50+' },
-  { label: 'Travel Rating', value: '4.8/5' },
-  { label: 'Flexible Planning', value: '100%' },
+  { label: 'Incredible Destinations', value: '6+', sub: 'Across India' },
+  { label: 'Curated Packages', value: '50+', sub: 'Handpicked routes' },
+  { label: 'Traveller Rating', value: '4.8/5', sub: 'Verified reviews' },
+  { label: 'Flexible & Safe', value: '100%', sub: 'Your pace, our care' },
+] as const;
+
+export const domesticHeroTrust = [
+  { title: 'Customised', sub: 'Just for you' },
+  { title: 'Trusted', sub: 'by 80K+ Travellers' },
+  { title: '24/7 Support', sub: "We're here" },
+  { title: 'Responsible', sub: 'Eco travel' },
+] as const;
+
+export const domesticSearchWhen = [
+  'Flexible dates',
+  'Within 30 days',
+  '1–3 months ahead',
+  'Peak season (Oct–Mar)',
+] as const;
+
+export const domesticSearchWho = [
+  'Solo traveller',
+  'Couple',
+  'Family (3–5)',
+  'Group (6+)',
 ] as const;
 
 export const domesticMoodCards = [

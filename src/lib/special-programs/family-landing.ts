@@ -11,6 +11,51 @@ import { photos } from '@/lib/media';
 
 export const familyLanding: SplLandingContent = {
   programId: 'family',
+  premiumHero: {
+    badge: 'Special programmes',
+    titleMain: 'Special Treks for',
+    titleAccent: 'Families',
+    tagline: {
+      before: 'Walk together. Grow ',
+      highlight: 'together',
+      after: '. Remember it forever.',
+    },
+    lead: 'Family-friendly Himalayan journeys planned for mixed ages — with manageable trails, engaging landscapes, and the kind of shared adventure that becomes a family story.',
+    trustLine: 'Trusted by 15,000+ families across India',
+    avatars: [
+      'https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&auto=format&fit=crop&w=80&h=80&q=80',
+      'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=80&h=80&q=80',
+      'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&auto=format&fit=crop&w=80&h=80&q=80',
+      'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=80&h=80&q=80',
+    ],
+    pathTagline: 'Together on trail, together in memory.',
+    panelKicker: 'Built for all ages',
+    panel: [
+      {
+        title: 'Age-aware route recommendations',
+        sub: 'Trails matched to children, parents & grandparents',
+      },
+      {
+        title: 'Experienced leaders with family-first culture',
+        sub: 'Patient pacing, clear briefings & camp comfort for all',
+      },
+      {
+        title: 'A group dynamic kids and parents both enjoy',
+        sub: 'Shared milestones everyone can celebrate together',
+      },
+      {
+        title: 'Meals, camps & days planned for mixed energy',
+        sub: 'Sensible distances, engaging scenery & rest built in',
+      },
+    ],
+    panelPromise: 'Connected. Safe. Unforgettable. That’s the Indian Treks promise.',
+    features: [
+      { title: 'Handpicked Treks', sub: 'Family-friendly routes across UK & HP' },
+      { title: 'Safety First', sub: '24/7 support, medical backup & certified guides' },
+      { title: 'All Ages Welcome', sub: 'Routes planned for mixed fitness & ages' },
+      { title: 'Responsible Travel', sub: 'Eco-conscious treks that give back to the mountains' },
+    ],
+  },
   hero: {
     titleBefore: 'Special Treks',
     titleEm: 'for Families',

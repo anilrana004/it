@@ -15,6 +15,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
 import TrekInfoCard from '@/components/treks/TrekInfoCard';
 import WhyChooseVideo from '@/components/WhyChooseVideo';
+import SpecialProgramPremiumHero from '@/components/special-programs/SpecialProgramPremiumHero';
 import { CONTACT, telUrl, whatsappUrl } from '@/lib/contact';
 import {
   getSpecialProgram,
@@ -40,55 +41,65 @@ const categories = [
 
 export default function SpecialProgramLandingView({ content }: { content: SplLandingContent }) {
   const program = getSpecialProgram(content.programId)!;
-  const list = treksForProgram(program).slice(0, 6).map(toListingTrek);
+  const matched = treksForProgram(program);
+  const shown = content.programId === 'beginner' ? matched : matched.slice(0, 6);
+  const list = shown.map(toListingTrek);
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [showAllReviews, setShowAllReviews] = useState(false);
   const visibleReviews = showAllReviews ? content.reviews.items : content.reviews.items.slice(0, 4);
 
   return (
     <div className="it-spl">
-      <section className="it-spl__hero">
-        <div className="it-spl__hero-media">
-          <Image src={program.heroImage} alt={program.title} fill sizes="100vw" priority />
-        </div>
-        <div className="it-spl__hero-overlay" />
-
-        <div className="it-spl__hero-inner">
-          <div className="it-spl__hero-copy">
-            <p className="it-spl__eyebrow">Special programmes</p>
-            <h1>
-              {content.hero.titleBefore} <em>{content.hero.titleEm}</em>
-              {content.hero.titleAfter ? ` ${content.hero.titleAfter}` : null}
-            </h1>
-            <p className="it-spl__tagline">{content.hero.tagline}</p>
-            <p className="it-spl__lead">{content.hero.lead}</p>
-            <div className="it-spl__hero-actions">
-              <a
-                className="it-spl__btn it-spl__btn--primary"
-                href={whatsappUrl(content.hero.whatsappMsg)}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                WhatsApp us
-              </a>
-              <a className="it-spl__btn it-spl__btn--ghost" href={telUrl()}>
-                Call {CONTACT.phoneDisplay}
-              </a>
-            </div>
+      {content.premiumHero ? (
+        <SpecialProgramPremiumHero
+          image={program.heroImage}
+          hero={content.premiumHero}
+          whatsappMsg={content.hero.whatsappMsg}
+        />
+      ) : (
+        <section className="it-spl__hero">
+          <div className="it-spl__hero-media">
+            <Image src={program.heroImage} alt={program.title} fill sizes="100vw" priority />
           </div>
+          <div className="it-spl__hero-overlay" />
 
-          <aside className="it-spl__hero-card">
-            <p className="it-spl__hero-card-kicker">{content.hero.asideKicker}</p>
-            <h2>{content.hero.asideTitle}</h2>
-            <p>{content.hero.asideBody}</p>
-            <ul>
-              {content.hero.asideBullets.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-          </aside>
-        </div>
-      </section>
+          <div className="it-spl__hero-inner">
+            <div className="it-spl__hero-copy">
+              <p className="it-spl__eyebrow">Special programmes</p>
+              <h1>
+                {content.hero.titleBefore} <em>{content.hero.titleEm}</em>
+                {content.hero.titleAfter ? ` ${content.hero.titleAfter}` : null}
+              </h1>
+              <p className="it-spl__tagline">{content.hero.tagline}</p>
+              <p className="it-spl__lead">{content.hero.lead}</p>
+              <div className="it-spl__hero-actions">
+                <a
+                  className="it-spl__btn it-spl__btn--primary"
+                  href={whatsappUrl(content.hero.whatsappMsg)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  WhatsApp us
+                </a>
+                <a className="it-spl__btn it-spl__btn--ghost" href={telUrl()}>
+                  Call {CONTACT.phoneDisplay}
+                </a>
+              </div>
+            </div>
+
+            <aside className="it-spl__hero-card">
+              <p className="it-spl__hero-card-kicker">{content.hero.asideKicker}</p>
+              <h2>{content.hero.asideTitle}</h2>
+              <p>{content.hero.asideBody}</p>
+              <ul>
+                {content.hero.asideBullets.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </aside>
+          </div>
+        </section>
+      )}
 
       <section className="it-spl__section">
         <div className="it-spl__container it-spl__story">

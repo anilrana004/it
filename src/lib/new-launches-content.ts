@@ -51,15 +51,37 @@ const tripSections = launchRegions.map((region) => ({
   trips: tripsForRegion(region.id).map(toLaunchTrip),
 }));
 
+export const newLaunchesHeroStats = [
+  { value: `${NEW_LAUNCH_IDS.size}+`, label: 'Fresh Routes' },
+  { value: 'NEW', label: 'Latest Additions' },
+  { value: '4.8/5', label: 'Early Reviews' },
+  { value: '100%', label: 'Group Support' },
+] as const;
+
+export const newLaunchesHeroFeatures = [
+  { title: 'Just Launched', sub: 'Brand-new Meghalaya & Northeast circuits' },
+  { title: 'All-Girls Batches', sub: 'Dedicated women-only backpacking departures' },
+  { title: 'Winter Routes', sub: 'Spiti & festive season additions' },
+  { title: 'Social Travel', sub: 'Flexible backpacking with free time' },
+] as const;
+
 export const newLaunchesLandingConfig: TrendingLandingConfig = {
   slug: 'new-launches',
-  heroImage: photos.himachal,
+  heroImage: photos.snow,
   heroEyebrow: 'Fresh routes · Live now',
   heroTitle: 'New Launches',
   heroLead:
     'Our latest backpacking circuits — new Northeast trails, all-girls batches and winter Spiti — designed for flexible, social group travel.',
   heroPrimaryCta: { label: 'See New Trips', targetId: 'explore-launches' },
   heroWhatsappMsg: 'Hi Indian Treks! I want details on your newest backpacking launches.',
+  premiumHero: {
+    titleMain: 'New',
+    titleAccent: 'Launches',
+    whatsappSub: 'Ask about new routes',
+    badgeIcon: 'megaphone',
+    stats: newLaunchesHeroStats,
+    features: newLaunchesHeroFeatures,
+  },
   stickyNav: [
     { id: 'explore-launches', label: 'New' },
     ...launchRegions.map((r) => ({ id: r.id, label: r.shortName })),

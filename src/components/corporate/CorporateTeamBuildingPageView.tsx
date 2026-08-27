@@ -16,6 +16,7 @@ import {
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
 import TrekInfoCard from '@/components/treks/TrekInfoCard';
+import CorporateTeamBuildingHero from '@/components/corporate/CorporateTeamBuildingHero';
 import { CONTACT, mailtoUrl, telUrl, whatsappUrl } from '@/lib/contact';
 import {
   CORPORATE_TREK_IDS,
@@ -24,7 +25,6 @@ import {
   corporateBrands,
   corporateDifficulties,
   corporateGallery,
-  corporateHeroImage,
   corporateProgrammes,
   corporateReviews,
   corporateWhyBetter,
@@ -107,34 +107,7 @@ export default function CorporateTeamBuildingPageView() {
 
   return (
     <div className="it-corp">
-      {/* Hero */}
-      <section className="it-corp__hero">
-        <div className="it-corp__hero-media" aria-hidden>
-          <Image src={corporateHeroImage} alt="" fill priority sizes="100vw" />
-        </div>
-        <div className="it-corp__hero-shade" />
-        <div className="it-corp__hero-inner">
-          <p className="it-corp__eyebrow">Learning programmes</p>
-          <h1>Team Building Treks for Companies</h1>
-          <p className="it-corp__hero-lead">
-            Elevating team bonding and collaboration through adventure
-          </p>
-          <div className="it-corp__hero-actions">
-            <button type="button" className="it-corp__btn it-corp__btn--ghost" onClick={() => setShowVideo(true)}>
-              <i className="fa-solid fa-play" aria-hidden />
-              Play video
-            </button>
-            <a
-              className="it-corp__btn it-corp__btn--primary"
-              href={whatsappUrl('Hi Indian Treks! I want to plan a corporate team-building trek.')}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Talk to our team
-            </a>
-          </div>
-        </div>
-      </section>
+      <CorporateTeamBuildingHero onPlayVideo={() => setShowVideo(true)} />
 
       {showVideo ? (
         <section className="it-corp__section it-corp__section--soft">

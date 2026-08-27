@@ -734,3 +734,87 @@ export const bucketListSaleArticles: LandingArticle[] = [
         image: photos.chopta,
       },
 ];
+
+export const treksReviews: LandingReview[] = [
+  {
+    id: 'trk-priya',
+    name: 'Priya Sharma',
+    batch: 'Kedarkantha · Jan 2026',
+    short: 'Our first winter trek — smooth logistics and an incredible summit sunrise.',
+    full: 'Our first winter trek — smooth logistics and an incredible summit sunrise. The group size was perfect, leaders were patient with first-timers, and every camp was well organised. Already booked Valley of Flowers for monsoon.',
+  },
+  {
+    id: 'trk-rahul',
+    name: 'Rahul Verma',
+    batch: 'Kuari Pass · Oct 2025',
+    short: 'Crisp autumn views and a full group from day one. Leaders knew the trail inside out.',
+    full: 'Crisp autumn views and a full group from day one. Leaders knew the trail inside out, camps were comfortable, and the Book Now Pay Later option made planning easier for our office group.',
+  },
+  {
+    id: 'trk-rita',
+    name: 'Rita Kapoor',
+    batch: 'Triund · Weekend batch',
+    short: 'Perfect first mountain weekend — campsite vibes and Dhauladhar views.',
+    full: 'Perfect first mountain weekend — campsite vibes and Dhauladhar views. Pickup was on time, the group was friendly, and we were back for Monday without feeling rushed. Ideal introduction to trekking with Indian Treks.',
+  },
+  {
+    id: 'trk-sameer',
+    name: 'Sameer Joshi',
+    batch: 'Nag Tibba · 3D/2N',
+    short: 'Short Garhwal escape with a proper summit feel. Great for first-timers.',
+    full: 'Short Garhwal escape with a proper summit feel. Great for first-timers. Leaders paced us well, food was solid, and the views from the top made the climb worth every step.',
+  },
+  {
+    id: 'trk-karan',
+    name: 'Karan Malhotra',
+    batch: 'Hampta Pass · Jun 2025',
+    short: 'Varied terrain every day and a great group vibe — the classic crossover trek done right.',
+    full: 'Varied terrain every day and a great group vibe — the classic crossover trek done right. Food was better than expected, river crossings were supervised well, and the Spiti-side landscapes were the highlight of my year.',
+  },
+  {
+    id: 'trk-divya',
+    name: 'Divya Nair',
+    batch: 'Valley of Flowers · Sep batch',
+    short: 'Fixed dates, no last-minute chaos — meadows in full bloom and a well-led group.',
+    full: 'Fixed dates, no last-minute chaos — meadows in full bloom and a well-led group. Indian Treks kept us updated on weather and packing till departure day. The September window was perfect.',
+  },
+];
+
+export const treksArticles: LandingArticle[] = [
+  firstTrek
+    ? toArticle(
+        firstTrek,
+        'Training, packing and altitude basics before your first Himalayan trek.',
+      )
+    : {
+        href: '/blog',
+        title: '5 Essential Tips for Your First Himalayan Trek',
+        read: '6 min read',
+        excerpt: 'Prepare well before you go.',
+        image: photos.uttarakhand,
+      },
+  julyTreks
+    ? toArticle(
+        julyTreks,
+        'Monsoon landscapes, rain-shadow Spiti and lush Uttarakhand routes worth considering.',
+      )
+    : {
+        href: '/blog',
+        title: 'Best Himalayan Treks to Do in July',
+        read: '6 min read',
+        excerpt: 'Where to go when the mountains turn green.',
+        image: photos.snow,
+      },
+  vofGuide
+    ? toArticle(
+        vofGuide,
+        'Season windows, fitness prep and what to expect on one of Uttarakhand’s most-loved trails.',
+      )
+    : {
+        href: '/blog',
+        title: 'Complete Guide to Valley of Flowers Trek 2026',
+        read: '8 min read',
+        excerpt: 'Plan the meadows trek with confidence.',
+        image: photos.chopta,
+      },
+];

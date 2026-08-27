@@ -14,6 +14,38 @@ export const campusLanding: LpLandingContent = {
     secondaryCta: 'Play video',
     youtubeId: '9vb3QfUth58',
   },
+  premiumHero: {
+    badge: 'Student program',
+    titleMain: 'Campus Ambassador',
+    titleAccent: 'Program',
+    lead: 'Lead your campus travel community, earn trek credits, and grow real-world skills with Indian Treks.',
+    trustLine: 'Trusted by student leaders across India',
+    avatars: [
+      'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?ixlib=rb-4.0.3&auto=format&fit=crop&w=80&h=80&q=80',
+      'https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=80&h=80&q=80',
+      'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=80&h=80&q=80',
+      'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-4.0.3&auto=format&fit=crop&w=80&h=80&q=80',
+    ],
+    tagline: 'Lead Your Campus, Reach the Summit',
+    panel: [
+      { title: 'Real Travel Rewards', sub: 'Earn trek credits for every referral' },
+      { title: 'Leadership Skills', sub: 'Run events and mentor peers on campus' },
+      { title: 'Brand Mentorship', sub: 'Learn from trip leaders and the team' },
+      { title: 'Nationwide Network', sub: 'Connect with ambassadors across India' },
+    ],
+    stats: [
+      { value: '100+ Campus Ambassadors', sub: 'Active across India' },
+      { value: '4.9/5 Program Rating', sub: 'By student leaders' },
+      { value: '20+ Partner Colleges', sub: 'Building explorer communities' },
+      { value: '100% Remote Friendly', sub: 'Work around your schedule' },
+    ],
+    features: [
+      { title: 'Flexible Commitment', sub: 'Balance academics and ambassadorship' },
+      { title: 'Any College', sub: 'Pan-India campuses welcome' },
+      { title: 'Expert Mentorship', sub: 'Guidance from the Indian Treks team' },
+      { title: 'Trek Credits', sub: 'Redeem rewards on Himalayan journeys' },
+    ],
+  },
   brands: {
     kicker: 'Campuses we work with',
     title: 'Trusted by Student Leaders Across the Country',

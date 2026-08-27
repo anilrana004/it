@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { MapPin, Star, Clock, Heart, Camera, Home, CheckCircle2, ArrowRight } from 'lucide-react';
+import { mailtoUrl } from '@/lib/contact';
 
 const trekkingPkg = [
   { name: 'Chopta Tungnath Trek', loc: 'Uttarakhand  -  Mini Switzerland', dur: '4D/3N', price: 18500, tag: 'Most Romantic', img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', href: '/treks/chopta-tungnath' },
@@ -144,7 +145,7 @@ export default function HoneymoonPage() {
           <p className="text-white/80 text-sm lg:text-base mb-6 max-w-lg mx-auto">Let us craft the perfect honeymoon itinerary for you.</p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <a href="tel:+919999999999" className="inline-flex items-center gap-2 bg-white text-rose-600 font-semibold px-8 py-3 rounded-full hover:bg-gray-100 transition-all text-sm">Call +91 99 99 99 99 99</a>
-            <a href="mailto:hello@indiantreks.com" className="inline-flex items-center gap-2 bg-white/10 border border-white/30 text-white font-semibold px-8 py-3 rounded-full hover:bg-white/20 transition-all text-sm">Email Us</a>
+            <a href={mailtoUrl('Honeymoon trip enquiry')} className="inline-flex items-center gap-2 bg-white/10 border border-white/30 text-white font-semibold px-8 py-3 rounded-full hover:bg-white/20 transition-all text-sm">Email Us</a>
           </div>
         </div>
       </div>

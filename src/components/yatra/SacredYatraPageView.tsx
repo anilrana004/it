@@ -1,18 +1,15 @@
 'use client';
 
 import { useEffect, useState, type CSSProperties } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
 import {
-  ArrowDown,
   ArrowRight,
   Check,
+  Landmark,
+  Map,
   MapPin,
-  MessageCircle,
   Sparkles,
 } from 'lucide-react';
 import { DESK_HEADER_H, MOBILE_HEADER_H } from '@/lib/layout';
-import { photos } from '@/lib/media';
 import { whatsappUrl } from '@/lib/contact';
 import {
   sacredYatraDetailHref,
@@ -28,7 +25,15 @@ import {
 } from '@/lib/landing-social-content';
 import LandingReviewsBlog from '@/components/landing/LandingReviewsBlog';
 import LandingTripCard from '@/components/landing/LandingTripCard';
+import SacredYatraHero, { TrishulIcon } from '@/components/yatra/SacredYatraHero';
 import './sacred-yatra.css';
+
+const STICKY_NAV_ICONS = {
+  landmark: Landmark,
+  temple: Landmark,
+  route: Map,
+  trishul: TrishulIcon,
+} as const;
 
 function scrollToId(id: string) {
   const el = document.getElementById(id);
@@ -115,68 +120,32 @@ export default function SacredYatraPageView() {
 
   return (
     <div className="it-sy" style={pageVars}>
-      <section className="it-sy__hero">
-        <div className="it-sy__hero-media">
-          <Image
-            src={photos.yatra}
-            alt=""
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover"
-          />
-        </div>
-        <div className="it-sy__hero-overlay" />
-        <div className="it-sy__hero-inner">
-          <p className="it-sy__eyebrow">Spiritual Trips · Himalayan shrines</p>
-          <h1>Sacred Yatras</h1>
-          <p className="it-sy__lead">
-            Walk the ancient pilgrimage paths of Uttarakhand — Char Dham, Do Dham, Kedarnath,
-            Chopta–Tungnath circuits and Panch Kedar — with guided logistics and devotion-first
-            pacing.
-          </p>
-          <div className="it-sy__hero-actions">
-            <button
-              type="button"
-              className="it-sy__btn it-sy__btn--primary"
-              onClick={() => scrollToId('explore-yatra')}
-            >
-              Explore Yatras
-              <ArrowDown className="h-4 w-4" aria-hidden />
-            </button>
-            <a
-              className="it-sy__btn it-sy__btn--ghost"
-              href={whatsappUrl('Hi Indian Treks! I want to know more about sacred yatras.')}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <MessageCircle className="h-4 w-4" aria-hidden />
-              WhatsApp us
-            </a>
-          </div>
-        </div>
-      </section>
+      <SacredYatraHero onExplore={() => scrollToId('explore-yatra')} />
 
       <div id="sy-sticky-sentinel" className="it-sy__sticky-sentinel" aria-hidden />
       <nav
-        className={`it-sy__sticky${stickyStuck ? ' is-stuck' : ''}`}
+        className={`it-sy__sticky it-sy__sticky--icons${stickyStuck ? ' is-stuck' : ''}`}
         aria-label="Sacred yatra sections"
       >
-        <div className="it-sy__sticky-shell">
+        <div className="it-sy__sticky-shell it-sy__sticky-shell--icons">
           <p className="it-sy__sticky-label">Jump to</p>
           <div className="it-sy__sticky-track" role="tablist" aria-label="Yatra groups">
-            {sacredYatraStickyNav.map((item) => (
-              <button
-                key={item.id}
-                type="button"
-                role="tab"
-                aria-selected={activeId === item.id}
-                className={activeId === item.id ? 'is-active' : undefined}
-                onClick={() => scrollToId(item.id)}
-              >
-                {item.label}
-              </button>
-            ))}
+            {sacredYatraStickyNav.map((item) => {
+              const NavIcon = STICKY_NAV_ICONS[item.icon];
+              return (
+                <button
+                  key={item.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={activeId === item.id}
+                  className={activeId === item.id ? 'is-active' : undefined}
+                  onClick={() => scrollToId(item.id)}
+                >
+                  <NavIcon className="it-sy__sticky-icon" aria-hidden />
+                  {item.label}
+                </button>
+              );
+            })}
           </div>
         </div>
       </nav>

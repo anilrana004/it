@@ -5,7 +5,7 @@ import { useRouter, usePathname } from 'next/navigation';
 import { Menu, X, Phone, Search, ChevronDown, User, Sparkles, Star, Mail, Mountain, SunMedium, ArrowRight } from 'lucide-react';
 import { treks } from '@/lib/data';
 import BrandLogo from '@/components/BrandLogo';
-import { CONTACT, mailtoUrl, telUrl, whatsappUrl } from '@/lib/contact';
+import { CONTACT, mailtoUrl, SOCIAL_LINKS, telUrl, whatsappUrl } from '@/lib/contact';
 import { DESK_HEADER_H, DESK_MAIN_H, DESK_TOP_H, CHROME_HIDDEN_CLASS } from '@/lib/layout';
 import { isSupportHubPath } from '@/lib/support-hub-nav';
 import { isCorporateHubPath } from '@/lib/corporate-hub-nav';
@@ -357,7 +357,7 @@ export default function Header() {
               aria-label={`WhatsApp ${CONTACT.phoneDisplay}`}
             >
               <i className="fa-brands fa-whatsapp text-[13px] text-[#25D366]" aria-hidden />
-              <span className="whitespace-nowrap">+{CONTACT.phoneWa}</span>
+              <span className="whitespace-nowrap">{CONTACT.phoneDisplay}</span>
             </a>
             <span className="text-white/35 select-none" aria-hidden>
               |
@@ -404,16 +404,22 @@ export default function Header() {
         >
           <Link
             href="/"
-            className="flex h-full items-center bg-white px-3 shadow-[4px_0_12px_rgba(0,0,0,0.12)] xl:px-4"
+            className="flex h-full shrink-0 items-center bg-white px-3 shadow-[4px_0_12px_rgba(0,0,0,0.12)] xl:px-4"
             aria-label="Indian Treks home"
           >
             <BrandLogo className="h-6 w-auto max-w-[130px] object-contain object-left xl:h-7 xl:max-w-[160px] 2xl:max-w-[180px]" />
           </Link>
 
+          {/*
+            Center nav when space allows; when items exceed the middle column,
+            overflow clips from the right so the first link never shifts toward the logo.
+          */}
           <nav
-            className="flex min-w-0 items-center justify-center gap-0 overflow-x-clip px-1.5 xl:gap-0.5 xl:px-2 2xl:px-3"
+            className="grid min-w-0 grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center overflow-x-clip px-1.5 xl:px-2 2xl:px-3"
             aria-label="Primary"
           >
+            <div aria-hidden="true" />
+            <div className="flex shrink-0 items-center gap-0 xl:gap-0.5">
             {navItems.map((item) => (
               <div
                 key={item.label}
@@ -469,6 +475,8 @@ export default function Header() {
                 )}
               </div>
             ))}
+            </div>
+            <div aria-hidden="true" />
           </nav>
 
           <div className="flex shrink-0 items-center gap-1.5 px-2 xl:gap-2 xl:px-3 2xl:gap-2.5 2xl:px-4">
@@ -656,17 +664,32 @@ export default function Header() {
             <div className="px-4 mt-2">
               <div className="bg-[#f0fdf4] rounded-xl p-4 space-y-3">
                 <p className="text-sm font-semibold text-gray-900">Contact Us</p>
+                {CONTACT.offices.map((office) => (
+                  <div key={office.id} className="flex items-start gap-2">
+                    <svg className="w-4 h-4 text-gray-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                    <div>
+                      <p className="text-xs font-semibold text-gray-700">{office.label}</p>
+                      <p className="text-xs text-gray-500">{office.line1}, {office.line2}</p>
+                    </div>
+                  </div>
+                ))}
                 <div className="flex items-start gap-2">
-                  <svg className="w-4 h-4 text-gray-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-                  <p className="text-xs text-gray-500">B-42, 2nd Floor, Tower-B, The Corenthum, Block A, Sector 62, Noida, UP 201301</p>
+                  <Phone className="w-4 h-4 text-gray-400 shrink-0 mt-0.5" />
+                  <div className="space-y-1">
+                    <p className="text-xs font-semibold text-gray-700">Booking</p>
+                    {CONTACT.phones.booking.map((phone) => (
+                      <a key={phone.tel} href={telUrl(phone.tel)} className="block text-xs text-gray-600 hover:text-[#16a34a]">{phone.display}</a>
+                    ))}
+                    <p className="text-xs font-semibold text-gray-700 pt-1">Support</p>
+                    <a href={telUrl(CONTACT.phones.support.tel)} className="block text-xs text-gray-600 hover:text-[#16a34a]">{CONTACT.phones.support.display}</a>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Phone className="w-4 h-4 text-gray-400 shrink-0" />
-                  <a href="tel:+919797972175" className="text-xs text-gray-600 hover:text-[#16a34a]">+91 97 97 97 21 75</a>
-                </div>
-                <div className="flex items-center gap-2">
-                  <svg className="w-4 h-4 text-gray-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
-                  <a href="mailto:contact@indiantreks.com" className="text-xs text-gray-600 hover:text-[#16a34a]">contact@indiantreks.com</a>
+                <div className="flex items-start gap-2">
+                  <svg className="w-4 h-4 text-gray-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+                  <div className="space-y-1">
+                    <a href={mailtoUrl(undefined, undefined, CONTACT.emails.primary)} className="block text-xs text-gray-600 hover:text-[#16a34a]">{CONTACT.emails.primary}</a>
+                    <a href={mailtoUrl(undefined, undefined, CONTACT.emails.vivek)} className="block text-xs text-gray-600 hover:text-[#16a34a]">{CONTACT.emails.vivek}</a>
+                  </div>
                 </div>
               </div>
             </div>
@@ -698,18 +721,10 @@ export default function Header() {
 
             <div className="px-4 mt-6 mb-4">
               <div className="flex flex-wrap items-center justify-center gap-3">
-                {[
-                  { label: 'Facebook', color: '#1877F2', path: 'M24 16c0-4.4-3.6-8-8-8s-8 3.6-8 8c0 4 2.9 7.3 6.7 7.9v-5.6h-2V16h2v-1.8c0-2 1.2-3.1 3-3.1.9 0 1.8.2 1.8.2v2h-1c-1 0-1.3.6-1.3 1.2V16h2.2l-.4 2.3h-1.9V24c4-.6 6.9-4 6.9-8z' },
-                  { label: 'Twitter', color: '#1DA1F2', path: 'M24 11c-.6.3-1.2.4-1.9.5.7-.4 1.2-1 1.4-1.8-.6.4-1.3.6-2.1.8-.6-.6-1.5-1-2.4-1-2.1 0-3.7 2-3.2 4-2.7-.1-5.1-1.4-6.8-3.4-.9 1.5-.4 3.4 1 4.4-.5 0-1-.2-1.5-.4 0 1.5 1.1 2.9 2.6 3.3-.5.1-1 .2-1.5.1.4 1.3 1.6 2.3 3.1 2.3-1.2.9-3 1.4-4.7 1.2 1.5.9 3.2 1.5 5 1.5 6.1 0 9.5-5.1 9.3-9.8.7-.4 1.3-1 1.7-1.7z' },
-                  { label: 'Instagram', color: '#F00073', path: 'M16 9.2h3.4c.8 0 1.2.2 1.5.3.4.2.7.3 1 .6.3.3.5.6.6 1 .1.3.2.7.3 1.5v6.8c0 .8-.2 1.2-.3 1.5-.2.4-.3.7-.6 1-.3.3-.6.5-1 .6-.3.1-.7.2-1.5.3h-6.8c-.8 0-1.2-.2-1.5-.3-.4-.2-.7-.3-1-.6-.3-.3-.5-.6-.6-1-.1-.3-.2-.7-.3-1.5V16v-3.4c0-.8.2-1.2.3-1.5.2-.4.3-.7.6-1 .3-.3.6-.5 1-.6.3-.1.7-.2 1.5-.3H16zm0-1.5h-3.4c-.9 0-1.5.2-2 .4s-1 .5-1.5 1-.7.9-1 1.5c-.2.5-.3 1.1-.4 2v6.8c0 .9.2 1.5.4 2s.5 1 1 1.5.9.7 1.5 1c.5.2 1.1.3 2 .4h6.8c.9 0 1.5-.2 2-.4s1-.5 1.5-1 .7-.9 1-1.5c.2-.5.3-1.1.4-2V16v-3.4c0-.9-.2-1.5-.4-2s-.5-1-1-1.5-.9-.7-1.5-1c-.5-.2-1.1-.3-2-.4H16zm0 4c-2.4 0-4.3 1.9-4.3 4.3s1.9 4.3 4.3 4.3 4.3-1.9 4.3-4.3-1.9-4.3-4.3-4.3zm0 7.1c-1.5 0-2.8-1.2-2.8-2.8 0-1.5 1.2-2.8 2.8-2.8 1.5 0 2.8 1.2 2.8 2.8 0 1.5-1.3 2.8-2.8 2.8zM20.4 12.6a1 1 0 100-2 1 1 0 000 2z' },
-                  { label: 'LinkedIn', color: '#2867B2', path: 'M11.6 24H8.2V13.3h3.4V24zM9.9 11.8C8.8 11.8 8 11 8 9.9 8 8.8 8.9 8 9.9 8c1.1 0 1.9.8 1.9 1.9 0 1.1-.8 1.9-1.9 1.9zM24 24h-3.4v-5.8c0-1.7-.7-2.2-1.7-2.2s-2 .8-2 2.3V24h-3.4V13.3h3.2v1.5c.3-.7 1.5-1.8 3.2-1.8 1.9 0 3.9 1.1 3.9 4.4V24h.2z' },
-                  { label: 'YouTube', color: '#FF0000', path: 'M23.6 12.1c-.2-.7-.7-1.2-1.4-1.4-1.2-.3-6.3-.3-6.3-.3s-5 0-6.3.3c-.7.2-1.2.7-1.4 1.4C8 13.4 8 16 8 16s0 2.6.3 3.9c.2.7.7 1.2 1.4 1.4 1.2.3 6.3.3 6.3.3s5 0 6.3-.3c.7-.2 1.2-.7 1.4-1.4.3-1.3.3-3.9.3-3.9s0-2.6-.4-3.9zm-9.2 6.3v-4.8l4.2 2.4-4.2 2.4z' },
-                ].map(s => (
-                  <a key={s.label} href={`https://${s.label.toLowerCase()}.com/`} target="_blank" rel="noopener noreferrer" aria-label={s.label}>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="none" viewBox="0 0 32 32">
-                      <rect width="32" height="32" fill={s.color} rx="6" />
-                      <path fill="#fff" d={s.path} />
-                    </svg>
+                {SOCIAL_LINKS.map((link) => (
+                  <a key={link.id} href={link.href} target="_blank" rel="noopener noreferrer" aria-label={link.label}
+                    className="inline-flex h-9 w-9 items-center justify-center rounded-md bg-[#16a34a] text-[10px] font-bold uppercase text-white">
+                    {link.label.slice(0, 2)}
                   </a>
                 ))}
               </div>
@@ -720,9 +735,9 @@ export default function Header() {
                 className="flex items-center justify-center gap-2 bg-[#16a34a] text-white font-semibold px-6 py-3 rounded-full w-full">
                 <User className="w-4 h-4" /> Login / Sign Up
               </Link>
-              <a href="tel:+919797972175"
+              <a href={telUrl()}
                 className="flex items-center justify-center gap-2 border-2 border-gray-200 text-gray-700 font-semibold px-6 py-3 rounded-full w-full">
-                <Phone className="w-4 h-4" /> +91 97 97 97 21 75
+                <Phone className="w-4 h-4" /> {CONTACT.phoneDisplay}
               </a>
             </div>
           </div>

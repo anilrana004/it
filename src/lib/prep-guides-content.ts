@@ -21,6 +21,56 @@ export type PrepGuideId =
   | 'fitness-training-plan'
   | 'altitude-sickness-guide';
 
+export type PrepPremiumRoadmapStep = {
+  step: number;
+  title: string;
+  sub: string;
+  targetId: string;
+};
+
+export type PrepPremiumEarlySign = {
+  title: string;
+  sub: string;
+  targetId?: string;
+};
+
+export type PrepPremiumPreventionItem = {
+  title: string;
+  sub: string;
+  targetId: string;
+};
+
+export type PrepPremiumHero = {
+  variant?: 'default' | 'fitness' | 'altitude';
+  brandLabel: string;
+  eyebrow: string;
+  eyebrowIcon?: 'clipboard' | 'heart' | 'mountain';
+  titleMain: string;
+  titleAccent: string;
+  titleSuffix?: string;
+  titleAccentStyle?: 'underline' | 'script' | 'inline';
+  guidanceBadge: string;
+  quote?: { text: string; attribution: string };
+  earlySigns?: {
+    title: string;
+    items: readonly PrepPremiumEarlySign[];
+    warning: string;
+  };
+  roadmapTitle?: string;
+  roadmap?: readonly PrepPremiumRoadmapStep[];
+  preventionBar?: {
+    title: string;
+    items: readonly PrepPremiumPreventionItem[];
+  };
+  handwritingNote?: string;
+  ctaKicker?: string;
+  ctaLead?: string;
+  ctaSubtitle?: string;
+  ctaLabel?: string;
+  ctaTargetId?: string;
+  trustPills?: readonly { title: string; sub: string }[];
+};
+
 /** Dedicated routes for each guide (opened from More dropdown) */
 export const PREP_HUB_PATH = '/trek-preparation';
 
@@ -38,6 +88,7 @@ export type PrepGuide = {
   metaTitle: string;
   metaDescription: string;
   highlights: { label: string; value: string }[];
+  premiumHero?: PrepPremiumHero;
   sections: PrepSection[];
 };
 
@@ -51,12 +102,54 @@ export const PREP_GUIDES: PrepGuide[] = [
     eyebrow: 'Trek preparation',
     lead:
       'A clear, practical roadmap — from choosing the right trail to packing, paperwork, and the week before you leave — so you arrive trail-ready, not trail-stressed.',
-    heroImage: photos.kedarkantha,
+    heroImage: photos.prepHero,
     readTime: '12 min read',
     icon: 'fa-list-check',
     metaTitle: 'How to Prepare for a Himalayan Trek | Indian Treks',
     metaDescription:
       'Complete trek preparation guide — choose the right route, packing checklist, documents, travel insurance, and a day-by-day plan before your Himalayan trek with Indian Treks.',
+    premiumHero: {
+      brandLabel: 'Indian Treks',
+      eyebrow: 'Trek preparation',
+      titleMain: 'How to Prepare for',
+      titleAccent: 'a Himalayan Trek',
+      guidanceBadge: 'Field-tested guidance',
+      roadmap: [
+        {
+          step: 1,
+          title: 'Choose Your Trek',
+          sub: 'Pick the right trail based on season, difficulty & experience',
+          targetId: 'choose-right',
+        },
+        {
+          step: 2,
+          title: 'Plan & Prepare',
+          sub: 'Train, build fitness, and get mentally trail-ready',
+          targetId: 'timeline',
+        },
+        {
+          step: 3,
+          title: 'Permits & Paperwork',
+          sub: 'Understand permits, ID proofs and essential documents',
+          targetId: 'documents',
+        },
+        {
+          step: 4,
+          title: 'Packing Smart',
+          sub: 'Carry only what you need. Light, layered & efficient',
+          targetId: 'packing',
+        },
+        {
+          step: 5,
+          title: 'The Week Before',
+          sub: 'Final checklist, weather check and last-minute tips',
+          targetId: 'reporting',
+        },
+      ],
+      ctaLead: 'Preparation today, unforgettable stories tomorrow. Let’s get you trail-ready!',
+      ctaLabel: 'Start Preparing',
+      ctaTargetId: 'choose-right',
+    },
     highlights: [
       { label: 'Start', value: '4–8 weeks out' },
       { label: 'Focus', value: 'Gear · Docs · Mindset' },
@@ -255,12 +348,68 @@ export const PREP_GUIDES: PrepGuide[] = [
     eyebrow: 'Strength & stamina',
     lead:
       'An 8-week progressive plan built for Himalayan trails — climbing legs, lung capacity, pack strength, and recovery — without needing a fancy gym.',
-    heroImage: photos.hampta,
+    heroImage: photos.fitnessHero,
     readTime: '14 min read',
     icon: 'fa-heart-pulse',
     metaTitle: 'Trek Fitness Training Plan (8 Weeks) | Indian Treks',
     metaDescription:
       '8-week Himalayan trek fitness plan — cardio, strength, stair climbs, pack walks, and recovery so you enjoy the trail instead of surviving it.',
+    premiumHero: {
+      variant: 'fitness',
+      brandLabel: 'Indian Treks',
+      eyebrow: 'Strength & stamina',
+      eyebrowIcon: 'heart',
+      titleMain: 'Fitness Training Plan for',
+      titleAccent: 'Treks',
+      titleAccentStyle: 'script',
+      guidanceBadge: 'Field-tested guidance',
+      quote: {
+        text: 'Train smart today, trek stronger tomorrow.',
+        attribution: '— Indian Treks',
+      },
+      roadmapTitle: 'Your 8-week progress journey',
+      roadmap: [
+        {
+          step: 1,
+          title: 'Build the Base',
+          sub: 'Improve stamina, mobility & consistency',
+          targetId: 'goals',
+        },
+        {
+          step: 2,
+          title: 'Build Endurance',
+          sub: 'Boost lung capacity & cardiovascular fitness',
+          targetId: 'cardio',
+        },
+        {
+          step: 3,
+          title: 'Build Strength',
+          sub: 'Focus on legs, core & upper body strength',
+          targetId: 'strength',
+        },
+        {
+          step: 4,
+          title: 'Trek Simulation',
+          sub: 'Practice with load, terrain & endurance',
+          targetId: 'week-plan',
+        },
+        {
+          step: 5,
+          title: 'Peak & Prepare',
+          sub: 'Taper smart, recover well & get trail-ready',
+          targetId: 'recovery',
+        },
+      ],
+      ctaKicker: 'Stronger every step',
+      ctaLead: 'Follow the plan. Trust the process. Conquer the Himalayas.',
+      ctaLabel: 'Start Your 8-Week Plan',
+      ctaTargetId: 'goals',
+      trustPills: [
+        { title: 'No Gym Required', sub: 'Stairs, walks & bodyweight' },
+        { title: 'Expert Designed', sub: 'Built for Himalayan trails' },
+        { title: 'Trek-Tested Results', sub: 'Used by thousands' },
+      ],
+    },
     highlights: [
       { label: 'Duration', value: '8 weeks' },
       { label: 'Sessions', value: '4–5 per week' },
@@ -438,12 +587,80 @@ export const PREP_GUIDES: PrepGuide[] = [
     eyebrow: 'High-altitude safety',
     lead:
       'Understand AMS, recognise early signs, prevent problems with smart pacing, and know exactly what to do — because the right response at altitude is simple, decisive, and often just: go down.',
-    heroImage: photos.snow,
+    heroImage: photos.altitudeHero,
     readTime: '11 min read',
     icon: 'fa-mountain',
     metaTitle: 'Altitude Sickness Guide (AMS) | Indian Treks',
     metaDescription:
       'Practical altitude sickness guide for Himalayan treks — AMS symptoms, prevention, Diamox notes, when to descend, and how Indian Treks manages high-altitude safety.',
+    premiumHero: {
+      variant: 'altitude',
+      brandLabel: 'Indian Treks',
+      eyebrow: 'High-altitude safety',
+      eyebrowIcon: 'mountain',
+      titleMain: 'Altitude',
+      titleAccent: 'Sickness',
+      titleSuffix: 'Guide',
+      titleAccentStyle: 'inline',
+      guidanceBadge: 'Field-tested guidance',
+      earlySigns: {
+        title: 'Recognise early signs',
+        items: [
+          {
+            title: 'Headache',
+            sub: 'Persistent pain that does not ease with rest',
+            targetId: 'symptoms',
+          },
+          {
+            title: 'Nausea',
+            sub: 'Loss of appetite or queasy stomach',
+            targetId: 'symptoms',
+          },
+          {
+            title: 'Fatigue',
+            sub: 'Unusual tiredness beyond normal trek soreness',
+            targetId: 'symptoms',
+          },
+          {
+            title: 'Dizziness',
+            sub: 'Light-headedness or feeling unsteady',
+            targetId: 'symptoms',
+          },
+        ],
+        warning: 'If symptoms worsen, descend immediately and seek help.',
+      },
+      preventionBar: {
+        title: 'Smart Prevention. Safe Journey.',
+        items: [
+          {
+            title: 'Hydrate Well',
+            sub: 'Drink regularly even when not thirsty',
+            targetId: 'prevent',
+          },
+          {
+            title: 'Ascend Gradually',
+            sub: 'Follow acclimatisation days in the itinerary',
+            targetId: 'prevent',
+          },
+          {
+            title: 'Pack Smart',
+            sub: 'Carry layers, meds & essentials for high altitude',
+            targetId: 'prevent',
+          },
+          {
+            title: 'Eat Right',
+            sub: 'Keep snacking even if appetite dips',
+            targetId: 'prevent',
+          },
+          {
+            title: 'Rest & Recover',
+            sub: 'Protect sleep and pace like a local',
+            targetId: 'prevent',
+          },
+        ],
+      },
+      handwritingNote: 'Stay Aware. Stay Ahead.',
+    },
     highlights: [
       { label: 'Risk rises', value: 'Above ~8,000 ft' },
       { label: 'Best fix', value: 'Descend early' },

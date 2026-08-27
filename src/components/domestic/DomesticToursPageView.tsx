@@ -4,15 +4,12 @@ import { useEffect, useMemo, useState, type CSSProperties } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
-  ArrowDown,
   ArrowRight,
   Check,
   MapPin,
-  MessageCircle,
   Sparkles,
 } from 'lucide-react';
 import { DESK_HEADER_H, MOBILE_HEADER_H } from '@/lib/layout';
-import { photos } from '@/lib/media';
 import { whatsappUrl } from '@/lib/contact';
 import {
   domesticDestinations,
@@ -20,7 +17,6 @@ import {
   domesticFeaturedMonth,
   domesticMoodCards,
   domesticPackages,
-  domesticStats,
   domesticStickyNav,
   domesticWhyPoints,
   packagesByBudget,
@@ -29,6 +25,7 @@ import {
 import { domesticArticles, domesticReviews } from '@/lib/landing-social-content';
 import LandingReviewsBlog from '@/components/landing/LandingReviewsBlog';
 import LandingTripCard from '@/components/landing/LandingTripCard';
+import DomesticHero, { domesticSearchDestinationId } from '@/components/domestic/DomesticHero';
 import './domestic-tours.css';
 
 type BudgetTab = 'under-20k' | '20-30k' | '30k-plus';
@@ -107,55 +104,28 @@ export default function DomesticToursPageView() {
     '--bp-mob-top': `calc(${MOBILE_HEADER_H}px + env(safe-area-inset-top, 0px))`,
   } as CSSProperties;
 
+  const handleHeroSearch = ({
+    where,
+    when,
+    who,
+  }: {
+    where: string;
+    when: string;
+    who: string;
+  }) => {
+    const destId = domesticSearchDestinationId(where);
+    if (destId) scrollToId(`dest-${destId}`);
+    else scrollToId('explore-india');
+    void when;
+    void who;
+  };
+
   return (
     <div className="it-dt" style={pageVars}>
-      <section className="it-dt__hero">
-        <div className="it-dt__hero-media">
-          <Image src={photos.uttarakhand} alt="" fill priority sizes="100vw" className="object-cover" />
-        </div>
-        <div className="it-dt__hero-overlay" />
-        <div className="it-dt__hero-inner">
-          <p className="it-dt__eyebrow">India Customised Tour Packages</p>
-          <h1>
-            India, <em>Your Way</em>
-          </h1>
-          <p className="it-dt__lead">
-            Handpicked stays, seamless travel, and itineraries crafted around you. Explore India&apos;s
-            mountains, valleys, deserts of the high Himalaya and hidden gems at your own pace — with
-            every detail taken care of.
-          </p>
-          <div className="it-dt__hero-actions">
-            <a
-              className="it-dt__btn it-dt__btn--primary"
-              href={whatsappUrl('Hi Indian Treks! I want to plan a customised domestic India trip.')}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Plan Your Trip
-              <MessageCircle className="h-4 w-4" aria-hidden />
-            </a>
-            <button
-              type="button"
-              className="it-dt__btn it-dt__btn--ghost"
-              onClick={() => scrollToId('handpicked')}
-            >
-              Browse Packages
-              <ArrowDown className="h-4 w-4" aria-hidden />
-            </button>
-          </div>
-        </div>
-      </section>
-
-      <div className="it-dt__stats">
-        <div className="it-dt__container it-dt__stats-row">
-          {domesticStats.map((s) => (
-            <div key={s.label} className="it-dt__stat">
-              <strong>{s.value}</strong>
-              <span>{s.label}</span>
-            </div>
-          ))}
-        </div>
-      </div>
+      <DomesticHero
+        onBrowse={() => scrollToId('handpicked')}
+        onSearch={handleHeroSearch}
+      />
 
       <div id="dt-sticky-sentinel" className="it-dt__sticky-sentinel" aria-hidden />
       <nav className={`it-dt__sticky${stickyStuck ? ' is-stuck' : ''}`} aria-label="Domestic sections">

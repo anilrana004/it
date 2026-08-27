@@ -13,6 +13,38 @@ export const giftLanding: LpLandingContent = {
       'Hi Indian Treks! I want to buy a Travel Gift Card.',
     secondaryCta: 'See how it works',
   },
+  premiumHero: {
+    badge: 'Travel gift cards',
+    titleMain: 'Give the Gift of the',
+    titleAccent: 'Mountains',
+    lead: 'Skip flowers and gadgets — gift a Himalayan journey they will remember for a lifetime.',
+    trustLine: 'Trusted by gifters across India',
+    avatars: [
+      'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&auto=format&fit=crop&w=80&h=80&q=80',
+      'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=80&h=80&q=80',
+      'https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&auto=format&fit=crop&w=80&h=80&q=80',
+      'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=80&h=80&q=80',
+    ],
+    tagline: 'Memories Over Material Gifts',
+    panel: [
+      { title: 'Choose Any Trek', sub: 'Recipient picks their adventure' },
+      { title: 'Instant E-Delivery', sub: 'Perfect for last-minute surprises' },
+      { title: '1 Year Validity', sub: 'Redeem when dates align' },
+      { title: 'Personal Message', sub: 'Your note travels with the card' },
+    ],
+    stats: [
+      { value: '10K+ Cards Gifted', sub: 'Across India' },
+      { value: '4.9/5 Gifter Rating', sub: 'Meaningful & easy' },
+      { value: '₹1K–₹25K Amounts', sub: 'Flexible gift values' },
+      { value: '100% Redeemable', sub: 'On eligible treks & yatras' },
+    ],
+    features: [
+      { title: 'Instant Delivery', sub: 'E-gift in minutes' },
+      { title: 'Any Occasion', sub: 'Birthdays, farewells & more' },
+      { title: 'Flexible Amounts', sub: 'From starter credit to full treks' },
+      { title: 'Real Adventures', sub: 'Redeem on Himalayan journeys' },
+    ],
+  },
   brands: {
     kicker: 'Loved by gifters',
     title: 'Trusted for Meaningful Gifting Across the Country',

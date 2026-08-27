@@ -51,7 +51,7 @@ export const CORPORATE_HUB_PATHS = [
   '/travel-gift-cards',
 ] as const;
 
-export const CORPORATE_EMAIL = 'corporate@indiantreks.com';
+export const CORPORATE_EMAIL = 'info@indiantreks.in';
 
 export function isCorporateHubPath(pathname: string) {
   return CORPORATE_HUB_PATHS.some(

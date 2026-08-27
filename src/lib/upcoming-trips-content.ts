@@ -93,15 +93,37 @@ for (const section of tripSections) {
   section.trips = catalog.slice(start, start + 4).map(toUpcomingTrip);
 }
 
+export const upcomingTripsHeroStats = [
+  { value: `${catalog.length}+`, label: 'Open Batches' },
+  { value: 'Aug–Oct', label: 'Fixed Windows' },
+  { value: '4.8/5', label: 'Traveller Rating' },
+  { value: '100%', label: 'Confirmed Dates' },
+] as const;
+
+export const upcomingTripsHeroFeatures = [
+  { title: 'Fixed Departures', sub: 'Confirmed batch dates you can plan around' },
+  { title: 'Book Early', sub: 'Secure seats before batches fill up' },
+  { title: 'Aug · Sep · Oct', sub: 'Peak trekking windows covered' },
+  { title: 'All Categories', sub: 'Treks, yatras & Nepal circuits' },
+] as const;
+
 export const upcomingTripsLandingConfig: TrendingLandingConfig = {
   slug: 'upcoming-trips',
-  heroImage: photos.uttarakhand,
+  heroImage: photos.hampta,
   heroEyebrow: 'Fixed departures · Aug – Oct',
   heroTitle: 'Upcoming Trips',
   heroLead:
     'Book your seat on confirmed group departures across August, September and October — Himalayan treks, yatras and Nepal adventures with set dates.',
   heroPrimaryCta: { label: 'Browse Departures', targetId: 'explore-months' },
   heroWhatsappMsg: 'Hi Indian Treks! I want details on upcoming group departures in Aug–Oct.',
+  premiumHero: {
+    titleMain: 'Upcoming',
+    titleAccent: 'Trips',
+    whatsappSub: 'Ask about dates',
+    badgeIcon: 'calendar',
+    stats: upcomingTripsHeroStats,
+    features: upcomingTripsHeroFeatures,
+  },
   stickyNav: [
     { id: 'explore-months', label: 'Months' },
     { id: 'august', label: 'Aug' },

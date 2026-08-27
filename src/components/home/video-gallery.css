@@ -1,4 +1,6 @@
-/* Featured Videos — stacked carousel (scoped to .it-vid-mem, Indian Treks theme) */
+/* ═══════════════════════════════════════════════════════════════
+   Mobile — stacked portrait carousel (max-width: 1023px only)
+   ═══════════════════════════════════════════════════════════════ */
 
 .it-vid-mem {
   --it-vid-ease: cubic-bezier(0.22, 0.9, 0.32, 1);
@@ -158,7 +160,6 @@
   transform: none;
 }
 
-/* Cover-fit landscape YouTube embed inside 9:16 card */
 .it-vid-mem__media {
   width: calc(100% * 256 / 81);
   height: 100%;
@@ -319,7 +320,7 @@
   --it-vid-z: 8;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 768px) and (max-width: 1023px) {
   .it-vid-mem {
     --it-vid-card-w: 272px;
     --it-vid-offset-px: 168px;
@@ -344,6 +345,267 @@
   }
 
   .it-vid-mem__loading::after {
+    animation: none;
+  }
+}
+
+/* Hide mobile section on desktop */
+@media (min-width: 1024px) {
+  .it-vid-mem {
+    display: none;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Desktop — coverflow carousel (min-width: 1024px only)
+   Reference: Wravelers On Move
+   ═══════════════════════════════════════════════════════════════ */
+
+.it-vid-desk-section {
+  display: none;
+  width: 100%;
+  padding: 5.5rem 0 5rem;
+  background: #f5f5f5;
+  overflow: hidden;
+  font-family: var(--font-poppins, 'Poppins'), ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+@media (min-width: 1024px) {
+  .it-vid-desk-section {
+    display: block;
+  }
+}
+
+.it-vid-desk-section__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.it-vid-desk-section__head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.it-vid-desk-section__kicker {
+  margin: 0 0 0.5rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: #9ca3af;
+}
+
+.it-vid-desk-section__title {
+  margin: 0;
+  font-family: var(--font-heading, var(--font-poppins, 'Poppins')), ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(2rem, 3.2vw, 2.75rem);
+  font-weight: 600;
+  line-height: 1.15;
+  color: #1e293b;
+}
+
+.it-vid-desk {
+  width: 100%;
+  position: relative;
+}
+
+.it-vid-desk__status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.it-vid-desk__swiper {
+  width: 100%;
+  padding: 1rem 0 2.5rem !important;
+  overflow: visible;
+  cursor: grab;
+}
+
+.it-vid-desk__swiper:active {
+  cursor: grabbing;
+}
+
+.it-vid-desk__swiper .swiper-wrapper {
+  align-items: center;
+}
+
+.it-vid-desk__slide {
+  width: min(68vw, 720px) !important;
+  height: clamp(280px, 32vw, 380px);
+  background: transparent;
+  cursor: pointer;
+  pointer-events: auto !important;
+}
+
+.it-vid-desk__panel {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+  background: #000;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+  pointer-events: auto;
+  cursor: pointer;
+  transition: box-shadow 450ms ease, filter 450ms ease;
+}
+
+.it-vid-desk__panel.is-active {
+  border-color: #d1d5db;
+  box-shadow: 0 20px 44px rgba(0, 0, 0, 0.18);
+  cursor: grab;
+}
+
+.it-vid-desk__panel:not(.is-active) {
+  filter: saturate(0.75) brightness(0.85);
+}
+
+.it-vid-desk__panel:not(.is-active):hover {
+  filter: saturate(0.88) brightness(0.92);
+}
+
+.it-vid-desk__frame {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+}
+
+.it-vid-desk__media {
+  height: 100%;
+  width: auto;
+  max-width: 100%;
+  aspect-ratio: 9 / 16;
+  display: block;
+  object-fit: cover;
+  border: 0;
+  pointer-events: none;
+  user-select: none;
+}
+
+.it-vid-desk__media--video {
+  pointer-events: none !important;
+}
+
+.it-vid-desk__play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  width: 3.25rem;
+  height: 3.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.45);
+  border: none;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.it-vid-desk__play svg {
+  width: 1.1rem;
+  height: 1.1rem;
+  fill: #fff;
+  margin-left: 2px;
+}
+
+.it-vid-desk__panel.is-active .it-vid-desk__play {
+  display: none;
+}
+
+.it-vid-desk__loading {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.it-vid-desk__loading::after {
+  content: '';
+  width: 1.75rem;
+  height: 1.75rem;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  border-top-color: #fff;
+  border-radius: 9999px;
+  animation: it-vid-spin 0.75s linear infinite;
+}
+
+.it-vid-desk__nav {
+  display: flex;
+  justify-content: center;
+  gap: 1.125rem;
+  margin-top: 0.25rem;
+}
+
+.it-vid-desk__nav-btn {
+  width: 50px;
+  height: 50px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 50%;
+  background: #1666d9;
+  color: #fff;
+  cursor: pointer;
+  transition:
+    background 200ms ease,
+    transform 150ms ease;
+}
+
+.it-vid-desk__nav-btn:hover {
+  background: #0f4fa8;
+  transform: translateY(-2px);
+}
+
+.it-vid-desk__nav-btn:focus {
+  outline: none;
+}
+
+.it-vid-desk__nav-btn:focus-visible {
+  box-shadow: 0 0 0 3px rgba(22, 102, 217, 0.35);
+}
+
+.it-vid-desk__nav-btn:active {
+  transform: translateY(0);
+}
+
+@media (min-width: 1280px) {
+  .it-vid-desk__slide {
+    width: min(64vw, 760px) !important;
+    height: clamp(300px, 30vw, 400px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .it-vid-desk__panel {
+    transition: none;
+  }
+
+  .it-vid-desk__loading::after {
     animation: none;
   }
 }

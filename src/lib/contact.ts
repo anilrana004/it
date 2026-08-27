@@ -1,36 +1,144 @@
-/** Canonical customer helpline — keep in sync with Footer / Header */
+/** Canonical Indian Treks contact — single source for Footer, Header, Contact page, and CTAs */
+
+export type ContactPhone = {
+  label: string;
+  display: string;
+  tel: string;
+  wa: string;
+};
+
+export type ContactOffice = {
+  id: string;
+  label: string;
+  line1: string;
+  line2: string;
+  mapQuery: string;
+};
+
+export type ContactWhatsAppChannel = {
+  url: string;
+  label: string;
+  wa?: string;
+};
+
 export const CONTACT = {
   brand: 'Indian Treks',
-  phoneDisplay: '+91-9797 972 175',
-  phoneTel: '+919797972175',
-  phoneWa: '919797972175',
-  email: 'contact@indiantreks.com',
-  fraudEmail: 'fraudalerts@indiantreks.com',
-  officialSite: 'www.indiantreks.com',
+
+  offices: [
+    {
+      id: 'dehradun',
+      label: 'Dehradun Office',
+      line1: 'Kargi Chowk, Narayan Vihar',
+      line2: 'Dehradun, Uttarakhand',
+      mapQuery: 'Kargi Chowk Narayan Vihar Dehradun Uttarakhand',
+    },
+    {
+      id: 'uttarkashi',
+      label: 'Uttarkashi Office',
+      line1: 'Sankari Mori',
+      line2: 'Uttarkashi, Uttarakhand',
+      mapQuery: 'Sankari Mori Uttarkashi Uttarakhand',
+    },
+  ] as const satisfies readonly ContactOffice[],
+
+  phones: {
+    booking: [
+      {
+        label: 'Booking',
+        display: '+91 73008 00108',
+        tel: '+917300800108',
+        wa: '917300800108',
+      },
+      {
+        label: 'Booking',
+        display: '+91 73109 54451',
+        tel: '+917310954451',
+        wa: '917310954451',
+      },
+    ] as const satisfies readonly ContactPhone[],
+    support: {
+      label: 'Support',
+      display: '+91 76685 78221',
+      tel: '+917668578221',
+      wa: '917668578221',
+    } satisfies ContactPhone,
+  },
+
+  /** Primary booking line — used by legacy callouts and default CTAs */
+  phoneDisplay: '+91 73008 00108',
+  phoneTel: '+917300800108',
+  phoneWa: '917300800108',
+
+  emails: {
+    primary: 'info@indiantreks.in',
+    vivek: 'vivekindiantreks@gmail.com',
+    explore: 'exploreindiantreks@gmail.com',
+  },
+  /** Primary public inbox */
+  email: 'info@indiantreks.in',
+  fraudEmail: 'info@indiantreks.in',
+
+  whatsapp: {
+    vivek: {
+      url: 'https://wa.me/917300900108',
+      label: 'Message Vivek Rana (Indian Treks)',
+      wa: '917300900108',
+    },
+    business: {
+      url: 'https://wa.me/message/YDKCEYPMC6GBF1',
+      label: 'Indian Treks on WhatsApp',
+    },
+    support: {
+      url: 'https://wa.me/917668578221',
+      label: 'Indian Treks Support',
+      wa: '917668578221',
+    },
+  } as const satisfies Record<string, ContactWhatsAppChannel>,
+
+  social: {
+    youtube: 'https://youtube.com/@indiantreks4009',
+    facebook: 'https://www.facebook.com/share/1Ee7Tgy37s/',
+    instagram: 'https://www.instagram.com/indiantreks',
+    linkedin: 'https://www.linkedin.com/in/indian-treks-b94606239',
+    quora: 'https://www.quora.com/profile/Indiantreks',
+  },
+
+  officialSite: 'www.indiantreks.in',
   hours: 'Mon–Sat, 10:00 AM – 7:00 PM IST',
   hoursShort: 'Mon – Sat',
   hoursDetail: '10:00 AM – 7:00 PM IST',
-  addressLine1: 'B-42, 2nd Floor, Tower-B, The Corenthum',
-  addressLine2: 'Block A, Sector 62, Noida, Uttar Pradesh 201301',
-  /** Full address string for maps / embeds */
-  addressFull:
-    'B-42, 2nd Floor, Tower-B, The Corenthum, Block A, Sector 62, Noida, Uttar Pradesh 201301',
   replySla: 'We reply within 24 hours',
+
+  /** Primary office — backward compatible address fields */
+  addressLine1: 'Kargi Chowk, Narayan Vihar',
+  addressLine2: 'Dehradun, Uttarakhand',
+  addressFull: 'Kargi Chowk, Narayan Vihar, Dehradun, Uttarakhand',
 } as const;
 
-export function mapsUrl() {
-  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(CONTACT.addressFull)}`;
+export const SOCIAL_LINKS = [
+  { id: 'instagram', label: 'Instagram', href: CONTACT.social.instagram },
+  { id: 'facebook', label: 'Facebook', href: CONTACT.social.facebook },
+  { id: 'youtube', label: 'YouTube', href: CONTACT.social.youtube },
+  { id: 'linkedin', label: 'LinkedIn', href: CONTACT.social.linkedin },
+  { id: 'quora', label: 'Quora', href: CONTACT.social.quora },
+] as const;
+
+const primaryOffice = CONTACT.offices[0];
+
+export function mapsUrl(office: ContactOffice = primaryOffice) {
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(office.mapQuery)}`;
 }
 
-export function mapsDirectionsUrl() {
-  return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(CONTACT.addressFull)}`;
+export function mapsDirectionsUrl(office: ContactOffice = primaryOffice) {
+  return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(office.mapQuery)}`;
 }
 
 /** iframe embed — no API key required */
-export function mapsEmbedUrl() {
-  return `https://maps.google.com/maps?q=${encodeURIComponent(CONTACT.addressFull)}&z=16&output=embed`;
+export function mapsEmbedUrl(office: ContactOffice = primaryOffice) {
+  return `https://maps.google.com/maps?q=${encodeURIComponent(office.mapQuery)}&z=15&output=embed`;
 }
 
+/** Default booking WhatsApp with optional prefill text */
 export function whatsappUrl(prefill?: string) {
   const text = encodeURIComponent(
     prefill || `Hi ${CONTACT.brand}! I need help with a trek.`,
@@ -38,14 +146,37 @@ export function whatsappUrl(prefill?: string) {
   return `https://wa.me/${CONTACT.phoneWa}?text=${text}`;
 }
 
-export function mailtoUrl(subject?: string, body?: string) {
+/** Fixed WhatsApp deep links (Vivek, business inbox, support) */
+export function whatsappChannelUrl(
+  channel: keyof typeof CONTACT.whatsapp,
+  prefill?: string,
+) {
+  const entry = CONTACT.whatsapp[channel];
+  if (!prefill || !('wa' in entry) || !entry.wa) return entry.url;
+  return `https://wa.me/${entry.wa}?text=${encodeURIComponent(prefill)}`;
+}
+
+export function mailtoUrl(subject?: string, body?: string, email?: string) {
+  const target = email ?? CONTACT.email;
   const params = new URLSearchParams();
   if (subject) params.set('subject', subject);
   if (body) params.set('body', body);
   const q = params.toString();
-  return `mailto:${CONTACT.email}${q ? `?${q}` : ''}`;
+  return `mailto:${target}${q ? `?${q}` : ''}`;
 }
 
-export function telUrl() {
-  return `tel:${CONTACT.phoneTel}`;
+export function telUrl(phone?: string) {
+  return `tel:${phone ?? CONTACT.phoneTel}`;
+}
+
+export function allPhones(): ContactPhone[] {
+  return [...CONTACT.phones.booking, CONTACT.phones.support];
+}
+
+export function allEmails(): { label: string; address: string }[] {
+  return [
+    { label: 'General enquiries', address: CONTACT.emails.primary },
+    { label: 'Vivek Rana', address: CONTACT.emails.vivek },
+    { label: 'Explore & bookings', address: CONTACT.emails.explore },
+  ];
 }

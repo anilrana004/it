@@ -31,8 +31,28 @@ const isEasy = (t: Trek) =>
 
 const isTrek = (t: Trek) => t.type === 'trek';
 
+/**
+ * Exclusive Group Trips → Treks → Best Beginner-Friendly Treks collection.
+ * Order is editorial — keep it stable across the listing carousel, filter, and landing page.
+ */
+export const BEGINNER_FRIENDLY_TREK_IDS = [
+  'kedarkantha',
+  'chopta-tungnath',
+  'dayara-bugyal',
+  'nag-tibba',
+  'mcleodganj-trek',
+  'har-ki-dun',
+  'ali-bedni-bugyal',
+  'phulara-ridge',
+  'kuari-pass',
+  'gulabi-kantha',
+  'bhrigu-lake',
+  'sar-pass',
+  'pangarchulla',
+] as const;
+
 /** Curated picks that work well for each audience — merged with rule-based filters */
-const CURATED: Record<SpecialProgramId, string[]> = {
+const CURATED: Record<SpecialProgramId, readonly string[]> = {
   'women-only': [
     'kedarkantha',
     'kuari-pass',
@@ -60,15 +80,11 @@ const CURATED: Record<SpecialProgramId, string[]> = {
     'nag-tibba',
     'kheerganga',
   ],
-  beginner: [
-    'nag-tibba',
-    'kheerganga',
-    'mcleodganj-trek',
-    'chopta-tungnath',
-    'kedarkantha',
-    'dayara-bugyal',
-  ],
+  beginner: BEGINNER_FRIENDLY_TREK_IDS,
 };
+
+/** Curated trek order per experience filter — shared with the treks listing filter view. */
+export const EXPERIENCE_CURATED_TREK_IDS: Record<SpecialProgramId, readonly string[]> = CURATED;
 
 export const SPECIAL_PROGRAMS: SpecialProgram[] = [
   {
@@ -78,7 +94,7 @@ export const SPECIAL_PROGRAMS: SpecialProgram[] = [
     shortTitle: 'Women-Only',
     href: '/women-only-treks',
     icon: 'fa-venus',
-    heroImage: photos.kedarkantha,
+    heroImage: photos.womenTrek,
     eyebrow: 'Safe & supportive groups',
     lead:
       'Women-led Himalayan departures with trained trek leaders, clear safety culture, and a welcoming trail community — popular with solo travellers and first-time women trekkers.',
@@ -99,7 +115,7 @@ export const SPECIAL_PROGRAMS: SpecialProgram[] = [
     shortTitle: 'Senior Treks',
     href: '/senior-citizen-treks',
     icon: 'fa-person-cane',
-    heroImage: photos.chopta,
+    heroImage: photos.seniorTrek,
     eyebrow: 'Comfortable pacing',
     lead:
       'Gentle Himalayan routes with conservative altitude gain, comfortable stays, and extra rest built into the itinerary for travellers 50+.',
@@ -120,7 +136,7 @@ export const SPECIAL_PROGRAMS: SpecialProgram[] = [
     shortTitle: 'Family',
     href: '/family-treks',
     icon: 'fa-people-roof',
-    heroImage: photos.vof,
+    heroImage: photos.familyTrek,
     eyebrow: 'Kids & parents welcome',
     lead:
       'School-holiday and weekend-friendly Himalayan treks with manageable trails, engaging scenery, and stays suited for parents and children travelling together.',
@@ -141,7 +157,7 @@ export const SPECIAL_PROGRAMS: SpecialProgram[] = [
     shortTitle: 'Beginner',
     href: '/beginner-friendly-treks',
     icon: 'fa-seedling',
-    heroImage: photos.triund,
+    heroImage: photos.beginnerTrek,
     eyebrow: 'First Himalayan trek',
     lead:
       'Start your Himalayan journey on well-marked trails with gradual climbs, shorter days, and departures our leaders love recommending to first-timers.',
@@ -150,10 +166,7 @@ export const SPECIAL_PROGRAMS: SpecialProgram[] = [
       'Clear pre-trek fitness guidance',
       'Ideal stepping stones before higher adventures',
     ],
-    filter: (t) =>
-      isTrek(t) &&
-      (CURATED.beginner.includes(t.id) ||
-        (t.difficulty === 'Easy' || (isEasy(t) && t.days <= 5))),
+    filter: (t) => isTrek(t) && CURATED.beginner.includes(t.id),
   },
 ];
 
@@ -168,9 +181,19 @@ export function getSpecialProgramBySlug(slug: string) {
 export function treksForProgram(program: SpecialProgram) {
   const matched = treks.filter(program.filter);
   const seen = new Set<string>();
-  return matched.filter((t) => {
+  const unique = matched.filter((t) => {
     if (seen.has(t.id)) return false;
     seen.add(t.id);
     return true;
+  });
+
+  const curated = CURATED[program.id];
+  if (!curated.length) return unique;
+
+  const rank = new Map(curated.map((id, i) => [id, i]));
+  return unique.sort((a, b) => {
+    const ra = rank.has(a.id) ? rank.get(a.id)! : curated.length;
+    const rb = rank.has(b.id) ? rank.get(b.id)! : curated.length;
+    return ra - rb || a.title.localeCompare(b.title);
   });
 }

@@ -1,4 +1,5 @@
 import type { LandingArticle, LandingReview } from '@/lib/landing-social-content';
+import type { GroupJourneyPremiumHeroConfig } from '@/lib/group-journey-hero-types';
 
 export type TrendingLandingTrip = {
   id: string;
@@ -38,6 +39,12 @@ export type TrendingDiscoveryOption = {
   whatsappHint: string;
 };
 
+export type TrendingStickyNavItem = {
+  id: string;
+  label: string;
+  icon?: 'tag' | 'mountain' | 'landmark' | 'globe' | 'calendar';
+};
+
 export type TrendingLandingConfig = {
   slug: string;
   heroImage: string;
@@ -46,7 +53,7 @@ export type TrendingLandingConfig = {
   heroLead: string;
   heroPrimaryCta: { label: string; targetId: string };
   heroWhatsappMsg: string;
-  stickyNav: readonly { id: string; label: string }[];
+  stickyNav: readonly TrendingStickyNavItem[];
   exploreSection: {
     id: string;
     kicker: string;
@@ -81,4 +88,22 @@ export type TrendingLandingConfig = {
     whatsappPrefix: string;
   };
   discoveryIcon: 'star' | 'calendar' | 'megaphone' | 'sparkles';
+  /** Backpacking-style split title hero with feature bar */
+  journeyHero?: GroupJourneyPremiumHeroConfig;
+  /** Premium hero layout — glass stats panel + feature highlight bar */
+  premiumHero?: {
+    titleMain: string;
+    titleAccent: string;
+    whatsappSub: string;
+    badgeIcon?: 'users' | 'calendar' | 'megaphone' | 'sparkles';
+    stats: readonly { value: string; label: string }[];
+    features: readonly { title: string; sub: string }[];
+  };
+  /** Bucket List Sale hero — countdown card + script accent title */
+  saleHero?: {
+    titleMain: string;
+    titleAccent: string;
+    countdownEnd: string;
+    features: readonly { title: string; sub: string }[];
+  };
 };

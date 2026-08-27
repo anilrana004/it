@@ -5,6 +5,7 @@ import {
   weekendTripsArticles,
   weekendTripsReviews,
 } from '@/lib/landing-social-content';
+import type { GroupJourneyPremiumHeroConfig } from '@/lib/group-journey-hero-types';
 import type { TrendingLandingConfig } from '@/lib/trending-landing-types';
 import { tripFromCatalog } from '@/lib/trending-landing-utils';
 
@@ -86,18 +87,38 @@ if (tripSections.length === 0) {
 
 export const weekendTripsLandingConfig: TrendingLandingConfig = {
   slug: 'weekend-trips',
-  heroImage: photos.triund,
+  heroImage: photos.weekendHero,
   heroEyebrow: '2–3 days · Easy trails',
   heroTitle: 'Weekend Trips',
   heroLead:
     'Short Himalayan escapes you can fit into a long weekend — easy trails, fixed departures and like-minded groups from Indian Treks.',
   heroPrimaryCta: { label: 'Browse Weekends', targetId: 'explore-weekends' },
   heroWhatsappMsg: 'Hi Indian Treks! I want help choosing a weekend trek.',
+  journeyHero: {
+    badgePrimary: '2–3 days',
+    badgeSecondary: 'Easy trails',
+    badgeIcon: 'calendar',
+    titleLine1: 'Weekend',
+    titleLine2: 'Trips',
+    leadBefore: 'Short Himalayan escapes you can fit into a long weekend — ',
+    leadHighlight: 'easy trails, fixed departures and like-minded groups',
+    leadAfter: ' from Indian Treks.',
+    primaryCtaLabel: 'Browse Weekends',
+    primaryCtaTargetId: 'explore-weekends',
+    whatsappMsg: 'Hi Indian Treks! I want help choosing a weekend trek.',
+    features: [
+      { title: 'Quick Escapes', sub: 'Fit a long weekend from Delhi' },
+      { title: 'Easy Trails', sub: 'First-timer friendly routes' },
+      { title: 'Fixed Groups', sub: 'Confirmed departures with leaders' },
+      { title: 'Smooth Logistics', sub: 'Pickups, stays & briefings handled' },
+    ],
+  } satisfies GroupJourneyPremiumHeroConfig,
   stickyNav: [
-    { id: 'explore-weekends', label: 'Regions' },
+    { id: 'explore-weekends', label: 'Weekends', icon: 'mountain' },
     ...tripSections.map((s) => ({
       id: s.id,
       label: s.id === 'himachal' ? 'Himachal' : s.id === 'uttarakhand' ? 'Uttarakhand' : 'More',
+      icon: 'mountain' as const,
     })),
   ],
   exploreSection: {

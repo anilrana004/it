@@ -31,6 +31,19 @@ export type LpBrand = {
   logo?: string;
 };
 
+export type LpPremiumHero = {
+  badge: string;
+  titleMain: string;
+  titleAccent: string;
+  lead: string;
+  trustLine: string;
+  avatars: readonly string[];
+  tagline: string;
+  panel: readonly { title: string; sub: string }[];
+  stats: readonly { value: string; sub: string }[];
+  features: readonly { title: string; sub: string }[];
+};
+
 export type LpLandingContent = {
   /** Used for form / WhatsApp labelling */
   variant: 'corporate' | 'school' | 'campus' | 'gift';
@@ -44,6 +57,8 @@ export type LpLandingContent = {
     secondaryCta?: string;
     youtubeId?: string;
   };
+  /** Premium hero — glass panel, stats bar, feature strip */
+  premiumHero?: LpPremiumHero;
   brands: {
     kicker: string;
     title: string;

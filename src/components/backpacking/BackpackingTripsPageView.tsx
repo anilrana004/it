@@ -1,17 +1,14 @@
 'use client';
 
 import { useEffect, useState, type CSSProperties } from 'react';
-import Image from 'next/image';
 import {
-  ArrowDown,
   ArrowRight,
   Backpack,
   Check,
   MapPin,
-  MessageCircle,
+  Mountain,
 } from 'lucide-react';
 import { DESK_HEADER_H, MOBILE_HEADER_H } from '@/lib/layout';
-import { photos } from '@/lib/media';
 import { whatsappUrl } from '@/lib/contact';
 import {
   backpackingDiscoveryOptions,
@@ -27,6 +24,7 @@ import {
 } from '@/lib/landing-social-content';
 import LandingReviewsBlog from '@/components/landing/LandingReviewsBlog';
 import LandingTripCard from '@/components/landing/LandingTripCard';
+import BackpackingPremiumHero from '@/components/backpacking/BackpackingPremiumHero';
 import './backpacking-trips.css';
 
 function scrollToId(id: string) {
@@ -115,54 +113,15 @@ export default function BackpackingTripsPageView() {
   return (
     <div className="it-bp" style={pageVars}>
       {/* Hero */}
-      <section className="it-bp__hero">
-        <div className="it-bp__hero-media">
-          <Image
-            src={photos.himachal}
-            alt=""
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover"
-          />
-        </div>
-        <div className="it-bp__hero-overlay" />
-        <div className="it-bp__hero-inner">
-          <p className="it-bp__eyebrow">Group journeys · Flexible routes</p>
-          <h1>Backpacking Trips</h1>
-          <p className="it-bp__lead">
-            Travel beyond the usual tourist routes. Explore India through flexible, social and
-            experience-focused backpacking journeys.
-          </p>
-          <div className="it-bp__hero-actions">
-            <button
-              type="button"
-              className="it-bp__btn it-bp__btn--primary"
-              onClick={() => scrollToId('explore-regions')}
-            >
-              Explore Trips
-              <ArrowDown className="h-4 w-4" aria-hidden />
-            </button>
-            <a
-              className="it-bp__btn it-bp__btn--ghost"
-              href={whatsappUrl('Hi Indian Treks! I want to know more about backpacking trips.')}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <MessageCircle className="h-4 w-4" aria-hidden />
-              WhatsApp us
-            </a>
-          </div>
-        </div>
-      </section>
+      <BackpackingPremiumHero />
 
       {/* Sticky region nav — floating segmented control under site header */}
       <div id="bp-sticky-sentinel" className="it-bp__sticky-sentinel" aria-hidden />
       <nav
-        className={`it-bp__sticky${stickyStuck ? ' is-stuck' : ''}`}
+        className={`it-bp__sticky it-bp__sticky--icons${stickyStuck ? ' is-stuck' : ''}`}
         aria-label="Backpacking regions"
       >
-        <div className="it-bp__sticky-shell">
+        <div className="it-bp__sticky-shell it-bp__sticky-shell--icons">
           <p className="it-bp__sticky-label">Jump to</p>
           <div className="it-bp__sticky-track" role="tablist" aria-label="Regions">
             {backpackingStickyNav.map((item) => (
@@ -174,6 +133,7 @@ export default function BackpackingTripsPageView() {
                 className={activeId === item.id ? 'is-active' : undefined}
                 onClick={() => scrollToId(item.id)}
               >
+                <Mountain className="it-bp__sticky-icon" aria-hidden />
                 {item.label}
               </button>
             ))}

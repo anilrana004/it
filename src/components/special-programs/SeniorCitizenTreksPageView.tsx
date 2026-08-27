@@ -17,14 +17,20 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
 import TrekInfoCard from '@/components/treks/TrekInfoCard';
 import WhyChooseVideo from '@/components/WhyChooseVideo';
-import { CONTACT, telUrl, whatsappUrl } from '@/lib/contact';
+import SpecialProgramPremiumHero from '@/components/special-programs/SpecialProgramPremiumHero';
+import { whatsappUrl } from '@/lib/contact';
 import { photos } from '@/lib/media';
+import {
+  seniorCitizenPremiumHero,
+  seniorCitizenWhatsappMsg,
+} from '@/lib/special-programs/senior-citizen-premium-hero';
 import { getSpecialProgram, treksForProgram } from '@/lib/special-programs-content';
 import { toListingTrek } from '@/lib/treks-listing';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import './senior-citizen-treks.css';
+import './special-program-landing.css';
 
 const program = getSpecialProgram('senior-citizen')!;
 
@@ -212,54 +218,13 @@ export default function SeniorCitizenTreksPageView() {
 
   return (
     <div className="it-senior">
-      <section className="it-senior__hero">
-        <div className="it-senior__hero-media">
-          <Image src={program.heroImage} alt={program.title} fill sizes="100vw" priority />
-        </div>
-        <div className="it-senior__hero-overlay" />
-
-        <div className="it-senior__hero-inner">
-          <div className="it-senior__hero-copy">
-            <p className="it-senior__eyebrow">Special programmes</p>
-            <h1>
-              Special Treks <em>for Seniors</em>
-            </h1>
-            <p className="it-senior__tagline">Reconnect with your inner child</p>
-            <p className="it-senior__lead">
-              Thoughtfully paced Himalayan journeys for travellers 58+, built around comfort,
-              companionship, and the quiet joy of trekking with your peers.
-            </p>
-            <div className="it-senior__hero-actions">
-              <a
-                className="it-senior__btn it-senior__btn--primary"
-                href={whatsappUrl('Hi Indian Treks! I want details for Senior Citizen Treks.')}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                WhatsApp us
-              </a>
-              <a className="it-senior__btn it-senior__btn--ghost" href={telUrl()}>
-                Call {CONTACT.phoneDisplay}
-              </a>
-            </div>
-          </div>
-
-          <aside className="it-senior__hero-card">
-            <p className="it-senior__hero-card-kicker">Built differently</p>
-            <h2>Why seniors choose these departures</h2>
-            <p>
-              Regular groups can feel too fast. These journeys bring age peers together on routes
-              chosen for comfort, confidence, and shared stories — so the mountains feel joyful
-              again.
-            </p>
-            <ul>
-              <li>Gentle pacing and carefully shortlisted trails</li>
-              <li>Higher on-trail attention and support</li>
-              <li>Companionship that makes the journey feel light</li>
-            </ul>
-          </aside>
-        </div>
-      </section>
+      <div className="it-spl">
+        <SpecialProgramPremiumHero
+          image={program.heroImage}
+          hero={seniorCitizenPremiumHero}
+          whatsappMsg={seniorCitizenWhatsappMsg}
+        />
+      </div>
 
       <section className="it-senior__section">
         <div className="it-senior__container it-senior__story">

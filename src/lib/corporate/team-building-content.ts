@@ -167,7 +167,41 @@ export const corporateGallery = [
   { src: photos.triund, alt: 'Overnight camping under mountain skies' },
 ];
 
-export const corporateHeroImage = photos.uttarakhand;
+export const corporateHeroImage = photos.hampta;
+
+export const corporateHero = {
+  badge: 'Learning programmes',
+  titleMain: 'Team Building Treks for',
+  titleAccent: 'Companies',
+  lead:
+    'Elevating team bonding and collaboration through adventure, challenges and unforgettable experiences.',
+  trustLine: 'Trusted by 50+ companies across India',
+  avatars: [
+    'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=80&h=80&q=80',
+    'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&auto=format&fit=crop&w=80&h=80&q=80',
+    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=80&h=80&q=80',
+    'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=80&h=80&q=80',
+  ],
+  tagline: 'Stronger Teams, Stronger Summits',
+  panel: [
+    { title: 'Stronger Bonds', sub: 'Build trust and deeper connections' },
+    { title: 'Real Challenges', sub: 'Step out, challenge limits together' },
+    { title: 'Safe & Supported', sub: 'Expert guides and end-to-end support' },
+    { title: 'Lasting Impact', sub: 'Experiences that inspire and unite' },
+  ],
+  stats: [
+    { value: '50+ Corporate Groups', sub: 'Trekked With Us' },
+    { value: '4.9/5 Average Rating', sub: 'By Companies' },
+    { value: '20+ Curated Treks', sub: 'Across Himalayas' },
+    { value: '100% Customisable', sub: 'Experiences' },
+  ],
+  features: [
+    { title: 'Flexible Itineraries', sub: 'Tailored to your goals' },
+    { title: 'All Group Sizes', sub: 'Small teams to large groups' },
+    { title: 'Expert Guidance', sub: 'Experienced & certified team' },
+    { title: 'Responsible Travel', sub: 'Sustainable & eco-friendly' },
+  ],
+} as const;
 
 /**
  * Client logos — leave `logo` empty for a placeholder slot; drop image URLs later.

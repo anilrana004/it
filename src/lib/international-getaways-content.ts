@@ -61,6 +61,34 @@ export const internationalWhyPoints = [
   'Easy planning from India',
 ] as const;
 
+export const internationalHeroTrust = [
+  { title: 'Permits handled', sub: 'TIMS & entry sorted' },
+  { title: 'Trusted', sub: 'by 80K+ Travellers' },
+  { title: '24/7 Support', sub: "We're here" },
+  { title: 'Lodge stays', sub: 'Tea-house planned' },
+] as const;
+
+export const internationalStats = [
+  { label: 'Legendary Nepal Treks', value: '3+', sub: 'EBC · ABC · Circuit' },
+  { label: 'Fixed Departures', value: 'Mar–Nov', sub: 'Best trekking windows' },
+  { label: 'Traveller Rating', value: '4.8/5', sub: 'Verified reviews' },
+  { label: 'Permits & Logistics', value: '100%', sub: 'Planned from India' },
+] as const;
+
+export const internationalSearchWhen = [
+  'Flexible dates',
+  'Spring (Mar – May)',
+  'Autumn (Sep – Nov)',
+  'Help me choose',
+] as const;
+
+export const internationalSearchWho = [
+  'Solo traveller',
+  'Couple',
+  'Friends group',
+  'First Nepal trek',
+] as const;
+
 export const internationalDiscoveryOptions = [
   {
     id: 'ebc',

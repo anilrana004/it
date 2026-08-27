@@ -1,17 +1,14 @@
 'use client';
 
 import { useEffect, useState, type CSSProperties } from 'react';
-import Image from 'next/image';
 import {
-  ArrowDown,
   ArrowRight,
   Bike,
   Check,
   MapPin,
-  MessageCircle,
+  Mountain,
 } from 'lucide-react';
 import { DESK_HEADER_H, MOBILE_HEADER_H } from '@/lib/layout';
-import { photos } from '@/lib/media';
 import { whatsappUrl } from '@/lib/contact';
 import {
   bikingDiscoveryOptions,
@@ -24,6 +21,7 @@ import {
 import { bikingArticles, bikingReviews } from '@/lib/landing-social-content';
 import LandingReviewsBlog from '@/components/landing/LandingReviewsBlog';
 import LandingTripCard from '@/components/landing/LandingTripCard';
+import BikingPremiumHero from '@/components/biking/BikingPremiumHero';
 import './biking-trips.css';
 
 function scrollToId(id: string) {
@@ -111,67 +109,32 @@ export default function BikingTripsPageView() {
 
   return (
     <div className="it-bk" style={pageVars}>
-      <section className="it-bk__hero">
-        <div className="it-bk__hero-media">
-          <Image
-            src={photos.snow}
-            alt=""
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover"
-          />
-        </div>
-        <div className="it-bk__hero-overlay" />
-        <div className="it-bk__hero-inner">
-          <p className="it-bk__eyebrow">Group rides · High-altitude highways</p>
-          <h1>Biking Trips</h1>
-          <p className="it-bk__lead">
-            Ride Ladakh and Spiti with support vehicles, experienced marshals and carefully planned
-            itineraries — built for riders who want epic roads without the logistics stress.
-          </p>
-          <div className="it-bk__hero-actions">
-            <button
-              type="button"
-              className="it-bk__btn it-bk__btn--primary"
-              onClick={() => scrollToId('explore-biking')}
-            >
-              Explore Rides
-              <ArrowDown className="h-4 w-4" aria-hidden />
-            </button>
-            <a
-              className="it-bk__btn it-bk__btn--ghost"
-              href={whatsappUrl('Hi Indian Treks! I want to know more about biking trips.')}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <MessageCircle className="h-4 w-4" aria-hidden />
-              WhatsApp us
-            </a>
-          </div>
-        </div>
-      </section>
+      <BikingPremiumHero />
 
       <div id="bk-sticky-sentinel" className="it-bk__sticky-sentinel" aria-hidden />
       <nav
-        className={`it-bk__sticky${stickyStuck ? ' is-stuck' : ''}`}
+        className={`it-bk__sticky it-bk__sticky--icons${stickyStuck ? ' is-stuck' : ''}`}
         aria-label="Biking regions"
       >
-        <div className="it-bk__sticky-shell">
+        <div className="it-bk__sticky-shell it-bk__sticky-shell--icons">
           <p className="it-bk__sticky-label">Jump to</p>
           <div className="it-bk__sticky-track" role="tablist" aria-label="Regions">
-            {bikingStickyNav.map((item) => (
-              <button
-                key={item.id}
-                type="button"
-                role="tab"
-                aria-selected={activeId === item.id}
-                className={activeId === item.id ? 'is-active' : undefined}
-                onClick={() => scrollToId(item.id)}
-              >
-                {item.label}
-              </button>
-            ))}
+            {bikingStickyNav.map((item) => {
+              const NavIcon = item.icon === 'bike' ? Bike : Mountain;
+              return (
+                <button
+                  key={item.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={activeId === item.id}
+                  className={activeId === item.id ? 'is-active' : undefined}
+                  onClick={() => scrollToId(item.id)}
+                >
+                  <NavIcon className="it-bk__sticky-icon" aria-hidden />
+                  {item.label}
+                </button>
+              );
+            })}
           </div>
         </div>
       </nav>

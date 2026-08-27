@@ -44,15 +44,37 @@ const internationalSection = {
 
 const tripSections = [topTreksSection, yatrasSection, internationalSection];
 
+export const bestSellersHeroStats = [
+  { value: '80K+', label: 'Happy Travellers' },
+  { value: '4.8/5', label: 'Average Rating' },
+  { value: '200+', label: 'Expertly Curated Trips' },
+  { value: '100%', label: 'Safe & Trusted' },
+] as const;
+
+export const bestSellersHeroFeatures = [
+  { title: 'Handpicked Trips', sub: 'Carefully selected by trek experts' },
+  { title: 'Best Reviews', sub: 'Trips loved by thousands of travellers' },
+  { title: 'Fast Filling', sub: 'High demand departures, book early!' },
+  { title: 'All In One', sub: 'Treks, Yatras & International Adventures' },
+] as const;
+
 export const bestSellersLandingConfig: TrendingLandingConfig = {
   slug: 'best-sellers',
-  heroImage: photos.kedarkantha,
+  heroImage: photos.snow,
   heroEyebrow: 'Most booked · Group departures',
   heroTitle: 'Best Sellers',
   heroLead:
     'Discover the trips our travellers love most — proven routes, strong reviews and departures that fill fast across treks, yatras and international adventures.',
   heroPrimaryCta: { label: 'Explore Best Sellers', targetId: 'explore-categories' },
   heroWhatsappMsg: 'Hi Indian Treks! I want help choosing from your best-selling group trips.',
+  premiumHero: {
+    titleMain: 'Best',
+    titleAccent: 'Sellers',
+    whatsappSub: 'Get quick help',
+    badgeIcon: 'users',
+    stats: bestSellersHeroStats,
+    features: bestSellersHeroFeatures,
+  },
   stickyNav: [
     { id: 'explore-categories', label: 'Categories' },
     { id: 'top-treks', label: 'Top Treks' },

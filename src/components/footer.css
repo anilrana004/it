@@ -393,13 +393,24 @@
   font-weight: 800;
 }
 
-.rhf-contact-content,
+.rhf-contact-content {
+  color: var(--rhf-text-soft);
+  font-size: 13.5px;
+  line-height: 1.62;
+  font-weight: 600;
+}
+
 .rhf-contact-content a {
+  display: block;
   color: var(--rhf-text-soft);
   font-size: 13.5px;
   line-height: 1.62;
   font-weight: 600;
   text-decoration: none;
+}
+
+.rhf-contact-content a + a {
+  margin-top: 0.15rem;
 }
 
 .rhf-contact-content a:hover {
@@ -581,6 +592,9 @@
 }
 .rhf-li {
   background: #0a66c2;
+}
+.rhf-quora {
+  background: #b92b27;
 }
 .rhf-wa {
   background: #25d366;
