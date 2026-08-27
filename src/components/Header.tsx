@@ -102,11 +102,11 @@ function NavLabel({
   star?: boolean;
 }) {
   return (
-    <span className="inline-flex items-center gap-0.5">
+    <span className="inline-flex items-center gap-0.5" title={shortLabel ? label : undefined}>
       {shortLabel ? (
         <>
-          <span className="2xl:hidden">{shortLabel}</span>
-          <span className="hidden 2xl:inline">{label}</span>
+          <span className="min-[1760px]:hidden">{shortLabel}</span>
+          <span className="hidden min-[1760px]:inline">{label}</span>
         </>
       ) : (
         label
@@ -404,22 +404,22 @@ export default function Header() {
         >
           <Link
             href="/"
-            className="flex h-full shrink-0 items-center bg-white px-3 shadow-[4px_0_12px_rgba(0,0,0,0.12)] xl:px-4"
+            className="relative z-20 flex h-full shrink-0 items-center bg-white px-3 shadow-[4px_0_12px_rgba(0,0,0,0.12)] xl:px-4"
             aria-label="Indian Treks home"
           >
-            <BrandLogo className="h-6 w-auto max-w-[130px] object-contain object-left xl:h-7 xl:max-w-[160px] 2xl:max-w-[180px]" />
+            <BrandLogo className="h-6 w-auto max-w-[124px] object-contain object-left xl:h-7 xl:max-w-[148px] min-[1760px]:max-w-[168px]" />
           </Link>
 
           {/*
-            Center nav when space allows; when items exceed the middle column,
-            overflow clips from the right so the first link never shifts toward the logo.
+            Center nav when space allows; overflow clips from the right edge so
+            the logo and first link never shift or get cut off.
           */}
           <nav
-            className="grid min-w-0 grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center overflow-x-clip px-1.5 xl:px-2 2xl:px-3"
+            className="relative z-0 grid min-w-0 grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center overflow-hidden px-1 xl:px-1.5 min-[1760px]:px-2"
             aria-label="Primary"
           >
             <div aria-hidden="true" />
-            <div className="flex shrink-0 items-center gap-0 xl:gap-0.5">
+            <div className="flex max-w-full items-center justify-center gap-0 overflow-hidden xl:gap-0.5">
             {navItems.map((item) => (
               <div
                 key={item.label}
@@ -430,11 +430,12 @@ export default function Header() {
                 {item.sale ? (
                   <Link
                     href={item.href}
-                    className="mx-0.5 inline-flex h-7 items-center gap-1 whitespace-nowrap rounded-full bg-[#16a34a] px-2.5 text-[11px] font-bold text-white shadow-md shadow-black/20 transition-colors hover:bg-[#15803d] xl:mx-1 xl:px-3 xl:text-[11.5px] 2xl:text-[12px]"
+                    className="mx-0.5 inline-flex h-7 items-center gap-1 whitespace-nowrap rounded-full bg-[#16a34a] px-2.5 text-[11px] font-bold text-white shadow-md shadow-black/20 transition-colors hover:bg-[#15803d] xl:mx-1 xl:px-3 xl:text-[11.5px] min-[1760px]:text-[12px]"
+                    title={item.label}
                   >
                     <Sparkles className="h-3 w-3 shrink-0" />
-                    <span className="2xl:hidden">{item.shortLabel ?? item.label}</span>
-                    <span className="hidden 2xl:inline">{item.label}</span>
+                    <span className="min-[1760px]:hidden">{item.shortLabel ?? item.label}</span>
+                    <span className="hidden min-[1760px]:inline">{item.label}</span>
                   </Link>
                 ) : item.richMenu ? (
                   <button
@@ -479,10 +480,13 @@ export default function Header() {
             <div aria-hidden="true" />
           </nav>
 
-          <div className="flex shrink-0 items-center gap-1.5 px-2 xl:gap-2 xl:px-3 2xl:gap-2.5 2xl:px-4">
+          <div
+            className="relative z-20 flex shrink-0 items-center gap-1.5 px-2 xl:gap-2 xl:px-3 min-[1760px]:gap-2.5 min-[1760px]:px-4"
+            style={{ background: 'linear-gradient(180deg, #0b4a28 0%, #0a3d22 100%)' }}
+          >
             <form
               role="search"
-              className="flex h-8 max-w-[min(100%,280px)] items-center rounded-full border border-white/20 bg-white pl-2.5 pr-0.5 shadow-sm"
+              className="flex h-8 max-w-[min(100%,200px)] items-center rounded-full border border-white/20 bg-white pl-2.5 pr-0.5 shadow-sm xl:max-w-[220px] min-[1760px]:max-w-[280px]"
               onSubmit={(e) => {
                 e.preventDefault();
                 setOpenDropdown(null);
@@ -504,7 +508,7 @@ export default function Header() {
                   setSearchIdx(-1);
                 }}
                 onFocus={() => setOpenDropdown(null)}
-                className="min-w-0 flex-1 bg-transparent px-1.5 text-[11px] text-gray-800 outline-none placeholder:text-gray-400 xl:w-[132px] xl:flex-none 2xl:w-[168px] 2xl:text-[12px]"
+                className="min-w-0 flex-1 bg-transparent px-1.5 text-[11px] text-gray-800 outline-none placeholder:text-gray-400 xl:w-[96px] xl:flex-none min-[1760px]:w-[148px] min-[1760px]:text-[12px]"
               />
               <button
                 type="submit"
