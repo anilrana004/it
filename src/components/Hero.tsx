@@ -293,10 +293,8 @@ export default function Hero() {
   const mobile = (
     <section
       id="home-mobile-hero"
-      className="relative overflow-hidden"
-      style={{
-        background: 'linear-gradient(180deg, #4ade80 0%, #4ade80 42%, #86efac 68%, #dcfce7 86%, #f3f4f6 100%)',
-      }}
+      className="relative overflow-hidden bg-white"
+      style={{ background: 'var(--ih-mobile-hero-gradient)' }}
     >
       {/* In-flow top bar - part of the yellow page (no overlap). Sticky bar appears on scroll via Header. */}
       <div

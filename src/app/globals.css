@@ -42,10 +42,28 @@
   --ih-primary-hover: #15803d;
   --ih-primary-active: #166534;
   --ih-spark: #4ade80;          /* highlight on dark photos — same job as IndiaHikes accent */
-  --ih-wash: #4ade80;           /* mobile page canvas — same job as IndiaHikes accent wash */
-  --ih-wash-mid: #86efac;
-  --ih-wash-soft: #dcfce7;
+  /*
+   * Mobile hero wash — JW-style continuous fade (saturated top → white bottom).
+   * Hue locked to brand green (~115°); lightness steps mirror sky-blue travel-app pattern.
+   */
+  --ih-wash-deep: #8FCC82;      /* top — richer sage (parallel to JW header blue) */
+  --ih-wash: #A8D698;           /* header + search band */
+  --ih-wash-mid: #C2E3B6;
+  --ih-wash-soft: #DBF0D2;      /* carousel zone */
+  --ih-wash-fade: #EEF8EA;      /* category row */
   --ih-wash-mist: #f0fdf4;
+  /* vh stops = consistent fade while scrolling (not tied to hero content height) */
+  --ih-mobile-hero-gradient: linear-gradient(
+    180deg,
+    var(--ih-wash-deep) 0,
+    var(--ih-wash) 11vh,
+    var(--ih-wash-mid) 24vh,
+    var(--ih-wash-soft) 38vh,
+    var(--ih-wash-fade) 52vh,
+    #ffffff 66vh,
+    #ffffff 100%
+  );
+  --ih-mobile-header-fade-end: 172px;
   --ih-secondary: #1666d9;
   --ih-bg: #f3f4f6;
   --ih-text: #000000;

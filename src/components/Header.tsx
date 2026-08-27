@@ -128,8 +128,10 @@ export default function Header() {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState<string[]>([]);
   const [mobileAccordion, setMobileAccordion] = useState<number | null>(null);
-  /** 0 = dissolved into green hero wash, 1 = white sticky bar (homepage only) */
+  /** 0 = in-flow green chrome, 1 = sticky bar visible (homepage only) */
   const [navSolid, setNavSolid] = useState(0);
+  /** Homepage scroll — drives sticky header wash → white blend */
+  const [homeScrollY, setHomeScrollY] = useState(0);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
@@ -137,19 +139,29 @@ export default function Header() {
 
   useEffect(() => {
     if (!isHome) {
+      setHomeScrollY(0);
       setNavSolid(1);
       return;
     }
 
-    // Sticky white bar only after leaving the top of the homepage (green hero chrome).
-    const SHOW_AFTER = 48;
+    const CHROME_SHOW = 12;
     const update = () => {
-      setNavSolid(window.scrollY > SHOW_AFTER ? 1 : 0);
+      const y = window.scrollY;
+      setHomeScrollY(y);
+      setNavSolid(y > CHROME_SHOW ? 1 : 0);
     };
     update();
     window.addEventListener('scroll', update, { passive: true });
     return () => window.removeEventListener('scroll', update);
   }, [isHome]);
+
+  /** Sticky mobile header bg tracks scroll — green when over wash, white over white zone */
+  const mobileHeaderWash = useMemo(() => {
+    if (!isHome) return 1;
+    const chrome = 56;
+    const fadeEnd = 172;
+    return Math.min(1, Math.max(0, (homeScrollY - chrome) / (fadeEnd - chrome)));
+  }, [isHome, homeScrollY]);
 
   /** Hide chrome while scrolling down; reveal on scroll up (Roopkund Heaven pattern). */
   const [hidden, setHidden] = useState(false);
@@ -223,6 +235,14 @@ export default function Header() {
 
   /** Homepage mobile: hide fixed bar until scroll (green hero chrome shows instead). Other pages: always solid white. */
   const showFixedMobile = !isHome || navSolid > 0 || isOpen;
+
+  const mobileHeaderBg = isHome
+    ? `color-mix(in srgb, var(--ih-wash) ${Math.round((1 - mobileHeaderWash) * 100)}%, #ffffff ${Math.round(mobileHeaderWash * 100)}%)`
+    : '#ffffff';
+  const mobileHeaderShadow =
+    mobileHeaderWash > 0.55 ? '0 1px 10px rgba(16, 24, 20, 0.08)' : 'none';
+  const mobileHeaderBorder =
+    mobileHeaderWash > 0.55 ? '1px solid #e8ece9' : '1px solid transparent';
 
   const searchItems = useMemo(() =>
     treks.map(t => ({ id: t.id, title: t.title, sub: t.subtitle, type: t.type as 'trek' | 'yatra' })),
@@ -525,14 +545,15 @@ export default function Header() {
       <header
         className={`fixed left-0 top-0 w-full lg:hidden ${isOpen ? 'z-[70]' : 'z-50'}`}
         style={{
-          backgroundColor: '#ffffff',
-          boxShadow: showFixedMobile ? '0 1px 10px rgba(16, 24, 20, 0.08)' : 'none',
-          borderBottom: showFixedMobile ? '1px solid #e8ece9' : 'none',
+          backgroundColor: showFixedMobile ? mobileHeaderBg : 'transparent',
+          boxShadow: showFixedMobile ? mobileHeaderShadow : 'none',
+          borderBottom: showFixedMobile ? mobileHeaderBorder : 'none',
           paddingTop: 'env(safe-area-inset-top, 0px)',
           transform: showFixedMobile && !hidden ? 'translateY(0)' : 'translateY(-110%)',
           opacity: showFixedMobile && !hidden ? 1 : 0,
           pointerEvents: showFixedMobile && !hidden ? 'auto' : 'none',
-          transition: 'transform 0.28s cubic-bezier(0.22,1,0.36,1), opacity 0.22s ease, box-shadow 0.22s ease',
+          transition:
+            'transform 0.28s cubic-bezier(0.22,1,0.36,1), opacity 0.22s ease, background-color 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease',
         }}
       >
         <div className="flex h-14 items-center justify-between px-4">

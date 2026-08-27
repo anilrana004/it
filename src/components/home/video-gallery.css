@@ -1,0 +1,272 @@
+/* Memories for Life — portrait coverflow (mobile) + landscape coverflow (desktop) */
+.it-vid-mem {
+  padding: 2.5rem 0 2.75rem;
+  background: #f7f8f9;
+  overflow: hidden;
+}
+
+.it-vid-mem__head {
+  width: min(920px, calc(100% - 2rem));
+  margin: 0 auto 1.35rem;
+  text-align: center;
+}
+
+.it-vid-mem__kicker {
+  margin: 0 0 0.45rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: #94a3b8;
+}
+
+.it-vid-mem__title {
+  margin: 0;
+  font-family: var(--font-heading), ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(1.35rem, 4.2vw, 2rem);
+  font-weight: 700;
+  line-height: 1.2;
+  color: #1e3a5f;
+}
+
+.it-vid-mem__lead {
+  margin: 0.5rem 0 0;
+  font-size: 0.82rem;
+  color: #64748b;
+}
+
+.it-vid-mem__shell {
+  position: relative;
+  width: 100%;
+  touch-action: pan-y pan-x;
+}
+
+.it-vid-mem__swiper {
+  width: 100%;
+  padding: 0.5rem 0 0.25rem !important;
+  overflow: visible;
+  cursor: grab;
+}
+
+.it-vid-mem__swiper:active {
+  cursor: grabbing;
+}
+
+.it-vid-mem__swiper .swiper-wrapper {
+  align-items: center;
+}
+
+/* —— Mobile: portrait phone cards, side strips visible (reference) —— */
+.it-vid-mem__slide {
+  width: 212px !important;
+  height: 378px;
+  background: transparent;
+  pointer-events: auto !important;
+  transition: filter 0.35s ease, opacity 0.35s ease;
+}
+
+.it-vid-mem__panel {
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  transition: transform 0.35s ease;
+}
+
+.it-vid-mem__panel.is-active {
+  cursor: grab;
+}
+
+.it-vid-mem__bezel {
+  width: 100%;
+  height: 100%;
+  padding: 7px;
+  border-radius: 1.35rem;
+  background: linear-gradient(180deg, #f3f4f6 0%, #e8eaed 100%);
+  border: 4px solid #fff;
+  box-shadow:
+    0 22px 44px rgba(15, 23, 42, 0.14),
+    0 6px 16px rgba(15, 23, 42, 0.08);
+  transition: box-shadow 0.35s ease, filter 0.35s ease;
+}
+
+.it-vid-mem__panel.is-active .it-vid-mem__bezel {
+  box-shadow:
+    0 28px 56px rgba(15, 23, 42, 0.2),
+    0 10px 22px rgba(15, 23, 42, 0.1);
+}
+
+.it-vid-mem__panel:not(.is-active) .it-vid-mem__bezel {
+  filter: brightness(0.92) saturate(0.95);
+}
+
+.it-vid-mem__frame {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 0.95rem;
+  overflow: hidden;
+  background: #0a0a0a;
+}
+
+.it-vid-mem__media {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  border: 0;
+  pointer-events: none;
+  user-select: none;
+}
+
+.it-vid-mem__media--video {
+  pointer-events: none !important;
+}
+
+.it-vid-mem__play {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.it-vid-mem__play svg {
+  width: 2.5rem;
+  height: 2.5rem;
+  padding-left: 3px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+}
+
+.it-vid-mem__nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.85rem;
+  margin-top: 1.35rem;
+  padding: 0 1rem;
+}
+
+.it-vid-mem__nav-btn {
+  width: 2.75rem;
+  height: 2.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 999px;
+  background: #16a34a;
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(22, 163, 74, 0.28);
+  cursor: pointer;
+  transition: background 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.it-vid-mem__nav-btn:hover {
+  background: #15803d;
+  transform: translateY(-1px);
+}
+
+.it-vid-mem__nav-btn:active {
+  transform: translateY(0);
+}
+
+/* Dim non-active slides slightly via swiper progress */
+.it-vid-mem__swiper .swiper-slide:not(.swiper-slide-active) {
+  filter: brightness(0.88);
+}
+
+.it-vid-mem__swiper .swiper-slide-active {
+  filter: none;
+  z-index: 3;
+}
+
+@media (max-width: 767px) {
+  .it-vid-mem {
+    padding: 2rem 0 2.25rem;
+  }
+
+  .it-vid-mem__kicker {
+    letter-spacing: 0.26em;
+  }
+
+  .it-vid-mem__lead {
+    font-size: 0.78rem;
+  }
+
+  .it-vid-mem__swiper {
+    padding: 0.75rem 0 0.35rem !important;
+  }
+
+  .it-vid-mem__nav {
+    margin-top: 1.5rem;
+  }
+}
+
+/* —— Desktop: landscape stage, portrait video centered —— */
+@media (min-width: 768px) {
+  .it-vid-mem__slide {
+    width: min(82vw, 560px) !important;
+    height: clamp(200px, 52vw, 320px);
+  }
+
+  .it-vid-mem__panel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    border-radius: 1rem;
+    overflow: hidden;
+    background: #0c0c0c;
+    border: 4px solid #fff;
+    box-shadow: 0 16px 36px rgba(15, 23, 42, 0.14);
+  }
+
+  .it-vid-mem__panel.is-active {
+    border-width: 5px;
+    box-shadow: 0 22px 48px rgba(15, 23, 42, 0.2);
+  }
+
+  .it-vid-mem__bezel {
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    width: auto;
+    height: 100%;
+    max-width: 100%;
+  }
+
+  .it-vid-mem__panel.is-active .it-vid-mem__bezel,
+  .it-vid-mem__panel:not(.is-active) .it-vid-mem__bezel {
+    filter: none;
+  }
+
+  .it-vid-mem__frame {
+    height: 100%;
+    width: auto;
+    max-width: 100%;
+    aspect-ratio: 9 / 16;
+    border-radius: 0;
+  }
+
+  .it-vid-mem__swiper .swiper-slide:not(.swiper-slide-active) {
+    filter: none;
+  }
+}
+
+@media (min-width: 1024px) {
+  .it-vid-mem {
+    padding: 3.25rem 0 3.5rem;
+  }
+
+  .it-vid-mem__slide {
+    width: min(58vw, 640px) !important;
+    height: clamp(280px, 28vw, 360px);
+  }
+}
