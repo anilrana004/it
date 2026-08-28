@@ -93,7 +93,7 @@ export default function GearRentModal({
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={imgSrc || live.img}
-            alt=""
+            alt={live.name}
             onError={() => setImgSrc(GEAR_FALLBACK_IMAGE)}
           />
         </div>

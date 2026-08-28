@@ -1,5 +1,4 @@
 import { blogPosts, blogPath, getPostBySlug } from '@/lib/blog';
-import { photos } from '@/lib/media';
 
 const u = (id: string, w = 900, h = 700) =>
   `https://images.unsplash.com/${id}?ixlib=rb-4.0.3&auto=format&fit=crop&w=${w}&h=${h}&q=80`;
@@ -198,30 +197,124 @@ export const GEAR_CATALOG: GearItem[] = [
   },
 ];
 
-export const GEAR_HERO_IMAGE = photos.snow;
+export const GEAR_HERO_IMAGE = u('photo-1478131143081-268f3bcba263', 1600, 1000);
 
 export const GEAR_FALLBACK_IMAGE = u('photo-1551632811-561732d1e306');
+
+export const GEAR_HERO_HIGHLIGHTS = [
+  {
+    title: 'Sanitised & safe',
+    body: 'Every item is cleaned and quality-checked before every trip.',
+    icon: 'fa-shield-heart',
+  },
+  {
+    title: 'Trail tested',
+    body: 'Used by experts, built for the trails. Reliable. Durable.',
+    icon: 'fa-mountain',
+  },
+  {
+    title: 'Premium gear',
+    body: 'Top brands, perfect for every Himalayan adventure you chase.',
+    icon: 'fa-gem',
+  },
+  {
+    title: 'Easy & hassle-free',
+    body: 'Book online, pick up at base camp, return after your trek.',
+    icon: 'fa-backpack',
+  },
+] as const;
+
+export const GEAR_WHY_RENT = [
+  {
+    title: 'Save money',
+    body: 'Pay a fraction of the cost. Perfect for occasional trekkers and first-timers.',
+    icon: 'fa-indian-rupee-sign',
+  },
+  {
+    title: 'Travel light',
+    body: 'Carry less, enjoy more. Lighten your backpack and hike with ease.',
+    icon: 'fa-leaf',
+  },
+  {
+    title: 'One-time use?',
+    body: "Why buy what you'll use only once? Rent it for the trek, return it after.",
+    icon: 'fa-clock',
+  },
+  {
+    title: 'Sustainable choice',
+    body: 'Reduce waste. Share quality gear instead of buying kit that sits in a cupboard.',
+    icon: 'fa-earth-asia',
+  },
+  {
+    title: 'Support local',
+    body: 'Empowering base-camp teams and trekking communities across the Himalayas.',
+    icon: 'fa-people-group',
+  },
+] as const;
+
+export const GEAR_STATS = [
+  { value: '18,000+', label: 'Happy trekkers', icon: 'fa-users' },
+  { value: '4.8 / 5', label: 'Average rating', icon: 'fa-star' },
+  { value: '150+', label: 'Treks covered', icon: 'fa-location-dot' },
+  { value: '100%', label: 'Trusted & reliable', icon: 'fa-shield-halved' },
+] as const;
+
+export const GEAR_TRUST_AVATARS = [
+  { initials: 'NK', hue: 145 },
+  { initials: 'PS', hue: 160 },
+  { initials: 'AR', hue: 130 },
+  { initials: 'DM', hue: 155 },
+] as const;
 
 export const GEAR_VALUE_PROPS = [
   {
     title: '70% cheaper',
     body: 'Skip the cost of buying technical gear you will use once a year.',
-    icon: 'fa-solid fa-indian-rupee-sign',
+    icon: 'fa-indian-rupee-sign',
   },
   {
     title: 'Trail tested',
     body: 'Every piece is field-checked for Himalayan weather before it goes out.',
-    icon: 'fa-solid fa-mountain-sun',
+    icon: 'fa-mountain-sun',
   },
   {
     title: '₹0 upkeep',
     body: 'We clean, waterproof, and service the kit. You just trek.',
-    icon: 'fa-solid fa-soap',
+    icon: 'fa-soap',
   },
   {
     title: 'Travel light',
     body: 'Collect sanitised gear at base camp. Fly or bus with a daypack.',
-    icon: 'fa-solid fa-suitcase-rolling',
+    icon: 'fa-suitcase-rolling',
+  },
+] as const;
+
+/** Top kit items for rent-vs-buy comparison (synced with catalog). */
+export const GEAR_RENT_VS_BUY = GEAR_CATALOG.slice()
+  .sort((a, b) => b.rentedLastMonth - a.rentedLastMonth)
+  .slice(0, 8)
+  .map((item) => ({ id: item.id, rent: item.price, buy: item.buyPrice }));
+
+export const GEAR_TIMELINE = [
+  {
+    year: '2014',
+    title: 'Indian Treks begins',
+    body: 'Guided Himalayan treks start — trekkers ask for affordable gear at every base camp.',
+  },
+  {
+    year: '2019',
+    title: 'Rental pilot',
+    body: 'Shoes, jackets, and poles available at Sankri and Dehradun for winter batches.',
+  },
+  {
+    year: '2022',
+    title: 'Base-camp stores',
+    body: 'Dedicated rental counters at major reporting points across Uttarakhand and Himachal.',
+  },
+  {
+    year: '2026',
+    title: '18,000+ rentals / season',
+    body: 'Full online booking, size reservation, and sanitised handoff on day 1 of every departure.',
   },
 ] as const;
 
@@ -332,7 +425,7 @@ export const GEAR_PAGE_HERO = {
   lead:
     'Sanitised, trail-tested kit waiting at base camp. Travel light, save up to 80%, and skip the cupboard of gear you will use once a year.',
   readTime: '5 min browse',
-  guidanceBadge: 'Crosstrek-style rental',
+  guidanceBadge: 'Base-camp rental',
   quote: {
     text: 'Travel light. Trek strong. Return the kit — we handle the rest.',
     attribution: '— Indian Treks base-camp team',

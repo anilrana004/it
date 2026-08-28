@@ -171,20 +171,20 @@
   text-underline-offset: 3px;
 }
 
-.it-lx__reviews-swiper :global(.swiper-button-prev),
-.it-lx__reviews-swiper :global(.swiper-button-next) {
+.it-lx__reviews-swiper .swiper-button-prev,
+.it-lx__reviews-swiper .swiper-button-next {
   color: #16a34a;
   width: 2rem;
   height: 2rem;
 }
 
-.it-lx__reviews-swiper :global(.swiper-button-prev::after),
-.it-lx__reviews-swiper :global(.swiper-button-next::after) {
+.it-lx__reviews-swiper .swiper-button-prev::after,
+.it-lx__reviews-swiper .swiper-button-next::after {
   font-size: 0.95rem;
   font-weight: 800;
 }
 
-.it-lx__reviews-swiper :global(.swiper-pagination-bullet-active) {
+.it-lx__reviews-swiper .swiper-pagination-bullet-active {
   background: #16a34a;
 }
 
