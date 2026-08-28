@@ -447,15 +447,6 @@ html.it-chrome-hidden .it-bk__section--anchor {
   .it-bk__region-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
-
-  .it-bk__region-grid--3 {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .it-bk__region-grid--2 {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    max-width: 760px;
-  }
 }
 
 .it-bk__region-card {

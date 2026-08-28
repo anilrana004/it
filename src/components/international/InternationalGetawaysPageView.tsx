@@ -168,7 +168,7 @@ export default function InternationalGetawaysPageView() {
             </p>
           </div>
 
-          <div className="it-ig__region-grid it-ig__region-grid--3">
+          <div className="it-ig__region-grid">
             {internationalTrips.map((trip) => (
               <button
                 key={trip.id}

@@ -1,5 +1,6 @@
 import { treks, trekDetailPath, type Trek } from '@/lib/data';
-import { gearPhotos, photos } from '@/lib/media';
+import { photos } from '@/lib/media';
+import { GEAR_CATALOG } from '@/lib/gear-rental';
 import { safeImage, trekPhoto } from '@/lib/safe-image';
 import type { BannerItem } from '@/components/Banners';
 
@@ -71,18 +72,12 @@ export const packingGroups: { title: string; icon: string; items: string[] }[] =
 ];
 
 /** Rental gear catalogue shown in the "Rent a Gear" carousel. */
-export const gearRentals: { name: string; price: string; img: string }[] = [
-  { name: 'Trekking Shoes', price: '800' },
-  { name: 'Down Jacket', price: '500' },
-  { name: 'Rucksack', price: '700' },
-  { name: 'Trekking Pole', price: '200' },
-  { name: 'Head Lamp', price: '200' },
-  { name: 'Trek Pants', price: '400' },
-  { name: 'Water Bottle', price: '250' },
-  { name: 'Poncho', price: '250' },
-  { name: 'Jumbo Bag', price: '2,500' },
-  { name: 'Daybag', price: '300' },
-].map((item, i) => ({ ...item, img: gearPhotos[i % gearPhotos.length] }));
+export const gearRentals = GEAR_CATALOG.map((item) => ({
+  id: item.id,
+  name: item.name,
+  price: String(item.price),
+  img: item.img,
+}));
 
 export const bookingPolicyRows: [string, string][] = [
   ['Booking Confirmation', 'Your seat is considered confirmed only after the required advance payment is received.'],

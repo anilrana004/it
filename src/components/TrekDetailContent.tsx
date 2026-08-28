@@ -15,7 +15,6 @@ import {
   bookingPolicyRows,
   cancellationPolicyRows,
   detailTestimonials,
-  gearRentals,
   getPromoBanners,
   getReachSteps,
   getSeasonGuide,
@@ -23,10 +22,34 @@ import {
   baseCamp,
   staysLabel,
 } from '@/lib/trek-detail-content';
+import {
+  GEAR_CATALOG,
+  cartForTrek,
+  cartSubtotal,
+  encodeGearQuery,
+  formatGearLines,
+  readGearCart,
+  removeGearLine,
+  subscribeGearCart,
+  upsertGearLine,
+  type GearCartLine,
+  type GearItem,
+} from '@/lib/gear-rental';
+import GearRentModal from '@/components/rental/GearRentModal';
+import { getTrekExtended } from '@/lib/treks/get-trek-extended';
+import { getRouteProfile } from '@/lib/treks/get-route-profile';
+import { RichBlocks, TrekExtendedNavItems, TrekRichSectionCard } from '@/components/treks/TrekExtendedSections';
+import TrekRouteMapSection from '@/components/treks/TrekRouteMapSection';
+import TrekAltitudeChartSection from '@/components/treks/TrekAltitudeChartSection';
 import { DESK_HEADER_H, MOBILE_HEADER_H, CHROME_HIDDEN_CLASS } from '@/lib/layout';
 import './trek-detail.css';
 
-const navLinks = [
+const routeNavLinks = [
+  { id: 'route-map', label: 'Map', icon: 'fa-solid fa-map' },
+  { id: 'altitude-chart', label: 'Chart', icon: 'fa-solid fa-chart-line' },
+];
+
+const baseNavLinks = [
   { id: 'highlight', label: 'Highlight', icon: 'fa-solid fa-star' },
   { id: 'overview', label: 'Overview', icon: 'fa-regular fa-file-lines' },
   { id: 'itinerary', label: 'Itinerary', icon: 'fa-regular fa-calendar-days' },
@@ -326,16 +349,48 @@ export default function TrekDetailContent({
   const kindLabel = isYatra ? 'Yatra' : 'Trek';
   const listHref = isYatra ? '/yatra' : '/treks';
 
+  const extended = useMemo(() => getTrekExtended(trek.id), [trek.id]);
+  const routeProfile = useMemo(() => getRouteProfile(trek, extended), [trek, extended]);
+  const navLinks = useMemo(() => {
+    const extra = extended ? TrekExtendedNavItems(extended.sections) : [];
+    const fitnessSafetyFood = extra.filter((item) =>
+      ['fitness', 'safety', 'food'].includes(item.id),
+    );
+    const whyChoose = extra.filter((item) => item.id === 'why-choose');
+    const beforeInclusion = baseNavLinks.slice(0, 3);
+    const fromInclusion = baseNavLinks.slice(3, 5);
+    const afterReach = baseNavLinks.slice(5);
+    return [
+      ...beforeInclusion,
+      ...routeNavLinks,
+      ...fromInclusion,
+      ...fitnessSafetyFood,
+      ...afterReach,
+      ...whyChoose,
+    ];
+  }, [extended]);
+
   const images = useMemo(() => galleryImages(trek), [trek]);
   const batches = useMemo(() => getDepartureBatches(trek, 4, 3), [trek]);
   const seasons = useMemo(() => getSeasonGuide(trek), [trek]);
-  const reachSteps = useMemo(() => getReachSteps(trek), [trek]);
+  const reachSteps = useMemo(
+    () => extended?.reachSteps ?? getReachSteps(trek),
+    [extended, trek],
+  );
+  const carryGroups = extended?.packingGroups ?? packingGroups;
+  const pageTestimonials = extended?.testimonials ?? detailTestimonials.map((item) => ({
+    name: item.name,
+    text: item.text,
+  }));
   const [nearbyPromo, offersPromo, topRatedPromo] = useMemo(() => getPromoBanners(trek), [trek]);
   const relatedPosts = useMemo(() => getRelatedPosts(trek, 3), [trek]);
-  const overviewParas = useMemo(
-    () => [...paragraphs(trek.brief), ...paragraphs(trek.description)],
-    [trek],
-  );
+  const baseOverviewParas = useMemo(() => {
+    const base = [...paragraphs(trek.brief), ...paragraphs(trek.description)];
+    if (extended?.overviewExtra?.length) {
+      return base.filter((para) => !/^Key highlights/i.test(para));
+    }
+    return base;
+  }, [trek, extended]);
 
   const related = useMemo(
     () =>
@@ -351,6 +406,7 @@ export default function TrekDetailContent({
   const [highlightOpen, setHighlightOpen] = useState(false);
   const [overviewOpen, setOverviewOpen] = useState(false);
   const [openDays, setOpenDays] = useState<Set<number>>(() => new Set([1]));
+  const [routeDay, setRouteDay] = useState(1);
   const [policyTab, setPolicyTab] = useState<'booking' | 'cancellation'>('booking');
   const [faqQuery, setFaqQuery] = useState('');
   const [openFaq, setOpenFaq] = useState<number | null>(0);
@@ -387,6 +443,14 @@ export default function TrekDetailContent({
   const [men, setMen] = useState(() => Math.min(20, Math.max(1, Math.floor(initialGuests) || 1)));
   const [women, setWomen] = useState(0);
   const [picked, setPicked] = useState<Set<string>>(() => new Set());
+  const [gearLines, setGearLines] = useState<GearCartLine[]>([]);
+  const [pickingGear, setPickingGear] = useState<GearItem | null>(null);
+
+  useEffect(() => {
+    const refresh = () => setGearLines(cartForTrek(trek.id, readGearCart()));
+    refresh();
+    return subscribeGearCart(refresh);
+  }, [trek.id]);
 
   const tier = trek.pricing.find((p) => p.name === tierName) ?? trek.pricing[0];
   const basePrice = tier?.price ?? 0;
@@ -398,7 +462,8 @@ export default function TrekDetailContent({
   const addOnTotal = addOns
     .filter((a) => picked.has(a.id))
     .reduce((sum, a) => sum + a.price, 0);
-  const total = unitPrice * persons + addOnTotal * persons;
+  const gearTotal = cartSubtotal(gearLines);
+  const total = unitPrice * persons + addOnTotal * persons + gearTotal;
 
   const monthsRef = useRef<HTMLDivElement>(null);
   const datesRef = useRef<HTMLDivElement>(null);
@@ -463,8 +528,15 @@ export default function TrekDetailContent({
 
       const booking = bookingStickyRef.current;
       if (booking) {
-        booking.style.top =
-          window.innerWidth <= 767 ? '' : `${offset + nav.offsetHeight + 18}px`;
+        const topPx = offset + nav.offsetHeight + 18;
+        if (window.innerWidth < 901) {
+          booking.style.top = window.innerWidth <= 767 ? '' : `${topPx}px`;
+          booking.style.removeProperty('--kg-booking-max');
+        } else {
+          booking.style.top = `${topPx}px`;
+          const maxPx = Math.max(360, window.innerHeight - topPx - 24);
+          booking.style.setProperty('--kg-booking-max', `${maxPx}px`);
+        }
       }
 
       if (sections.length) {
@@ -495,7 +567,7 @@ export default function TrekDetailContent({
       window.removeEventListener('resize', onScroll);
       mo.disconnect();
     };
-  }, []);
+  }, [navLinks]);
 
   // Keep the active pill in view whenever the track scrolls horizontally.
   useEffect(() => {
@@ -503,7 +575,7 @@ export default function TrekDetailContent({
     if (!track || track.scrollWidth <= track.clientWidth + 1) return;
     track
       .querySelector('.kg-sticky-link.is-active')
-      ?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      ?.scrollIntoView({ behavior: 'smooth', inline: 'nearest', block: 'nearest' });
   }, [activeSection]);
 
   // ---- Lightbox keyboard --------------------------------------------------
@@ -574,6 +646,7 @@ export default function TrekDetailContent({
     params.set('persons', String(persons));
     params.set('pickup', pickup);
     if (pickupSurcharge) params.set('pickupFee', String(pickupSurcharge));
+    if (gearLines.length) params.set('gear', encodeGearQuery(gearLines));
     return `/booking/${trek.id}?${params.toString()}`;
   };
 
@@ -587,6 +660,7 @@ export default function TrekDetailContent({
       picked.size
         ? `Add-ons: ${addOns.filter((a) => picked.has(a.id)).map((a) => a.name).join(', ')}`
         : '',
+      gearLines.length ? `Rental gear: ${formatGearLines(gearLines)} (${inr(gearTotal)})` : '',
     ].filter(Boolean);
     window.open(whatsappUrl(lines.join('\n')), '_blank', 'noopener,noreferrer');
   };
@@ -619,7 +693,13 @@ export default function TrekDetailContent({
       return next;
     });
 
-  const specs = [
+  const specs = extended?.stats?.length
+    ? extended.stats.map((stat) => ({
+        icon: 'fa-solid fa-circle-info',
+        label: stat.label,
+        value: stat.value,
+      }))
+    : [
     { icon: 'fa-solid fa-person-hiking', label: `${kindLabel} Grade`, value: trek.difficulty },
     { icon: 'fa-solid fa-mountain', label: 'Highest Altitude', value: trek.maxAltitude },
     { icon: 'fa-solid fa-mountain-sun', label: 'Best Season', value: trek.bestSeason },
@@ -638,7 +718,10 @@ export default function TrekDetailContent({
     return `${f.q} ${f.a}`.toLowerCase().includes(q);
   });
 
-  const policyRows = policyTab === 'booking' ? bookingPolicyRows : cancellationPolicyRows;
+  const policyRows =
+    policyTab === 'booking'
+      ? extended?.bookingPolicyRows ?? bookingPolicyRows
+      : extended?.cancellationPolicyRows ?? cancellationPolicyRows;
   const policyHead =
     policyTab === 'booking' ? ['Policy Point', 'Details'] : ['Cancellation Window', 'Charge / Refund'];
 
@@ -831,9 +914,58 @@ export default function TrekDetailContent({
             </div>
           </section>
 
+          {extended?.departure ? (
+            <section className="kg-section">
+              <div className="kg-highlight-card kg-departure-card">
+                <div className="kg-highlight-head">
+                  <div>
+                    <span className="kg-highlight-kicker">
+                      <i className="fa-solid fa-bus" aria-hidden /> Trek Departure
+                    </span>
+                    <h2>Pickup &amp; Drop Details</h2>
+                  </div>
+                </div>
+                <div className="kg-highlight-grid">
+                  <div className="kg-highlight-item">
+                    <div className="kg-highlight-icon">
+                      <i className="fa-solid fa-clock" aria-hidden />
+                    </div>
+                    <div className="kg-highlight-meta">
+                      <strong>Pickup Time</strong>
+                      <span>{extended.departure.pickupTime}</span>
+                    </div>
+                  </div>
+                  <div className="kg-highlight-item">
+                    <div className="kg-highlight-icon">
+                      <i className="fa-solid fa-clock-rotate-left" aria-hidden />
+                    </div>
+                    <div className="kg-highlight-meta">
+                      <strong>Drop Time</strong>
+                      <span>{extended.departure.dropTime}</span>
+                    </div>
+                  </div>
+                  <div className="kg-highlight-item">
+                    <div className="kg-highlight-icon">
+                      <i className="fa-solid fa-location-dot" aria-hidden />
+                    </div>
+                    <div className="kg-highlight-meta">
+                      <strong>Pickup &amp; Drop</strong>
+                      <span>{extended.departure.location}</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="kg-highlight-more-copy">
+                  {extended.departure.notes.map((note) => (
+                    <p key={note}>{note}</p>
+                  ))}
+                </div>
+              </div>
+            </section>
+          ) : null}
+
           {/* Overview */}
           <section id="overview" className="kg-section">
-            <div className={`kg-overview-card${overviewOpen ? '' : ' is-collapsed'}`}>
+            <div className={`kg-overview-card${overviewOpen ? ' is-expanded' : ' is-collapsed'}`}>
               <div className="kg-overview-head">
                 <div>
                   <span className="kg-overview-kicker">
@@ -847,28 +979,39 @@ export default function TrekDetailContent({
               <div className="kg-overview-grid">
                 <div className="kg-overview-copy">
                   <div className="kg-overview-text">
-                    {overviewParas.map((para) => (
+                    {baseOverviewParas.map((para) => (
                       <p key={para}>{para}</p>
                     ))}
-                    <p>
-                      The route runs {trek.startEndPoint}, covering {trek.distance} across{' '}
-                      {trek.days} days with a highest point of {trek.maxAltitude}. It is graded{' '}
-                      {trek.difficulty.toLowerCase()}, which makes it a strong fit for travellers who
-                      are comfortable walking a full day but do not need prior technical experience.
-                    </p>
-                    <p>
-                      Departures run in fixed monthly batches of {trek.groupSize}, led by certified
-                      trip captains carrying a first-aid kit and oxygen on the high sections. The best
-                      window is {trek.bestSeason}.
-                    </p>
+                    {overviewOpen && extended?.overviewExtra?.length ? (
+                      <div className="kg-extended-rich">
+                        <RichBlocks blocks={extended.overviewExtra} />
+                      </div>
+                    ) : null}
+                    {!extended?.overviewExtra?.length ? (
+                      <>
+                        <p>
+                          The route runs {trek.startEndPoint}, covering {trek.distance} across{' '}
+                          {trek.days} days with a highest point of {trek.maxAltitude}. It is graded{' '}
+                          {trek.difficulty.toLowerCase()}, which makes it a strong fit for travellers who
+                          are comfortable walking a full day but do not need prior technical experience.
+                        </p>
+                        <p>
+                          Departures run in fixed monthly batches of {trek.groupSize}, led by certified
+                          trip captains carrying a first-aid kit and oxygen on the high sections. The best
+                          window is {trek.bestSeason}.
+                        </p>
+                      </>
+                    ) : null}
                   </div>
                 </div>
 
                 <div className="kg-overview-points">
-                  <h3>Why travellers love it</h3>
-                  {trek.highlights.slice(0, 4).map((h) => (
+                  <h3>{overviewOpen ? 'Key highlights' : 'Why travellers love it'}</h3>
+                  {(overviewOpen ? trek.highlights : trek.highlights.slice(0, 4)).map((h, index) => (
                     <div className="kg-overview-point" key={h}>
-                      <i className="fa-solid fa-circle-check" aria-hidden />
+                      <span className="kg-overview-point-index" aria-hidden>
+                        {String(index + 1).padStart(2, '0')}
+                      </span>
                       <span>{h}</span>
                     </div>
                   ))}
@@ -947,7 +1090,9 @@ export default function TrekDetailContent({
                                 </div>
                               ))}
                             </div>
-                            <p>{day.description}</p>
+                            {day.description.split(/\n{2,}/).map((part) => (
+                              <p key={part.slice(0, 40)}>{part}</p>
+                            ))}
                           </div>
                         </div>
                       </div>
@@ -956,6 +1101,28 @@ export default function TrekDetailContent({
                 })}
               </div>
             </div>
+          </section>
+
+          {/* Route map */}
+          <section id="route-map" className="kg-section">
+            <TrekRouteMapSection
+              trekId={trek.id}
+              profile={routeProfile}
+              activeDay={routeDay}
+              onDayChange={setRouteDay}
+              kindLabel={kindLabel}
+              trekTitle={trek.title}
+            />
+          </section>
+
+          {/* Altitude chart */}
+          <section id="altitude-chart" className="kg-section">
+            <TrekAltitudeChartSection
+              profile={routeProfile}
+              activeDay={routeDay}
+              onDayChange={setRouteDay}
+              trekTitle={trek.title}
+            />
           </section>
 
           <div className="kg-promo">
@@ -1022,6 +1189,12 @@ export default function TrekDetailContent({
             </div>
           </section>
 
+          {extended?.sections
+            .filter((section) => ['fitness', 'safety', 'food'].includes(section.id))
+            .map((section) => (
+              <TrekRichSectionCard key={section.id} section={section} />
+            ))}
+
           {/* Best time */}
           <section id="best-time" className="kg-section">
             <div className="kg-season-card">
@@ -1075,7 +1248,7 @@ export default function TrekDetailContent({
               </div>
 
               <div className="kg-carry-grid">
-                {packingGroups.map((group) => (
+                {carryGroups.map((group) => (
                   <div className="kg-carry-box" key={group.title}>
                     <h3>
                       <i className={group.icon} aria-hidden /> {group.title}
@@ -1254,6 +1427,12 @@ export default function TrekDetailContent({
             </div>
           </section>
 
+          {extended?.sections
+            .filter((section) => section.id === 'why-choose')
+            .map((section) => (
+              <TrekRichSectionCard key={section.id} section={section} />
+            ))}
+
           <div className="kg-promo">
             <Banners items={topRatedPromo} embedded />
           </div>
@@ -1269,6 +1448,9 @@ export default function TrekDetailContent({
                   <h2>Rental gear for this {kindLabel.toLowerCase()}</h2>
                 </div>
                 <div className="kg-gear-nav">
+                  <Link href={`/gear-rental?trek=${trek.id}`} className="kg-gear-store-link">
+                    Full store
+                  </Link>
                   <button
                     type="button"
                     className="kg-gear-arrow"
@@ -1290,25 +1472,38 @@ export default function TrekDetailContent({
 
               <div className="kg-gear-frame">
                 <div className="kg-gear-track" ref={gearRef}>
-                  {gearRentals.map((item) => (
-                    <article className="kg-gear-item" key={item.name}>
-                      <div className="kg-gear-photo">
-                        <img src={item.img} alt={item.name} referrerPolicy="no-referrer" />
-                      </div>
-                      <div className="kg-gear-content">
-                        <strong>{item.name}</strong>
-                        <span className="kg-gear-price">
-                          <i className="fa-solid fa-indian-rupee-sign" aria-hidden /> {item.price}/trek
-                        </span>
-                      </div>
-                    </article>
-                  ))}
+                  {GEAR_CATALOG.map((item) => {
+                    const added = gearLines.find((line) => line.gearId === item.id);
+                    return (
+                      <article className={`kg-gear-item${added ? ' is-added' : ''}`} key={item.id}>
+                        <div className="kg-gear-photo">
+                          <img src={item.img} alt={item.name} referrerPolicy="no-referrer" />
+                        </div>
+                        <div className="kg-gear-content">
+                          <strong>{item.name}</strong>
+                          <span className="kg-gear-price">
+                            <i className="fa-solid fa-indian-rupee-sign" aria-hidden /> {item.price}/trek
+                          </span>
+                          <button
+                            type="button"
+                            className="kg-gear-rent"
+                            onClick={() => setPickingGear(item)}
+                          >
+                            {added
+                              ? `Added${added.size ? ` · ${added.size}` : ''}${added.qty > 1 ? ` ×${added.qty}` : ''}`
+                              : 'Rent this'}
+                          </button>
+                        </div>
+                      </article>
+                    );
+                  })}
                 </div>
               </div>
 
               <p className="kg-gear-note">
-                Rentals are collected at the base camp and returned at the end of the trek. Tell us
-                what you need while booking so we can reserve your size.
+                {gearLines.length
+                  ? `${gearLines.reduce((n, line) => n + line.qty, 0)} item${gearLines.reduce((n, line) => n + line.qty, 0) === 1 ? '' : 's'} reserved for this booking (${inr(gearTotal)}). Collect at base camp.`
+                  : 'Rentals are collected at the base camp and returned at the end of the trek. Pick a size to reserve kit for this departure.'}
               </p>
             </div>
           </section>
@@ -1319,6 +1514,7 @@ export default function TrekDetailContent({
           <div className="kg-booking-sticky" ref={bookingStickyRef}>
             <div className="bk-wrap" id="booking-form">
               <div className="bk-card">
+                <div className="bk-card-body">
                 <div className="bk-offer-row">
                   <p className="bk-offer-label">Offer Price</p>
                   <span className="bk-gst-badge">+ 5% GST</span>
@@ -1464,7 +1660,30 @@ export default function TrekDetailContent({
                     </button>
                   ))}
                 </div>
+                {gearLines.length > 0 ? (
+                  <div className="bk-gear-box">
+                    <div className="bk-sec">Rental gear</div>
+                    <ul className="bk-gear-list">
+                      {gearLines.map((line) => {
+                        const item = GEAR_CATALOG.find((g) => g.id === line.gearId);
+                        if (!item) return null;
+                        return (
+                          <li key={line.gearId}>
+                            <span>
+                              {item.name}
+                              {line.size ? ` · ${line.size}` : ''}
+                              {line.qty > 1 ? ` ×${line.qty}` : ''}
+                            </span>
+                            <strong>{inr(item.price * line.qty)}</strong>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                ) : null}
+                </div>
 
+                <div className="bk-card-actions">
                 <div className="bk-total">
                   <span>Total Price</span>
                   <span>{inr(total)}</span>
@@ -1477,10 +1696,11 @@ export default function TrekDetailContent({
                   <span className="bk-or">or</span>
                   <button type="button" className="bk-btn-enq" onClick={enquire}>
                     <span className="bk-wa" aria-hidden="true">
-                      <i className="fa-regular fa-envelope" />
+                      <i className="fa-brands fa-whatsapp" />
                     </span>
                     Enquire Now
                   </button>
+                </div>
                 </div>
               </div>
             </div>
@@ -1505,19 +1725,16 @@ export default function TrekDetailContent({
           </div>
 
           <div className="kg-testi-track" ref={testiRef}>
-            {detailTestimonials.map((t) => (
+            {pageTestimonials.map((t) => (
               <article className="kg-testi-item" key={t.name}>
                 <div className="kg-testi-item-top">
                   <div className="kg-testi-user">
                     <span className="kg-testi-avatar">{t.name.slice(0, 2)}</span>
                     <div>
                       <strong>{t.name}</strong>
-                      <span>
-                        {t.city} • {trek.title}
-                      </span>
+                      <span>{trek.title}</span>
                     </div>
                   </div>
-                  <span className="kg-testi-badge">{t.platform}</span>
                 </div>
                 <div className="kg-testi-stars">
                   {[0, 1, 2, 3, 4].map((s) => (
@@ -1605,6 +1822,27 @@ export default function TrekDetailContent({
           </div>
         </div>
       </section>
+
+      <GearRentModal
+        item={pickingGear}
+        trekId={trek.id}
+        trekTitle={trek.title}
+        initial={pickingGear ? gearLines.find((line) => line.gearId === pickingGear.id) : undefined}
+        onClose={() => setPickingGear(null)}
+        onConfirm={({ qty, size }) => {
+          if (!pickingGear) return;
+          upsertGearLine({ gearId: pickingGear.id, trekId: trek.id, qty, size });
+          setPickingGear(null);
+        }}
+        onRemove={
+          pickingGear && gearLines.some((line) => line.gearId === pickingGear.id)
+            ? () => {
+                removeGearLine(pickingGear.id, trek.id);
+                setPickingGear(null);
+              }
+            : undefined
+        }
+      />
 
       {/* Lightbox */}
       {lightbox !== null && (

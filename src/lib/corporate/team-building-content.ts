@@ -5,6 +5,16 @@
 
 import { photos } from '@/lib/media';
 
+export type CorporateReview = {
+  id: string;
+  name: string;
+  role: string;
+  short: string;
+  full: string;
+  avatar?: string;
+  trekLink?: { label: string; href: string };
+};
+
 export const corporateBenefits = [
   'Get to know each other beyond work',
   'See each other in a brand new light',
@@ -41,7 +51,7 @@ export const corporateWhyBetter = [
   },
 ];
 
-export const corporateReviews = [
+export const corporateReviews: CorporateReview[] = [
   {
     id: 'nao',
     name: 'Nao Ito',

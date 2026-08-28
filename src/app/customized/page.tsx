@@ -21,6 +21,8 @@ const indiaPkg = [
   { name: 'Kedarkantha Trek', count: 5, img: 'https://images.unsplash.com/photo-1454496522488-7a8e488e8606?w=600&h=400&fit=crop', price: 6999, href: '/treks/kedarkantha' },
   { name: 'Spiti Valley', count: 8, img: 'https://images.unsplash.com/photo-1486911278844-a81c5267e227?w=600&h=400&fit=crop', price: 9999, href: '/treks?region=himachal' },
   { name: 'Kasol & Parvati', count: 6, img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=400&fit=crop', price: 2999, href: '/treks/kheerganga' },
+  { name: 'Rajasthan', count: 10, img: 'https://images.unsplash.com/photo-1477587457783-2cddac358176?w=600&h=400&fit=crop', price: 12999, href: '/domestic-tours#dest-rajasthan' },
+  { name: 'South India', count: 12, img: 'https://images.unsplash.com/photo-1582979512210-999916ea64d9?w=600&h=400&fit=crop', price: 16999, href: '/domestic-tours#dest-south-india' },
 ];
 
 export default function CustomizedPage() {

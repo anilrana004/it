@@ -1,0 +1,346 @@
+/* Premium elevation chart — scoped to TrekAltitudeChartSection only */
+
+.kg-elev-card {
+  position: relative;
+}
+
+.kg-elev-stats {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.kg-elev-daybar {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  margin-bottom: 16px;
+  scrollbar-width: none;
+}
+
+.kg-elev-daybar::-webkit-scrollbar {
+  display: none;
+}
+
+.kg-elev-daypill {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(16, 24, 40, 0.1);
+  background: #fff;
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.kg-elev-daypill.is-active {
+  color: #fff;
+  border-color: transparent;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  box-shadow: 0 10px 22px rgba(22, 163, 74, 0.22);
+}
+
+.kg-elev-daypill-num {
+  min-width: 28px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: rgba(16, 24, 40, 0.06);
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.kg-elev-daypill.is-active .kg-elev-daypill-num {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.kg-elev-daypill-label {
+  white-space: nowrap;
+}
+
+.kg-elev-canvas-wrap {
+  position: relative;
+  touch-action: none;
+}
+
+.kg-elev-svg {
+  cursor: crosshair;
+  user-select: none;
+}
+
+.kg-elev-grid {
+  stroke: rgba(16, 24, 40, 0.06);
+  stroke-width: 1;
+}
+
+.kg-elev-axis {
+  stroke: rgba(16, 24, 40, 0.2);
+  stroke-width: 1.5;
+}
+
+.kg-elev-tick {
+  stroke: rgba(16, 24, 40, 0.25);
+  stroke-width: 1.5;
+}
+
+.kg-elev-y-label,
+.kg-elev-x-label {
+  fill: #667085;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.kg-elev-y-label {
+  text-anchor: end;
+}
+
+.kg-elev-x-label {
+  text-anchor: middle;
+}
+
+.kg-elev-axis-title {
+  fill: #98a2b3;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-anchor: middle;
+}
+
+.kg-elev-day-band rect {
+  fill: rgba(22, 163, 74, 0.03);
+}
+
+.kg-elev-day-band.is-active rect {
+  fill: rgba(22, 163, 74, 0.08);
+}
+
+.kg-elev-day-band-label {
+  fill: #667085;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-anchor: middle;
+  text-transform: uppercase;
+}
+
+.kg-elev-day-band.is-active .kg-elev-day-band-label {
+  fill: #15803d;
+}
+
+.kg-elev-area {
+  pointer-events: none;
+}
+
+.kg-elev-line {
+  fill: none;
+  stroke-width: 3.25;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  pointer-events: none;
+}
+
+.kg-elev-crosshair {
+  stroke: rgba(22, 163, 74, 0.45);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 4;
+  pointer-events: none;
+}
+
+.kg-elev-waypoint {
+  fill: #fff;
+  stroke: #16a34a;
+  stroke-width: 2.5;
+  cursor: pointer;
+  transition: r 0.15s ease;
+}
+
+.kg-elev-waypoint.is-active {
+  fill: #16a34a;
+  stroke: #fff;
+  stroke-width: 2.5;
+}
+
+.kg-elev-summit-ring {
+  fill: rgba(22, 163, 74, 0.12);
+  stroke: none;
+  pointer-events: none;
+}
+
+.kg-elev-summit {
+  fill: #15803d;
+  stroke: #fff;
+  stroke-width: 2.5;
+  cursor: pointer;
+}
+
+.kg-elev-summit.is-active {
+  fill: #14532d;
+}
+
+.kg-elev-summit-label {
+  fill: #15803d;
+  font-size: 11px;
+  font-weight: 900;
+  text-anchor: middle;
+}
+
+.kg-elev-summit-icon {
+  font-size: 9px;
+}
+
+.kg-elev-end-label {
+  fill: #667085;
+  font-size: 10px;
+  font-weight: 800;
+  text-anchor: middle;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.kg-elev-focus-dot {
+  fill: #fff;
+  stroke: #15803d;
+  stroke-width: 3;
+  pointer-events: none;
+}
+
+.kg-elev-hit {
+  cursor: crosshair;
+}
+
+.kg-elev-tooltip {
+  position: absolute;
+  z-index: 4;
+  min-width: 168px;
+  max-width: min(220px, 72vw);
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(16, 24, 40, 0.08);
+  box-shadow: 0 16px 36px rgba(16, 24, 40, 0.14);
+  pointer-events: none;
+  transform: translateY(-50%);
+}
+
+.kg-elev-tooltip--right {
+  transform: translate(12px, -50%);
+}
+
+.kg-elev-tooltip--left {
+  transform: translate(calc(-100% - 12px), -50%);
+}
+
+.kg-elev-tooltip-day {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: var(--primary-soft);
+  color: var(--primary);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.kg-elev-tooltip-title {
+  display: block;
+  margin: 8px 0 0;
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.25;
+  font-weight: 900;
+}
+
+.kg-elev-tooltip-meta {
+  display: grid;
+  gap: 6px;
+  margin: 10px 0 0;
+}
+
+.kg-elev-tooltip-meta div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.kg-elev-tooltip-meta dt {
+  color: #667085;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.kg-elev-tooltip-meta dd {
+  margin: 0;
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.kg-elev-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 48px 24px;
+  border-radius: 22px;
+  border: 1px dashed rgba(16, 24, 40, 0.12);
+  background: rgba(255, 255, 255, 0.7);
+  text-align: center;
+}
+
+.kg-elev-empty i {
+  font-size: 28px;
+  color: #98a2b3;
+}
+
+.kg-elev-empty strong {
+  color: var(--ink);
+  font-size: 16px;
+}
+
+.kg-elev-empty p {
+  max-width: 420px;
+  margin: 0;
+  color: #667085;
+  font-size: 13px;
+  line-height: 1.6;
+  font-weight: 600;
+}
+
+@media (max-width: 900px) {
+  .kg-elev-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .kg-elev-day-band-label {
+    display: none;
+  }
+
+  .kg-elev-summit-label {
+    font-size: 10px;
+  }
+
+  .kg-elev-tooltip {
+    min-width: 150px;
+    padding: 10px 12px;
+  }
+}
+
+@media (max-width: 520px) {
+  .kg-elev-end-label {
+    display: none;
+  }
+
+  .kg-elev-summit-label {
+    display: none;
+  }
+}

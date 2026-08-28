@@ -13,17 +13,13 @@ import {
   TimerReset,
   Users,
 } from 'lucide-react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination } from 'swiper/modules';
+import StoryReviewsSection from '@/components/reviews/StoryReviewsSection';
 import TrekInfoCard from '@/components/treks/TrekInfoCard';
 import CorporatePremiumHero from '@/components/corporate/CorporatePremiumHero';
 import { CONTACT, mailtoUrl, telUrl, whatsappUrl } from '@/lib/contact';
 import type { LpLandingContent } from '@/lib/corporate/learning-program-types';
 import { getTrekById } from '@/lib/data';
 import { toListingTrek } from '@/lib/treks-listing';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
 import './corporate-team-building.css';
 
 const categories = [
@@ -44,8 +40,6 @@ export default function LearningProgramLandingView({
   afterProgrammes?: ReactNode;
   beforeInquiry?: ReactNode;
 }) {
-  const [expandedId, setExpandedId] = useState<string | null>(null);
-  const [showAllReviews, setShowAllReviews] = useState(false);
   const [activeProg, setActiveProg] = useState(content.programmes.items[0]?.id ?? '');
   const [showVideo, setShowVideo] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -60,10 +54,6 @@ export default function LearningProgramLandingView({
     date: '',
     message: '',
   });
-
-  const visibleReviews = showAllReviews
-    ? content.reviews.items
-    : content.reviews.items.slice(0, 4);
 
   const programme = useMemo(
     () =>
@@ -279,68 +269,25 @@ export default function LearningProgramLandingView({
         </div>
       </section>
 
-      <section className="it-corp__section">
-        <div className="it-corp__container">
-          <div className="it-corp__heading it-corp__heading--center">
-            <p className="it-corp__kicker">{content.reviews.kicker}</p>
-            <h2>{content.reviews.title}</h2>
-            <p>{content.reviews.intro}</p>
-          </div>
-          <div className="it-corp__reviews-shell">
-            <Swiper
-              className="it-corp__reviews-swiper"
-              modules={[Navigation, Pagination]}
-              spaceBetween={18}
-              slidesPerView={1}
-              navigation
-              pagination={{ clickable: true }}
-              breakpoints={{
-                760: { slidesPerView: 1.2 },
-                980: { slidesPerView: 2 },
-              }}
-            >
-              {visibleReviews.map((review) => {
-                const open = expandedId === review.id;
-                return (
-                  <SwiperSlide key={review.id}>
-                    <article className="it-corp__review">
-                      <div className="it-corp__review-meta">
-                        <strong>{review.name}</strong>
-                        <span>{review.role}</span>
-                      </div>
-                      <div className="it-corp__stars" aria-hidden>
-                        ★★★★★
-                      </div>
-                      <p className="it-corp__review-quote">
-                        “{open ? review.full : review.short}”
-                      </p>
-                      <button
-                        type="button"
-                        className="it-corp__review-toggle"
-                        onClick={() => setExpandedId(open ? null : review.id)}
-                      >
-                        {open ? 'Read less' : 'Read more'}
-                      </button>
-                    </article>
-                  </SwiperSlide>
-                );
-              })}
-            </Swiper>
-            <div className="it-corp__reviews-actions">
-              <button
-                type="button"
-                className="it-corp__reviews-more"
-                onClick={() => {
-                  setShowAllReviews((v) => !v);
-                  setExpandedId(null);
-                }}
-              >
-                {showAllReviews ? 'See less reviews' : 'See more reviews'}
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
+      <StoryReviewsSection
+        kicker={content.reviews.kicker}
+        title={content.reviews.title}
+        intro={content.reviews.intro}
+        items={content.reviews.items.map((review) => ({
+          id: review.id,
+          name: review.name,
+          subtitle: review.role,
+          short: review.short,
+          full: review.full,
+          avatar: review.avatar,
+          trekLink: review.trekLink,
+        }))}
+        moreLabel={
+          content.variant === 'campus' ? 'See more ambassador stories' : 'See more reviews'
+        }
+        lessLabel={content.variant === 'campus' ? 'See less stories' : 'See less reviews'}
+        allReviewsHref="/reviews"
+      />
 
       <section className="it-corp__section it-corp__section--soft">
         <div className="it-corp__container it-corp__split it-corp__split--flip">

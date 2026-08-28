@@ -7,6 +7,8 @@ export type LandingReview = {
   batch: string;
   short: string;
   full: string;
+  avatar?: string;
+  trekLink?: { label: string; href: string };
 };
 
 export type LandingArticle = {

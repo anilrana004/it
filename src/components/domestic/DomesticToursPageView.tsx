@@ -173,7 +173,7 @@ export default function DomesticToursPageView() {
             </p>
           </div>
 
-          <div className="it-dt__region-grid it-dt__region-grid--3">
+          <div className="it-dt__region-grid">
             {domesticDestinations.map((d) => (
               <button
                 key={d.id}
@@ -245,6 +245,7 @@ export default function DomesticToursPageView() {
                 price={pkg.price}
                 priceLabel="From"
                 ctaLabel="Explore Package"
+                external={pkg.external}
               />
             ))}
           </div>
@@ -294,6 +295,7 @@ export default function DomesticToursPageView() {
                 price={pkg.price}
                 priceLabel="From"
                 ctaLabel="Explore Package"
+                external={pkg.external}
               />
             ))}
           </div>
@@ -336,6 +338,7 @@ export default function DomesticToursPageView() {
                 price={pkg.price}
                 priceLabel="From"
                 ctaLabel="Explore Package"
+                external={pkg.external}
               />
                 ))}
               </div>

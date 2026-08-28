@@ -161,7 +161,7 @@ export default function SacredYatraPageView() {
             </p>
           </div>
 
-          <div className="it-sy__region-grid it-sy__region-grid--3">
+          <div className="it-sy__region-grid">
             {sacredYatraGroups.map((group) => (
               <button
                 key={group.id}

@@ -28,6 +28,7 @@ const TOP_STRIP_LINKS = [
   { label: 'Contact Us', href: '/contact' },
   { label: 'FAQ', href: '/faqs' },
   { label: 'Reviews', href: '/reviews' },
+  { label: 'Gear Rental', href: '/gear-rental' },
   { label: 'Payment Policy', href: '/payment-policy' },
   { label: 'Blogs', href: '/blog' },
 ] as const;

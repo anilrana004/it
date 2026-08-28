@@ -6,6 +6,10 @@ export type LpReview = {
   role: string;
   short: string;
   full: string;
+  /** Optional portrait for story cards */
+  avatar?: string;
+  /** Quick-open trek or program link */
+  trekLink?: { label: string; href: string };
 };
 
 export type LpProgramme = {

@@ -40,6 +40,10 @@ export const photos = {
   /** Designed promo creative (copy/CTA baked into the asset) — do not crop aggressively */
   choptaSale:
     'https://res.cloudinary.com/pg8uhzw0/image/upload/f_auto,q_auto/v1787222468/Screenshot_2026-08-20_161024_qsice7.png',
+  /** Rajasthan — Amber Fort & desert heritage */
+  rajasthan: u('photo-1477587457783-2cddac358176', 1400, 900),
+  /** South India — Kerala backwaters & coastal greenery */
+  southIndia: u('photo-1582979512210-999916ea64d9', 1400, 900),
 } as const;
 
 export type PhotoKey = keyof typeof photos;

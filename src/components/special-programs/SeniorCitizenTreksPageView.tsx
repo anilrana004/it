@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
@@ -13,8 +12,7 @@ import {
   TimerReset,
   Users,
 } from 'lucide-react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination } from 'swiper/modules';
+import StoryReviewsSection from '@/components/reviews/StoryReviewsSection';
 import TrekInfoCard from '@/components/treks/TrekInfoCard';
 import WhyChooseVideo from '@/components/WhyChooseVideo';
 import SpecialProgramPremiumHero from '@/components/special-programs/SpecialProgramPremiumHero';
@@ -26,9 +24,6 @@ import {
 } from '@/lib/special-programs/senior-citizen-premium-hero';
 import { getSpecialProgram, treksForProgram } from '@/lib/special-programs-content';
 import { toListingTrek } from '@/lib/treks-listing';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
 import './senior-citizen-treks.css';
 import './special-program-landing.css';
 
@@ -212,9 +207,6 @@ const parentArticles = [
 
 export default function SeniorCitizenTreksPageView() {
   const list = treksForProgram(program).slice(0, 6).map(toListingTrek);
-  const [expandedId, setExpandedId] = useState<string | null>(null);
-  const [showAllReviews, setShowAllReviews] = useState(false);
-  const visibleReviews = showAllReviews ? reviews : reviews.slice(0, 4);
 
   return (
     <div className="it-senior">
@@ -253,74 +245,19 @@ export default function SeniorCitizenTreksPageView() {
         </div>
       </section>
 
-      <section className="it-senior__section it-senior__section--wash">
-        <div className="it-senior__container">
-          <div className="it-senior__heading it-senior__heading--center">
-            <p className="it-senior__section-kicker">Trekker reviews</p>
-            <h2>Stories from the trail</h2>
-            <p>Real notes from senior travellers who found pace, friendship, and joy in the mountains.</p>
-          </div>
-
-          <div className="it-senior__reviews-shell">
-            <Swiper
-              className="it-senior__reviews-swiper"
-              modules={[Navigation, Pagination]}
-              spaceBetween={20}
-              slidesPerView={1}
-              navigation
-              pagination={{ clickable: true }}
-              breakpoints={{
-                760: { slidesPerView: 1.15 },
-                980: { slidesPerView: 2 },
-              }}
-            >
-              {visibleReviews.map((review) => {
-                const open = expandedId === review.id;
-                return (
-                  <SwiperSlide key={review.id}>
-                    <article className={`it-senior__review${open ? ' is-open' : ''}`}>
-                      <div className="it-senior__review-meta">
-                        <strong>{review.name}</strong>
-                        <span>{review.batch}</span>
-                      </div>
-                      <div className="it-senior__stars" aria-hidden>
-                        <span>★</span>
-                        <span>★</span>
-                        <span>★</span>
-                        <span>★</span>
-                        <span>★</span>
-                      </div>
-                      <p className="it-senior__review-quote">
-                        “{open ? review.full : review.short}”
-                      </p>
-                      <button
-                        type="button"
-                        className="it-senior__review-toggle"
-                        onClick={() => setExpandedId(open ? null : review.id)}
-                      >
-                        {open ? 'Read less' : 'Read more'}
-                      </button>
-                    </article>
-                  </SwiperSlide>
-                );
-              })}
-            </Swiper>
-
-            <div className="it-senior__reviews-actions">
-              <button
-                type="button"
-                className="it-senior__reviews-more"
-                onClick={() => {
-                  setShowAllReviews((v) => !v);
-                  setExpandedId(null);
-                }}
-              >
-                {showAllReviews ? 'See less reviews' : 'See more reviews'}
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
+      <StoryReviewsSection
+        kicker="Trekker reviews"
+        title="Stories from the trail"
+        intro="Real notes from senior travellers who found pace, friendship, and joy in the mountains."
+        items={reviews.map((review) => ({
+          id: review.id,
+          name: review.name,
+          subtitle: review.batch,
+          short: review.short,
+          full: review.full,
+        }))}
+        allReviewsHref="/reviews"
+      />
 
       <section className="it-senior__section">
         <div className="it-senior__container it-senior__split">

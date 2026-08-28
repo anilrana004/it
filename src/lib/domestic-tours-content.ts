@@ -1,4 +1,5 @@
 import { photos } from '@/lib/media';
+import { whatsappUrl } from '@/lib/contact';
 
 export type DomesticDestinationId =
   | 'kashmir'
@@ -6,7 +7,9 @@ export type DomesticDestinationId =
   | 'spiti'
   | 'himachal'
   | 'uttarakhand'
-  | 'meghalaya';
+  | 'meghalaya'
+  | 'rajasthan'
+  | 'south-india';
 
 export type DomesticDestination = {
   id: DomesticDestinationId;
@@ -29,6 +32,8 @@ export type DomesticPackage = {
   badge?: string;
   cover: string;
   href: string;
+  /** WhatsApp / external enquiry links */
+  external?: boolean;
 };
 
 /** Destination cards — copy style aligned with JustWravel India packages, destinations from our catalog. */
@@ -86,6 +91,24 @@ export const domesticDestinations: DomesticDestination[] = [
     tags: ['Abode of Clouds', 'Waterfalls & Caves', 'Backpackers'],
     cover: photos.nepal,
     cta: 'Explore Meghalaya Trips',
+  },
+  {
+    id: 'rajasthan',
+    name: 'Rajasthan',
+    shortName: 'Rajasthan',
+    blurb: 'Palaces, forts & golden desert dunes',
+    tags: ['Heritage & Culture', 'Couple & Family', 'Royal Rajasthan'],
+    cover: photos.rajasthan,
+    cta: 'Explore Rajasthan Trips',
+  },
+  {
+    id: 'south-india',
+    name: 'South India',
+    shortName: 'South India',
+    blurb: 'Backwaters, hills, temples & coastal charm',
+    tags: ['Kerala · Tamil Nadu · Karnataka', 'Culture & Nature', 'Custom Tours'],
+    cover: photos.southIndia,
+    cta: 'Explore South India Trips',
   },
 ];
 
@@ -228,10 +251,60 @@ export const domesticPackages: DomesticPackage[] = [
     cover: photos.triund,
     href: '/treks/mcleodganj-trek',
   },
+  {
+    id: 'rajasthan-heritage',
+    destinationId: 'rajasthan',
+    title: 'Rajasthan Heritage Circuit',
+    subtitle: 'Jaipur · Udaipur · Jodhpur',
+    duration: '6N/7D',
+    price: 15999,
+    tags: ['Palaces', 'Forts', 'Culture'],
+    badge: 'Custom Tour',
+    cover: photos.rajasthan,
+    href: whatsappUrl('Hi Indian Treks! I want a customised Rajasthan heritage tour (Jaipur, Udaipur, Jodhpur).'),
+    external: true,
+  },
+  {
+    id: 'jaisalmer-desert',
+    destinationId: 'rajasthan',
+    title: 'Jaisalmer Desert Safari',
+    subtitle: 'Thar dunes, havelis & folk evenings',
+    duration: '4N/5D',
+    price: 12999,
+    tags: ['Desert Camp', 'Safari', 'Heritage'],
+    cover: photos.rajasthan,
+    href: whatsappUrl('Hi Indian Treks! I want a customised Jaisalmer desert safari trip.'),
+    external: true,
+  },
+  {
+    id: 'kerala-backwaters',
+    destinationId: 'south-india',
+    title: 'Kerala Backwaters & Hills',
+    subtitle: 'Munnar · Alleppey · Kochi',
+    duration: '5N/6D',
+    price: 18999,
+    tags: ['Backwaters', 'Tea Hills', 'Houseboat'],
+    badge: 'Popular',
+    cover: photos.southIndia,
+    href: whatsappUrl('Hi Indian Treks! I want a customised Kerala backwaters & hills tour.'),
+    external: true,
+  },
+  {
+    id: 'tamil-nadu-temples',
+    destinationId: 'south-india',
+    title: 'Tamil Nadu Temple Trail',
+    subtitle: 'Madurai · Rameswaram · Kanyakumari',
+    duration: '5N/6D',
+    price: 16999,
+    tags: ['Temples', 'Coast', 'Spiritual'],
+    cover: photos.southIndia,
+    href: whatsappUrl('Hi Indian Treks! I want a customised Tamil Nadu temple trail tour.'),
+    external: true,
+  },
 ];
 
 export const domesticStats = [
-  { label: 'Incredible Destinations', value: '6+', sub: 'Across India' },
+  { label: 'Incredible Destinations', value: '8+', sub: 'Across India' },
   { label: 'Curated Packages', value: '50+', sub: 'Handpicked routes' },
   { label: 'Traveller Rating', value: '4.8/5', sub: 'Verified reviews' },
   { label: 'Flexible & Safe', value: '100%', sub: 'Your pace, our care' },
@@ -287,7 +360,7 @@ export const domesticWhyPoints = [
 export const domesticFaqs = [
   {
     q: 'Which destinations can I explore with Indian Treks domestic packages?',
-    a: 'You can explore Himalayan and Northeast destinations from our catalog — including Kashmir, Ladakh, Spiti, Himachal Pradesh, Uttarakhand and Meghalaya — across treks, backpacking trips, bike expeditions and sacred yatras.',
+    a: 'You can explore destinations across India from our catalog — including Kashmir, Ladakh, Spiti, Himachal Pradesh, Uttarakhand, Meghalaya, Rajasthan and South India — across treks, backpacking trips, bike expeditions, heritage tours and sacred yatras.',
   },
   {
     q: 'How can I customise my trip itinerary before booking?',

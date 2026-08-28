@@ -59,6 +59,7 @@ const exploreLinks = [
   { label: 'Sacred Yatras', href: '/yatra' },
   { label: 'Domestic Tours', href: '/domestic-tours' },
   { label: 'International Getaways', href: '/international-getaways' },
+  { label: 'Gear Rental', href: '/gear-rental' },
   { label: 'Beginner-Friendly Treks', href: '/beginner-friendly-treks' },
   { label: 'Group Trips', href: '/group-trips' },
   { label: 'Backpacking Trips', href: '/backpacking' },

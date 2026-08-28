@@ -1,9 +1,20 @@
 'use client';
 import { useSearchParams, useParams } from 'next/navigation';
 import Link from 'next/link';
-import { useState, Suspense } from 'react';
+import { useEffect, useMemo, useState, Suspense } from 'react';
 import { ArrowRight, Shield, Check, ChevronRight, Star, Clock, Users, Phone, Calendar, CreditCard, Lock, Wallet, Percent, Gift, Loader, Ban } from 'lucide-react';
 import { treks } from '@/lib/data';
+import {
+  cartForTrek,
+  cartSubtotal,
+  formatGearLines,
+  getGearById,
+  parseGearQuery,
+  readGearCart,
+  subscribeGearCart,
+  writeGearCart,
+} from '@/lib/gear-rental';
+import { whatsappUrl } from '@/lib/contact';
 
 function BookingContent() {
   const params = useParams();
@@ -14,6 +25,27 @@ function BookingContent() {
     name: '', email: '', phone: '', persons: '1', date: sp.get('date') || '',
     pkg: sp.get('pkg') || 'Standard', payment: 'deposit', notes: ''
   });
+  const [gearTick, setGearTick] = useState(0);
+
+  const gearQuery = sp.get('gear');
+
+  useEffect(() => {
+    if (!trek) return;
+    const fromUrl = parseGearQuery(gearQuery, trek.id);
+    if (fromUrl.length) {
+      const others = readGearCart().filter((line) => line.trekId !== trek.id);
+      writeGearCart([...others, ...fromUrl]);
+    }
+    const refresh = () => setGearTick((n) => n + 1);
+    refresh();
+    return subscribeGearCart(refresh);
+  }, [trek, gearQuery]);
+
+  const gearLines = useMemo(
+    () => (trek ? cartForTrek(trek.id) : []),
+    [trek, gearTick],
+  );
+  const gearTotal = cartSubtotal(gearLines);
 
   if (!trek) return (
     <div className="pt-28 min-h-screen flex items-center justify-center">
@@ -27,9 +59,10 @@ function BookingContent() {
   );
 
   const selectedPkg = trek.pricing.find(p => p.name === form.pkg) || trek.pricing[0];
-  const total = selectedPkg.price * parseInt(form.persons);
+  const tripTotal = selectedPkg.price * parseInt(form.persons);
+  const total = tripTotal + gearTotal;
   const depositAmt = selectedPkg.deposit * parseInt(form.persons);
-  const payableNow = form.payment === 'deposit' ? depositAmt : form.payment === 'full' ? total : Math.ceil(total / 2);
+  const payableNow = form.payment === 'deposit' ? depositAmt : form.payment === 'full' ? total : Math.ceil(tripTotal / 2) + gearTotal;
 
   const steps = [
     { num: 1, label: 'Package & Date', icon: Calendar },
@@ -40,8 +73,9 @@ function BookingContent() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (step < 3) { setStep(s => s + 1); return; }
-    const msg = `*New Booking - Indian Treks*\n\n*Trek:* ${trek.title}\n*Duration:* ${trek.duration}\n*Package:* ${form.pkg}\n*Persons:* ${form.persons}\n*Date:* ${form.date}\n*Payment:* ${form.payment === 'deposit' ? 'Advance Deposit' : form.payment === 'full' ? 'Full Payment' : '50% Now'}\n*Amount:* ₹${payableNow.toLocaleString()}\n*Name:* ${form.name}\n*Email:* ${form.email}\n*Phone:* ${form.phone}\n${form.notes ? `*Notes:* ${form.notes}` : ''}`;
-    window.open(`https://wa.me/919999999999?text=${encodeURIComponent(msg)}`, '_blank');
+    const gearNote = gearLines.length ? `\n*Rental gear:* ${formatGearLines(gearLines)}\n*Gear total:* ₹${gearTotal.toLocaleString()}` : '';
+    const msg = `*New Booking - Indian Treks*\n\n*Trek:* ${trek.title}\n*Duration:* ${trek.duration}\n*Package:* ${form.pkg}\n*Persons:* ${form.persons}\n*Date:* ${form.date}\n*Payment:* ${form.payment === 'deposit' ? 'Advance Deposit' : form.payment === 'full' ? 'Full Payment' : '50% Now'}\n*Amount:* ₹${payableNow.toLocaleString()}${gearNote}\n*Name:* ${form.name}\n*Email:* ${form.email}\n*Phone:* ${form.phone}\n${form.notes ? `*Notes:* ${form.notes}` : ''}`;
+    window.open(whatsappUrl(msg), '_blank');
   };
 
   return (
@@ -123,7 +157,7 @@ function BookingContent() {
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     {[
                       { v: 'deposit', l: 'Advance Deposit', d: `Pay ₹${depositAmt.toLocaleString()} now`, sub: 'Secure your spot' },
-                      { v: 'half', l: '50% Now, 50% Later', d: `Pay ₹${Math.ceil(total / 2).toLocaleString()} now`, sub: 'Split payment' },
+                      { v: 'half', l: '50% Now, 50% Later', d: `Pay ₹${Math.ceil(tripTotal / 2).toLocaleString()} now`, sub: 'Split payment' },
                       { v: 'full', l: 'Full Payment', d: `Pay ₹${total.toLocaleString()} now`, sub: 'Best value' },
                     ].map(o => (
                       <button key={o.v} type="button" onClick={() => setForm(f => ({ ...f, payment: o.v }))}
@@ -201,6 +235,12 @@ function BookingContent() {
                     <div className="flex justify-between"><span className="text-gray-500">Phone</span><span className="font-semibold">{form.phone || 'Not provided'}</span></div>
                     <div className="flex justify-between"><span className="text-gray-500">Payment Mode</span><span className="font-semibold">{form.payment === 'deposit' ? 'Advance Deposit' : form.payment === 'full' ? 'Full Payment' : '50% Now'}</span></div>
                     {form.notes && <div className="flex justify-between"><span className="text-gray-500">Notes</span><span className="font-semibold text-right max-w-[60%]">{form.notes}</span></div>}
+                    {gearLines.length > 0 && (
+                      <div className="flex justify-between gap-3">
+                        <span className="text-gray-500">Rental gear</span>
+                        <span className="font-semibold text-right max-w-[60%]">{formatGearLines(gearLines)}</span>
+                      </div>
+                    )}
                   </div>
                   <hr className="border-gray-200" />
                   <div className="flex justify-between items-center"><span className="text-gray-600 font-medium">Total Amount</span><span className="font-bold text-xl text-[#000000]">₹{total.toLocaleString()}</span></div>
@@ -248,8 +288,22 @@ function BookingContent() {
                   <hr className="border-gray-100" />
                   <div className="flex justify-between items-center">
                     <span className="text-gray-500">Subtotal</span>
-                    <span className="font-semibold">₹{total.toLocaleString()}</span>
+                    <span className="font-semibold">₹{tripTotal.toLocaleString()}</span>
                   </div>
+                  {gearLines.length > 0 ? (
+                    <div className="space-y-1.5">
+                      {gearLines.map((line) => {
+                        const item = getGearById(line.gearId);
+                        if (!item) return null;
+                        return (
+                          <div key={line.gearId} className="flex justify-between items-center text-xs text-gray-600">
+                            <span>{item.name}{line.size ? ` · ${line.size}` : ''}{line.qty > 1 ? ` ×${line.qty}` : ''}</span>
+                            <span>₹{(item.price * line.qty).toLocaleString()}</span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  ) : null}
                   <div className="flex justify-between items-center">
                     <span className="text-gray-500">Package</span>
                     <span className="text-[#16a34a] font-medium text-xs">{form.pkg}</span>

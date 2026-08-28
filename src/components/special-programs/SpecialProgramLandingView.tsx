@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
@@ -11,11 +10,7 @@ import {
   TimerReset,
   Users,
 } from 'lucide-react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination } from 'swiper/modules';
-import TrekInfoCard from '@/components/treks/TrekInfoCard';
-import WhyChooseVideo from '@/components/WhyChooseVideo';
-import SpecialProgramPremiumHero from '@/components/special-programs/SpecialProgramPremiumHero';
+import StoryReviewsSection from '@/components/reviews/StoryReviewsSection';
 import { CONTACT, telUrl, whatsappUrl } from '@/lib/contact';
 import {
   getSpecialProgram,
@@ -23,9 +18,9 @@ import {
 } from '@/lib/special-programs-content';
 import type { SplLandingContent } from '@/lib/special-programs/landing-types';
 import { toListingTrek } from '@/lib/treks-listing';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
+import TrekInfoCard from '@/components/treks/TrekInfoCard';
+import WhyChooseVideo from '@/components/WhyChooseVideo';
+import SpecialProgramPremiumHero from '@/components/special-programs/SpecialProgramPremiumHero';
 import './special-program-landing.css';
 
 export type { SplLandingContent } from '@/lib/special-programs/landing-types';
@@ -44,9 +39,6 @@ export default function SpecialProgramLandingView({ content }: { content: SplLan
   const matched = treksForProgram(program);
   const shown = content.programId === 'beginner' ? matched : matched.slice(0, 6);
   const list = shown.map(toListingTrek);
-  const [expandedId, setExpandedId] = useState<string | null>(null);
-  const [showAllReviews, setShowAllReviews] = useState(false);
-  const visibleReviews = showAllReviews ? content.reviews.items : content.reviews.items.slice(0, 4);
 
   return (
     <div className="it-spl">
@@ -116,74 +108,21 @@ export default function SpecialProgramLandingView({ content }: { content: SplLan
         </div>
       </section>
 
-      <section className="it-spl__section it-spl__section--wash">
-        <div className="it-spl__container">
-          <div className="it-spl__heading it-spl__heading--center">
-            <p className="it-spl__section-kicker">{content.reviews.kicker}</p>
-            <h2>{content.reviews.title}</h2>
-            <p>{content.reviews.intro}</p>
-          </div>
-
-          <div className="it-spl__reviews-shell">
-            <Swiper
-              className="it-spl__reviews-swiper"
-              modules={[Navigation, Pagination]}
-              spaceBetween={20}
-              slidesPerView={1}
-              navigation
-              pagination={{ clickable: true }}
-              breakpoints={{
-                760: { slidesPerView: 1.15 },
-                980: { slidesPerView: 2 },
-              }}
-            >
-              {visibleReviews.map((review) => {
-                const open = expandedId === review.id;
-                return (
-                  <SwiperSlide key={review.id}>
-                    <article className={`it-spl__review${open ? ' is-open' : ''}`}>
-                      <div className="it-spl__review-meta">
-                        <strong>{review.name}</strong>
-                        <span>{review.batch}</span>
-                      </div>
-                      <div className="it-spl__stars" aria-hidden>
-                        <span>★</span>
-                        <span>★</span>
-                        <span>★</span>
-                        <span>★</span>
-                        <span>★</span>
-                      </div>
-                      <p className="it-spl__review-quote">
-                        “{open ? review.full : review.short}”
-                      </p>
-                      <button
-                        type="button"
-                        className="it-spl__review-toggle"
-                        onClick={() => setExpandedId(open ? null : review.id)}
-                      >
-                        {open ? 'Read less' : 'Read more'}
-                      </button>
-                    </article>
-                  </SwiperSlide>
-                );
-              })}
-            </Swiper>
-
-            <div className="it-spl__reviews-actions">
-              <button
-                type="button"
-                className="it-spl__reviews-more"
-                onClick={() => {
-                  setShowAllReviews((v) => !v);
-                  setExpandedId(null);
-                }}
-              >
-                {showAllReviews ? 'See less reviews' : 'See more reviews'}
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
+      <StoryReviewsSection
+        kicker={content.reviews.kicker}
+        title={content.reviews.title}
+        intro={content.reviews.intro}
+        items={content.reviews.items.map((review) => ({
+          id: review.id,
+          name: review.name,
+          subtitle: review.batch,
+          short: review.short,
+          full: review.full,
+          avatar: review.avatar,
+          trekLink: review.trekLink,
+        }))}
+        allReviewsHref="/reviews"
+      />
 
       <section className="it-spl__section">
         <div className="it-spl__container it-spl__split">

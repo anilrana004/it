@@ -9,6 +9,8 @@ export type SplReview = {
   batch: string;
   short: string;
   full: string;
+  avatar?: string;
+  trekLink?: { label: string; href: string };
 };
 
 export type SplArticle = {

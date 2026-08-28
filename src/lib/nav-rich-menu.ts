@@ -16,6 +16,7 @@ import {
   MapPin,
   Megaphone,
   Mountain,
+  Package,
   School,
   Sparkles,
   Star,
@@ -256,6 +257,16 @@ export const SPECIAL_RICH: RichNavItem[] = [
 ];
 
 export const MORE_RICH: RichNavItem[] = [
+  {
+    id: 'gear-rental',
+    title: 'Gear Rental',
+    subtitle: 'Shoes, jackets & packs at base camp',
+    href: '/gear-rental',
+    Icon: Package,
+    iconTile: 'border-emerald-200 bg-emerald-50',
+    iconColor: 'text-[#16a34a]',
+    live: true,
+  },
   {
     id: 'prepare',
     title: 'How to Prepare',

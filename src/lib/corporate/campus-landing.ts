@@ -109,6 +109,9 @@ export const campusLanding: LpLandingContent = {
         id: 'isha-c',
         name: 'Isha Nair',
         role: 'Ambassador · Bengaluru',
+        avatar:
+          'https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=160&h=160&q=80',
+        trekLink: { label: 'Kedarkantha Trek', href: '/treks/kedarkantha' },
         short: 'I went from shy fresher to leading trek briefings on campus. The credits helped me join Kedarkantha.',
         full: 'I went from shy fresher to leading trek briefings on campus. The credits helped me join Kedarkantha with friends I met through the program. Mentorship was practical, not fluff.',
       },
@@ -116,6 +119,9 @@ export const campusLanding: LpLandingContent = {
         id: 'dev-c',
         name: 'Dev Malhotra',
         role: 'Ambassador · Delhi',
+        avatar:
+          'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=160&h=160&q=80',
+        trekLink: { label: 'Hampta Pass Trek', href: '/treks/hampta-pass' },
         short: 'Best leadership experience of college. Real targets, real community, real mountains.',
         full: 'Best leadership experience of college. Real targets, real community, real mountains. I learned event planning and storytelling while helping batchmates book their first trek.',
       },
@@ -123,6 +129,9 @@ export const campusLanding: LpLandingContent = {
         id: 'sara-c',
         name: 'Sara Fernandes',
         role: 'Ambassador · Pune',
+        avatar:
+          'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-4.0.3&auto=format&fit=crop&w=160&h=160&q=80',
+        trekLink: { label: 'Backpacking Trips', href: '/backpacking' },
         short: 'The network is gold. Ambassadors from other cities still message me about trails.',
         full: 'The network is gold. Ambassadors from other cities still message me about trails and batch tips. Indian Treks treated us like partners, not free labour.',
       },
@@ -130,6 +139,9 @@ export const campusLanding: LpLandingContent = {
         id: 'arjun-c',
         name: 'Arjun Mehta',
         role: 'Ambassador · Chandigarh',
+        avatar:
+          'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?ixlib=rb-4.0.3&auto=format&fit=crop&w=160&h=160&q=80',
+        trekLink: { label: 'Chopta Tungnath Trek', href: '/treks/chopta-tungnath' },
         short: 'Certificate plus trek credits made this the most useful campus role I’ve had.',
         full: 'Certificate plus trek credits made this the most useful campus role I’ve had. Clear playbooks, WhatsApp support, and freedom to run creative campus ideas.',
       },
@@ -137,6 +149,9 @@ export const campusLanding: LpLandingContent = {
         id: 'tanya-c',
         name: 'Tanya Bose',
         role: 'Ambassador · Hyderabad',
+        avatar:
+          'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?ixlib=rb-4.0.3&auto=format&fit=crop&w=160&h=160&q=80',
+        trekLink: { label: 'Beginner-Friendly Treks', href: '/beginner-friendly-treks' },
         short: 'I helped 18 classmates take their first Himalayan trek. That still feels surreal.',
         full: 'I helped 18 classmates take their first Himalayan trek. That still feels surreal. The program gave structure; the mountains gave meaning.',
       },
@@ -144,6 +159,9 @@ export const campusLanding: LpLandingContent = {
         id: 'kabir-c',
         name: 'Kabir Shah',
         role: 'Ambassador · Mumbai',
+        avatar:
+          'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=160&h=160&q=80',
+        trekLink: { label: 'Browse All Treks', href: '/treks' },
         short: 'If you love outdoors and people, apply. You’ll grow faster than in any classroom club.',
         full: 'If you love outdoors and people, apply. You’ll grow faster than in any classroom club — communication, ownership, and confidence included.',
       },

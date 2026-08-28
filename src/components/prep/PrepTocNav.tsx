@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useState, type ReactNode } from 'react';
 
-export type PrepTocItem = { id: string; title: string };
+export type PrepTocItem = { id: string; title: string; live?: boolean };
 
 /**
  * Sticky "On this page" nav with scroll-spy highlighting (prep / blog guides).
@@ -63,10 +63,22 @@ export default function PrepTocNav({
           <li key={item.id}>
             <a
               href={`#${item.id}`}
-              className={activeId === item.id ? 'is-active' : undefined}
+              className={[
+                activeId === item.id ? 'is-active' : '',
+                item.live ? 'has-live' : '',
+              ]
+                .filter(Boolean)
+                .join(' ') || undefined}
               aria-current={activeId === item.id ? 'location' : undefined}
             >
-              {item.title}
+              <span className="it-prep__toc-text">
+                {item.title}
+                {item.live ? (
+                  <span className="it-prep__toc-live" aria-label="Live store">
+                    Live
+                  </span>
+                ) : null}
+              </span>
             </a>
           </li>
         ))}

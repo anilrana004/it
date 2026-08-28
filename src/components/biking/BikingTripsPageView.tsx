@@ -150,7 +150,7 @@ export default function BikingTripsPageView() {
             </p>
           </div>
 
-          <div className="it-bk__region-grid it-bk__region-grid--2">
+          <div className="it-bk__region-grid">
             {bikingRegions.map((region) => (
               <button
                 key={region.id}

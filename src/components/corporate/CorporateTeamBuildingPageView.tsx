@@ -13,8 +13,7 @@ import {
   TimerReset,
   Users,
 } from 'lucide-react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination } from 'swiper/modules';
+import StoryReviewsSection from '@/components/reviews/StoryReviewsSection';
 import TrekInfoCard from '@/components/treks/TrekInfoCard';
 import CorporateTeamBuildingHero from '@/components/corporate/CorporateTeamBuildingHero';
 import { CONTACT, mailtoUrl, telUrl, whatsappUrl } from '@/lib/contact';
@@ -31,9 +30,6 @@ import {
 } from '@/lib/corporate/team-building-content';
 import { getTrekById } from '@/lib/data';
 import { toListingTrek } from '@/lib/treks-listing';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
 import './corporate-team-building.css';
 
 const YOUTUBE_ID = '9vb3QfUth58';
@@ -48,8 +44,6 @@ const categories = [
 ];
 
 export default function CorporateTeamBuildingPageView() {
-  const [expandedId, setExpandedId] = useState<string | null>(null);
-  const [showAllReviews, setShowAllReviews] = useState(false);
   const [activeProg, setActiveProg] = useState(corporateProgrammes[0].id);
   const [showVideo, setShowVideo] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -65,7 +59,6 @@ export default function CorporateTeamBuildingPageView() {
     message: '',
   });
 
-  const visibleReviews = showAllReviews ? corporateReviews : corporateReviews.slice(0, 4);
   const programme = useMemo(
     () => corporateProgrammes.find((p) => p.id === activeProg) ?? corporateProgrammes[0],
     [activeProg],
@@ -211,68 +204,21 @@ export default function CorporateTeamBuildingPageView() {
         </div>
       </section>
 
-      {/* Reviews */}
-      <section className="it-corp__section">
-        <div className="it-corp__container">
-          <div className="it-corp__heading it-corp__heading--center">
-            <p className="it-corp__kicker">Trekker reviews</p>
-            <h2>What participating teams have to say</h2>
-            <p>Leaders and teams who chose the mountains over resorts — and came back more connected.</p>
-          </div>
-
-          <div className="it-corp__reviews-shell">
-            <Swiper
-              className="it-corp__reviews-swiper"
-              modules={[Navigation, Pagination]}
-              spaceBetween={18}
-              slidesPerView={1}
-              navigation
-              pagination={{ clickable: true }}
-              breakpoints={{
-                760: { slidesPerView: 1.2 },
-                980: { slidesPerView: 2 },
-              }}
-            >
-              {visibleReviews.map((review) => {
-                const open = expandedId === review.id;
-                return (
-                  <SwiperSlide key={review.id}>
-                    <article className="it-corp__review">
-                      <div className="it-corp__review-meta">
-                        <strong>{review.name}</strong>
-                        <span>{review.role}</span>
-                      </div>
-                      <div className="it-corp__stars" aria-hidden>
-                        ★★★★★
-                      </div>
-                      <p className="it-corp__review-quote">“{open ? review.full : review.short}”</p>
-                      <button
-                        type="button"
-                        className="it-corp__review-toggle"
-                        onClick={() => setExpandedId(open ? null : review.id)}
-                      >
-                        {open ? 'Read less' : 'Read more'}
-                      </button>
-                    </article>
-                  </SwiperSlide>
-                );
-              })}
-            </Swiper>
-            <div className="it-corp__reviews-actions">
-              <button
-                type="button"
-                className="it-corp__reviews-more"
-                onClick={() => {
-                  setShowAllReviews((v) => !v);
-                  setExpandedId(null);
-                }}
-              >
-                {showAllReviews ? 'See less reviews' : 'See more reviews'}
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
+      <StoryReviewsSection
+        kicker="Trekker reviews"
+        title="What participating teams have to say"
+        intro="Leaders and teams who chose the mountains over resorts — and came back more connected."
+        items={corporateReviews.map((review) => ({
+          id: review.id,
+          name: review.name,
+          subtitle: review.role,
+          short: review.short,
+          full: review.full,
+          avatar: review.avatar,
+          trekLink: review.trekLink,
+        }))}
+        allReviewsHref="/reviews"
+      />
 
       {/* Difficulties */}
       <section className="it-corp__section it-corp__section--soft">
