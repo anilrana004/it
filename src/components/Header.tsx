@@ -22,7 +22,6 @@ import {
 } from '@/lib/nav-rich-menu';
 import RichNavDropdown from '@/components/nav/RichNavDropdown';
 
-/** Desktop top utility strip — contact left, quick links right */
 const TOP_STRIP_LINKS = [
   { label: 'Home', href: '/' },
   { label: 'About Us', href: '/about' },
@@ -574,9 +573,14 @@ export default function Header() {
             <BrandLogo className="h-7 w-auto max-w-[156px] object-contain object-left" />
           </Link>
           <div className="flex items-center gap-1">
-            <button type="button" aria-label="Search" onClick={() => setMobSearch(true)} className="p-2 text-gray-900">
-              <Search className="w-5 h-5" />
-            </button>
+            <a
+              href={telUrl(CONTACT.phones.booking[0].tel)}
+              aria-label={`Call booking line ${CONTACT.phones.booking[0].display}`}
+              title={`Call ${CONTACT.phones.booking[0].display}`}
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full text-gray-900 transition-colors hover:bg-black/5 active:scale-95"
+            >
+              <Phone className="h-5 w-5" aria-hidden />
+            </a>
             <button type="button" onClick={() => setIsOpen(!isOpen)} aria-label={isOpen ? 'Close menu' : 'Open menu'} aria-expanded={isOpen} className="p-2 text-gray-900">
               {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
