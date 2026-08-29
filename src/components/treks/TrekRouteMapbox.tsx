@@ -348,12 +348,18 @@ export default function TrekRouteMapbox({
       pitch: 54,
       bearing: -22,
       antialias: true,
-      attributionControl: true,
+      attributionControl: false,
     });
 
     mapRef.current = map;
-    map.addControl(new mapboxgl.NavigationControl({ visualizePitch: true }), 'top-right');
-    map.addControl(new mapboxgl.FullscreenControl(), 'top-right');
+    map.addControl(new mapboxgl.AttributionControl({ compact: true }), 'bottom-left');
+
+    // Custom toolbar handles map modes; default Mapbox chrome creates a white strip on phone.
+    const desktopMap = window.matchMedia('(min-width: 768px)').matches;
+    if (desktopMap) {
+      map.addControl(new mapboxgl.NavigationControl({ visualizePitch: true }), 'top-right');
+      map.addControl(new mapboxgl.FullscreenControl(), 'top-right');
+    }
 
     map.on('load', () => {
       addTerrainAndRouteLayers(map);
@@ -361,6 +367,7 @@ export default function TrekRouteMapbox({
       updateRouteSources(map);
       syncMarkers(map);
       fitRoute(map, false);
+      map.resize();
       readyRef.current = true;
       styleReadyRef.current = true;
       setMapReady(true);
@@ -382,6 +389,21 @@ export default function TrekRouteMapbox({
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [geography.trekId]);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    const map = mapRef.current;
+    if (!el || !map) return;
+
+    const resize = () => map.resize();
+    const ro = new ResizeObserver(resize);
+    ro.observe(el);
+    window.addEventListener('orientationchange', resize);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener('orientationchange', resize);
+    };
+  }, [mapReady]);
 
   useEffect(() => {
     const map = mapRef.current;

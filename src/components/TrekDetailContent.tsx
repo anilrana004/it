@@ -10,6 +10,7 @@ import { safeImage, trekPhoto } from '@/lib/safe-image';
 import { photos } from '@/lib/media';
 import { whatsappUrl } from '@/lib/contact';
 import Banners from '@/components/Banners';
+import { HighlightIcon } from '@/components/treks/HighlightIcons';
 import {
   addOns,
   bookingPolicyRows,
@@ -20,7 +21,7 @@ import {
   getSeasonGuide,
   packingGroups,
   baseCamp,
-  staysLabel,
+  buildHighlightSpecs,
 } from '@/lib/trek-detail-content';
 import {
   GEAR_CATALOG,
@@ -38,7 +39,7 @@ import {
 import GearRentModal from '@/components/rental/GearRentModal';
 import { getTrekExtended } from '@/lib/treks/get-trek-extended';
 import { getRouteProfile } from '@/lib/treks/get-route-profile';
-import { RichBlocks, TrekExtendedNavItems, TrekRichSectionCard } from '@/components/treks/TrekExtendedSections';
+import { RichBlocks, TrekRichSectionCard } from '@/components/treks/TrekExtendedSections';
 import TrekRouteMapSection from '@/components/treks/TrekRouteMapSection';
 import TrekAltitudeChartSection from '@/components/treks/TrekAltitudeChartSection';
 import { DESK_HEADER_H, MOBILE_HEADER_H, CHROME_HIDDEN_CLASS } from '@/lib/layout';
@@ -48,6 +49,21 @@ const routeNavLinks = [
   { id: 'route-map', label: 'Map', icon: 'fa-solid fa-map' },
   { id: 'altitude-chart', label: 'Chart', icon: 'fa-solid fa-chart-line' },
 ];
+
+const NAV_SHORT_LABELS: Record<string, string> = {
+  'route-map': 'Map',
+  'altitude-chart': 'Chart',
+  'inclusion-exclusion': 'Inclusions',
+  'things-to-carry': 'Things to pack',
+  'how-to-reach': 'How to reach',
+  'rent-gear': 'Rent gear',
+  'best-time': 'Best time',
+  faqs: 'FAQ',
+};
+
+function navLinkLabel(id: string, label: string) {
+  return NAV_SHORT_LABELS[id] ?? label;
+}
 
 const baseNavLinks = [
   { id: 'highlight', label: 'Highlight', icon: 'fa-solid fa-star' },
@@ -75,6 +91,8 @@ function occupancyLabel(tierName: string) {
   return OCCUPANCY_LABEL[tierName] ?? tierName;
 }
 
+const DRAG_SCROLL_SKIP = 'button, a, input, select, textarea, label, [role="button"]';
+
 /** Drag-to-scroll for month / date / addon strips (Roopkund Heaven pattern). */
 function useDragScroll(ref: React.RefObject<HTMLDivElement | null>) {
   useEffect(() => {
@@ -88,6 +106,11 @@ function useDragScroll(ref: React.RefObject<HTMLDivElement | null>) {
 
     const onDown = (e: PointerEvent) => {
       if (e.pointerType === 'mouse' && e.button !== 0) return;
+      if ((e.target as HTMLElement).closest(DRAG_SCROLL_SKIP)) {
+        active = false;
+        moved = false;
+        return;
+      }
       active = true;
       moved = false;
       startX = e.clientX;
@@ -104,10 +127,17 @@ function useDragScroll(ref: React.RefObject<HTMLDivElement | null>) {
     };
 
     const onUp = (e: PointerEvent) => {
-      if (!active) return;
+      if (!active) {
+        moved = false;
+        return;
+      }
       active = false;
       el.classList.remove('bk-dragging');
       el.releasePointerCapture?.(e.pointerId);
+      if (!moved) return;
+      window.setTimeout(() => {
+        moved = false;
+      }, 0);
     };
 
     const onClickCapture = (e: MouseEvent) => {
@@ -154,12 +184,22 @@ const dateTagLabel: Record<TrekBatch['status'], string> = {
 };
 
 /** Status badges for the fixed-departures card. */
-const departureBadge: Record<TrekBatch['status'], { className: string; label: string }> = {
-  available: { className: 'fd-badge--open', label: 'Open' },
-  'filling-fast': { className: 'fd-badge--filling', label: 'Filling Fast' },
-  'almost-full': { className: 'fd-badge--limited', label: 'Few Seats Left' },
-  'sold-out': { className: 'fd-badge--full', label: 'Full' },
+const departureBadge: Record<
+  TrekBatch['status'],
+  { className: string; label: string; icon: string }
+> = {
+  available: { className: 'fd-badge--open', label: 'Open', icon: 'fa-solid fa-circle-check' },
+  'filling-fast': { className: 'fd-badge--filling', label: 'Filling Fast', icon: 'fa-solid fa-bolt' },
+  'almost-full': { className: 'fd-badge--limited', label: 'Few Seats Left', icon: 'fa-solid fa-fire' },
+  'sold-out': { className: 'fd-badge--full', label: 'Full', icon: 'fa-solid fa-ban' },
 };
+
+const MONTHS_SHORT = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+function seatFillPercent(batch: TrekBatch) {
+  if (batch.capacity <= 0) return 0;
+  return Math.round(((batch.capacity - batch.seatsLeft) / batch.capacity) * 100);
+}
 
 /** Builds a de-duplicated gallery large enough for the reference grid. */
 function galleryImages(trek: Trek): string[] {
@@ -177,105 +217,231 @@ function galleryImages(trek: Trek): string[] {
   return [...new Set(pool)].slice(0, 10);
 }
 
+function monthTabMeta(label: string) {
+  const [monthName, year = ''] = label.split(' ');
+  const idx = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December',
+  ].indexOf(monthName);
+  return {
+    short: idx >= 0 ? MONTHS_SHORT[idx] : monthName.slice(0, 3),
+    year,
+  };
+}
+
+function batchDateRange(batch: TrekBatch) {
+  const start = new Date(batch.startDate);
+  const end = new Date(batch.endDate);
+  return {
+    startDay: start.getDate(),
+    endDay: end.getDate(),
+    startMonth: MONTHS_SHORT[start.getMonth()],
+    endMonth: MONTHS_SHORT[end.getMonth()],
+    sameMonth: start.getMonth() === end.getMonth() && start.getFullYear() === end.getFullYear(),
+  };
+}
+
 /**
- * Fixed-departures card, ported from the reference detail page: a month
- * accordion over the same batches the booking card uses. Sits above the section
- * nav, so picking a date scrolls down to the booking form.
+ * Fixed departures — month tabs + departure tile grid. Syncs with the booking card.
  */
 function FixedDepartures({
   months,
-  openMonth,
-  onToggleMonth,
+  activeMonth,
+  onMonthChange,
   selectedId,
   onPick,
   kindLabel,
   enquiryHref,
 }: {
   months: { label: string; items: TrekBatch[] }[];
-  openMonth: string | null;
-  onToggleMonth: (label: string) => void;
+  activeMonth: string;
+  onMonthChange: (label: string) => void;
   selectedId: string | null;
   onPick: (batch: TrekBatch) => void;
   kindLabel: string;
   enquiryHref: string;
 }) {
+  const monthTabsRef = useRef<HTMLDivElement>(null);
+  useDragScroll(monthTabsRef);
+
+  const totalBatches = months.reduce((count, group) => count + group.items.length, 0);
+  const openBatches = months.flatMap((group) => group.items.filter((batch) => batch.status !== 'sold-out'));
+  const spotlight = openBatches[0] ?? null;
+  const activeGroup = months.find((group) => group.label === activeMonth) ?? months[0];
+  const visibleItems = activeGroup?.items ?? [];
+
   return (
-    <section id="departures" aria-label="Fixed departures">
-      <div className="fd-card">
-        <div className="fd-header">
-          <i className="fa-regular fa-calendar-days" aria-hidden /> Fixed Departures
-        </div>
+    <section id="departures" className="fd-studio" aria-label="Fixed departures">
+      <div className="fd-studio__ambient" aria-hidden />
+      <div className="fd-studio__panel">
+        <header className="fd-studio__head">
+          <div className="fd-studio__head-main">
+            <span className="fd-studio__eyebrow">
+              <i className="fa-solid fa-sparkles" aria-hidden />
+              Fixed departures
+            </span>
+            <h2 className="fd-studio__title">Pick your trail date</h2>
+            {totalBatches > 0 && (
+              <p className="fd-studio__lede">
+                {openBatches.length} open {openBatches.length === 1 ? 'batch' : 'batches'} across{' '}
+                {months.length} {months.length === 1 ? 'month' : 'months'} — select once, book anytime.
+              </p>
+            )}
+          </div>
+          {totalBatches > 0 && (
+            <div className="fd-studio__stats" aria-hidden>
+              <div className="fd-studio__stat">
+                <strong>{openBatches.length}</strong>
+                <span>Open</span>
+              </div>
+              <div className="fd-studio__stat">
+                <strong>{months.length}</strong>
+                <span>Months</span>
+              </div>
+            </div>
+          )}
+        </header>
 
         {months.length === 0 ? (
-          <p className="fd-empty">
-            Dates for this {kindLabel.toLowerCase()} are being scheduled.{' '}
-            <a
-              className="fd-empty__link"
-              href={enquiryHref}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Ask us for upcoming batches
-            </a>
-            .
-          </p>
+          <div className="fd-studio__empty">
+            <div className="fd-studio__empty-art" aria-hidden>
+              <i className="fa-regular fa-calendar-xmark" />
+            </div>
+            <p className="fd-studio__empty-copy">
+              Dates for this {kindLabel.toLowerCase()} are being scheduled.{' '}
+              <a className="fd-studio__empty-link" href={enquiryHref} target="_blank" rel="noopener noreferrer">
+                Ask us for upcoming batches
+              </a>
+              .
+            </p>
+          </div>
         ) : (
-          <div className="fd-list">
-            {months.map((group) => {
-              const open = openMonth === group.label;
-              const panelId = `fd-${group.label.toLowerCase().replace(/\s+/g, '-')}`;
-              return (
-                <div className="fd-group" key={group.label}>
+          <>
+            {spotlight && (
+              <div className="fd-studio__spotlight">
+                <div className="fd-studio__spotlight-copy">
+                  <span className="fd-studio__spotlight-kicker">Next departure</span>
+                  <p className="fd-studio__spotlight-date">
+                    {spotlight.weekday}, {spotlight.label}
+                  </p>
+                  <span className="fd-studio__spotlight-seats">
+                    {spotlight.seatsLeft} seats left · {spotlight.capacity - spotlight.seatsLeft} already booked
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  className={`fd-studio__spotlight-btn${selectedId === spotlight.id ? ' is-selected' : ''}`}
+                  onClick={() => onPick(spotlight)}
+                  aria-pressed={selectedId === spotlight.id}
+                >
+                  {selectedId === spotlight.id ? (
+                    <>
+                      <i className="fa-solid fa-circle-check" aria-hidden />
+                      Selected
+                    </>
+                  ) : (
+                    <>
+                      Select date
+                      <i className="fa-solid fa-arrow-right" aria-hidden />
+                    </>
+                  )}
+                </button>
+              </div>
+            )}
+
+            <div className="fd-studio__months-wrap">
+              <div className="fd-studio__months" ref={monthTabsRef} role="tablist" aria-label="Departure months">
+                {months.map((group) => {
+                  const tab = monthTabMeta(group.label);
+                  const openCount = group.items.filter((batch) => batch.status !== 'sold-out').length;
+                  const active = activeGroup?.label === group.label;
+
+                  return (
+                    <button
+                      type="button"
+                      key={group.label}
+                      role="tab"
+                      aria-selected={active}
+                      className={`fd-studio__month${active ? ' is-active' : ''}`}
+                      onClick={() => onMonthChange(group.label)}
+                    >
+                      <span className="fd-studio__month-short">{tab.short}</span>
+                      <span className="fd-studio__month-year">{tab.year}</span>
+                      <span className="fd-studio__month-count">{openCount || group.items.length} dates</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div className="fd-studio__grid" role="tabpanel">
+              {visibleItems.map((batch) => {
+                const badge = departureBadge[batch.status];
+                const full = batch.status === 'sold-out';
+                const selected = selectedId === batch.id;
+                const range = batchDateRange(batch);
+                const fill = seatFillPercent(batch);
+
+                return (
                   <button
                     type="button"
-                    className={`fd-group__btn${open ? ' fd-group__btn--active' : ''}`}
-                    aria-expanded={open}
-                    aria-controls={panelId}
-                    onClick={() => onToggleMonth(group.label)}
+                    key={batch.id}
+                    className={`fd-studio__tile${selected ? ' is-selected' : ''}${full ? ' is-full' : ''}`}
+                    onClick={() => onPick(batch)}
+                    disabled={full}
+                    aria-pressed={selected}
+                    aria-label={
+                      full ? `${batch.label} — batch full` : `Select departure ${batch.label}`
+                    }
                   >
-                    <span>{group.label}</span>
-                    <i
-                      className={`fa-solid fa-chevron-down fd-arrow${open ? ' fd-arrow--up' : ''}`}
-                      aria-hidden
-                    />
-                  </button>
+                    {selected && (
+                      <span className="fd-studio__tile-check" aria-hidden>
+                        <i className="fa-solid fa-check" />
+                      </span>
+                    )}
 
-                  {open && (
-                    <div className="fd-group__body" id={panelId}>
-                      {group.items.map((batch) => {
-                        const badge = departureBadge[batch.status];
-                        const full = batch.status === 'sold-out';
-                        return (
-                          <button
-                            type="button"
-                            key={batch.id}
-                            className={`fd-date-row${selectedId === batch.id ? ' is-selected' : ''}`}
-                            onClick={() => onPick(batch)}
-                            disabled={full}
-                            aria-label={
-                              full ? `${batch.label} — batch full` : `Select departure ${batch.label}`
-                            }
-                          >
-                            <span className="fd-date-row__range">
-                              {batch.weekday}, {batch.label}
-                            </span>
-                            <span className="fd-date-row__right">
-                              <span className={`fd-badge ${badge.className}`}>{badge.label}</span>
-                            </span>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
+                    <span className="fd-studio__tile-top">
+                      <span className="fd-studio__tile-weekday">{batch.weekday}</span>
+                      <span className={`fd-studio__tile-status fd-studio__tile-status--${batch.status}`}>
+                        <i className={badge.icon} aria-hidden />
+                        {badge.label}
+                      </span>
+                    </span>
+
+                    <span className="fd-studio__tile-dates" aria-hidden>
+                      <span className="fd-studio__tile-day">{range.startDay}</span>
+                      <span className="fd-studio__tile-sep">
+                        {range.sameMonth ? (
+                          <i className="fa-solid fa-arrow-right" />
+                        ) : (
+                          range.endMonth
+                        )}
+                      </span>
+                      <span className="fd-studio__tile-day fd-studio__tile-day--end">{range.endDay}</span>
+                      <span className="fd-studio__tile-month">{range.startMonth}</span>
+                    </span>
+
+                    <span className="fd-studio__tile-range">{batch.label}</span>
+
+                    {!full && (
+                      <span className="fd-studio__tile-foot">
+                        <span className="fd-studio__tile-bar" aria-hidden>
+                          <span className="fd-studio__tile-bar-fill" style={{ width: `${fill}%` }} />
+                        </span>
+                        <span className="fd-studio__tile-seats">{batch.seatsLeft} seats left</span>
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          </>
         )}
 
-        <p className="fd-footer">
-          {kindLabel} today with Indian Treks — pick a date to load it into your booking.
-        </p>
+        <footer className="fd-studio__foot">
+          <i className="fa-solid fa-route fd-studio__foot-icon" aria-hidden />
+          <span>Your date syncs to booking instantly — scroll freely, book when ready.</span>
+        </footer>
       </div>
     </section>
   );
@@ -351,24 +517,13 @@ export default function TrekDetailContent({
 
   const extended = useMemo(() => getTrekExtended(trek.id), [trek.id]);
   const routeProfile = useMemo(() => getRouteProfile(trek, extended), [trek, extended]);
+  /** Sticky nav — content sections only (dates live in hero departures band). */
   const navLinks = useMemo(() => {
-    const extra = extended ? TrekExtendedNavItems(extended.sections) : [];
-    const fitnessSafetyFood = extra.filter((item) =>
-      ['fitness', 'safety', 'food'].includes(item.id),
-    );
-    const whyChoose = extra.filter((item) => item.id === 'why-choose');
     const beforeInclusion = baseNavLinks.slice(0, 3);
     const fromInclusion = baseNavLinks.slice(3, 5);
     const afterReach = baseNavLinks.slice(5);
-    return [
-      ...beforeInclusion,
-      ...routeNavLinks,
-      ...fromInclusion,
-      ...fitnessSafetyFood,
-      ...afterReach,
-      ...whyChoose,
-    ];
-  }, [extended]);
+    return [...beforeInclusion, ...routeNavLinks, ...fromInclusion, ...afterReach];
+  }, []);
 
   const images = useMemo(() => galleryImages(trek), [trek]);
   const batches = useMemo(() => getDepartureBatches(trek, 4, 3), [trek]);
@@ -403,6 +558,7 @@ export default function TrekDetailContent({
   // ---- UI state -----------------------------------------------------------
   const [activeSection, setActiveSection] = useState('highlight');
   const [stuck, setStuck] = useState(false);
+  const [trackFade, setTrackFade] = useState({ left: false, right: false });
   const [highlightOpen, setHighlightOpen] = useState(false);
   const [overviewOpen, setOverviewOpen] = useState(false);
   const [openDays, setOpenDays] = useState<Set<number>>(() => new Set([1]));
@@ -439,7 +595,7 @@ export default function TrekDetailContent({
     () => months.map((label) => ({ label, items: batches.filter((b) => b.monthLabel === label) })),
     [batches, months],
   );
-  const [openMonth, setOpenMonth] = useState<string | null>(months[0] ?? null);
+  const [dateToast, setDateToast] = useState<string | null>(null);
   const [men, setMen] = useState(() => Math.min(20, Math.max(1, Math.floor(initialGuests) || 1)));
   const [women, setWomen] = useState(0);
   const [picked, setPicked] = useState<Set<string>>(() => new Set());
@@ -467,21 +623,34 @@ export default function TrekDetailContent({
 
   const monthsRef = useRef<HTMLDivElement>(null);
   const datesRef = useRef<HTMLDivElement>(null);
-  const addonsRef = useRef<HTMLDivElement>(null);
   useDragScroll(monthsRef);
   useDragScroll(datesRef);
-  useDragScroll(addonsRef);
   const startingPrice = Math.min(...trek.pricing.map((p) => p.price));
 
-  const selectedBatch =
-    monthBatches.find((b) => b.id === batchId) ??
-    monthBatches.find((b) => b.status !== 'sold-out') ??
-    null;
+  const selectedBatch = useMemo(() => {
+    if (batchId) {
+      const picked = batches.find((b) => b.id === batchId && b.status !== 'sold-out');
+      if (picked) return picked;
+    }
+    return (
+      monthBatches.find((b) => b.status !== 'sold-out') ??
+      batches.find((b) => b.status !== 'sold-out') ??
+      null
+    );
+  }, [batchId, batches, monthBatches]);
 
   useEffect(() => {
     setMonth(months[0] ?? '');
-    setOpenMonth(months[0] ?? null);
   }, [months]);
+
+  // Keep booking month aligned when a batch is picked from Fixed Departures (or URL).
+  useEffect(() => {
+    if (!batchId) return;
+    const batch = batches.find((b) => b.id === batchId);
+    if (batch && batch.monthLabel !== month) {
+      setMonth(batch.monthLabel);
+    }
+  }, [batchId, batches, month]);
 
   // Default to the first bookable date of the month, but keep an explicit pick
   // (e.g. made from the fixed-departures card) if it is still valid.
@@ -498,7 +667,86 @@ export default function TrekDetailContent({
   // Section nav parks under the chrome when visible, and at the top when hidden.
   const shellRef = useRef<HTMLDivElement>(null);
   const navRef = useRef<HTMLElement>(null);
+  const navTrackRef = useRef<HTMLDivElement>(null);
   const bookingStickyRef = useRef<HTMLDivElement>(null);
+  const addonTapRef = useRef<{ id: string; x: number; y: number } | null>(null);
+  const departuresRef = useRef<HTMLDivElement>(null);
+  const toastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const updateTrackFade = useCallback(() => {
+    const el = navTrackRef.current;
+    if (!el) return;
+    setTrackFade({
+      left: el.scrollLeft > 6,
+      right: el.scrollLeft + el.clientWidth < el.scrollWidth - 6,
+    });
+  }, []);
+
+  useDragScroll(navTrackRef);
+
+  const headerOffset = useCallback(() => {
+    const chromeHidden = document.documentElement.classList.contains(CHROME_HIDDEN_CLASS);
+    if (window.innerWidth >= 1024) {
+      return chromeHidden ? 0 : DESK_HEADER_H;
+    }
+    return chromeHidden ? 0 : MOBILE_HEADER_H;
+  }, []);
+
+  /** Roopkund flow: when site header is visible it covers the section nav (same top: 0). */
+  const fixedChromeHeight = useCallback(
+    (navHeight: number) => {
+      const chromeHidden = document.documentElement.classList.contains(CHROME_HIDDEN_CLASS);
+      return chromeHidden ? navHeight : headerOffset();
+    },
+    [headerOffset],
+  );
+
+  const syncStickyMetrics = useCallback(() => {
+    const shell = shellRef.current;
+    const nav = navRef.current;
+    if (!shell || !nav) return;
+    const h = nav.offsetHeight;
+    // Lock placeholder height while stuck so header show/hide never shifts content.
+    const isNavStuck = shell.getBoundingClientRect().top <= 0;
+    const prev = parseFloat(
+      getComputedStyle(document.documentElement).getPropertyValue('--kg-sticky-nav-h'),
+    );
+    const stable = isNavStuck && Number.isFinite(prev) && prev > 0 ? Math.max(h, prev) : h;
+    shell.style.height = `${stable}px`;
+    document.documentElement.style.setProperty('--kg-sticky-nav-h', `${h}px`);
+  }, []);
+
+  useEffect(() => {
+    const nav = navRef.current;
+    if (!nav) return;
+    syncStickyMetrics();
+    const ro = new ResizeObserver(syncStickyMetrics);
+    ro.observe(nav);
+    return () => ro.disconnect();
+  }, [stuck, syncStickyMetrics]);
+
+  useEffect(() => {
+    const el = navTrackRef.current;
+    if (!el) return;
+    updateTrackFade();
+    el.addEventListener('scroll', updateTrackFade, { passive: true });
+    const ro = new ResizeObserver(updateTrackFade);
+    ro.observe(el);
+    return () => {
+      el.removeEventListener('scroll', updateTrackFade);
+      ro.disconnect();
+    };
+  }, [navLinks, stuck, updateTrackFade]);
+
+  /** Keep active tab visible while scrolling long nav lists. */
+  useEffect(() => {
+    const track = navTrackRef.current;
+    if (!track) return;
+    const active = track.querySelector<HTMLElement>('.kg-sticky-link.is-active');
+    if (!active) return;
+    const left = active.offsetLeft - (track.clientWidth - active.offsetWidth) / 2;
+    track.scrollTo({ left: Math.max(0, left), behavior: 'smooth' });
+  }, [activeSection, stuck]);
 
   useEffect(() => {
     const sections = navLinks
@@ -508,29 +756,21 @@ export default function TrekDetailContent({
     let frame = 0;
     let isStuck = false;
 
-    const headerOffset = () => {
-      const chromeHidden = document.documentElement.classList.contains(CHROME_HIDDEN_CLASS);
-      if (window.innerWidth >= 1024) {
-        return chromeHidden ? 0 : DESK_HEADER_H;
-      }
-      return chromeHidden ? 0 : MOBILE_HEADER_H;
-    };
-
     const update = () => {
       frame = 0;
       const shell = shellRef.current;
       const nav = navRef.current;
       if (!shell || !nav) return;
 
-      const offset = headerOffset();
-      isStuck = shell.getBoundingClientRect().top <= offset;
+      isStuck = shell.getBoundingClientRect().top <= 0;
       setStuck(isStuck);
+      syncStickyMetrics();
 
       const booking = bookingStickyRef.current;
       if (booking) {
-        const topPx = offset + nav.offsetHeight + 18;
-        if (window.innerWidth < 901) {
-          booking.style.top = window.innerWidth <= 767 ? '' : `${topPx}px`;
+        const topPx = fixedChromeHeight(nav.offsetHeight) + 18;
+        if (window.innerWidth <= 1023) {
+          booking.style.removeProperty('top');
           booking.style.removeProperty('--kg-booking-max');
         } else {
           booking.style.top = `${topPx}px`;
@@ -540,7 +780,8 @@ export default function TrekDetailContent({
       }
 
       if (sections.length) {
-        const checkpoint = window.scrollY + (isStuck ? offset + 110 : 150);
+        const chromePad = isStuck ? fixedChromeHeight(nav.offsetHeight) + 12 : 150;
+        const checkpoint = window.scrollY + chromePad;
         let current = sections[0].id;
         for (const section of sections) {
           if (section.getBoundingClientRect().top + window.scrollY <= checkpoint) {
@@ -567,16 +808,23 @@ export default function TrekDetailContent({
       window.removeEventListener('resize', onScroll);
       mo.disconnect();
     };
-  }, [navLinks]);
+  }, [navLinks, headerOffset, fixedChromeHeight, syncStickyMetrics]);
 
-  // Keep the active pill in view whenever the track scrolls horizontally.
   useEffect(() => {
-    const track = navRef.current?.querySelector('.kg-sticky-track');
+    return () => {
+      if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+    };
+  }, []);
+
+  // Keep the active pill centered in the scrollable track.
+  useEffect(() => {
+    const track = navTrackRef.current;
     if (!track || track.scrollWidth <= track.clientWidth + 1) return;
     track
       .querySelector('.kg-sticky-link.is-active')
-      ?.scrollIntoView({ behavior: 'smooth', inline: 'nearest', block: 'nearest' });
-  }, [activeSection]);
+      ?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    updateTrackFade();
+  }, [activeSection, updateTrackFade]);
 
   // ---- Lightbox keyboard --------------------------------------------------
   const step = useCallback(
@@ -628,25 +876,46 @@ export default function TrekDetailContent({
   };
 
   // ---- Actions ------------------------------------------------------------
-  const goToSection = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  };
+  const goToSection = useCallback(
+    (id: string) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const navH = navRef.current?.offsetHeight ?? 56;
+      const offset = fixedChromeHeight(navH);
+      const top = el.getBoundingClientRect().top + window.scrollY - offset - 10;
+      window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+    },
+    [fixedChromeHeight],
+  );
 
-  /** Fixed-departures row → select that batch in the booking card and reveal it. */
-  const pickDeparture = (batch: TrekBatch) => {
+  /** Fixed-departures row → sync booking card + mobile book bar without scroll jump. */
+  const pickDeparture = (batch: TrekBatch, opts?: { scrollToBooking?: boolean; silent?: boolean }) => {
     if (batch.status === 'sold-out') return;
     setMonth(batch.monthLabel);
     setBatchId(batch.id);
-    goToSection('booking-form');
+
+    if (!opts?.silent) {
+      if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+      setDateToast(`${batch.weekday}, ${batch.label}`);
+      toastTimerRef.current = setTimeout(() => setDateToast(null), 3400);
+    }
+
+    if (opts?.scrollToBooking) {
+      goToSection('booking-form');
+    }
   };
 
   const bookingHref = () => {
     const params = new URLSearchParams({ pkg: tierName });
     if (selectedBatch) params.set('date', selectedBatch.startDate);
     params.set('persons', String(persons));
+    params.set('men', String(men));
+    params.set('women', String(women));
     params.set('pickup', pickup);
     if (pickupSurcharge) params.set('pickupFee', String(pickupSurcharge));
+    if (picked.size) params.set('addons', [...picked].join(','));
     if (gearLines.length) params.set('gear', encodeGearQuery(gearLines));
+    params.set('total', String(total));
     return `/booking/${trek.id}?${params.toString()}`;
   };
 
@@ -658,7 +927,7 @@ export default function TrekDetailContent({
       `Travellers: ${persons} (Men ${men}, Women ${women})`,
       `Pickup: ${pickup}`,
       picked.size
-        ? `Add-ons: ${addOns.filter((a) => picked.has(a.id)).map((a) => a.name).join(', ')}`
+        ? `Add-ons: ${addOns.filter((a) => picked.has(a.id)).map((a) => `${a.name} (₹${(a.price * persons).toLocaleString()})`).join(', ')}`
         : '',
       gearLines.length ? `Rental gear: ${formatGearLines(gearLines)} (${inr(gearTotal)})` : '',
     ].filter(Boolean);
@@ -693,24 +962,28 @@ export default function TrekDetailContent({
       return next;
     });
 
-  const specs = extended?.stats?.length
-    ? extended.stats.map((stat) => ({
-        icon: 'fa-solid fa-circle-info',
-        label: stat.label,
-        value: stat.value,
-      }))
-    : [
-    { icon: 'fa-solid fa-person-hiking', label: `${kindLabel} Grade`, value: trek.difficulty },
-    { icon: 'fa-solid fa-mountain', label: 'Highest Altitude', value: trek.maxAltitude },
-    { icon: 'fa-solid fa-mountain-sun', label: 'Best Season', value: trek.bestSeason },
-    { icon: 'fa-solid fa-compass', label: `${kindLabel} Duration`, value: `${trek.nights} Nights / ${trek.days} Days` },
-    { icon: 'fa-solid fa-route', label: 'Total Distance', value: trek.distance },
-    { icon: 'fa-solid fa-house', label: 'Stays', value: staysLabel(trek) },
-    { icon: 'fa-solid fa-bus', label: 'Transport', value: trek.startEndPoint },
-    { icon: 'fa-solid fa-map-location-dot', label: `${kindLabel} Region`, value: trek.state },
-    { icon: 'fa-solid fa-campground', label: 'Base Camp', value: baseCamp(trek) },
-    { icon: 'fa-solid fa-users', label: 'Group Size', value: trek.groupSize },
-  ];
+  const onAddonPointerDown = (id: string, e: React.PointerEvent<HTMLButtonElement>) => {
+    addonTapRef.current = { id, x: e.clientX, y: e.clientY };
+  };
+
+  const onAddonPointerUp = (id: string, e: React.PointerEvent<HTMLButtonElement>) => {
+    const start = addonTapRef.current;
+    addonTapRef.current = null;
+    if (!start || start.id !== id) return;
+    const dx = Math.abs(e.clientX - start.x);
+    const dy = Math.abs(e.clientY - start.y);
+    if (dx > 12 || dy > 12) return;
+    toggleAddOn(id);
+  };
+
+  const removeGearFromBooking = (gearId: string) => {
+    removeGearLine(gearId, trek.id);
+  };
+
+  const highlightSpecs = useMemo(
+    () => buildHighlightSpecs(trek, kindLabel, extended),
+    [trek, kindLabel, extended],
+  );
 
   const faqs = trek.faq.filter((f) => {
     const q = faqQuery.trim().toLowerCase();
@@ -828,12 +1101,12 @@ export default function TrekDetailContent({
           </div>
         </div>
 
-        <div className="kg-departures">
+        <div className="kg-departures" ref={departuresRef}>
           <FixedDepartures
             months={departureMonths}
-            openMonth={openMonth}
-            onToggleMonth={(label) => setOpenMonth((cur) => (cur === label ? null : label))}
-            selectedId={selectedBatch?.id ?? null}
+            activeMonth={month}
+            onMonthChange={setMonth}
+            selectedId={batchId}
             onPick={pickDeparture}
             kindLabel={kindLabel}
             enquiryHref={whatsappUrl(`Hi Indian Treks! When is the next ${trek.title} batch?`)}
@@ -842,25 +1115,31 @@ export default function TrekDetailContent({
         </div>
       </div>
 
-      {/* Section nav */}
+      {/* Section nav — single scrollable row (Roopkund Heaven flow) */}
       <div className="kg-sticky-shell" ref={shellRef}>
         <nav
           className={`kg-sticky-nav${stuck ? ' is-stuck' : ''}`}
           aria-label="Sections"
           ref={navRef}
         >
-          <div className="kg-sticky-track">
-            {navLinks.map((link) => (
-              <button
-                type="button"
-                key={link.id}
-                className={`kg-sticky-link${activeSection === link.id ? ' is-active' : ''}`}
-                onClick={() => goToSection(link.id)}
-              >
-                <i className={link.icon} aria-hidden />
-                <span>{link.label}</span>
-              </button>
-            ))}
+          <div className="kg-sticky-panel">
+            <div
+              className={`kg-sticky-track-wrap${trackFade.left ? ' can-scroll-left' : ''}${trackFade.right ? ' can-scroll-right' : ''}`}
+            >
+              <div className="kg-sticky-track" ref={navTrackRef}>
+                {navLinks.map((link) => (
+                  <button
+                    type="button"
+                    key={link.id}
+                    className={`kg-sticky-link${activeSection === link.id ? ' is-active' : ''}`}
+                    onClick={() => goToSection(link.id)}
+                  >
+                    <i className={link.icon} aria-hidden />
+                    <span>{navLinkLabel(link.id, link.label)}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
         </nav>
       </div>
@@ -880,18 +1159,45 @@ export default function TrekDetailContent({
               </div>
 
               <div className="kg-highlight-grid">
-                {specs.map((spec) => (
-                  <div className="kg-highlight-item" key={spec.label}>
-                    <div className="kg-highlight-icon">
-                      <i className={spec.icon} aria-hidden />
+                {highlightSpecs.map((spec) => {
+                  const valueClass = spec.href || spec.sectionId ? 'kg-highlight-value is-link' : 'kg-highlight-value';
+                  const valueContent = spec.href ? (
+                    <Link href={spec.href} className={valueClass}>
+                      {spec.value}
+                    </Link>
+                  ) : spec.sectionId ? (
+                    <button
+                      type="button"
+                      className={valueClass}
+                      onClick={() => goToSection(spec.sectionId!)}
+                    >
+                      {spec.value}
+                    </button>
+                  ) : (
+                    <span className={valueClass}>{spec.value}</span>
+                  );
+
+                  return (
+                    <div className="kg-highlight-item" key={spec.id}>
+                      <div className={`kg-highlight-icon kg-highlight-icon--${spec.tone}`} aria-hidden>
+                        <HighlightIcon id={spec.id} />
+                      </div>
+                      <div className="kg-highlight-meta">
+                        <strong>{spec.label}</strong>
+                        {valueContent}
+                      </div>
                     </div>
-                    <div className="kg-highlight-meta">
-                      <strong>{spec.label}</strong>
-                      <span>{spec.value}</span>
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
+
+              {extended?.departure?.notes?.length ? (
+                <div className="kg-highlight-notes" aria-label="Departure notes">
+                  {extended.departure.notes.map((note) => (
+                    <p key={note}>{note}</p>
+                  ))}
+                </div>
+              ) : null}
 
               <div className="kg-highlight-more">
                 <div className="kg-highlight-more-copy">
@@ -914,55 +1220,6 @@ export default function TrekDetailContent({
             </div>
           </section>
 
-          {extended?.departure ? (
-            <section className="kg-section">
-              <div className="kg-highlight-card kg-departure-card">
-                <div className="kg-highlight-head">
-                  <div>
-                    <span className="kg-highlight-kicker">
-                      <i className="fa-solid fa-bus" aria-hidden /> Trek Departure
-                    </span>
-                    <h2>Pickup &amp; Drop Details</h2>
-                  </div>
-                </div>
-                <div className="kg-highlight-grid">
-                  <div className="kg-highlight-item">
-                    <div className="kg-highlight-icon">
-                      <i className="fa-solid fa-clock" aria-hidden />
-                    </div>
-                    <div className="kg-highlight-meta">
-                      <strong>Pickup Time</strong>
-                      <span>{extended.departure.pickupTime}</span>
-                    </div>
-                  </div>
-                  <div className="kg-highlight-item">
-                    <div className="kg-highlight-icon">
-                      <i className="fa-solid fa-clock-rotate-left" aria-hidden />
-                    </div>
-                    <div className="kg-highlight-meta">
-                      <strong>Drop Time</strong>
-                      <span>{extended.departure.dropTime}</span>
-                    </div>
-                  </div>
-                  <div className="kg-highlight-item">
-                    <div className="kg-highlight-icon">
-                      <i className="fa-solid fa-location-dot" aria-hidden />
-                    </div>
-                    <div className="kg-highlight-meta">
-                      <strong>Pickup &amp; Drop</strong>
-                      <span>{extended.departure.location}</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="kg-highlight-more-copy">
-                  {extended.departure.notes.map((note) => (
-                    <p key={note}>{note}</p>
-                  ))}
-                </div>
-              </div>
-            </section>
-          ) : null}
-
           {/* Overview */}
           <section id="overview" className="kg-section">
             <div className={`kg-overview-card${overviewOpen ? ' is-expanded' : ' is-collapsed'}`}>
@@ -979,8 +1236,10 @@ export default function TrekDetailContent({
               <div className="kg-overview-grid">
                 <div className="kg-overview-copy">
                   <div className="kg-overview-text">
-                    {baseOverviewParas.map((para) => (
-                      <p key={para}>{para}</p>
+                    {baseOverviewParas.map((para, index) => (
+                      <p key={para} className={index === 0 ? 'kg-overview-lead' : undefined}>
+                        {para}
+                      </p>
                     ))}
                     {overviewOpen && extended?.overviewExtra?.length ? (
                       <div className="kg-extended-rich">
@@ -1025,7 +1284,7 @@ export default function TrekDetailContent({
                     className="kg-overview-btn kg-overview-btn-primary"
                     onClick={() => setOverviewOpen((v) => !v)}
                   >
-                    {overviewOpen ? 'View Less' : 'View More'}
+                    {overviewOpen ? 'Read Less' : 'Read More'}
                   </button>
                   <button
                     type="button"
@@ -1484,15 +1743,33 @@ export default function TrekDetailContent({
                           <span className="kg-gear-price">
                             <i className="fa-solid fa-indian-rupee-sign" aria-hidden /> {item.price}/trek
                           </span>
-                          <button
-                            type="button"
-                            className="kg-gear-rent"
-                            onClick={() => setPickingGear(item)}
-                          >
-                            {added
-                              ? `Added${added.size ? ` · ${added.size}` : ''}${added.qty > 1 ? ` ×${added.qty}` : ''}`
-                              : 'Rent this'}
-                          </button>
+                          {added ? (
+                            <div className="kg-gear-actions">
+                              <button
+                                type="button"
+                                className="kg-gear-rent"
+                                onClick={() => setPickingGear(item)}
+                              >
+                                {`Edit${added.size ? ` · ${added.size}` : ''}${added.qty > 1 ? ` ×${added.qty}` : ''}`}
+                              </button>
+                              <button
+                                type="button"
+                                className="kg-gear-remove"
+                                aria-label={`Remove ${item.name} from booking`}
+                                onClick={() => removeGearFromBooking(item.id)}
+                              >
+                                <i className="fa-solid fa-trash-can" aria-hidden />
+                              </button>
+                            </div>
+                          ) : (
+                            <button
+                              type="button"
+                              className="kg-gear-rent"
+                              onClick={() => setPickingGear(item)}
+                            >
+                              Rent this
+                            </button>
+                          )}
                         </div>
                       </article>
                     );
@@ -1521,17 +1798,18 @@ export default function TrekDetailContent({
                 </div>
 
                 <div className="bk-price-row">
-                  <span className="bk-price-main">{inr(unitPrice)}</span>
-                  {tier?.originalPrice && (
-                    <span className="bk-price-old">{inr(tier.originalPrice + pickupSurcharge)}</span>
+                  <span className="bk-price-main" id="bk-pmain">
+                    {inr(total)}
+                  </span>
+                  {(persons > 1 || addOnTotal > 0 || gearTotal > 0 || pickupSurcharge > 0) && (
+                    <span className="bk-price-sub">{inr(unitPrice)} / person</span>
                   )}
-                  {tier?.badge && <span className="bk-savings-badge">{tier.badge}</span>}
                 </div>
 
                 <hr className="bk-dashed" />
 
                 <div className="bk-sec">Occupancy</div>
-                <div className="bk-pills">
+                <div className="bk-pills bk-pills--occ">
                   {trek.pricing.map((p) => (
                     <button
                       type="button"
@@ -1587,7 +1865,7 @@ export default function TrekDetailContent({
                             key={b.id}
                             disabled={soldOut}
                             className={`bk-date-pill${selectedBatch?.id === b.id ? ' bk-active' : ''}${soldOut ? ' bk-closed' : ''}`}
-                            onClick={() => !soldOut && setBatchId(b.id)}
+                            onClick={() => !soldOut && pickDeparture(b, { silent: true })}
                           >
                             <div className="bk-dd">
                               {new Date(b.startDate + 'T12:00:00').toLocaleDateString('en-IN', {
@@ -1638,43 +1916,82 @@ export default function TrekDetailContent({
                 </div>
 
                 <div className="bk-sec">Add ons</div>
-                <div className="bk-addon-strip" ref={addonsRef}>
-                  {addOns.map((addon) => (
-                    <button
-                      type="button"
-                      key={addon.id}
-                      className={`bk-addon-tab${picked.has(addon.id) ? ' bk-active' : ''}`}
-                      onClick={() => toggleAddOn(addon.id)}
-                      aria-pressed={picked.has(addon.id)}
-                    >
-                      <span className="bk-addon-tab-top">
-                        <span className="bk-addon-tab-ico">
-                          <i className={addon.icon} aria-hidden />
+                <div className="bk-addon-strip" role="group" aria-label="Trip add-ons">
+                  {addOns.map((addon) => {
+                    const active = picked.has(addon.id);
+                    return (
+                      <button
+                        type="button"
+                        key={addon.id}
+                        className={`bk-addon-tab${active ? ' bk-active' : ''}`}
+                        onPointerDown={(e) => onAddonPointerDown(addon.id, e)}
+                        onPointerUp={(e) => onAddonPointerUp(addon.id, e)}
+                        onPointerCancel={() => {
+                          addonTapRef.current = null;
+                        }}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            toggleAddOn(addon.id);
+                          }
+                        }}
+                        aria-pressed={active}
+                      >
+                        <span className="bk-addon-tab-top">
+                          <span className="bk-addon-tab-ico">
+                            <i className={addon.icon} aria-hidden />
+                          </span>
+                          <span className="bk-addon-tab-check" aria-hidden={!active}>
+                            <i className="fa-solid fa-check" aria-hidden />
+                          </span>
                         </span>
-                        <span className="bk-addon-tab-check">
-                          <i className="fa-solid fa-check" aria-hidden />
-                        </span>
-                      </span>
-                      <span className="bk-addon-name">{addon.name}</span>
-                      <span className="bk-addon-price">+ {inr(addon.price)}</span>
-                    </button>
-                  ))}
+                        <span className="bk-addon-name">{addon.name}</span>
+                        <span className="bk-addon-price">+ {inr(addon.price)}</span>
+                      </button>
+                    );
+                  })}
                 </div>
                 {gearLines.length > 0 ? (
                   <div className="bk-gear-box">
-                    <div className="bk-sec">Rental gear</div>
+                    <div className="bk-gear-box-head">
+                      <div className="bk-sec bk-sec--flush">Rental gear</div>
+                      <button
+                        type="button"
+                        className="bk-gear-clear"
+                        onClick={() => gearLines.forEach((line) => removeGearFromBooking(line.gearId))}
+                      >
+                        Clear all
+                      </button>
+                    </div>
                     <ul className="bk-gear-list">
                       {gearLines.map((line) => {
                         const item = GEAR_CATALOG.find((g) => g.id === line.gearId);
                         if (!item) return null;
                         return (
                           <li key={line.gearId}>
-                            <span>
-                              {item.name}
-                              {line.size ? ` · ${line.size}` : ''}
-                              {line.qty > 1 ? ` ×${line.qty}` : ''}
-                            </span>
-                            <strong>{inr(item.price * line.qty)}</strong>
+                            <button
+                              type="button"
+                              className="bk-gear-line-main"
+                              onClick={() => setPickingGear(item)}
+                            >
+                              <span className="bk-gear-line-name">
+                                {item.name}
+                                {line.size ? ` · ${line.size}` : ''}
+                                {line.qty > 1 ? ` ×${line.qty}` : ''}
+                              </span>
+                              <span className="bk-gear-line-edit">Edit</span>
+                            </button>
+                            <div className="bk-gear-line-end">
+                              <strong>{inr(item.price * line.qty)}</strong>
+                              <button
+                                type="button"
+                                className="bk-gear-remove"
+                                aria-label={`Remove ${item.name}`}
+                                onClick={() => removeGearFromBooking(line.gearId)}
+                              >
+                                <i className="fa-solid fa-xmark" aria-hidden />
+                              </button>
+                            </div>
                           </li>
                         );
                       })}
@@ -1684,6 +2001,38 @@ export default function TrekDetailContent({
                 </div>
 
                 <div className="bk-card-actions">
+                <div className="bk-breakdown">
+                  <div className="bk-line">
+                    <span>
+                      Trip ({persons} × {inr(unitPrice)})
+                    </span>
+                    <span>{inr(unitPrice * persons)}</span>
+                  </div>
+                  {addOns
+                    .filter((addon) => picked.has(addon.id))
+                    .map((addon) => (
+                      <div key={addon.id} className="bk-line bk-srow">
+                        <span>{addon.name}</span>
+                        <span className="bk-g">
+                          + {inr(addon.price * persons)}
+                        </span>
+                      </div>
+                    ))}
+                  {gearLines.map((line) => {
+                    const item = GEAR_CATALOG.find((g) => g.id === line.gearId);
+                    if (!item) return null;
+                    return (
+                      <div key={line.gearId} className="bk-line">
+                        <span>
+                          {item.name}
+                          {line.size ? ` · ${line.size}` : ''}
+                          {line.qty > 1 ? ` ×${line.qty}` : ''}
+                        </span>
+                        <span>{inr(item.price * line.qty)}</span>
+                      </div>
+                    );
+                  })}
+                </div>
                 <div className="bk-total">
                   <span>Total Price</span>
                   <span>{inr(total)}</span>
@@ -1875,10 +2224,18 @@ export default function TrekDetailContent({
 
       {/* Mobile book bar */}
       <div className="kg-mobile-bookbar">
-        <div className="kg-mobile-bookbar-price">
-          <strong>{inr(startingPrice)}</strong>
-          <span>Starting price</span>
-        </div>
+        <button
+          type="button"
+          className="kg-mobile-bookbar-price"
+          onClick={() => goToSection(selectedBatch ? 'departures' : 'booking-form')}
+        >
+          <strong>{inr(total)}</strong>
+          <span>
+            {occupancyLabel(tierName)}
+            {persons > 0 ? ` · ${persons} traveller${persons === 1 ? '' : 's'}` : ''}
+            {selectedBatch ? ` · ${selectedBatch.label}` : ''}
+          </span>
+        </button>
         <button type="button" className="kg-mobile-bookbar-book" onClick={() => router.push(bookingHref())}>
           <i className="fa-solid fa-cart-shopping" aria-hidden /> Book Now
         </button>
@@ -1886,6 +2243,25 @@ export default function TrekDetailContent({
           <i className="fa-brands fa-whatsapp" aria-hidden />
         </button>
       </div>
+
+      {dateToast && (
+        <div className="fd-toast" role="status" aria-live="polite">
+          <i className="fa-solid fa-circle-check fd-toast__icon" aria-hidden />
+          <span className="fd-toast__copy">
+            <strong>{dateToast}</strong> saved — keep browsing or book when ready.
+          </span>
+          <button
+            type="button"
+            className="fd-toast__action"
+            onClick={() => {
+              setDateToast(null);
+              goToSection('booking-form');
+            }}
+          >
+            View booking
+          </button>
+        </div>
+      )}
     </div>
   );
 }

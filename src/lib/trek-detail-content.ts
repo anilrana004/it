@@ -228,6 +228,173 @@ export function staysLabel(trek: Trek) {
   return trek.type === 'yatra' ? 'Hotel + Guesthouse' : 'Camps + Guesthouse';
 }
 
+export type HighlightTone = 'green' | 'amber' | 'sky' | 'rose' | 'slate';
+
+export type HighlightSpec = {
+  id: string;
+  label: string;
+  value: string;
+  icon: string;
+  tone: HighlightTone;
+  href?: string;
+  sectionId?: string;
+};
+
+function fitnessCriteria(difficulty: Trek['difficulty']) {
+  const map: Record<Trek['difficulty'], string> = {
+    Easy: '3 km in 35 mins',
+    'Easy to Moderate': '4 km in 34 mins',
+    Moderate: '5 km in 32 mins',
+    'Moderate-Difficult': '5 km in 32 mins',
+    Difficult: '5 km in 30 mins',
+  };
+  return map[difficulty];
+}
+
+function suitableForAge(trek: Trek) {
+  if (trek.type === 'yatra') return 'All ages with guidance';
+  const map: Record<Trek['difficulty'], string> = {
+    Easy: '10 to 62 years',
+    'Easy to Moderate': '10 to 60 years',
+    Moderate: '12 to 58 years',
+    'Moderate-Difficult': '12 to 62 years',
+    Difficult: '16 to 55 years',
+  };
+  return map[trek.difficulty];
+}
+
+function accommodationDetail(trek: Trek) {
+  if (trek.type === 'yatra') return staysLabel(trek);
+  const hasCamping = trek.pricing.some((tier) => tier.name === 'Economic');
+  return hasCamping ? 'Tents (2 sharing)' : staysLabel(trek);
+}
+
+function pickupDetail(
+  trek: Trek,
+  departure?: { pickupTime: string; location: string },
+) {
+  if (departure) return `${departure.location} at ${departure.pickupTime}`;
+  const point = baseCity(trek);
+  return `${point} reporting point at 7:30 AM`;
+}
+
+function dropoffDetail(
+  trek: Trek,
+  departure?: { dropTime: string; location: string },
+) {
+  if (departure) return `${departure.location} at ${departure.dropTime}`;
+  const point = baseCity(trek);
+  return `${point} by 8:00 PM`;
+}
+
+/** At-a-glance trek facts for the highlight grid (reference-style 4×3 layout). */
+export function buildHighlightSpecs(
+  trek: Trek,
+  kindLabel: string,
+  extended?: {
+    departure?: { pickupTime: string; dropTime: string; location: string };
+    sections?: { id: string }[];
+  },
+): HighlightSpec[] {
+  const hasFitnessSection = extended?.sections?.some((section) => section.id === 'fitness');
+  const durationValue = `${trek.days} days / ${trek.distance}`;
+
+  return [
+    {
+      id: 'difficulty',
+      label: `${kindLabel} Difficulty`,
+      value: trek.difficulty,
+      icon: 'fa-solid fa-signal',
+      tone: 'amber',
+    },
+    {
+      id: 'duration',
+      label: `${kindLabel} Duration`,
+      value: durationValue,
+      icon: 'fa-solid fa-stopwatch',
+      tone: 'sky',
+    },
+    {
+      id: 'altitude',
+      label: 'Highest Altitude',
+      value: trek.maxAltitude,
+      icon: 'fa-solid fa-mountain',
+      tone: 'green',
+    },
+    {
+      id: 'suitable',
+      label: 'Suitable For',
+      value: suitableForAge(trek),
+      icon: 'fa-solid fa-people-group',
+      tone: 'rose',
+    },
+    {
+      id: 'basecamp',
+      label: 'Basecamp',
+      value: `${baseCamp(trek)}, ${trek.state}`,
+      icon: 'fa-solid fa-route',
+      tone: 'green',
+      sectionId: 'how-to-reach',
+    },
+    {
+      id: 'accommodation',
+      label: 'Accommodation Type',
+      value: accommodationDetail(trek),
+      icon: 'fa-solid fa-campground',
+      tone: 'amber',
+      sectionId: 'inclusion-exclusion',
+    },
+    {
+      id: 'fitness',
+      label: 'Fitness Criteria',
+      value: fitnessCriteria(trek.difficulty),
+      icon: 'fa-solid fa-person-running',
+      tone: 'sky',
+      sectionId: hasFitnessSection ? 'fitness' : undefined,
+      href: hasFitnessSection ? undefined : '/fitness-training-plan',
+    },
+    {
+      id: 'pickup',
+      label: 'Pickup Details',
+      value: pickupDetail(trek, extended?.departure),
+      icon: 'fa-solid fa-clock',
+      tone: 'green',
+      sectionId: 'how-to-reach',
+    },
+    {
+      id: 'dropoff',
+      label: 'Dropoff Details',
+      value: dropoffDetail(trek, extended?.departure),
+      icon: 'fa-solid fa-clock-rotate-left',
+      tone: 'amber',
+      sectionId: 'how-to-reach',
+    },
+    {
+      id: 'packing',
+      label: 'Packing Checklist',
+      value: 'View checklist',
+      icon: 'fa-solid fa-suitcase',
+      tone: 'slate',
+      sectionId: 'things-to-carry',
+    },
+    {
+      id: 'cloakroom',
+      label: 'Cloakroom',
+      value: trek.type === 'yatra' ? 'At hotel lobby' : 'Available at base',
+      icon: 'fa-solid fa-suitcase-rolling',
+      tone: 'sky',
+    },
+    {
+      id: 'offloading',
+      label: 'Offloading',
+      value: trek.type === 'yatra' ? 'Not applicable' : 'Available',
+      icon: 'fa-solid fa-horse',
+      tone: 'amber',
+      sectionId: trek.type === 'yatra' ? undefined : 'rent-gear',
+    },
+  ];
+}
+
 /** Seasonal guide derived from the trek's best season window. */
 export function getSeasonGuide(trek: Trek): { title: string; body: string; bullets: string[] }[] {
   const season = trek.bestSeason;

@@ -33,12 +33,10 @@ export const metadata: Metadata = {
   keywords: "indiantreks, indian treks, himalayan treks, uttarakhand treks, himachal treks, nepal trek, valley of flowers, kedarkantha, everest base camp, annapurna base camp, kedarnath yatra, badrinath yatra, adventure travel",
 };
 
-/** Keep mobile layout at device width — no auto-zoom / reflow from overflow. */
+/** Readable at device width; allow pinch-zoom for accessibility. */
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
   viewportFit: "cover",
   themeColor: "#16a34a",
 };
