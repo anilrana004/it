@@ -1,12 +1,17 @@
 import Link from 'next/link';
+import PrepTocNav, { PrepTocBackLink } from '@/components/prep/PrepTocNav';
 import {
   AFFILIATES_CLOSING,
   AFFILIATES_HERO,
   AFFILIATES_SECTIONS,
   type AffiliateSection,
 } from '@/lib/content/affiliates-content';
+import TermsScrollControls from '@/components/support/TermsScrollControls';
 import { CONTACT, mailtoUrl, telUrl, whatsappUrl } from '@/lib/contact';
+import '@/components/prep/prep-guides.css';
 import './affiliates-page.css';
+
+const SECTION_ACCENTS = ['green', 'teal', 'blue', 'violet', 'amber', 'rose'] as const;
 
 const SECTION_ICONS: Record<string, string> = {
   'why-partner': 'fa-handshake',
@@ -31,6 +36,13 @@ const HIGHLIGHT_ICONS = [
   'fa-headset',
 ];
 
+const TOC_ITEMS = AFFILIATES_SECTIONS.map((section, index) => ({
+  id: `aff-section-${section.id}`,
+  title: `${index + 1}. ${section.title}`,
+}));
+
+const SECTION_IDS = [...TOC_ITEMS.map((item) => item.id), 'aff-closing'];
+
 function SectionParagraphs({ items }: { items: string[] }) {
   return (
     <>
@@ -43,13 +55,13 @@ function SectionParagraphs({ items }: { items: string[] }) {
   );
 }
 
-function SectionBullets({ items }: { items: string[] }) {
+function SectionBullets({ items, accent }: { items: string[]; accent: string }) {
   return (
-    <ul className="it-aff__bullets">
+    <ul className={`it-aff__bullets it-aff__bullets--${accent}`}>
       {items.map((item) => (
         <li key={item}>
           <span className="it-aff__bullet-mark" aria-hidden>
-            <i className="fa-solid fa-check" />
+            <i className="fa-solid fa-circle-check" />
           </span>
           <span>{item}</span>
         </li>
@@ -58,10 +70,10 @@ function SectionBullets({ items }: { items: string[] }) {
   );
 }
 
-function FlowSteps({ flow }: { flow: string }) {
+function FlowSteps({ flow, accent }: { flow: string; accent: string }) {
   const steps = flow.split('→').map((step) => step.trim());
   return (
-    <div className="it-aff__flow">
+    <div className={`it-aff__flow it-aff__flow--${accent}`}>
       {steps.map((step, index) => (
         <span key={step} className="it-aff__flow-step">
           <span className="it-aff__flow-num">{index + 1}</span>
@@ -75,12 +87,24 @@ function FlowSteps({ flow }: { flow: string }) {
   );
 }
 
-function SectionCard({ section }: { section: AffiliateSection }) {
+function SectionCard({
+  section,
+  index,
+  accent,
+}: {
+  section: AffiliateSection;
+  index: number;
+  accent: (typeof SECTION_ACCENTS)[number];
+}) {
   const icon = SECTION_ICONS[section.id] ?? 'fa-circle-info';
 
   return (
-    <article className={`it-aff__section it-aff__section--${section.id}`}>
+    <article
+      id={`aff-section-${section.id}`}
+      className={`it-aff__section it-aff__section--${accent}`}
+    >
       <header className="it-aff__section-head">
+        <span className="it-aff__section-num">{index + 1}</span>
         <span className="it-aff__section-ico" aria-hidden>
           <i className={`fa-solid ${icon}`} />
         </span>
@@ -97,15 +121,15 @@ function SectionCard({ section }: { section: AffiliateSection }) {
             {section.id === 'why-partner' ? (
               <p className="it-aff__p it-aff__p--label">Our partners benefit from:</p>
             ) : null}
-            <SectionBullets items={section.bullets} />
+            <SectionBullets items={section.bullets} accent={accent} />
           </>
         ) : null}
         {section.destinations ? (
           <div className="it-aff__dest-grid">
-            {section.destinations.map((dest, index) => (
-              <div key={dest.title} className={`it-aff__dest it-aff__dest--${index + 1}`}>
+            {section.destinations.map((dest, destIndex) => (
+              <div key={dest.title} className={`it-aff__dest it-aff__dest--${accent}`}>
                 <div className="it-aff__dest-top">
-                  <span className="it-aff__dest-badge">{String(index + 1).padStart(2, '0')}</span>
+                  <span className="it-aff__dest-badge">{String(destIndex + 1).padStart(2, '0')}</span>
                   <h3>{dest.title}</h3>
                 </div>
                 {dest.paragraphs.map((text) => (
@@ -115,12 +139,12 @@ function SectionCard({ section }: { section: AffiliateSection }) {
             ))}
           </div>
         ) : null}
-        {section.flow ? <FlowSteps flow={section.flow} /> : null}
+        {section.flow ? <FlowSteps flow={section.flow} accent={accent} /> : null}
         {section.paragraphsAfter ? <SectionParagraphs items={section.paragraphsAfter} /> : null}
         {section.taglines ? (
-          <div className="it-aff__taglines">
-            {section.taglines.map((line, index) => (
-              <p key={line} className={`it-aff__tagline${index === 0 ? ' is-primary' : ''}`}>
+          <div className={`it-aff__taglines it-aff__taglines--${accent}`}>
+            {section.taglines.map((line, lineIndex) => (
+              <p key={line} className={`it-aff__tagline${lineIndex === 0 ? ' is-primary' : ''}`}>
                 {line}
               </p>
             ))}
@@ -128,10 +152,13 @@ function SectionCard({ section }: { section: AffiliateSection }) {
         ) : null}
         {section.highlights ? (
           <div className="it-aff__highlights">
-            {section.highlights.map((item, index) => (
-              <div key={item.title} className={`it-aff__highlight it-aff__highlight--${index + 1}`}>
+            {section.highlights.map((item, highlightIndex) => (
+              <div
+                key={item.title}
+                className={`it-aff__highlight it-aff__highlight--${(highlightIndex % 6) + 1}`}
+              >
                 <span className="it-aff__highlight-ico" aria-hidden>
-                  <i className={`fa-solid ${HIGHLIGHT_ICONS[index] ?? 'fa-star'}`} />
+                  <i className={`fa-solid ${HIGHLIGHT_ICONS[highlightIndex] ?? 'fa-star'}`} />
                 </span>
                 <h3>{item.title}</h3>
                 <p>{item.body}</p>
@@ -156,9 +183,7 @@ export default function AffiliatesPageView() {
   const b2bWa = whatsappUrl('Hi IndianTreks! I would like to discuss a B2B partnership.');
 
   return (
-    <div className="it-aff">
-      <div className="it-aff__ambient" aria-hidden />
-
+    <article className="it-prep it-aff">
       <header className="it-aff__hero">
         <div className="it-aff__hero-glow it-aff__hero-glow--a" aria-hidden />
         <div className="it-aff__hero-glow it-aff__hero-glow--b" aria-hidden />
@@ -168,8 +193,8 @@ export default function AffiliatesPageView() {
           <p className="it-aff__subtitle">{AFFILIATES_HERO.subtitle}</p>
 
           <div className="it-aff__stats">
-            {AFFILIATES_HERO.stats.map((stat) => (
-              <div key={stat.label} className="it-aff__stat">
+            {AFFILIATES_HERO.stats.map((stat, index) => (
+              <div key={stat.label} className={`it-aff__stat it-aff__stat--${(index % 4) + 1}`}>
                 <strong>{stat.value}</strong>
                 <span>{stat.label}</span>
               </div>
@@ -184,73 +209,86 @@ export default function AffiliatesPageView() {
         </div>
       </header>
 
-      <div className="it-aff__body">
-        <div className="it-aff__wrap">
-          <section className="it-aff__strip" aria-label="Partner enquiries">
-            <div className="it-aff__strip-copy">
-              <strong>Ready to partner with IndianTreks?</strong>
-              <span>B2B agents, colleges, corporates &amp; creators · {CONTACT.hours}</span>
-            </div>
-            <div className="it-aff__strip-actions">
-              <a
-                className="it-aff__strip-btn it-aff__strip-btn--primary"
-                href={b2bWa}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <i className="fa-brands fa-whatsapp" aria-hidden />
-                WhatsApp B2B
-              </a>
-              <Link className="it-aff__strip-btn" href="/contact">
-                <i className="fa-solid fa-handshake" aria-hidden />
-                Contact team
-              </Link>
-              <a className="it-aff__strip-btn" href={mailtoUrl('B2B partnership enquiry — IndianTreks')}>
-                <i className="fa-solid fa-envelope" aria-hidden />
-                Email
-              </a>
-            </div>
-          </section>
+      <div className="it-prep__wrap it-prep__wrap--solo it-aff__layout">
+        <PrepTocNav
+          items={TOC_ITEMS}
+          scrollable
+          footer={<PrepTocBackLink href="/help-centre" label="← Help Centre" />}
+        />
 
-          <div className="it-aff__sections">
-            {AFFILIATES_SECTIONS.map((section) => (
-              <SectionCard key={section.id} section={section} />
+        <div className="it-aff__main">
+          <div className="it-prep__content it-aff__content">
+            <section className="it-aff__strip" aria-label="Partner enquiries">
+              <div className="it-aff__strip-copy">
+                <strong>Ready to partner with IndianTreks?</strong>
+                <span>B2B agents, colleges, corporates &amp; creators · {CONTACT.hours}</span>
+              </div>
+              <div className="it-aff__strip-actions">
+                <a
+                  className="it-aff__strip-btn it-aff__strip-btn--primary"
+                  href={b2bWa}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <i className="fa-brands fa-whatsapp" aria-hidden />
+                  WhatsApp B2B
+                </a>
+                <Link className="it-aff__strip-btn" href="/contact">
+                  <i className="fa-solid fa-handshake" aria-hidden />
+                  Contact team
+                </Link>
+                <a className="it-aff__strip-btn" href={mailtoUrl('B2B partnership enquiry — IndianTreks')}>
+                  <i className="fa-solid fa-envelope" aria-hidden />
+                  Email
+                </a>
+              </div>
+            </section>
+
+            {AFFILIATES_SECTIONS.map((section, index) => (
+              <SectionCard
+                key={section.id}
+                section={section}
+                index={index}
+                accent={SECTION_ACCENTS[index % SECTION_ACCENTS.length]}
+              />
             ))}
+
+            <article id="aff-closing" className="it-aff__closing">
+              <div className="it-aff__closing-glow" aria-hidden />
+              <h2>{AFFILIATES_CLOSING.title}</h2>
+              <SectionParagraphs items={AFFILIATES_CLOSING.paragraphs} />
+              <div className="it-aff__contact">
+                <a className="it-aff__contact-link" href={mailtoUrl('B2B partnership enquiry — IndianTreks')}>
+                  <i className="fa-solid fa-envelope" aria-hidden />
+                  Email: {AFFILIATES_CLOSING.email}
+                </a>
+                <a
+                  className="it-aff__contact-link it-aff__contact-link--wa"
+                  href={b2bWa}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <i className="fa-brands fa-whatsapp" aria-hidden />
+                  WhatsApp: {AFFILIATES_CLOSING.whatsapp}
+                </a>
+              </div>
+              <div className="it-aff__closing-cta">
+                <Link href="/contact" className="it-retro-btn it-retro-btn--pill it-retro-btn--md it-aff__closing-btn">
+                  <i className="fa-solid fa-handshake" aria-hidden />
+                  {AFFILIATES_CLOSING.ctaLabel}
+                </Link>
+              </div>
+            </article>
+
+            <p className="it-aff__footnote">
+              Reach us anytime at <a href={telUrl()}>{CONTACT.phoneDisplay}</a> · {CONTACT.hoursShort},{' '}
+              {CONTACT.hoursDetail}.
+            </p>
           </div>
 
-          <article className="it-aff__closing">
-            <div className="it-aff__closing-glow" aria-hidden />
-            <h2>{AFFILIATES_CLOSING.title}</h2>
-            <SectionParagraphs items={AFFILIATES_CLOSING.paragraphs} />
-            <div className="it-aff__contact">
-              <a className="it-aff__contact-link" href={mailtoUrl('B2B partnership enquiry — IndianTreks')}>
-                <i className="fa-solid fa-envelope" aria-hidden />
-                Email: {AFFILIATES_CLOSING.email}
-              </a>
-              <a
-                className="it-aff__contact-link it-aff__contact-link--wa"
-                href={b2bWa}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <i className="fa-brands fa-whatsapp" aria-hidden />
-                WhatsApp: {AFFILIATES_CLOSING.whatsapp}
-              </a>
-            </div>
-            <div className="it-aff__closing-cta">
-              <Link href="/contact" className="it-retro-btn it-retro-btn--pill it-retro-btn--md it-aff__closing-btn">
-                <i className="fa-solid fa-handshake" aria-hidden />
-                {AFFILIATES_CLOSING.ctaLabel}
-              </Link>
-            </div>
-          </article>
-
-          <p className="it-aff__footnote">
-            Reach us anytime at <a href={telUrl()}>{CONTACT.phoneDisplay}</a> · {CONTACT.hoursShort},{' '}
-            {CONTACT.hoursDetail}.
-          </p>
+          <TermsScrollControls sectionIds={SECTION_IDS} />
         </div>
       </div>
-    </div>
+    </article>
   );
 }
