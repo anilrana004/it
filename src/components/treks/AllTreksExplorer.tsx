@@ -202,7 +202,7 @@ export default function AllTreksExplorer({
     (patch: Partial<Filters>) => {
       setFilters((prev) => {
         const next = { ...prev, ...patch };
-        syncUrl(next);
+        queueMicrotask(() => syncUrl(next));
         return next;
       });
     },
@@ -221,7 +221,7 @@ export default function AllTreksExplorer({
     };
     setSearchDraft('');
     setFilters(empty);
-    syncUrl(empty);
+    queueMicrotask(() => syncUrl(empty));
     setMobileFilters(false);
   };
 
@@ -242,7 +242,7 @@ export default function AllTreksExplorer({
       const next = parseInitial(new URLSearchParams(qs));
       setSearchDraft(next.q);
       setFilters(next);
-      syncUrl(next);
+      queueMicrotask(() => syncUrl(next));
       scrollToTreks();
     },
     [scrollToTreks, syncUrl],
@@ -494,7 +494,7 @@ export default function AllTreksExplorer({
             <button
               type="button"
               onClick={() => setMobileFilters(true)}
-              className="inline-flex h-11 shrink-0 items-center gap-1.5 rounded-full bg-[#16a34a] px-3.5 text-sm font-semibold text-white"
+              className="it-retro-btn it-retro-btn--primary it-retro-btn--pill it-retro-btn--sm shrink-0"
             >
               <SlidersHorizontal className="h-4 w-4" />
               Filter
@@ -624,13 +624,13 @@ export default function AllTreksExplorer({
             <div className="mt-3 flex gap-2">
               <a
                 href={telUrl()}
-                className="inline-flex h-10 flex-1 items-center justify-center rounded-full bg-[#16a34a] text-sm font-semibold text-white"
+                className="it-retro-btn it-retro-btn--primary it-retro-btn--pill it-retro-btn--md flex-1"
               >
                 Call {CONTACT.phoneDisplay}
               </a>
               <Link
                 href="/contact"
-                className="inline-flex h-10 flex-1 items-center justify-center rounded-full border border-gray-200 text-sm font-semibold text-gray-800"
+                className="it-retro-btn it-retro-btn--outline it-retro-btn--pill it-retro-btn--md flex-1"
               >
                 Contact us
               </Link>
@@ -767,7 +767,7 @@ export default function AllTreksExplorer({
                   <button
                     type="button"
                     onClick={clearAll}
-                    className="mt-5 inline-flex rounded-full bg-[#16a34a] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#15803d]"
+                    className="it-retro-btn it-retro-btn--primary it-retro-btn--pill it-retro-btn--md mt-5"
                   >
                     Reset filters
                   </button>

@@ -1,13 +1,12 @@
 /**
- * Featured film for Why Choose Indian Treks.
- * Color theory: 60% photo, 30% forest well, 10% brand spark on the ring —
- * glow lives behind the player so the picture stays fully saturated.
+ * Featured film for Why Choose Indian Treks — click-to-play with Uiverse CTA.
  */
+import YouTubeLazyPlayer from '@/components/ui/YouTubeLazyPlayer';
+
 const YOUTUBE_ID = 'G7a_tPbcELY';
+const VIDEO_TITLE = 'Himalayas India cinematic travel film — Indian Treks';
 
 export default function WhyChooseVideo({ className = '' }: { className?: string }) {
-  const embedSrc = `https://www.youtube-nocookie.com/embed/${YOUTUBE_ID}?autoplay=1&mute=1&rel=0&modestbranding=1&playsinline=1&loop=1&playlist=${YOUTUBE_ID}&color=white&iv_load_policy=3`;
-
   return (
     <div className={['it-whyvid', className].filter(Boolean).join(' ')}>
       <style>{`
@@ -19,6 +18,23 @@ export default function WhyChooseVideo({ className = '' }: { className?: string 
 
         .it-whyvid.it-whyvid--flush {
           margin-top: 0;
+        }
+
+        .it-whyvid.it-whyvid--plain .it-whyvid__bloom {
+          display: none;
+        }
+
+        .it-whyvid.it-whyvid--plain .it-whyvid__ring {
+          padding: 0;
+          background: transparent;
+          border-radius: 16px;
+          box-shadow: 0 8px 24px rgba(15, 23, 42, 0.1);
+        }
+
+        .it-whyvid.it-whyvid--plain .it-whyvid__stage {
+          border-radius: 16px;
+          background: #0f172a;
+          box-shadow: none;
         }
 
         .it-whyvid__bloom {
@@ -88,15 +104,6 @@ export default function WhyChooseVideo({ className = '' }: { className?: string 
           box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22);
         }
 
-        .it-whyvid__stage iframe {
-          position: absolute;
-          inset: 0;
-          width: 100%;
-          height: 100%;
-          border: 0;
-          display: block;
-        }
-
         @media (max-width: 640px) {
           .it-whyvid { margin-top: 22px; }
           .it-whyvid.it-whyvid--flush { margin-top: 0; }
@@ -104,6 +111,10 @@ export default function WhyChooseVideo({ className = '' }: { className?: string 
           .it-whyvid__orb { filter: blur(32px); }
           .it-whyvid__ring { border-radius: 14px; padding: 2px; }
           .it-whyvid__stage { border-radius: 12px; }
+          .it-whyvid.it-whyvid--plain .it-whyvid__ring,
+          .it-whyvid.it-whyvid--plain .it-whyvid__stage {
+            border-radius: 12px;
+          }
         }
       `}</style>
 
@@ -115,14 +126,7 @@ export default function WhyChooseVideo({ className = '' }: { className?: string 
 
       <div className="it-whyvid__ring">
         <div className="it-whyvid__stage">
-          <iframe
-            src={embedSrc}
-            title="Himalayas India cinematic travel film — Indian Treks"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowFullScreen
-            loading="lazy"
-            referrerPolicy="strict-origin-when-cross-origin"
-          />
+          <YouTubeLazyPlayer youtubeId={YOUTUBE_ID} title={VIDEO_TITLE} />
         </div>
       </div>
     </div>

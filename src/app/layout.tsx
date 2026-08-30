@@ -1,11 +1,12 @@
 import type { Metadata, Viewport } from "next";
 import { Nunito, Playfair_Display, Poppins } from "next/font/google";
 import "./globals.css";
+import "./retro-buttons.css";
+import "./retro-button-colors.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
 import MobileBottomNav from "@/components/MobileBottomNav";
-
 const poppins = Poppins({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800"],

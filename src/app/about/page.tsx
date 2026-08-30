@@ -51,7 +51,7 @@ export default function AboutPage() {
           <div className="mt-2 px-2 text-center sm:mt-0 sm:px-0">
             <Link
               href="/contact"
-              className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#16a34a] px-8 py-3.5 font-semibold text-white transition-all hover:bg-[#15803d] sm:w-auto"
+              className="it-retro-pill-cta it-retro-pill-cta--case-normal"
             >
               Get in Touch
               <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

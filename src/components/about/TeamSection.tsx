@@ -50,7 +50,7 @@ export default function TeamSection() {
         <Link
           href="/team"
           title="our team"
-          className="inline-flex w-full max-w-sm items-center justify-center gap-2 rounded-full bg-[#16a34a] px-8 py-3.5 text-sm font-semibold tracking-wide text-white shadow-sm shadow-[#16a34a]/25 transition-all hover:bg-[#15803d] hover:shadow-md hover:shadow-[#16a34a]/30 sm:w-auto sm:max-w-none sm:px-10"
+          className="it-retro-pill-cta"
         >
           MEET THE REST OF THE TEAM
           <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden>

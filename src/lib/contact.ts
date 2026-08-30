@@ -45,29 +45,29 @@ export const CONTACT = {
     booking: [
       {
         label: 'Booking',
-        display: '+91 73008 00108',
-        tel: '+917300800108',
-        wa: '917300800108',
+        display: '+91 73009 00108',
+        tel: '+917300900108',
+        wa: '917300900108',
       },
       {
         label: 'Booking',
         display: '+91 73109 54451',
         tel: '+917310954451',
-        wa: '917310954451',
+        wa: '917300900108',
       },
     ] as const satisfies readonly ContactPhone[],
     support: {
       label: 'Support',
-      display: '+91 76685 78221',
-      tel: '+917668578221',
-      wa: '917668578221',
+      display: '+91 73009 00108',
+      tel: '+917300900108',
+      wa: '917300900108',
     } satisfies ContactPhone,
   },
 
   /** Primary booking line — used by legacy callouts and default CTAs */
-  phoneDisplay: '+91 73008 00108',
-  phoneTel: '+917300800108',
-  phoneWa: '917300800108',
+  phoneDisplay: '+91 73009 00108',
+  phoneTel: '+917300900108',
+  phoneWa: '917300900108',
 
   emails: {
     primary: 'info@indiantreks.in',
@@ -85,13 +85,14 @@ export const CONTACT = {
       wa: '917300900108',
     },
     business: {
-      url: 'https://wa.me/message/YDKCEYPMC6GBF1',
+      url: 'https://wa.me/917300900108',
       label: 'Indian Treks on WhatsApp',
+      wa: '917300900108',
     },
     support: {
-      url: 'https://wa.me/917668578221',
+      url: 'https://wa.me/917300900108',
       label: 'Indian Treks Support',
-      wa: '917668578221',
+      wa: '917300900108',
     },
   } as const satisfies Record<string, ContactWhatsAppChannel>,
 

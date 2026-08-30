@@ -221,12 +221,12 @@ export default function Hero() {
 
               <div className="flex items-center gap-3">
                 <Link href={href}
-                  className="inline-flex items-center gap-2 bg-[#16a34a] hover:bg-[#15803d] text-white font-semibold text-sm px-6 py-3 rounded-full transition-all active:scale-95 shadow-lg shadow-[#16a34a]/30">
+                  className="it-retro-btn it-retro-btn--primary it-retro-btn--pill it-retro-btn--md">
                   View Full Details
                   <ArrowRight className="w-4 h-4" />
                 </Link>
                 <Link href={`/booking/${slide.id}`}
-                  className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white font-semibold text-sm px-6 py-3 rounded-full border border-white/20 transition-all active:scale-95">
+                  className="it-retro-btn it-retro-btn--glass it-retro-btn--pill it-retro-btn--md">
                   Book Now
                 </Link>
               </div>
@@ -399,7 +399,7 @@ export default function Hero() {
                 <div className="absolute inset-0 flex flex-col justify-end p-4 pb-8">
                   <h2 className="text-[22px] font-bold leading-tight text-white drop-shadow-sm">{slide.title}</h2>
                   <p className="mt-1 mb-3 text-xs text-white/85">{slide.subtitle}</p>
-                  <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-[#16a34a] px-4 py-2 text-xs font-semibold text-white shadow-sm">
+                  <span className="it-retro-btn it-retro-btn--primary it-retro-btn--pill it-retro-btn--sm">
                     {slide.cta}<ArrowRight className="h-3.5 w-3.5" />
                   </span>
                 </div>

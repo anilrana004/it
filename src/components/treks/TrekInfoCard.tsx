@@ -64,7 +64,7 @@ export default function TrekInfoCard({
           </Link>
           <Link
             href={`${trek.href}#departures`}
-            className="inline-flex h-10 items-center justify-center gap-1.5 rounded-full bg-[#16a34a] px-2 text-[12px] font-semibold text-white transition-colors hover:bg-[#15803d]"
+            className="it-retro-pill-cta it-retro-pill-cta--sm"
           >
             <CalendarDays className="h-3.5 w-3.5" />
             View Dates

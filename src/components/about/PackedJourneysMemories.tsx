@@ -205,7 +205,7 @@ export default function PackedJourneysMemories() {
       </div>
 
       <div className="it-pack-mem__cta-wrap">
-        <Link href={current.href} className="it-pack-mem__cta">
+        <Link href={current.href} className="it-retro-pill-cta it-retro-pill-cta--case-normal">
           Open {current.title}
           <i className="fa-solid fa-arrow-right" aria-hidden />
         </Link>

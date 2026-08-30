@@ -1,0 +1,376 @@
+/**
+ * Colored retro faces — loaded after retro-buttons.css.
+ * Replaces plain white pill faces with section-themed gradients + offset plates.
+ */
+
+:root {
+  --it-face-green: linear-gradient(135deg, #4ade80 0%, #22c55e 55%, #16a34a 100%);
+  --it-face-green-hover: linear-gradient(135deg, #86efac 0%, #4ade80 52%, #22c55e 100%);
+  --it-face-green-border: #bbf7d0;
+  --it-face-green-plate: #86efac;
+
+  --it-face-ghost-light: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 48%, #bbf7d0 100%);
+  --it-face-ghost-light-hover: linear-gradient(135deg, #ecfdf5 0%, #bbf7d0 52%, #86efac 100%);
+  --it-face-ghost-dark: linear-gradient(135deg, #22c55e 0%, #16a34a 48%, #15803d 100%);
+  --it-face-ghost-dark-hover: linear-gradient(135deg, #4ade80 0%, #22c55e 52%, #16a34a 100%);
+  --it-face-ghost-dark-border: #bbf7d0;
+  --it-face-ghost-dark-plate: #4ade80;
+
+  --it-face-blue: linear-gradient(135deg, #3b82f6 0%, #1666d9 52%, #1d4ed8 100%);
+  --it-face-blue-hover: linear-gradient(135deg, #60a5fa 0%, #1666d9 52%, #1e40af 100%);
+  --it-face-blue-border: #93c5fd;
+  --it-face-blue-plate: #1e3a8a;
+
+  --it-face-teal: linear-gradient(135deg, #14b8a6 0%, #0e7490 52%, #0f766e 100%);
+  --it-face-teal-hover: linear-gradient(135deg, #2dd4bf 0%, #0e7490 52%, #115e59 100%);
+  --it-face-teal-border: #5eead4;
+  --it-face-teal-plate: #134e4a;
+
+  --it-face-lime: linear-gradient(135deg, #a3e635 0%, #84cc16 52%, #65a30d 100%);
+  --it-face-lime-hover: linear-gradient(135deg, #bef264 0%, #84cc16 52%, #4d7c0f 100%);
+  --it-face-lime-border: #d9f99d;
+  --it-face-lime-plate: #365314;
+
+  --it-face-saffron: linear-gradient(135deg, #ff9933 0%, #ea580c 52%, #c2410c 100%);
+  --it-face-saffron-hover: linear-gradient(135deg, #fb923c 0%, #ea580c 52%, #9a3412 100%);
+  --it-face-saffron-border: #fdba74;
+  --it-face-saffron-plate: #431407;
+
+  --it-face-sale: linear-gradient(135deg, #fb923c 0%, #ea580c 52%, #dc2626 100%);
+  --it-face-sale-hover: linear-gradient(135deg, #fdba74 0%, #ea580c 52%, #b91c1c 100%);
+  --it-face-sale-border: #fed7aa;
+  --it-face-sale-plate: #7f1d1d;
+
+  --it-face-wa: linear-gradient(135deg, #14b8a6 0%, #128c7e 52%, #0f766e 100%);
+  --it-face-wa-hover: linear-gradient(135deg, #2dd4bf 0%, #128c7e 52%, #115e59 100%);
+  --it-face-wa-border: #5eead4;
+  --it-face-wa-plate: #134e4a;
+
+  --it-retro-ease: 0.14s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* —— Core retro components —— */
+.it-retro-btn:not(.it-retro-btn--secondary):not(.it-retro-btn--lime):not(.it-retro-btn--wa),
+.it-retro-pill-cta {
+  background: var(--it-face-green);
+  color: #fff;
+  --it-retro-stroke-color: var(--it-face-green-border);
+  --it-retro-plate: var(--it-face-green-plate);
+  border-color: var(--it-face-green-border);
+}
+
+.it-retro-btn:not(.it-retro-btn--secondary):not(.it-retro-btn--lime):not(.it-retro-btn--wa):hover:not(:disabled),
+.it-retro-pill-cta:hover:not(:disabled) {
+  background: var(--it-face-green-hover);
+}
+
+.it-retro-btn--glass {
+  background: var(--it-face-ghost-dark) !important;
+  color: #fff !important;
+  --it-retro-stroke-color: var(--it-face-ghost-dark-border) !important;
+  --it-retro-plate: var(--it-face-ghost-dark-plate) !important;
+  border-color: var(--it-face-ghost-dark-border) !important;
+}
+
+.it-retro-btn--glass:hover:not(:disabled) {
+  background: var(--it-face-ghost-dark-hover) !important;
+}
+
+.it-retro-btn--outline {
+  background: var(--it-face-ghost-light) !important;
+  color: #15803d !important;
+  --it-retro-stroke-color: #22c55e !important;
+  --it-retro-plate: #4ade80 !important;
+  border-color: #22c55e !important;
+}
+
+.it-retro-btn--outline:hover:not(:disabled) {
+  background: var(--it-face-ghost-light-hover) !important;
+}
+
+.it-retro-btn--secondary {
+  background: var(--it-face-blue);
+  color: #fff;
+  --it-retro-stroke-color: var(--it-face-blue-border);
+  --it-retro-plate: var(--it-face-blue-plate);
+  border-color: var(--it-face-blue-border);
+}
+
+.it-retro-btn--secondary:hover:not(:disabled) {
+  background: var(--it-face-blue-hover);
+}
+
+.it-retro-btn--lime {
+  background: var(--it-face-lime) !important;
+  color: #14532d !important;
+  --it-retro-stroke-color: var(--it-face-lime-border) !important;
+  --it-retro-plate: var(--it-face-lime-plate) !important;
+  border-color: var(--it-face-lime-border) !important;
+}
+
+.it-retro-btn--lime:hover:not(:disabled) {
+  background: var(--it-face-lime-hover) !important;
+}
+
+.it-retro-btn--wa {
+  background: var(--it-face-wa) !important;
+  color: #fff !important;
+  --it-retro-stroke-color: var(--it-face-wa-border) !important;
+  --it-retro-plate: var(--it-face-wa-plate) !important;
+  border-color: var(--it-face-wa-border) !important;
+}
+
+.it-retro-btn--wa:hover:not(:disabled) {
+  background: var(--it-face-wa-hover) !important;
+}
+
+/* —— Legacy / page primary buttons —— */
+:is(
+  .btn-primary,
+  .btn-filled-2,
+  .btn-pill,
+  .bk-btn-book,
+  .kg-overview-btn-primary,
+  .kg-mobile-bookbar-book,
+  .rhf-btn-primary,
+  .ct-submit-btn,
+  .ct-strip-btn-primary,
+  .it-about-btn-primary,
+  .it-treks-hero__search-btn,
+  [class*='__btn--primary']:not(.it-sy__btn--premium-primary),
+  [class*='__btn--solid']:not([class*='--outline']):not([class*='--ghost']),
+  [class*='__btn--premium-primary']:not(.it-sy__btn--premium-primary)
+) {
+  background: var(--it-face-green) !important;
+  color: #fff !important;
+  border: 2px solid var(--it-face-green-border) !important;
+  box-shadow: 4px 4px 0 0 var(--it-face-green-plate) !important;
+}
+
+:is(
+  .btn-primary,
+  .btn-filled-2,
+  .btn-pill,
+  .bk-btn-book,
+  .kg-overview-btn-primary,
+  .kg-mobile-bookbar-book,
+  .rhf-btn-primary,
+  .ct-submit-btn,
+  .ct-strip-btn-primary,
+  .it-about-btn-primary,
+  .it-treks-hero__search-btn,
+  [class*='__btn--primary']:not(.it-sy__btn--premium-primary),
+  [class*='__btn--solid']:not([class*='--outline']):not([class*='--ghost']),
+  [class*='__btn--premium-primary']:not(.it-sy__btn--premium-primary)
+):hover:not(:disabled) {
+  background: var(--it-face-green-hover) !important;
+  box-shadow: 2px 2px 0 0 var(--it-face-green-plate) !important;
+}
+
+/* Lime / prep / rental */
+:is(
+  [class*='__btn--lime'],
+  .it-prep__hero-cta-btn
+) {
+  background: var(--it-face-lime) !important;
+  color: #14532d !important;
+  border: 2px solid var(--it-face-lime-border) !important;
+  box-shadow: 4px 4px 0 0 var(--it-face-lime-plate) !important;
+}
+
+:is(
+  [class*='__btn--lime'],
+  .it-prep__hero-cta-btn
+):hover:not(:disabled) {
+  background: var(--it-face-lime-hover) !important;
+  box-shadow: 2px 2px 0 0 var(--it-face-lime-plate) !important;
+}
+
+/* Light-surface outline / enquiry */
+:is(
+  .btn-ghost,
+  .btn-ghost-dark,
+  .bk-btn-enq,
+  [class*='__btn--outline']
+) {
+  background: var(--it-face-ghost-light) !important;
+  color: #15803d !important;
+  border: 2px solid #22c55e !important;
+  box-shadow: 4px 4px 0 0 #86efac !important;
+}
+
+:is(.btn-ghost, .btn-ghost-dark, .bk-btn-enq, [class*='__btn--outline']):hover:not(:disabled) {
+  background: var(--it-face-ghost-light-hover) !important;
+  box-shadow: 2px 2px 0 0 #86efac !important;
+}
+
+/* Dark-surface ghost / premium-ghost / sale-ghost */
+:is(
+  .it-retro-btn--glass,
+  [class*='__btn--ghost']:not([class*='--primary']):not(.it-sy__btn--ghost),
+  [class*='__btn--premium-ghost']:not(.it-sy__btn--premium-ghost),
+  [class*='__btn--sale-ghost']
+) {
+  background: var(--it-face-ghost-dark) !important;
+  color: #fff !important;
+  border: 2px solid var(--it-face-ghost-dark-border) !important;
+  box-shadow: 4px 4px 0 0 var(--it-face-ghost-dark-plate) !important;
+}
+
+:is(
+  .it-retro-btn--glass,
+  [class*='__btn--ghost']:not([class*='--primary']):not(.it-sy__btn--ghost),
+  [class*='__btn--premium-ghost']:not(.it-sy__btn--premium-ghost),
+  [class*='__btn--sale-ghost']
+):hover:not(:disabled) {
+  background: var(--it-face-ghost-dark-hover) !important;
+  box-shadow: 2px 2px 0 0 var(--it-face-ghost-dark-plate) !important;
+}
+
+.kg-mobile-bookbar-wa {
+  background: var(--it-face-wa) !important;
+  color: #fff !important;
+  border: 2px solid var(--it-face-wa-border) !important;
+  box-shadow: 4px 4px 0 0 var(--it-face-wa-plate) !important;
+}
+
+.kg-mobile-bookbar-wa:hover {
+  background: var(--it-face-wa-hover) !important;
+  box-shadow: 2px 2px 0 0 var(--it-face-wa-plate) !important;
+}
+
+/* —— Section themes —— */
+
+/* Corporate — blue */
+.it-corp :is(
+  [class*='__btn--primary'],
+  [class*='__btn--premium-primary'],
+  [class*='__btn--solid']
+) {
+  background: var(--it-face-blue) !important;
+  color: #fff !important;
+  border-color: var(--it-face-blue-border) !important;
+  box-shadow: 4px 4px 0 0 var(--it-face-blue-plate) !important;
+}
+
+.it-corp :is(
+  [class*='__btn--primary'],
+  [class*='__btn--premium-primary'],
+  [class*='__btn--solid']
+):hover:not(:disabled) {
+  background: var(--it-face-blue-hover) !important;
+  box-shadow: 2px 2px 0 0 var(--it-face-blue-plate) !important;
+}
+
+.it-corp :is(
+  [class*='__btn--ghost'],
+  [class*='__btn--premium-ghost']
+) {
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 48%, #bfdbfe 100%) !important;
+  color: #1e3a8a !important;
+  border-color: #1666d9 !important;
+  box-shadow: 4px 4px 0 0 #1e40af !important;
+}
+
+/* International — teal */
+.it-ig :is(
+  [class*='__btn--primary'],
+  [class*='__btn--premium-primary']
+) {
+  background: var(--it-face-teal) !important;
+  color: #fff !important;
+  border-color: var(--it-face-teal-border) !important;
+  box-shadow: 4px 4px 0 0 var(--it-face-teal-plate) !important;
+}
+
+.it-ig :is(
+  [class*='__btn--primary'],
+  [class*='__btn--premium-primary']
+):hover:not(:disabled) {
+  background: var(--it-face-teal-hover) !important;
+  box-shadow: 2px 2px 0 0 var(--it-face-teal-plate) !important;
+}
+
+/* Yatra page — saffron (non-hero body buttons) */
+.it-sy :is(
+  [class*='__btn--primary']:not(.it-sy__btn--premium-primary),
+  [class*='__btn--solid']
+) {
+  background: var(--it-face-saffron) !important;
+  color: #fff !important;
+  border-color: var(--it-face-saffron-border) !important;
+  box-shadow: 4px 4px 0 0 var(--it-face-saffron-plate) !important;
+}
+
+.it-sy :is(
+  [class*='__btn--primary']:not(.it-sy__btn--premium-primary),
+  [class*='__btn--solid']
+):hover:not(:disabled) {
+  background: var(--it-face-saffron-hover) !important;
+  box-shadow: 2px 2px 0 0 var(--it-face-saffron-plate) !important;
+}
+
+/* Sale / trending sale hero */
+[class*='__btn--sale-primary'] {
+  background: var(--it-face-sale) !important;
+  color: #fff !important;
+  border-color: var(--it-face-sale-border) !important;
+  box-shadow: 4px 4px 0 0 var(--it-face-sale-plate) !important;
+}
+
+[class*='__btn--sale-primary']:hover:not(:disabled) {
+  background: var(--it-face-sale-hover) !important;
+  box-shadow: 2px 2px 0 0 var(--it-face-sale-plate) !important;
+}
+
+[class*='__btn--sale-ghost'] {
+  background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 48%, #fed7aa 100%) !important;
+  color: #7c2d12 !important;
+  border-color: #ea580c !important;
+  box-shadow: 4px 4px 0 0 #9a3412 !important;
+}
+
+[class*='__btn--sale-ghost']:hover:not(:disabled) {
+  background: linear-gradient(135deg, #fffbeb 0%, #fde68a 52%, #fdba74 100%) !important;
+  box-shadow: 2px 2px 0 0 #9a3412 !important;
+}
+
+/* Special programs — WhatsApp accent */
+.it-spl [class*='__btn--wa'],
+.it-spl [class*='__btn--primary'][class*='--wa'] {
+  background: var(--it-face-wa) !important;
+  color: #fff !important;
+  border-color: var(--it-face-wa-border) !important;
+  box-shadow: 4px 4px 0 0 var(--it-face-wa-plate) !important;
+}
+
+/* Secondary buttons — blue */
+[class*='__btn--secondary'],
+.btn-pill.btn-filled-2 {
+  background: var(--it-face-blue) !important;
+  color: #fff !important;
+  border-color: var(--it-face-blue-border) !important;
+  box-shadow: 4px 4px 0 0 var(--it-face-blue-plate) !important;
+}
+
+[class*='__btn--secondary']:hover:not(:disabled) {
+  background: var(--it-face-blue-hover) !important;
+  box-shadow: 2px 2px 0 0 var(--it-face-blue-plate) !important;
+}
+
+/* Premium hero icon circles — warm tint instead of plain white */
+[class*='__btn-icon-circle'] {
+  background: linear-gradient(180deg, #ecfdf5, #d1fae5) !important;
+  color: #15803d !important;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+}
+
+.it-sy [class*='__btn-icon-circle'] {
+  background: linear-gradient(180deg, #fff7ed, #ffedd5) !important;
+  color: #9a3412 !important;
+}
+
+.it-corp [class*='__btn-icon-circle'] {
+  background: linear-gradient(180deg, #eff6ff, #dbeafe) !important;
+  color: #1d4ed8 !important;
+}

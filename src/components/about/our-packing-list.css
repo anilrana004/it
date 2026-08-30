@@ -349,24 +349,8 @@
   padding: 0 1rem 0.5rem;
 }
 
-.it-pack-mem__cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.55rem;
-  min-height: 44px;
-  padding: 0 1.25rem;
-  border-radius: 999px;
-  background: #16a34a;
-  color: #fff;
-  text-decoration: none;
-  font-size: 0.9rem;
-  font-weight: 800;
-  box-shadow: 0 10px 22px rgba(22, 163, 74, 0.2);
-  cursor: pointer;
-}
-
-.it-pack-mem__cta:hover {
-  background: #15803d;
+.it-pack-mem__cta-wrap .it-retro-pill-cta {
+  max-width: 340px;
 }
 
 @media (min-width: 1024px) {
@@ -399,9 +383,7 @@
     display: none;
   }
 
-  .it-pack-mem__cta {
+  .it-pack-mem__cta-wrap .it-retro-pill-cta {
     width: 100%;
-    max-width: 340px;
-    justify-content: center;
   }
 }

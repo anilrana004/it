@@ -274,13 +274,35 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: 0;
-  border-radius: 50%;
+  border: 2px solid rgba(22, 163, 74, 0.42);
+  border-radius: 14px;
   background: rgba(255, 255, 255, 0.98);
-  color: #444444;
+  color: var(--primary-dark);
   font-size: 17px;
-  box-shadow: 0 10px 24px rgba(16, 24, 40, 0.1);
+  box-shadow: 3px 3px 0 0 #bbf7d0;
   cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    border-color 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.kg-share:hover {
+  transform: translate(1px, 1px);
+  box-shadow: 2px 2px 0 0 #bbf7d0;
+  border-color: var(--primary);
+  background: #fff;
+}
+
+.kg-share:active {
+  transform: translate(3px, 3px);
+  box-shadow: 0 0 0 0 #bbf7d0;
+}
+
+.kg-share:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
 }
 
 .kg-overlay-bottom {
@@ -3288,25 +3310,25 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  flex-wrap: wrap;
-  margin-bottom: 4px;
+  flex-wrap: nowrap;
+  margin-bottom: 6px;
 }
 
 .bk-offer-label {
   margin: 0;
   font-size: 11px;
-  color: #5f7a6d;
+  color: #047857;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   font-weight: 900;
 }
 
 .bk-price-row {
   display: flex;
-  align-items: baseline;
-  gap: 8px;
+  align-items: center;
+  gap: 10px;
   flex-wrap: wrap;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 
 .bk-price-main {
@@ -3419,7 +3441,7 @@
   flex: 1;
   min-width: 70px;
   text-align: center;
-  border: 1.5px solid #dde3ee;
+  border: 2px solid #dde3ee;
   border-radius: 999px;
   padding: 9px 12px;
   font-size: 12px;
@@ -3427,7 +3449,13 @@
   color: #3a3d52;
   cursor: pointer;
   background: #fff;
-  transition: all 0.15s;
+  box-shadow: 3px 3px 0 0 #e2e8f0;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    border-color 0.15s ease,
+    background 0.15s ease,
+    color 0.15s ease;
   white-space: nowrap;
   line-height: 1.2;
 }
@@ -3438,15 +3466,18 @@
   width: 100%;
 }
 
-.bk-pill:hover {
+.bk-pill:hover:not(.bk-active) {
   border-color: var(--primary);
-  color: var(--primary);
+  color: var(--primary-dark);
+  transform: translate(1px, 1px);
+  box-shadow: 2px 2px 0 0 #bbf7d0;
 }
 
 .bk-pill.bk-active {
   background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-  border-color: var(--primary);
+  border-color: var(--primary-dark);
   color: #fff;
+  box-shadow: 3px 3px 0 0 #bbf7d0;
 }
 
 .bk-pill:disabled,
@@ -3549,13 +3580,12 @@
   width: 100%;
   min-width: 0;
   padding: 12px;
-  border: 1px solid #edf0f5;
+  border: 1.5px solid #dde3ee;
   border-radius: 16px;
-  background:
-    linear-gradient(180deg, #ffffff 0%, #fbfcff 100%);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  box-shadow: 3px 3px 0 0 #e2e8f0;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .bk-dates::after {
@@ -3575,7 +3605,7 @@
   z-index: 1;
   min-width: 0;
   width: 100%;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .bk-date-caption {
@@ -3617,30 +3647,68 @@
 
 .bk-month-pill {
   flex-shrink: 0;
-  border: 1.5px solid #dde3ee;
-  border-radius: 999px;
-  min-width: 74px;
-  padding: 9px 14px;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  border: 2px solid #dde3ee;
+  border-radius: 14px;
+  min-width: 58px;
+  min-height: 46px;
+  padding: 7px 12px 6px;
   font-size: 11px;
   font-weight: 900;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: #667085;
+  color: #475569;
   background: #fff;
   cursor: pointer;
-  box-shadow: 0 1px 0 rgba(16, 24, 40, 0.03);
-  transition: border-color 0.15s, background 0.15s, color 0.15s;
+  box-shadow: 3px 3px 0 0 #e2e8f0;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    border-color 0.15s ease,
+    background 0.15s ease,
+    color 0.15s ease;
 }
 
-.bk-month-pill:hover {
+.bk-month-pill__label {
+  display: block;
+  font-size: 13px;
+  line-height: 1;
+  letter-spacing: 0.02em;
+}
+
+.bk-month-pill__year {
+  display: block;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: #94a3b8;
+  line-height: 1;
+}
+
+.bk-month-pill:hover:not(.bk-active) {
   border-color: var(--primary);
-  color: var(--primary);
+  color: var(--primary-dark);
+  transform: translate(1px, 1px);
+  box-shadow: 2px 2px 0 0 #bbf7d0;
+}
+
+.bk-month-pill:hover:not(.bk-active) .bk-month-pill__year {
+  color: #64748b;
 }
 
 .bk-month-pill.bk-active {
   background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-  border-color: var(--primary);
+  border-color: var(--primary-dark);
   color: #fff;
+  box-shadow: 3px 3px 0 0 #bbf7d0;
+}
+
+.bk-month-pill.bk-active .bk-month-pill__year {
+  color: rgba(255, 255, 255, 0.82);
 }
 
 .bk-date-pill {
@@ -3650,24 +3718,33 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  min-width: 48px;
-  border: 1.5px solid #dde3ee;
+  min-width: 52px;
+  border: 2px solid #dde3ee;
   border-radius: 12px;
   padding: 8px 8px 7px;
   text-align: center;
   cursor: pointer;
   background: #fff;
-  box-shadow: 0 1px 0 rgba(16, 24, 40, 0.03);
-  transition: border-color 0.15s, background 0.15s, color 0.15s;
+  box-shadow: 3px 3px 0 0 #e2e8f0;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    border-color 0.15s ease,
+    background 0.15s ease,
+    color 0.15s ease;
 }
 
-.bk-date-pill:hover {
+.bk-date-pill:hover:not(.bk-active):not(.bk-closed) {
   border-color: var(--primary);
+  transform: translate(1px, 1px);
+  box-shadow: 2px 2px 0 0 #bbf7d0;
 }
 
 .bk-date-pill.bk-active {
   background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-  border-color: var(--primary);
+  border-color: var(--primary-dark);
+  box-shadow: 3px 3px 0 0 #bbf7d0;
+  color: #fff;
 }
 
 .bk-date-pill .bk-dd {
@@ -8790,3 +8867,38 @@ html.it-chrome-hidden .kg-page .kg-section {
     border-radius: 18px;
   }
 }
+
+/* —— Booking chip guard + fixed departures retro plates —— */
+.bk-month-pill,
+.bk-date-pill,
+.bk-pill,
+.kg-page .fd-studio__month,
+.kg-page .fd-studio__tile {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.kg-page .fd-studio__month {
+  border: 2px solid rgba(16, 24, 40, 0.08);
+  box-shadow: 3px 3px 0 0 #e2e8f0;
+}
+
+.kg-page .fd-studio__month.is-active {
+  border-color: rgba(22, 163, 74, 0.45);
+  box-shadow: 3px 3px 0 0 #bbf7d0;
+}
+
+.kg-page .fd-studio__tile {
+  border: 2px solid rgba(16, 24, 40, 0.08);
+  box-shadow: 3px 3px 0 0 #e2e8f0;
+}
+
+.kg-page .fd-studio__tile.is-selected {
+  box-shadow:
+    3px 3px 0 0 #bbf7d0,
+    0 0 0 2px rgba(16, 185, 129, 0.28);
+}
+
+.kg-page .fd-toast--share {
+  max-width: min(420px, calc(100vw - 24px));
+}
+

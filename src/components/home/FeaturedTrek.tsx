@@ -55,7 +55,7 @@ export default function FeaturedTrek() {
               <span className="bg-[#16a34a]/20 text-[#16a34a] text-xs font-bold px-2 py-1 rounded-full">{Math.round((1-featured.price/featured.originalPrice)*100)}% OFF</span>
             </div>
             <Link href={featured.href}
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-[#16a34a] to-[#16a34a] hover:opacity-90 text-white font-semibold px-6 py-3 rounded-full transition-all shadow-lg shadow-[#16a34a]/25">
+              className="it-retro-pill-cta it-retro-pill-cta--case-normal">
               Book Now <ChevronRight className="w-4 h-4" />
             </Link>
           </div>

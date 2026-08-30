@@ -1,0 +1,50 @@
+import { photos } from '@/lib/media';
+
+export const WHY_CHOOSE_HERO_CARDS = [
+  {
+    title: 'Trusted Experience',
+    desc: "We don't just organize trips — we create experiences backed by expertise and thousands of successful departures.",
+    img: photos.prepHero,
+    icon: 'fa-solid fa-shield-halved',
+    tone: 'green' as const,
+  },
+  {
+    title: 'Safety First',
+    desc: 'Every itinerary is designed with safety and responsible operations at its core so you can travel worry-free.',
+    img: photos.womenTrek,
+    icon: 'fa-solid fa-shield-heart',
+    tone: 'green' as const,
+  },
+  {
+    title: 'Award-Winning Excellence',
+    desc: 'Our commitment to quality has earned recognition from industry leaders and our travelers.',
+    img: photos.snow,
+    icon: 'fa-solid fa-trophy',
+    tone: 'gold' as const,
+  },
+  {
+    title: 'More Than Just Travel',
+    desc: 'Indian Treks is a community where strangers become friends and every trip creates lifelong stories.',
+    img: photos.backpackingHero,
+    icon: 'fa-solid fa-people-group',
+    tone: 'green' as const,
+  },
+] as const;
+
+export const WHY_CHOOSE_FEATURES = [
+  { title: 'Expert Local Guides', desc: 'Certified Himalayan guides on every departure.', icon: 'fa-solid fa-mountain' },
+  { title: 'Curated Itineraries', desc: 'Handpicked routes with balanced pacing.', icon: 'fa-solid fa-route' },
+  { title: 'Top Rated by Travelers', desc: '4.8+ average across verified reviews.', icon: 'fa-solid fa-star' },
+  { title: 'Responsible Tourism', desc: 'Leave-no-trace and eco-conscious ops.', icon: 'fa-solid fa-leaf' },
+  { title: '24/7 Customer Support', desc: 'Reach us before, during, and after your trek.', icon: 'fa-solid fa-headset' },
+  { title: 'Best Value for Money', desc: 'Transparent pricing with no hidden costs.', icon: 'fa-solid fa-tags' },
+  { title: 'Memories That Last', desc: 'Moments crafted for a lifetime of stories.', icon: 'fa-solid fa-camera' },
+  { title: 'Flexible Bookings', desc: 'Easy reschedules and clear cancellation policy.', icon: 'fa-solid fa-calendar-days' },
+  { title: 'Offbeat Destinations', desc: 'Beyond the usual trails — hidden gems included.', icon: 'fa-solid fa-compass' },
+  { title: 'Passion for Travel', desc: 'Built by trekkers who live the mountains.', icon: 'fa-solid fa-heart' },
+  { title: 'Seamless Travel', desc: 'Pickup, stays, and permits handled end-to-end.', icon: 'fa-solid fa-plane' },
+  { title: 'All Weather Ready', desc: 'Gear and contingency plans for every season.', icon: 'fa-solid fa-cloud-sun' },
+  { title: 'Health & Emergency Care', desc: 'First-aid trained teams and safety protocols.', icon: 'fa-solid fa-kit-medical' },
+  { title: 'Solo Traveler Friendly', desc: 'Join fixed batches and find your trail family.', icon: 'fa-solid fa-person-hiking' },
+  { title: '10+ Years of Legacy', desc: 'A decade of Himalayan journeys you can trust.', icon: 'fa-solid fa-award' },
+] as const;

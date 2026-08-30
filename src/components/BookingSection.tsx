@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { Check, ArrowRight, Shield } from 'lucide-react';
 import type { Trek } from '@/lib/data';
+import { whatsappUrl } from '@/lib/contact';
 
 export default function BookingSection({ trek }: { trek: Trek }) {
   const [step, setStep] = useState(1);
@@ -34,7 +35,7 @@ Date: ${form.date}
 Payment: ${form.payment === 'deposit' ? 'Advance Deposit' : 'Full Payment'}
 Name: ${form.name}
 Phone: ${form.phone}`;
-    window.open(`https://wa.me/919999999999?text=${encodeURIComponent(msg)}`, '_blank');
+    window.open(whatsappUrl(msg), '_blank', 'noopener,noreferrer');
     setLoading(false);
   };
 

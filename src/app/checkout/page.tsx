@@ -3,6 +3,7 @@ import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { Check, ArrowRight } from 'lucide-react';
 import { Suspense } from 'react';
+import { whatsappUrl } from '@/lib/contact';
 
 function CheckoutInner() {
   const sp = useSearchParams();
@@ -29,7 +30,7 @@ function CheckoutInner() {
         <div className="flex justify-between text-sm"><span className="text-gray-500">Payable Now</span><span className="font-semibold text-[#16a34a]">₹{nowPay.toLocaleString()}</span></div>
       </div>
       <div className="flex flex-col sm:flex-row gap-3 justify-center">
-        <a href="https://wa.me/919999999999" target="_blank" className="inline-flex items-center justify-center gap-2 bg-[#16a34a] hover:bg-[#15803d] text-white font-semibold px-8 py-3.5 rounded-full transition-all">Pay via WhatsApp <ArrowRight className="w-4 h-4" /></a>
+        <a href={whatsappUrl('Hi Indian Treks! I would like to complete my booking payment.')} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 bg-[#16a34a] hover:bg-[#15803d] text-white font-semibold px-8 py-3.5 rounded-full transition-all">Pay via WhatsApp <ArrowRight className="w-4 h-4" /></a>
         <Link href="/treks" className="inline-flex items-center justify-center gap-2 border-2 border-gray-200 text-gray-700 font-semibold px-8 py-3.5 rounded-full hover:border-gray-300 transition-all">Browse More Treks</Link>
       </div>
     </div>

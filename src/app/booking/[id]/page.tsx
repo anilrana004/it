@@ -14,7 +14,7 @@ import {
   subscribeGearCart,
   writeGearCart,
 } from '@/lib/gear-rental';
-import { whatsappUrl } from '@/lib/contact';
+import { whatsappUrl, CONTACT, telUrl } from '@/lib/contact';
 import { addOns } from '@/lib/trek-detail-content';
 
 function BookingContent() {
@@ -399,8 +399,11 @@ function BookingContent() {
 
               <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
                 <h4 className="font-semibold text-xs text-gray-400 uppercase tracking-wider mb-3">Need Help?</h4>
-                <a href="tel:+919999999999" className="flex items-center gap-3 text-sm text-[#000000] hover:text-[#16a34a] transition-colors mb-3">
-                  <Phone className="w-4 h-4 text-[#16a34a]" /> +91 99999 99999
+                <a href={telUrl()} className="flex items-center gap-3 text-sm text-[#000000] hover:text-[#16a34a] transition-colors mb-2">
+                  <Phone className="w-4 h-4 text-[#16a34a]" /> {CONTACT.phoneDisplay}
+                </a>
+                <a href={whatsappUrl('Hi Indian Treks! I need help with my booking.')} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-sm text-[#000000] hover:text-[#16a34a] transition-colors mb-3">
+                  <i className="fa-brands fa-whatsapp text-[#25D366]" aria-hidden /> WhatsApp {CONTACT.phoneDisplay}
                 </a>
                 <Link href="/contact" className="text-xs text-[#16a34a] font-medium hover:text-[#15803d] transition-colors">Contact Support &rarr;</Link>
               </div>

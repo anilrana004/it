@@ -162,13 +162,13 @@ export default function TrekListingCard({ trek }: { trek: ListingTrek }) {
           </Link>
           <Link
             href={`${trek.href}#departures`}
-            className="inline-flex h-10 items-center justify-center gap-1.5 rounded-full bg-[#16a34a] px-3 text-[12px] font-semibold text-white transition-colors hover:bg-[#15803d] sm:hidden"
+            className="it-retro-pill-cta it-retro-pill-cta--sm sm:hidden"
           >
             View Dates
           </Link>
           <Link
             href={trek.href}
-            className="hidden h-10 shrink-0 items-center gap-1.5 rounded-full bg-[#16a34a] px-4 text-sm font-semibold text-white shadow-md shadow-[#16a34a]/20 transition-colors hover:bg-[#15803d] sm:inline-flex"
+            className="it-retro-pill-cta it-retro-pill-cta--sm hidden shrink-0 sm:inline-flex"
           >
             View Trek
             <ArrowRight className="h-4 w-4" />

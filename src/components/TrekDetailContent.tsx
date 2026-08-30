@@ -584,18 +584,25 @@ export default function TrekDetailContent({
   }, [trek]);
   const [pickup, setPickup] = useState(pickupOptions[0] ?? trek.state);
   const months = useMemo(() => [...new Set(batches.map((b) => b.monthLabel))], [batches]);
-  const [month, setMonth] = useState(months[0] ?? '');
+  const [month, setMonth] = useState(() => months[0] ?? '');
   const monthBatches = useMemo(
     () => batches.filter((b) => b.monthLabel === month),
     [batches, month],
   );
-  const [batchId, setBatchId] = useState<string | null>(null);
+  const [batchId, setBatchId] = useState<string | null>(() => {
+    const label = months[0] ?? '';
+    if (!label) return null;
+    const inMonth = batches.filter((b) => b.monthLabel === label);
+    return inMonth.find((b) => b.status !== 'sold-out')?.id ?? inMonth[0]?.id ?? null;
+  });
   /** Months grouped for the fixed-departures accordion (same batches as the booking card). */
   const departureMonths = useMemo(
     () => months.map((label) => ({ label, items: batches.filter((b) => b.monthLabel === label) })),
     [batches, months],
   );
   const [dateToast, setDateToast] = useState<string | null>(null);
+  const [shareToast, setShareToast] = useState(false);
+  const shareToastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [men, setMen] = useState(() => Math.min(20, Math.max(1, Math.floor(initialGuests) || 1)));
   const [women, setWomen] = useState(0);
   const [picked, setPicked] = useState<Set<string>>(() => new Set());
@@ -627,40 +634,35 @@ export default function TrekDetailContent({
   useDragScroll(datesRef);
   const startingPrice = Math.min(...trek.pricing.map((p) => p.price));
 
-  const selectedBatch = useMemo(() => {
-    if (batchId) {
-      const picked = batches.find((b) => b.id === batchId && b.status !== 'sold-out');
-      if (picked) return picked;
+  const selectedBatch = useMemo(
+    () => (batchId ? batches.find((b) => b.id === batchId) ?? null : null),
+    [batchId, batches],
+  );
+
+  /** Month tab — always move month + date together so effects never fight. */
+  const selectMonth = useCallback(
+    (label: string) => {
+      setMonth(label);
+      const inMonth = batches.filter((b) => b.monthLabel === label);
+      const firstOpen = inMonth.find((b) => b.status !== 'sold-out') ?? inMonth[0];
+      setBatchId(firstOpen?.id ?? null);
+    },
+    [batches],
+  );
+
+  // Reset departure picks when the trek changes (not on every month/date click).
+  useEffect(() => {
+    if (!months.length) {
+      setMonth('');
+      setBatchId(null);
+      return;
     }
-    return (
-      monthBatches.find((b) => b.status !== 'sold-out') ??
-      batches.find((b) => b.status !== 'sold-out') ??
-      null
-    );
-  }, [batchId, batches, monthBatches]);
-
-  useEffect(() => {
-    setMonth(months[0] ?? '');
-  }, [months]);
-
-  // Keep booking month aligned when a batch is picked from Fixed Departures (or URL).
-  useEffect(() => {
-    if (!batchId) return;
-    const batch = batches.find((b) => b.id === batchId);
-    if (batch && batch.monthLabel !== month) {
-      setMonth(batch.monthLabel);
-    }
-  }, [batchId, batches, month]);
-
-  // Default to the first bookable date of the month, but keep an explicit pick
-  // (e.g. made from the fixed-departures card) if it is still valid.
-  useEffect(() => {
-    setBatchId((prev) =>
-      prev && monthBatches.some((b) => b.id === prev && b.status !== 'sold-out')
-        ? prev
-        : (monthBatches.find((b) => b.status !== 'sold-out')?.id ?? null),
-    );
-  }, [monthBatches]);
+    const label = months[0];
+    setMonth(label);
+    const inMonth = batches.filter((b) => b.monthLabel === label);
+    const firstOpen = inMonth.find((b) => b.status !== 'sold-out') ?? inMonth[0];
+    setBatchId(firstOpen?.id ?? null);
+  }, [trek.id]); // batches/months are derived from trek — read fresh when id changes
 
   // ---- Sticky section nav -------------------------------------------------
   // Roopkund Heaven flow: site chrome hides on scroll-down / shows on scroll-up.
@@ -889,7 +891,7 @@ export default function TrekDetailContent({
   );
 
   /** Fixed-departures row → sync booking card + mobile book bar without scroll jump. */
-  const pickDeparture = (batch: TrekBatch, opts?: { scrollToBooking?: boolean; silent?: boolean }) => {
+  const pickDeparture = useCallback((batch: TrekBatch, opts?: { scrollToBooking?: boolean; silent?: boolean }) => {
     if (batch.status === 'sold-out') return;
     setMonth(batch.monthLabel);
     setBatchId(batch.id);
@@ -903,7 +905,7 @@ export default function TrekDetailContent({
     if (opts?.scrollToBooking) {
       goToSection('booking-form');
     }
-  };
+  }, [goToSection]);
 
   const bookingHref = () => {
     const params = new URLSearchParams({ pkg: tierName });
@@ -941,8 +943,11 @@ export default function TrekDetailContent({
         return;
       }
       await navigator.clipboard.writeText(window.location.href);
+      setShareToast(true);
+      if (shareToastTimerRef.current) clearTimeout(shareToastTimerRef.current);
+      shareToastTimerRef.current = setTimeout(() => setShareToast(false), 2800);
     } catch {
-      /* dismissed */
+      /* dismissed or blocked */
     }
   };
 
@@ -1020,24 +1025,17 @@ export default function TrekDetailContent({
                 </span>
                 <span className="kg-tag">{trek.difficulty}</span>
               </div>
-              <span
+              <button
+                type="button"
                 className="kg-share"
-                role="button"
-                tabIndex={0}
-                aria-label="Share this page"
+                aria-label="Share this trek"
                 onClick={(e) => {
                   e.stopPropagation();
                   void share();
                 }}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    e.stopPropagation();
-                    void share();
-                  }
-                }}
               >
                 <i className="fa-solid fa-share-from-square" aria-hidden />
-              </span>
+              </button>
             </div>
             <div className="kg-overlay-bottom">
               <span className="kg-view-btn">
@@ -1105,7 +1103,7 @@ export default function TrekDetailContent({
           <FixedDepartures
             months={departureMonths}
             activeMonth={month}
-            onMonthChange={setMonth}
+            onMonthChange={selectMonth}
             selectedId={batchId}
             onPick={pickDeparture}
             kindLabel={kindLabel}
@@ -1799,11 +1797,12 @@ export default function TrekDetailContent({
 
                 <div className="bk-price-row">
                   <span className="bk-price-main" id="bk-pmain">
-                    {inr(total)}
+                    {inr(unitPrice)}
                   </span>
-                  {(persons > 1 || addOnTotal > 0 || gearTotal > 0 || pickupSurcharge > 0) && (
-                    <span className="bk-price-sub">{inr(unitPrice)} / person</span>
+                  {tier?.originalPrice != null && tier.originalPrice > basePrice && (
+                    <span className="bk-price-old">{inr(tier.originalPrice + pickupSurcharge)}</span>
                   )}
+                  {tier?.badge && <span className="bk-savings-badge">{tier.badge}</span>}
                 </div>
 
                 <hr className="bk-dashed" />
@@ -1841,16 +1840,21 @@ export default function TrekDetailContent({
                   <div className="bk-date-row">
                     <div className="bk-date-caption">Choose Month</div>
                     <div className="bk-months" ref={monthsRef}>
-                      {months.map((m) => (
-                        <button
-                          type="button"
-                          key={m}
-                          className={`bk-month-pill${month === m ? ' bk-active' : ''}`}
-                          onClick={() => setMonth(m)}
-                        >
-                          {m.replace(/\s\d{4}$/, '')}
-                        </button>
-                      ))}
+                      {months.map((m) => {
+                        const tab = monthTabMeta(m);
+                        return (
+                          <button
+                            type="button"
+                            key={m}
+                            className={`bk-month-pill${month === m ? ' bk-active' : ''}`}
+                            onClick={() => selectMonth(m)}
+                            aria-pressed={month === m}
+                          >
+                            <span className="bk-month-pill__label">{tab.short}</span>
+                            {tab.year ? <span className="bk-month-pill__year">{tab.year}</span> : null}
+                          </button>
+                        );
+                      })}
                     </div>
                   </div>
 
@@ -2260,6 +2264,15 @@ export default function TrekDetailContent({
           >
             View booking
           </button>
+        </div>
+      )}
+
+      {shareToast && (
+        <div className="fd-toast fd-toast--share" role="status" aria-live="polite">
+          <i className="fa-solid fa-link fd-toast__icon" aria-hidden />
+          <span className="fd-toast__copy">
+            <strong>Link copied</strong> — paste anywhere to share this trek.
+          </span>
         </div>
       )}
     </div>

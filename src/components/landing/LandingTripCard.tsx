@@ -110,7 +110,7 @@ export default function LandingTripCard({
           <CardLink
             href={href}
             external={external}
-            className="inline-flex h-10 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap rounded-full bg-[#16a34a] px-4 text-[12px] font-semibold text-white shadow-sm transition-colors hover:bg-[#15803d]"
+            className="it-retro-pill-cta it-retro-pill-cta--sm shrink-0"
           >
             {ctaLabel}
             <ArrowRight className="h-3.5 w-3.5 shrink-0" aria-hidden />

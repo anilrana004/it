@@ -1,0 +1,117 @@
+/* Uiverse play CTA — scoped (barisdogansutcu), adapted for Indian Treks video overlays */
+
+.it-uiverse-play {
+  --uiverse-play-bg: hsl(49deg 98% 60%);
+  --uiverse-play-ink: #000;
+  --uiverse-play-muted: rgb(116, 116, 116);
+  --uiverse-play-h: 52px;
+  --uiverse-play-px: 22px;
+  --uiverse-play-fs: 15px;
+  --uiverse-play-min: 148px;
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: var(--uiverse-play-h);
+  min-width: var(--uiverse-play-min);
+  padding: 0 var(--uiverse-play-px);
+  overflow: hidden;
+  border: solid 2px var(--uiverse-play-ink);
+  border-radius: 50px;
+  background-color: var(--uiverse-play-bg);
+  color: #fff;
+  font-family: var(--font-sans);
+  font-size: var(--uiverse-play-fs);
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-shadow: 2px 2px var(--uiverse-play-muted);
+  cursor: pointer;
+  transition: transform 0.1s ease, background-color 0.25s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.it-uiverse-play--compact {
+  --uiverse-play-h: 44px;
+  --uiverse-play-px: 16px;
+  --uiverse-play-fs: 12px;
+  --uiverse-play-min: 118px;
+  gap: 8px;
+}
+
+.it-uiverse-play:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
+.it-uiverse-play:hover:not(:disabled) {
+  background-color: hsl(49deg 98% 54%);
+}
+
+.it-uiverse-play:active:not(:disabled) {
+  transform: scale(0.92);
+  transition: transform 100ms ease;
+}
+
+.it-uiverse-play:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.it-uiverse-play__icon {
+  width: 1.15em;
+  height: 1.15em;
+  flex-shrink: 0;
+  transition: transform 0.5s ease;
+  z-index: 2;
+}
+
+.it-uiverse-play__word {
+  position: relative;
+  z-index: 2;
+  white-space: nowrap;
+}
+
+.it-uiverse-play__word--play {
+  transition: transform 0.5s ease;
+  transition-delay: 300ms;
+}
+
+.it-uiverse-play__word--now {
+  position: absolute;
+  left: calc(var(--uiverse-play-px) + 1.35em);
+  transform: translateX(-120%);
+  transition: transform 0.5s ease;
+  z-index: 2;
+}
+
+.it-uiverse-play:hover:not(:disabled) .it-uiverse-play__icon {
+  transform: scale(3) translate(50%);
+}
+
+.it-uiverse-play:hover:not(:disabled) .it-uiverse-play__word--now {
+  transform: translateX(0);
+  transition-delay: 300ms;
+}
+
+.it-uiverse-play:hover:not(:disabled) .it-uiverse-play__word--play {
+  transform: translateX(200%);
+  transition-delay: 300ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .it-uiverse-play,
+  .it-uiverse-play__icon,
+  .it-uiverse-play__word--play,
+  .it-uiverse-play__word--now {
+    transition: none !important;
+  }
+
+  .it-uiverse-play:hover:not(:disabled) .it-uiverse-play__icon,
+  .it-uiverse-play:hover:not(:disabled) .it-uiverse-play__word--play,
+  .it-uiverse-play:hover:not(:disabled) .it-uiverse-play__word--now {
+    transform: none;
+  }
+}
