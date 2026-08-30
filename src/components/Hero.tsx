@@ -3,68 +3,34 @@ import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import {
-  Search, Star, Users, Award, Shield,
-  ArrowRight, Calendar, Heart, Phone,
+  Search, Star, Users,
+  ArrowRight, Calendar, Phone,
   Mountain, Footprints, SunMedium, Quote, X, Menu,
 } from 'lucide-react';
 import { treks } from '@/lib/data';
-import { photos } from '@/lib/media';
 import BrandLogo from '@/components/BrandLogo';
 import { CONTACT, telUrl } from '@/lib/contact';
 import { DESK_HEADER_H } from '@/lib/layout';
+import {
+  HERO_CATEGORY_ITEMS,
+  HERO_DESK_SLIDES,
+  HERO_EXPLORE_PROMOS,
+  HERO_MOB_BANNERS,
+  HERO_SEARCH_DESTINATIONS,
+} from '@/lib/content/home-hero';
+import { HERO_COLLAB_ITEMS } from '@/lib/content/home-hero-collab';
+import { HERO_COLLAB_LUCIDE_ICONS } from '@/lib/icons/lucide-content-icons';
 import Banners from '@/components/Banners';
 import CategoryScroller from '@/components/home/CategoryScroller';
 import HeroSearchBar from '@/components/home/HeroSearchBar';
+import '@/components/home/hero-mobile-banner.css';
 
-const mobBanners = [
-  { image: photos.himachal, title: 'Himachal Adventures', subtitle: 'Hampta Pass – Triund – Bhrigu Lake & more', cta: 'Explore Himachal', href: '/treks?region=himachal' },
-  { image: photos.uttarakhand, title: 'Uttarakhand Treks', subtitle: 'Chopta – Kedarkantha – Valley of Flowers & more', cta: 'Explore Treks', href: '/treks?region=uttarakhand' },
-  { image: photos.yatra, title: 'Sacred Yatras', subtitle: 'Kedarnath – Do Dham – Char Dham – Panch Kedar', cta: 'Explore Yatras', href: '/yatra' },
-  { image: photos.nepal, title: 'International Expeditions', subtitle: 'EBC – Annapurna – Nepal Backpacking Circuit', cta: 'Explore Global', href: '/treks?region=nepal' },
-];
-
-const explorePromos = [
-  {
-    src: photos.choptaSale,
-    href: '/treks/chopta-tungnath',
-    title: 'Chopta Tungnath Chandrashila',
-    designed: true,
-  },
-  { src: photos.yatra, href: '/yatra', title: 'Sacred Yatras – Spiritual Himalaya', subtitle: 'Kedarnath · Do Dham · Char Dham · Panch Kedar – divine journeys', badge: 'Yatra', discount: 'Plan Your Yatra' },
-  { src: photos.uttarakhand, href: '/treks?region=uttarakhand', title: 'Uttarakhand – Land of Gods & Treks', subtitle: '10 iconic Himalayan treks across Chopta, Kedarkantha & beyond', badge: 'Uttarakhand', discount: 'View All Treks' },
-  { src: photos.himachal, href: '/treks?region=himachal', title: 'Himachal – Adventure Capital', subtitle: 'Hampta, Triund, Bhrigu Lake, Kheerganga & more', badge: 'Himachal', discount: 'Explore Himachal' },
-];
-
-const catItems = [
-  { n: 'Uttarakhand Treks', h: '/treks?region=uttarakhand', img: photos.uttarakhand },
-  { n: 'Himachal Treks', h: '/treks?region=himachal', img: photos.himachal },
-  { n: 'Char Dham Yatra', h: '/yatra/char-dham', img: photos.yatra },
-  { n: 'Kedarnath Yatra', h: '/yatra/kedarnath-yatra', img: photos.kedarnath },
-  { n: 'Everest Base Camp', h: '/treks/everest-base-camp', img: photos.ebc },
-  { n: 'Nepal', h: '/treks?region=nepal', img: photos.nepal },
-  { n: 'Chopta Tungnath', h: '/treks/chopta-tungnath', img: photos.chopta },
-  { n: 'Hampta Pass', h: '/treks/hampta-pass', img: photos.hampta },
-  { n: 'Triund Trek', h: '/treks/mcleodganj-trek', img: photos.triund },
-  { n: 'Valley of Flowers', h: '/treks/valley-of-flowers', img: photos.vof },
-];
-
-const collabItems = [
-  { icon: Heart, label: 'TripAdvisor Choice', href: '/#reviews' },
-  { icon: Users, label: '80k+ Travelers', href: '/about' },
-  { icon: Award, label: 'ATOAI Recognized', href: '/about' },
-  { icon: Shield, label: 'Startup India', href: '/corporate' },
-  { icon: Calendar, label: '10+ Years Legacy', href: '/about' },
-];
-
-const deskSlides = [
-  { id: 'valley-of-flowers', name: 'Valley of Flowers Trek', sub: 'UNESCO Himalayan Paradise - Alpine meadows, rare flora & stunning snow-capped vistas', img: photos.vof, featureImg: photos.vof, t: 'trek', rating: '4.8', duration: '6D/5N', difficulty: 'Moderate', altitude: '14,107 ft', distance: '38 km', reviews: '8k+', season: 'Jul-Sep', group: '6-15' },
-  { id: 'kedarkantha', name: 'Kedarkantha Trek', sub: 'Winter Wonderland - Snow-trailed summit with 360- Himalayan panoramas', img: photos.kedarkantha, featureImg: photos.snow, t: 'trek', rating: '4.9', duration: '5D/4N', difficulty: 'Easy-Moderate', altitude: '12,500 ft', distance: '22 km', reviews: '10k+', season: 'Dec-Apr', group: '6-15' },
-  { id: 'kedarnath-yatra', name: 'Kedarnath Yatra', sub: 'Sacred Pilgrimage - One of the 12 Jyotirlingas in the Char Dham circuit', img: photos.yatra, featureImg: photos.yatra, t: 'yatra', rating: '4.8', duration: '6D/5N', difficulty: 'Moderate', altitude: '11,755 ft', distance: '16 km', reviews: '12k+', season: 'May-Oct', group: '10-30' },
-  { id: 'everest-base-camp', name: 'Everest Base Camp Trek', sub: 'Ultimate Himalayan Dream - Trek to the foot of the world\'s highest peak', img: photos.ebc, featureImg: photos.ebc, t: 'trek', rating: '4.9', duration: '14D/13N', difficulty: 'Moderate', altitude: '17,598 ft', distance: '130 km', reviews: '20k+', season: 'Mar-May,Oct-Nov', group: '4-12' },
-  { id: 'hampta-pass', name: 'Hampta Pass Trek', sub: 'Cross-over Adventure - Lush green Kullu meets barren Spiti valley', img: photos.hampta, featureImg: photos.himachal, t: 'trek', rating: '4.7', duration: '5D/4N', difficulty: 'Moderate', altitude: '14,100 ft', distance: '26 km', reviews: '8k+', season: 'Jun-Oct', group: '6-14' },
-];
-
-const destinations = ['Kedarkantha', 'Valley of Flowers', 'Everest Base Camp', 'Hampta Pass', 'Chopta Tungnath', 'Kedarnath', 'Triund', 'Annapurna'];
+const mobBanners = HERO_MOB_BANNERS;
+const explorePromos = HERO_EXPLORE_PROMOS;
+const catItems = HERO_CATEGORY_ITEMS;
+const collabItems = HERO_COLLAB_ITEMS;
+const deskSlides = HERO_DESK_SLIDES;
+const destinations = HERO_SEARCH_DESTINATIONS;
 
 export default function Hero() {
   const router = useRouter();
@@ -356,9 +322,9 @@ export default function Hero() {
           <div className="flex-1 min-w-0 flex justify-end">
             {(() => {
               const c = collabItems[collabIdx];
-              const Icon = c.icon;
+              const Icon = HERO_COLLAB_LUCIDE_ICONS[c.icon];
               return (
-                <Link key={collabIdx} href={c.href}
+                <Link key={c.id} href={c.href}
                   className={`flex items-center gap-1.5 bg-white border border-[#dcfce7] rounded-full px-3 py-1.5 shadow-sm active:scale-95 transition-all duration-200 ${collabFade ? 'opacity-100' : 'opacity-0'}`}>
                   <Icon className="w-3.5 h-3.5 text-[#16a34a]" />
                   <span className="text-[11px] font-semibold text-gray-700">{c.label}</span>
@@ -399,7 +365,7 @@ export default function Hero() {
                 <div className="absolute inset-0 flex flex-col justify-end p-4 pb-8">
                   <h2 className="text-[22px] font-bold leading-tight text-white drop-shadow-sm">{slide.title}</h2>
                   <p className="mt-1 mb-3 text-xs text-white/85">{slide.subtitle}</p>
-                  <span className="it-retro-btn it-retro-btn--primary it-retro-btn--pill it-retro-btn--sm">
+                  <span className="it-hero-mob-cta">
                     {slide.cta}<ArrowRight className="h-3.5 w-3.5" />
                   </span>
                 </div>

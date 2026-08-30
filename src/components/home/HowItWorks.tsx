@@ -1,33 +1,9 @@
 import Link from 'next/link';
-import { photos } from '@/lib/media';
+import {
+  HOW_IT_WORKS_SECTION,
+  HOW_IT_WORKS_STEPS,
+} from '@/lib/content/home-how-it-works';
 import './how-it-works.css';
-
-const STEPS = [
-  {
-    n: '01',
-    title: ['Choose', 'Your Trip'],
-    desc: 'Browse our curated treks, yatras, and adventure tours. Filter by region, difficulty, and season to find your perfect match.',
-    img: photos.prepHero,
-    icon: 'fa-solid fa-compass',
-    href: '/treks',
-  },
-  {
-    n: '02',
-    title: ['Book', '& Pay Later'],
-    desc: 'Reserve your spot with just ₹799 deposit. Pay the rest in installments or in full — your journey, your pace.',
-    img: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=560&q=80',
-    icon: 'fa-solid fa-wallet',
-    href: '/treks',
-  },
-  {
-    n: '03',
-    title: ['Go on', 'Adventure'],
-    desc: 'Meet fellow trekkers, follow expert guides, and make memories for a lifetime. We handle everything — you just explore.',
-    img: photos.womenTrek,
-    icon: 'fa-solid fa-person-hiking',
-    href: '/treks',
-  },
-] as const;
 
 export default function HowItWorks() {
   return (
@@ -41,18 +17,18 @@ export default function HowItWorks() {
             <span className="it-hiw__kicker-icon" aria-hidden>
               <i className="fa-solid fa-mountain" />
             </span>
-            How It Works
+            {HOW_IT_WORKS_SECTION.kicker}
             <span className="it-hiw__kicker-line" aria-hidden />
           </p>
           <h2 className="it-hiw__title" id="it-hiw-title">
-            <span>3 Steps</span> to Your Next Adventure
+            <span>{HOW_IT_WORKS_SECTION.titleLead}</span> {HOW_IT_WORKS_SECTION.titleRest}
           </h2>
-          <p className="it-hiw__lede">From choosing to booking to exploring – we make it simple.</p>
+          <p className="it-hiw__lede">{HOW_IT_WORKS_SECTION.lede}</p>
         </header>
 
         <div className="it-hiw__grid">
-          {STEPS.map((step) => (
-            <article key={step.n} className="it-hiw__card">
+          {HOW_IT_WORKS_STEPS.map((step) => (
+            <article key={step.id} className="it-hiw__card">
               <div className="it-hiw__media">
                 <img src={step.img} alt="" loading="lazy" referrerPolicy="no-referrer" />
                 <span className="it-hiw__step-badge" aria-hidden>
@@ -71,7 +47,7 @@ export default function HowItWorks() {
                 </div>
                 <p>{step.desc}</p>
                 <Link href={step.href} className="it-hiw__link">
-                  Explore Treks
+                  {HOW_IT_WORKS_SECTION.linkLabel}
                   <i className="fa-solid fa-arrow-right" aria-hidden />
                 </Link>
                 <span className="it-hiw__watermark" aria-hidden>

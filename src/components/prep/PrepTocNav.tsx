@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 
 export type PrepTocItem = { id: string; title: string; live?: boolean };
 
@@ -11,11 +11,15 @@ export type PrepTocItem = { id: string; title: string; live?: boolean };
 export default function PrepTocNav({
   items,
   footer,
+  scrollable = false,
 }: {
   items: PrepTocItem[];
   footer?: ReactNode;
+  /** Long TOCs — scroll the list and keep the active link in view */
+  scrollable?: boolean;
 }) {
   const [activeId, setActiveId] = useState(items[0]?.id ?? '');
+  const listRef = useRef<HTMLUListElement>(null);
 
   useEffect(() => {
     if (!items.length) return;
@@ -53,12 +57,23 @@ export default function PrepTocNav({
     };
   }, [items]);
 
+  useEffect(() => {
+    if (!scrollable || !activeId || !listRef.current) return;
+    const activeLink = listRef.current.querySelector<HTMLAnchorElement>(`a[href="#${activeId}"]`);
+    activeLink?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  }, [activeId, scrollable]);
+
   if (!items.length) return null;
 
   return (
-    <aside className="it-prep__toc" aria-label="On this page">
+    <aside
+      className={['it-prep__toc', scrollable ? 'it-prep__toc--scrollable' : '']
+        .filter(Boolean)
+        .join(' ')}
+      aria-label="On this page"
+    >
       <p className="it-prep__toc-label">On this page</p>
-      <ul className="it-prep__toc-list">
+      <ul ref={listRef} className="it-prep__toc-list">
         {items.map((item) => (
           <li key={item.id}>
             <a

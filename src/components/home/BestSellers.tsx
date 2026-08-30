@@ -3,12 +3,16 @@ import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import { Star, Clock, MapPin, Zap } from 'lucide-react';
 import { getBestSellerBuckets } from '@/lib/catalog';
-
-const tabs = ['Top Treks', 'Yatras & Pilgrimages', 'International Adventures'] as const;
+import {
+  HOME_BEST_SELLERS_PROMO,
+  HOME_BEST_SELLERS_SECTION,
+  HOME_BEST_SELLERS_TABS,
+  type HomeBestSellersTab,
+} from '@/lib/content/home-best-sellers';
 
 export default function BestSellers() {
   const data = useMemo(() => getBestSellerBuckets(), []);
-  const [activeTab, setActiveTab] = useState<(typeof tabs)[number]>('Top Treks');
+  const [activeTab, setActiveTab] = useState<HomeBestSellersTab>('Top Treks');
   const items = data[activeTab] || [];
 
   return (
@@ -18,21 +22,21 @@ export default function BestSellers() {
           <div className="flex items-center gap-3">
             <Zap className="w-5 h-5 lg:w-6 lg:h-6 text-[#4ade80]" />
             <div>
-              <h3 className="font-bold text-sm lg:text-lg">Bucket List Sale Active!</h3>
-              <p className="text-white/80 text-xs lg:text-sm">Limited period discounts on handpicked trips</p>
+              <h3 className="font-bold text-sm lg:text-lg">{HOME_BEST_SELLERS_PROMO.title}</h3>
+              <p className="text-white/80 text-xs lg:text-sm">{HOME_BEST_SELLERS_PROMO.subtitle}</p>
             </div>
           </div>
-          <span className="text-2xl lg:text-3xl font-bold">UP TO 40% OFF</span>
+          <span className="text-2xl lg:text-3xl font-bold">{HOME_BEST_SELLERS_PROMO.discountLabel}</span>
         </div>
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-6">
           <div>
-            <p className="text-[#16a34a] font-semibold text-xs lg:text-sm tracking-widest uppercase mb-1">BEST SELLERS</p>
-            <h2 className="text-xl lg:text-3xl font-bold text-[#000000]">Our Best Selling Trips</h2>
+            <p className="text-[#16a34a] font-semibold text-xs lg:text-sm tracking-widest uppercase mb-1">{HOME_BEST_SELLERS_SECTION.kicker}</p>
+            <h2 className="text-xl lg:text-3xl font-bold text-[#000000]">{HOME_BEST_SELLERS_SECTION.title}</h2>
           </div>
-          <Link href="/best-sellers" className="text-[#16a34a] text-sm font-semibold hover:text-[#15803d] whitespace-nowrap">View All Best Sellers &rarr;</Link>
+          <Link href={HOME_BEST_SELLERS_SECTION.viewAllHref} className="text-[#16a34a] text-sm font-semibold hover:text-[#15803d] whitespace-nowrap">{HOME_BEST_SELLERS_SECTION.viewAllLabel} &rarr;</Link>
         </div>
         <div className="flex gap-2 overflow-x-auto scrollbar-none pb-2 -mx-4 px-4 lg:mx-0 lg:px-0 mb-6">
-          {tabs.map((t) => (
+          {HOME_BEST_SELLERS_TABS.map((t) => (
             <button
               key={t}
               type="button"
@@ -48,33 +52,31 @@ export default function BestSellers() {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-6">
           {items.slice(0, 4).map((t) => (
             <Link key={t.id} href={t.href} className="group rounded-xl overflow-hidden transition-all relative aspect-[4/5]">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={t.img} alt={t.title} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
               {t.badge && (
-                <span className="absolute top-2 left-2 bg-[#16a34a] text-white text-[10px] font-bold px-1.5 py-0.5 rounded uppercase">
-                  {t.badge}
-                </span>
+                <span className="absolute top-2 left-2 bg-[#16a34a] text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase">{t.badge}</span>
               )}
-              <div className="absolute bottom-0 left-0 right-0 p-3 lg:p-4">
-                <div className="flex items-center gap-1 text-white/70 text-[10px] lg:text-xs mb-1">
-                  <MapPin className="w-3 h-3" />
-                  {t.loc}
+              <div className="absolute bottom-0 left-0 right-0 p-3">
+                <div className="flex items-center gap-1 text-white/70 text-[10px] mb-0.5">
+                  <MapPin className="w-2.5 h-2.5 text-[#16a34a]" />
+                  <span className="truncate">{t.loc}</span>
                 </div>
-                <h3 className="font-semibold text-xs lg:text-base text-white group-hover:text-[#16a34a] transition-colors line-clamp-2">{t.title}</h3>
-                <div className="flex items-center gap-2 text-[11px] lg:text-xs text-white/60 mt-1 mb-2">
-                  <Clock className="w-3 h-3" />
+                <h3 className="font-semibold text-xs lg:text-sm text-white line-clamp-2 mb-1">{t.title}</h3>
+                <div className="flex items-center gap-1.5 text-[10px] text-white/60 mb-1.5">
+                  <Clock className="w-2.5 h-2.5 text-[#16a34a]" />
                   {t.dur}
-                  <span className="text-white/20">|</span>
-                  <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
-                  {t.rating} ({t.rev})
+                  <Star className="w-2.5 h-2.5 fill-yellow-400 text-yellow-400 ml-1" />
+                  {t.rating}
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-[#16a34a] font-bold text-sm lg:text-base">₹{t.price.toLocaleString()}</span>
-                  {t.origPrice > 0 && <span className="text-white/50 text-xs line-through">₹{t.origPrice.toLocaleString()}</span>}
+                <div className="flex items-center gap-1.5">
+                  <span className="text-[#16a34a] font-bold text-sm">₹{t.price.toLocaleString()}</span>
+                  {t.origPrice > t.price && (
+                    <span className="text-white/40 text-[10px] line-through">₹{t.origPrice.toLocaleString()}</span>
+                  )}
                 </div>
-                <span className="inline-block mt-1.5 text-[10px] text-[#bbf7d0] font-semibold bg-[#14532d]/70 backdrop-blur-sm px-2 py-0.5 rounded">
-                  Book Now, Pay Later
+                <span className="inline-block mt-1 text-[9px] text-[#bbf7d0] font-semibold bg-[#14532d]/70 px-1.5 py-0.5 rounded">
+                  {HOME_BEST_SELLERS_SECTION.payLaterLabel}
                 </span>
               </div>
             </Link>

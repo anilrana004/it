@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { HOME_VIDEO_GALLERY_SECTION } from '@/lib/content/home-video-gallery';
 import {
   FEATURED_VIDEOS,
   carouselOffset,
@@ -256,16 +257,13 @@ export default function VideoGallery() {
             <span className="it-vid-mem__kicker-icon" aria-hidden>
               <i className="fa-solid fa-video" />
             </span>
-            Videos
+            {HOME_VIDEO_GALLERY_SECTION.kicker}
             <span className="it-vid-mem__kicker-line" aria-hidden />
           </p>
           <h2 id="featured-videos-title" className="it-vid-mem__title">
-            Trails We&apos;ve <span>Walked</span>
+            {HOME_VIDEO_GALLERY_SECTION.titleLead} <span>{HOME_VIDEO_GALLERY_SECTION.titleAccent}</span>
           </h2>
-          <p className="it-vid-mem__lede">
-            Real moments from our fixed departures — ridge walks, base camps, yatra trails, and
-            summit sunrises filmed by trekkers and guides across the Himalaya.
-          </p>
+          <p className="it-vid-mem__lede">{HOME_VIDEO_GALLERY_SECTION.lede}</p>
         </header>
 
         <VideoCarousel active={active} goTo={goTo} goNext={goNext} goPrev={goPrev} />

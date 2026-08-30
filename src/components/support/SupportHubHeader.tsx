@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import { useCallback, useEffect, useId, useRef, useState, type CSSProperties } from 'react';
 import BrandLogo from '@/components/BrandLogo';
 import { CONTACT, mailtoUrl, telUrl, whatsappUrl } from '@/lib/contact';
-import { DESK_HEADER_H, DESK_MAIN_H, DESK_TOP_H } from '@/lib/layout';
+import { DESK_HEADER_H, DESK_MAIN_H, DESK_TOP_H, CHROME_HIDDEN_CLASS } from '@/lib/layout';
 import { SUPPORT_HUB_LINKS, supportHubActive } from '@/lib/support-hub-nav';
 import './support-hub.css';
 
@@ -17,6 +17,7 @@ const TOP_STRIP_LINKS = [
   { label: 'FAQ', href: '/faqs' },
   { label: 'Reviews', href: '/reviews' },
   { label: 'Payment Policy', href: '/payment-policy' },
+  { label: 'Terms & Conditions', href: '/terms' },
   { label: 'Blogs', href: '/blog' },
 ] as const;
 
@@ -105,6 +106,11 @@ export default function SupportHubHeader() {
       window.removeEventListener('scroll', onScroll);
     };
   }, [menuOpen]);
+
+  useEffect(() => {
+    document.documentElement.classList.toggle(CHROME_HIDDEN_CLASS, hidden);
+    return () => document.documentElement.classList.remove(CHROME_HIDDEN_CLASS);
+  }, [hidden]);
 
   const closeMenu = useCallback(() => setMenuOpen(false), []);
   const helpWa = whatsappUrl('Hi Indian Treks! I need help with a booking.');

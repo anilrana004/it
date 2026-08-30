@@ -1,0 +1,43 @@
+/* Mobile hero carousel CTA — clean pill on dark banner (no retro offset) */
+
+.it-hero-mob-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  align-self: flex-start;
+  width: auto;
+  max-width: 100%;
+  min-height: 38px;
+  padding: 0.55rem 1.15rem;
+  border-radius: 999px;
+  background: #fff;
+  color: #166534;
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  border: none;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.it-hero-mob-cta svg {
+  flex-shrink: 0;
+  color: #16a34a;
+}
+
+a:hover .it-hero-mob-cta,
+a:focus-visible .it-hero-mob-cta {
+  background: #f0fdf4;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.24);
+}
+
+a:active .it-hero-mob-cta {
+  transform: scale(0.98);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.16);
+}

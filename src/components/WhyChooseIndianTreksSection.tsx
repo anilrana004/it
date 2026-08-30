@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import Link from 'next/link';
-import { WHY_CHOOSE_FEATURES, WHY_CHOOSE_HERO_CARDS } from '@/lib/why-choose-content';
+import { WHY_CHOOSE_CTA, WHY_CHOOSE_FEATURES, WHY_CHOOSE_HERO_CARDS, WHY_CHOOSE_SECTION } from '@/lib/why-choose-content';
 import './why-choose-us.css';
 
 type Props = {
@@ -16,15 +16,11 @@ export default function WhyChooseIndianTreksSection({
     <section className="it-why" aria-labelledby={titleId}>
       <div className="it-why__wrap">
         <header className="it-why__head">
-          <p className="it-why__kicker">Why Choose Us</p>
+          <p className="it-why__kicker">{WHY_CHOOSE_SECTION.kicker}</p>
           <h2 className="it-why__title" id={titleId}>
-            Why Choose <span>Indian Treks?</span>
+            {WHY_CHOOSE_SECTION.titleBefore}<span>{WHY_CHOOSE_SECTION.titleAccent}</span>
           </h2>
-          <p className="it-why__lede">
-            Travel has the power to transform perspectives, build meaningful connections, and create stories that
-            last a lifetime. At Indian Treks, we&apos;ve dedicated the last decade to making those experiences
-            accessible, safe, and unforgettable — with a thriving community of over 80,000 travelers.
-          </p>
+          <p className="it-why__lede">{WHY_CHOOSE_SECTION.lede}</p>
         </header>
 
         <div className="it-why__hero-grid">
@@ -66,10 +62,10 @@ export default function WhyChooseIndianTreksSection({
             <span className="it-why__cta-logo" aria-hidden>
               <i className="fa-solid fa-mountain-sun" />
             </span>
-            <p>Join over 80,000 happy travelers and start your adventure today!</p>
+            <p>{WHY_CHOOSE_CTA.copy}</p>
           </div>
-          <Link href="/treks" className="it-why__cta-btn">
-            Explore Treks
+          <Link href={WHY_CHOOSE_CTA.href} className="it-why__cta-btn">
+            {WHY_CHOOSE_CTA.label}
             <i className="fa-solid fa-arrow-right" aria-hidden />
           </Link>
         </div>

@@ -1,5 +1,19 @@
 import { photos } from '@/lib/media';
 
+export const WHY_CHOOSE_SECTION = {
+  kicker: 'Why Choose Us',
+  titleBefore: 'Why Choose ',
+  titleAccent: 'Indian Treks?',
+  lede:
+    "Travel has the power to transform perspectives, build meaningful connections, and create stories that last a lifetime. At Indian Treks, we've dedicated the last decade to making those experiences accessible, safe, and unforgettable — with a thriving community of over 80,000 travelers.",
+} as const;
+
+export const WHY_CHOOSE_CTA = {
+  copy: 'Join over 80,000 happy travelers and start your adventure today!',
+  href: '/treks',
+  label: 'Explore Treks',
+} as const;
+
 export const WHY_CHOOSE_HERO_CARDS = [
   {
     title: 'Trusted Experience',

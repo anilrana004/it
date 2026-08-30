@@ -53,7 +53,7 @@ export const HELP_CENTRE_TOPICS: HelpCentreTopic[] = [
   {
     id: 'affiliates',
     title: 'Affiliates',
-    description: 'Partner with us — creators, colleges, and travel communities.',
+    description: 'Partner with IndianTreks — B2B agents, campus ambassadors, corporate groups, and referral programmes.',
     href: '/affiliates',
     icon: 'fa-handshake',
     group: 'explore',
@@ -85,9 +85,17 @@ export const HELP_CENTRE_TOPICS: HelpCentreTopic[] = [
   {
     id: 'cancellation',
     title: 'Cancellation & Refund',
-    description: 'Refund windows, transfer rules, and force-majeure handling.',
+    description: 'Trek vouchers, refund windows, date changes, free trek policy, and force majeure handling.',
     href: '/cancellation-policy',
     icon: 'fa-rotate-left',
+    group: 'policies',
+  },
+  {
+    id: 'terms',
+    title: 'Terms & Conditions',
+    description: 'Booking agreement, cancellation vouchers, safety, liability, and legal terms.',
+    href: '/terms',
+    icon: 'fa-file-contract',
     group: 'policies',
   },
   {
@@ -156,57 +164,5 @@ export const PAYMENT_POLICY_SECTIONS: PolicySection[] = [
   {
     title: 'Need payment help?',
     body: `Email ${CONTACT.email} or call ${CONTACT.phoneDisplay} (${CONTACT.hours}). Our team can guide you on instalments, corporate billing, or gift-card redemptions.`,
-  },
-];
-
-export const CANCELLATION_POLICY_ROWS: [string, string][] = [
-  [
-    'More than 30 days before departure',
-    'Full refund minus minimal processing charges. Alternatively, transfer to another batch once without extra cost (subject to availability).',
-  ],
-  [
-    '15 to 30 days before departure',
-    '50% refund of the paid amount. Remaining balance may be transferred to a future batch if approved by operations.',
-  ],
-  [
-    '7 to 14 days before departure',
-    'Higher cancellation charge applies — transport, permits, and staffing are usually already blocked. Partial refund or transfer evaluated case by case.',
-  ],
-  [
-    'Less than 7 days before departure',
-    'Generally non-refundable due to final operational commitments. Date transfer may be considered only if seats remain and ops approves.',
-  ],
-  [
-    'No show / missed reporting',
-    'No refund when a participant misses reporting without prior written coordination with our team.',
-  ],
-  [
-    'Force majeure & weather',
-    'Road closures, landslides, or government restrictions may lead to itinerary changes, postponement, or credit toward a future batch instead of cash refund.',
-  ],
-];
-
-export const CANCELLATION_POLICY_SECTIONS: PolicySection[] = [
-  {
-    title: 'How to cancel',
-    body: `Email ${CONTACT.email} or WhatsApp ${CONTACT.phoneDisplay} with your booking ID, participant name, and reason for cancellation. Our team confirms the cancellation and shares the applicable refund or transfer timeline.`,
-  },
-  {
-    title: 'Refund processing',
-    bullets: [
-      'Approved refunds are credited to the original payment source within 7–10 working days.',
-      'Bank transfers may take an additional 2–3 working days depending on your bank.',
-      'Processing fees or gateway charges deducted at booking may not be refundable.',
-    ],
-  },
-  {
-    title: 'Date transfer',
-    body:
-      'One complimentary date transfer is usually allowed for cancellations made 30+ days before departure, subject to seat availability on the new batch. Additional transfers may attract a service charge.',
-  },
-  {
-    title: 'Group & corporate bookings',
-    body:
-      'Customised group, corporate, and college departures may have separate cancellation clauses outlined in the proposal or agreement shared at confirmation.',
   },
 ];

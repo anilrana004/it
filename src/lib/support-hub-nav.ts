@@ -9,6 +9,7 @@ export type SupportHubId =
   | 'affiliates'
   | 'payment'
   | 'cancellation'
+  | 'terms'
   | 'about';
 
 export const SUPPORT_HUB_LINKS: {
@@ -39,6 +40,13 @@ export const SUPPORT_HUB_LINKS: {
     href: '/cancellation-policy',
     icon: 'fa-rotate-left',
   },
+  {
+    id: 'terms',
+    label: 'Terms & Conditions',
+    navLabel: 'Terms',
+    href: '/terms',
+    icon: 'fa-file-contract',
+  },
   { id: 'about', label: 'About Us', href: '/about', icon: 'fa-mountain' },
 ];
 
@@ -52,6 +60,7 @@ export const SUPPORT_HUB_PATHS = [
   '/affiliates',
   '/payment-policy',
   '/cancellation-policy',
+  '/terms',
   '/beware-of-fraudulent-activities',
   '/blog',
   '/about',

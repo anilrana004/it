@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import {
   FAQ_CATEGORIES,
@@ -8,17 +8,20 @@ import {
   faqsByCategory,
   type FaqCategoryId,
 } from '@/lib/faqs-content';
+import { FAQ_CATEGORY_LUCIDE_ICONS } from '@/lib/icons/faq-lucide-icons';
 import { CONTACT, mailtoUrl, telUrl, whatsappUrl } from '@/lib/contact';
 import './faqs-page.css';
 
 /**
- * FAQ page UX patterned on https://www.exoticamp.com/faqs
- * — horizontal category chips + filtered accordion list.
+ * FAQ page UX — Exoticamp-style square category tiles + filtered accordion list.
  */
 export default function FaqsPageView() {
   const [category, setCategory] = useState<FaqCategoryId>('all');
   const [openId, setOpenId] = useState<string | null>(FAQ_ITEMS[0]?.id ?? null);
   const [query, setQuery] = useState('');
+  const tileRefs = useRef<Partial<Record<FaqCategoryId, HTMLButtonElement>>>({});
+  const listRef = useRef<HTMLDivElement>(null);
+  const [catsStuck, setCatsStuck] = useState(false);
 
   const items = useMemo(() => {
     const base = faqsByCategory(category);
@@ -29,6 +32,44 @@ export default function FaqsPageView() {
         item.question.toLowerCase().includes(q) || item.answer.toLowerCase().includes(q),
     );
   }, [category, query]);
+
+  useEffect(() => {
+    const el = tileRefs.current[category];
+    el?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+  }, [category]);
+
+  useEffect(() => {
+    const sentinel = document.getElementById('it-faq-cats-sentinel');
+    if (!sentinel) return;
+
+    let io: IntersectionObserver | null = null;
+    const mount = () => {
+      io?.disconnect();
+      const headerH = parseFloat(
+        getComputedStyle(document.documentElement).getPropertyValue('--sh-header-height') || '64',
+      );
+      io = new IntersectionObserver(
+        ([entry]) => setCatsStuck(!entry.isIntersecting),
+        { rootMargin: `-${headerH + 1}px 0px 0px 0px`, threshold: 0 },
+      );
+      io.observe(sentinel);
+    };
+
+    mount();
+    window.addEventListener('resize', mount);
+    return () => {
+      window.removeEventListener('resize', mount);
+      io?.disconnect();
+    };
+  }, []);
+
+  const selectCategory = (next: FaqCategoryId) => {
+    setCategory(next);
+    setOpenId(null);
+    requestAnimationFrame(() => {
+      listRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  };
 
   return (
     <div className="it-faq">
@@ -54,33 +95,51 @@ export default function FaqsPageView() {
         </div>
       </div>
 
-      <div className="it-faq__cats-wrap">
-        <div className="it-faq__cats" role="tablist" aria-label="FAQ categories">
+      <div id="it-faq-cats-sentinel" className="it-faq__cats-sentinel" aria-hidden />
+
+      <div className={`it-faq__cats-wrap${catsStuck ? ' is-stuck' : ''}`}>
+        <div
+          className="it-faq__cats-shell"
+          role="presentation"
+        >
+          <div
+            className="it-faq__cats"
+            role="tablist"
+            aria-label="FAQ categories"
+          >
           {FAQ_CATEGORIES.map((cat) => {
+            const Icon = FAQ_CATEGORY_LUCIDE_ICONS[cat.id];
             const active = category === cat.id;
+            const displayLabel = cat.shortLabel ?? cat.label;
+
             return (
               <button
                 key={cat.id}
+                ref={(node) => {
+                  if (node) tileRefs.current[cat.id] = node;
+                  else delete tileRefs.current[cat.id];
+                }}
                 type="button"
                 role="tab"
                 aria-selected={active}
-                className={`it-faq__cat${active ? ' is-active' : ''}`}
-                onClick={() => {
-                  setCategory(cat.id);
-                  setOpenId(null);
-                }}
+                className={`it-faq__cat it-faq__cat--${cat.id}${active ? ' is-active' : ''}`}
+                onClick={() => selectCategory(cat.id)}
               >
-                <span className="it-faq__cat-ico" aria-hidden>
-                  <i className={`fa-solid ${cat.icon}`} />
+                <span
+                  className={`it-faq__cat-ico it-faq__cat-ico--${cat.id}`}
+                  aria-hidden
+                >
+                  <Icon size={28} strokeWidth={2.15} />
                 </span>
-                <span>{cat.label}</span>
+                <span className="it-faq__cat-label">{displayLabel}</span>
               </button>
             );
           })}
+          </div>
         </div>
       </div>
 
-      <div className="it-faq__list" role="list">
+      <div ref={listRef} className="it-faq__list" role="list">
         {items.length === 0 ? (
           <div className="it-faq__empty">
             <i className="fa-regular fa-circle-question" aria-hidden />
