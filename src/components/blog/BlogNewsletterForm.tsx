@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { publicApiFetch, publicApiErrorMessage } from '@/lib/api/client';
 
 export default function BlogNewsletterForm() {
   const [status, setStatus] = useState<'idle' | 'loading' | 'done' | 'error'>('idle');
@@ -13,7 +14,7 @@ export default function BlogNewsletterForm() {
 
     setStatus('loading');
     try {
-      const res = await fetch('/api/newsletter', {
+      const res = await publicApiFetch('/api/newsletter', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),

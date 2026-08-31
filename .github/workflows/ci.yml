@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+    branches: [master, main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Typecheck API
+        run: npm run typecheck:api
+
+      - name: Build API
+        run: npm run build:api
+
+      - name: Build Store (Next.js)
+        run: npm run build
+        env:
+          APP_ROLE: storefront
+          NEXT_PUBLIC_SITE_URL: https://example.com

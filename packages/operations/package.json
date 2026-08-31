@@ -1,0 +1,14 @@
+{
+  "name": "@indiantreks/operations",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/service.ts",
+    "./types": "./src/types.ts"
+  },
+  "dependencies": {
+    "@indiantreks/db": "*",
+    "drizzle-orm": "^0.45.2"
+  }
+}

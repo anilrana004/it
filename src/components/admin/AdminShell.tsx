@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
+import { clearStoredAdminToken, publicApiFetch } from '@/lib/api/client';
+import { useExternalApi } from '@/lib/env/api-url';
 import {
   CalendarCheck,
   ChevronRight,
@@ -81,7 +83,8 @@ export default function AdminShell({ children }: Props) {
   const handleLogout = async () => {
     setLoggingOut(true);
     try {
-      await fetch('/api/auth', { method: 'DELETE', credentials: 'include' });
+      await publicApiFetch('/api/auth', { method: 'DELETE', credentials: 'include' });
+      if (useExternalApi()) clearStoredAdminToken();
       router.push(`${ADMIN_PREFIX}/login`);
     } finally {
       setLoggingOut(false);

@@ -1,0 +1,6 @@
+{
+  "name": "@indiantreks/admin",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Admin deploy config — Next.js app runs from monorepo root (see README.md)"
+}

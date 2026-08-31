@@ -7,21 +7,37 @@ import type { EntityLink, KnowledgePost } from '@/lib/knowledge/types';
  * Call from admin API routes after successful publish (Phase 4+).
  */
 export function revalidatePostSurfaces(post: KnowledgePost): void {
+  revalidatePublishedPostSurfaces({
+    slug: post.slug,
+    section: post.section,
+    primaryEntityType: post.primaryEntityType,
+    primaryEntityId: post.primaryEntityId,
+    entityLinks: post.entityLinks,
+  });
+}
+
+export function revalidatePublishedPostSurfaces(payload: {
+  slug: string;
+  section: string;
+  primaryEntityType?: string | null;
+  primaryEntityId?: string | null;
+  entityLinks?: EntityLink[];
+}): void {
   revalidateTag(CACHE_TAGS.posts, 'max');
-  revalidateTag(CACHE_TAGS.post(post.slug), 'max');
+  revalidateTag(CACHE_TAGS.post(payload.slug), 'max');
   revalidatePath(PUBLIC_ROUTES.blogIndex);
-  revalidatePath(PUBLIC_ROUTES.blogPost(post.slug));
+  revalidatePath(PUBLIC_ROUTES.blogPost(payload.slug));
 
-  if (post.section === 'travel_news') {
+  if (payload.section === 'travel_news') {
     revalidatePath(PUBLIC_ROUTES.travelNewsIndex);
-    revalidatePath(PUBLIC_ROUTES.travelNewsPost(post.slug));
+    revalidatePath(PUBLIC_ROUTES.travelNewsPost(payload.slug));
   }
 
-  if (post.primaryEntityType && post.primaryEntityId) {
-    revalidateEntitySurface(post.primaryEntityType, post.primaryEntityId);
+  if (payload.primaryEntityType && payload.primaryEntityId) {
+    revalidateEntitySurface(payload.primaryEntityType, payload.primaryEntityId);
   }
 
-  for (const link of post.entityLinks) {
+  for (const link of payload.entityLinks ?? []) {
     revalidateEntitySurface(link.entityType, link.entityId);
   }
 }

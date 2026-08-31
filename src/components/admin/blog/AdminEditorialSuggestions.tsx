@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Sparkles } from 'lucide-react';
 import { adminFetch } from '@/lib/admin/admin-fetch';
+import { unwrapApiJson } from '@/lib/api/client';
 import type { EditorFormState } from '@/lib/admin/blog-api';
 import type { EditorialSuggestion } from '@/lib/admin/editorial-suggestions';
 
@@ -40,8 +41,20 @@ export default function AdminEditorialSuggestions({ form, onApply }: Props) {
           contentFreshness: form.contentFreshness,
         }),
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error ?? 'Failed to load suggestions');
+      const data = unwrapApiJson<{
+        suggestions?: EditorialSuggestion[];
+        disclaimer?: string | null;
+        error?: string | { message?: string };
+      }>(await res.json());
+      if (!res.ok) {
+        const message =
+          typeof data.error === 'object' && data.error?.message
+            ? String(data.error.message)
+            : typeof data.error === 'string'
+              ? data.error
+              : 'Failed to load suggestions';
+        throw new Error(message);
+      }
       setSuggestions(data.suggestions ?? []);
       setDisclaimer(data.disclaimer ?? null);
     } catch (err) {

@@ -1,6 +1,7 @@
 /** Client-side fetch helpers for admin operations (bookings, contacts, etc.). */
 
 import { adminFetch } from '@/lib/admin/admin-fetch';
+import { parseApiJson, unwrapApiJson } from '@/lib/api/client';
 import type {
   Booking,
   BookingStatus,
@@ -12,15 +13,26 @@ import type {
 } from '@/lib/operations/types';
 
 async function parseJson<T>(res: Response): Promise<T> {
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.error ?? 'Request failed');
+  return parseApiJson<T>(res);
+}
+
+function asList<T>(data: T[] | Record<string, T[]>): T[] {
+  if (Array.isArray(data)) return data;
+  const firstKey = Object.keys(data)[0];
+  return firstKey ? (data[firstKey] as T[]) : [];
+}
+
+function asOne<T>(data: unknown, key: string): T {
+  if (data && typeof data === 'object' && key in data) {
+    return (data as Record<string, T>)[key]!;
+  }
   return data as T;
 }
 
 export async function fetchAdminBookings(): Promise<Booking[]> {
   const res = await adminFetch('/api/admin/bookings');
-  const data = await parseJson<{ bookings: Booking[] }>(res);
-  return data.bookings;
+  const data = await parseJson<Booking[] | { bookings: Booking[] }>(res);
+  return asList(data);
 }
 
 export async function patchBookingStatus(id: string, status: BookingStatus): Promise<Booking> {
@@ -29,14 +41,14 @@ export async function patchBookingStatus(id: string, status: BookingStatus): Pro
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ status }),
   });
-  const data = await parseJson<{ booking: Booking }>(res);
-  return data.booking;
+  const data = await parseJson<Booking | { booking: Booking }>(res);
+  return asOne(data, 'booking');
 }
 
 export async function fetchAdminContacts(): Promise<Contact[]> {
   const res = await adminFetch('/api/admin/contacts');
-  const data = await parseJson<{ contacts: Contact[] }>(res);
-  return data.contacts;
+  const data = await parseJson<Contact[] | { contacts: Contact[] }>(res);
+  return asList(data);
 }
 
 export async function patchContactStatus(id: string, status: ContactStatus): Promise<Contact> {
@@ -45,14 +57,14 @@ export async function patchContactStatus(id: string, status: ContactStatus): Pro
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ status }),
   });
-  const data = await parseJson<{ contact: Contact }>(res);
-  return data.contact;
+  const data = await parseJson<Contact | { contact: Contact }>(res);
+  return asOne(data, 'contact');
 }
 
 export async function fetchAdminGiftCards(): Promise<GiftCard[]> {
   const res = await adminFetch('/api/admin/gift-cards');
-  const data = await parseJson<{ giftCards: GiftCard[] }>(res);
-  return data.giftCards;
+  const data = await parseJson<GiftCard[] | { giftCards: GiftCard[] }>(res);
+  return asList(data);
 }
 
 export async function createAdminGiftCard(input: {
@@ -66,14 +78,14 @@ export async function createAdminGiftCard(input: {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(input),
   });
-  const data = await parseJson<{ giftCard: GiftCard }>(res);
-  return data.giftCard;
+  const data = await parseJson<GiftCard | { giftCard: GiftCard }>(res);
+  return asOne(data, 'giftCard');
 }
 
 export async function fetchAdminSubscribers(): Promise<NewsletterSubscriber[]> {
   const res = await adminFetch('/api/admin/newsletter');
-  const data = await parseJson<{ subscribers: NewsletterSubscriber[] }>(res);
-  return data.subscribers;
+  const data = await parseJson<NewsletterSubscriber[] | { subscribers: NewsletterSubscriber[] }>(res);
+  return asList(data);
 }
 
 export async function createAdminSubscriber(email: string): Promise<NewsletterSubscriber> {
@@ -82,23 +94,40 @@ export async function createAdminSubscriber(email: string): Promise<NewsletterSu
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email }),
   });
-  const data = await parseJson<{ subscriber: NewsletterSubscriber }>(res);
-  return data.subscriber;
+  const data = await parseJson<NewsletterSubscriber | { subscriber: NewsletterSubscriber }>(res);
+  return asOne(data, 'subscriber');
 }
 
 export async function deleteAdminSubscriber(id: string): Promise<void> {
   const res = await adminFetch(`/api/admin/newsletter/${id}`, { method: 'DELETE' });
-  if (!res.ok) {
-    const data = await res.json();
-    throw new Error(data.error ?? 'Delete failed');
-  }
+  if (!res.ok) await parseJson(res);
 }
 
 export async function fetchAdminUsers(): Promise<SiteUser[]> {
   const res = await adminFetch('/api/admin/users');
-  const data = await parseJson<{ users: SiteUser[] }>(res);
-  return data.users;
+  const data = await parseJson<SiteUser[] | { users: SiteUser[] }>(res);
+  return asList(data);
 }
+
+type DashboardPayload =
+  | {
+      bookings: number;
+      contacts: number;
+      subscribers: number;
+      giftCards: number;
+      users: number;
+      recentBookings: Booking[];
+    }
+  | {
+      counts: {
+        bookings: number;
+        contacts: number;
+        subscribers: number;
+        giftCards?: number;
+        users?: number;
+      };
+      recentBookings: Booking[];
+    };
 
 export async function fetchAdminDashboardStats(): Promise<{
   bookings: number;
@@ -109,7 +138,20 @@ export async function fetchAdminDashboardStats(): Promise<{
   recentBookings: Booking[];
 }> {
   const res = await adminFetch('/api/admin/dashboard');
-  return parseJson(res);
+  const data = await parseJson<DashboardPayload>(res);
+
+  if ('counts' in data) {
+    return {
+      bookings: data.counts.bookings,
+      contacts: data.counts.contacts,
+      subscribers: data.counts.subscribers,
+      giftCards: data.counts.giftCards ?? 0,
+      users: data.counts.users ?? 0,
+      recentBookings: data.recentBookings,
+    };
+  }
+
+  return data;
 }
 
 export class OperationsDbUnavailableError extends Error {
@@ -120,5 +162,13 @@ export class OperationsDbUnavailableError extends Error {
 }
 
 export function isDbUnavailableError(err: unknown): boolean {
-  return err instanceof Error && (err.message.includes('503') || err.message.includes('Database'));
+  if (!(err instanceof Error)) return false;
+  return (
+    err.message.includes('503') ||
+    err.message.includes('Database') ||
+    err.message.includes('DB_UNAVAILABLE')
+  );
 }
+
+// Re-export for blog-api compatibility
+export { unwrapApiJson };

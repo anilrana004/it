@@ -2,11 +2,19 @@
   "name": "indiantreks",
   "version": "0.1.0",
   "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
     "dev": "next dev",
+    "dev:api": "npm run dev -w @indiantreks/api",
     "build": "next build",
+    "build:api": "npm run build -w @indiantreks/api",
     "start": "next start",
+    "start:api": "npm run start -w @indiantreks/api",
     "lint": "eslint",
+    "typecheck:api": "npm run typecheck -w @indiantreks/api",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "tsx scripts/migrate.ts",
     "db:seed": "tsx scripts/seed-knowledge.ts",

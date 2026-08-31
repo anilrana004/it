@@ -1,4 +1,5 @@
 import { adminFetch } from '@/lib/admin/admin-fetch';
+import { parseApiJson } from '@/lib/api/client';
 import {
   mergeTagsWithPlacements,
   parsePlacementSlots,
@@ -37,14 +38,15 @@ export type KnowledgeAuthorOption = {
 type ApiError = { error: string; fieldErrors?: Record<string, string> };
 
 async function parseJson<T>(res: Response): Promise<T> {
-  const data = (await res.json()) as T & ApiError;
-  if (!res.ok) {
-    const message = data.error ?? `Request failed (${res.status})`;
-    const err = new Error(message) as Error & { fieldErrors?: Record<string, string> };
-    err.fieldErrors = data.fieldErrors;
-    throw err;
+  try {
+    return await parseApiJson<T>(res);
+  } catch (error) {
+    if (error instanceof Error) {
+      const err = error as Error & { fieldErrors?: Record<string, string> };
+      throw err;
+    }
+    throw error;
   }
-  return data;
 }
 
 export async function fetchAdminPosts(): Promise<KnowledgePost[]> {

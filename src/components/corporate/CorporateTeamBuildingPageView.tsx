@@ -3,6 +3,7 @@
 import { FormEvent, useMemo, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { publicApiFetch } from '@/lib/api/client';
 import {
   CalendarDays,
   Clock3,
@@ -81,7 +82,7 @@ export default function CorporateTeamBuildingPageView({
     e.preventDefault();
     setSending(true);
     try {
-      const res = await fetch('/api/contacts', {
+      const res = await publicApiFetch('/api/contacts', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

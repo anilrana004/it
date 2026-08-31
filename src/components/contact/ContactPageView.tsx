@@ -10,6 +10,7 @@ import {
   whatsappChannelUrl,
   whatsappUrl,
 } from '@/lib/contact';
+import { publicApiFetch, publicApiErrorMessage } from '@/lib/api/client';
 import {
   CONTACT_FAQS,
   CONTACT_GROUP_SIZES,
@@ -132,7 +133,7 @@ export default function ContactPageView() {
     setError('');
     try {
       const name = `${form.firstName.trim()} ${form.lastName.trim()}`.trim();
-      const res = await fetch('/api/contacts', {
+      const res = await publicApiFetch('/api/contacts', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -150,8 +151,7 @@ export default function ContactPageView() {
         }),
       });
       if (!res.ok) {
-        const data = await res.json().catch(() => null);
-        throw new Error(data?.error || 'Something went wrong. Please try again.');
+        throw new Error(await publicApiErrorMessage(res));
       }
       setSent(true);
       setForm(emptyForm);
