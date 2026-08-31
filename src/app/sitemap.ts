@@ -4,6 +4,7 @@ import {
   fetchAllPublishedBlogSlugs,
   fetchAllPublishedTravelNewsSlugs,
 } from '@/lib/knowledge/adapter';
+import { isAdminOnlyDeploy } from '@/lib/deploy/role';
 import { PUBLIC_ROUTES } from '@/lib/knowledge/config';
 import { absoluteUrl } from '@/lib/site';
 
@@ -25,6 +26,8 @@ const STATIC_PATHS = [
 ];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  if (isAdminOnlyDeploy()) return [];
+
   const [blogSlugs, newsSlugs] = await Promise.all([
     fetchAllPublishedBlogSlugs(),
     fetchAllPublishedTravelNewsSlugs(),

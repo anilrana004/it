@@ -22,6 +22,7 @@ import type { HomeFeaturedBlogPost } from '@/lib/content/home-blog';
 import { HOME_FEATURED_BLOG_POSTS } from '@/lib/content/home-blog';
 import { fetchHomeFeaturedBlogPosts as resolveHomeFeatured } from '@/lib/knowledge/landing-placements';
 import { isDbConfigured } from '@/lib/db';
+import { isAdminOnlyDeploy } from '@/lib/deploy/role';
 import { CACHE_TAGS } from '@/lib/knowledge/config';
 import {
   getPostsByEntity,
@@ -35,6 +36,16 @@ import type { EntityType, KnowledgePost, PaginatedPostsResult, PostsByEntityFilt
 import { cldBlogImage } from '@/lib/cloudinary';
 import { getBlogTopic, type BlogTopicId } from '@/lib/blog-taxonomy';
 import { unstable_cache } from 'next/cache';
+
+/** Run a storefront DB read; fall back when unset, admin-only build, or connection fails. */
+async function withStorefrontDb<T>(query: () => Promise<T>): Promise<T | null> {
+  if (!isDbConfigured() || isAdminOnlyDeploy()) return null;
+  try {
+    return await query();
+  } catch {
+    return null;
+  }
+}
 
 function formatReadTime(minutes: number | null | undefined, content: string): string {
   const min = minutes ?? Math.max(1, Math.round(content.trim().split(/\s+/).length / 200));
@@ -158,15 +169,15 @@ function knowledgePostToTravelNews(post: KnowledgePost): TravelNewsViewItem {
 async function dbPublishedBlogPosts(
   options: { limit?: number; offset?: number } = {},
 ): Promise<PaginatedPostsResult & { items: BlogPost[] } | null> {
-  if (!isDbConfigured()) return null;
+  const result = await withStorefrontDb(() =>
+    getPublishedPostsPaginated({
+      section: 'blog',
+      limit: options.limit ?? 20,
+      offset: options.offset ?? 0,
+    }),
+  );
 
-  const result = await getPublishedPostsPaginated({
-    section: 'blog',
-    limit: options.limit ?? 20,
-    offset: options.offset ?? 0,
-  });
-
-  if (result.posts.length === 0 && result.total === 0) return null;
+  if (!result || (result.posts.length === 0 && result.total === 0)) return null;
 
   return {
     ...result,
@@ -177,15 +188,15 @@ async function dbPublishedBlogPosts(
 async function dbPublishedTravelNews(
   options: { limit?: number; offset?: number } = {},
 ): Promise<{ items: TravelNewsViewItem[]; total: number; limit: number; offset: number } | null> {
-  if (!isDbConfigured()) return null;
+  const result = await withStorefrontDb(() =>
+    getPublishedPostsPaginated({
+      section: 'travel_news',
+      limit: options.limit ?? 20,
+      offset: options.offset ?? 0,
+    }),
+  );
 
-  const result = await getPublishedPostsPaginated({
-    section: 'travel_news',
-    limit: options.limit ?? 20,
-    offset: options.offset ?? 0,
-  });
-
-  if (result.posts.length === 0 && result.total === 0) return null;
+  if (!result || (result.posts.length === 0 && result.total === 0)) return null;
 
   return {
     items: result.posts.map(knowledgePostToTravelNews),
@@ -208,10 +219,8 @@ const cachedTravelNews = unstable_cache(
 );
 
 export async function fetchPublishedBlogPost(slug: string): Promise<BlogPost | null> {
-  if (isDbConfigured()) {
-    const post = await getPublishedPostBySlug(slug);
-    if (post) return knowledgePostToBlogPost(post);
-  }
+  const post = await withStorefrontDb(() => getPublishedPostBySlug(slug));
+  if (post) return knowledgePostToBlogPost(post);
   return getStaticPostBySlug(slug) ?? null;
 }
 
@@ -237,10 +246,8 @@ export async function fetchPublishedBlogPosts(
 }
 
 export async function fetchPublishedTravelNewsPost(slug: string): Promise<TravelNewsViewItem | null> {
-  if (isDbConfigured()) {
-    const post = await getPublishedPostBySlug(slug);
-    if (post && post.section === 'travel_news') return knowledgePostToTravelNews(post);
-  }
+  const post = await withStorefrontDb(() => getPublishedPostBySlug(slug));
+  if (post && post.section === 'travel_news') return knowledgePostToTravelNews(post);
 
   const item = travelNewsItems.find((entry) => entry.slug === slug);
   if (!item) return null;
@@ -277,18 +284,18 @@ export async function fetchPublishedTravelNews(
 }
 
 export async function fetchAllPublishedBlogSlugs(): Promise<string[]> {
-  if (isDbConfigured()) {
-    const posts = await getPublishedPosts({ section: 'blog', limit: 500 });
-    if (posts.length > 0) return posts.map((p) => p.slug);
-  }
+  if (isAdminOnlyDeploy()) return [];
+
+  const posts = await withStorefrontDb(() => getPublishedPosts({ section: 'blog', limit: 500 }));
+  if (posts && posts.length > 0) return posts.map((p) => p.slug);
   return blogPosts.map((p) => p.slug);
 }
 
 export async function fetchAllPublishedTravelNewsSlugs(): Promise<string[]> {
-  if (isDbConfigured()) {
-    const posts = await getPublishedPosts({ section: 'travel_news', limit: 500 });
-    if (posts.length > 0) return posts.map((p) => p.slug);
-  }
+  if (isAdminOnlyDeploy()) return [];
+
+  const posts = await withStorefrontDb(() => getPublishedPosts({ section: 'travel_news', limit: 500 }));
+  if (posts && posts.length > 0) return posts.map((p) => p.slug);
   return travelNewsItems.map((p) => p.slug);
 }
 

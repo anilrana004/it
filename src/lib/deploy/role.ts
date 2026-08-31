@@ -9,6 +9,11 @@ export function getAppRole(): AppRole {
   return 'full';
 }
 
+/** Admin-only Vercel deploy — skip storefront static generation at build time. */
+export function isAdminOnlyDeploy(): boolean {
+  return getAppRole() === 'admin';
+}
+
 export function isAdminUiPath(pathname: string): boolean {
   return pathname === ADMIN_PREFIX || pathname.startsWith(`${ADMIN_PREFIX}/`);
 }

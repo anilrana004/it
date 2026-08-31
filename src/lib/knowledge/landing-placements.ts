@@ -2,6 +2,7 @@ import { blogDate, blogPath } from '@/lib/blog';
 import type { LandingArticle } from '@/lib/landing-social-content';
 import type { HomeFeaturedBlogPost } from '@/lib/content/home-blog';
 import { isDbConfigured } from '@/lib/db';
+import { isAdminOnlyDeploy } from '@/lib/deploy/role';
 import { cldBlogImage } from '@/lib/cloudinary';
 import { placementTag } from '@/lib/knowledge/placement-registry';
 import { getPostsByPlacementSlot, getPublishedPostsPaginated } from '@/lib/knowledge/posts';
@@ -45,11 +46,15 @@ export async function fetchLandingBlogArticles(
   fallback: LandingArticle[],
   limit = 3,
 ): Promise<LandingArticle[]> {
-  if (!isDbConfigured()) return fallback.slice(0, limit);
+  if (!isDbConfigured() || isAdminOnlyDeploy()) return fallback.slice(0, limit);
 
-  const placed = await getPostsByPlacementSlot(slotId, limit);
-  if (placed.length === 0) return fallback.slice(0, limit);
-  return placed.map(knowledgePostToLandingArticle);
+  try {
+    const placed = await getPostsByPlacementSlot(slotId, limit);
+    if (placed.length === 0) return fallback.slice(0, limit);
+    return placed.map(knowledgePostToLandingArticle);
+  } catch {
+    return fallback.slice(0, limit);
+  }
 }
 
 /** Homepage featured — pinned posts first, then newest blog posts. */
@@ -57,25 +62,29 @@ export async function fetchHomeFeaturedBlogPosts(
   limit = 4,
   fallback: HomeFeaturedBlogPost[] = [],
 ): Promise<HomeFeaturedBlogPost[]> {
-  if (!isDbConfigured()) return fallback.slice(0, limit);
+  if (!isDbConfigured() || isAdminOnlyDeploy()) return fallback.slice(0, limit);
 
-  const pinned = await getPostsByPlacementSlot('home-featured', limit);
-  const pinnedSlugs = new Set(pinned.map((post) => post.slug));
+  try {
+    const pinned = await getPostsByPlacementSlot('home-featured', limit);
+    const pinnedSlugs = new Set(pinned.map((post) => post.slug));
 
-  const remaining = limit - pinned.length;
-  let latest: KnowledgePost[] = [];
-  if (remaining > 0) {
-    const result = await getPublishedPostsPaginated({
-      section: 'blog',
-      limit: limit + pinned.length,
-      offset: 0,
-    });
-    latest = result.posts.filter((post) => !pinnedSlugs.has(post.slug)).slice(0, remaining);
+    const remaining = limit - pinned.length;
+    let latest: KnowledgePost[] = [];
+    if (remaining > 0) {
+      const result = await getPublishedPostsPaginated({
+        section: 'blog',
+        limit: limit + pinned.length,
+        offset: 0,
+      });
+      latest = result.posts.filter((post) => !pinnedSlugs.has(post.slug)).slice(0, remaining);
+    }
+
+    const combined = [...pinned, ...latest].slice(0, limit);
+    if (combined.length === 0) return fallback.slice(0, limit);
+    return combined.map(knowledgePostToHomeFeatured);
+  } catch {
+    return fallback.slice(0, limit);
   }
-
-  const combined = [...pinned, ...latest].slice(0, limit);
-  if (combined.length === 0) return fallback.slice(0, limit);
-  return combined.map(knowledgePostToHomeFeatured);
 }
 
 export { placementTag };
