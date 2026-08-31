@@ -1,58 +1,77 @@
 'use client';
+
 import Link from 'next/link';
 import { useState } from 'react';
+import { Eye, Pencil, Plus, Trash2 } from 'lucide-react';
 import { treks } from '@/lib/data';
-import { Plus, Pencil, Trash2, Eye } from 'lucide-react';
+import AdminBadge from '@/components/admin/ui/AdminBadge';
+import AdminButton from '@/components/admin/ui/AdminButton';
+import AdminCard from '@/components/admin/ui/AdminCard';
+import AdminPageHeader from '@/components/admin/ui/AdminPageHeader';
+import { AdminTableHead, AdminTd, AdminTh, AdminTr, AdminTableWrap } from '@/components/admin/ui/AdminTable';
 
 export default function AdminTreks() {
-  const [items, setItems] = useState(treks);
+  const [items] = useState(treks);
+
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="font-[family-name:var(--font-heading)] text-2xl font-bold text-[#000000]">Manage Treks</h1>
-          <p className="text-gray-500 text-sm">{items.length} treks & yatras</p>
-        </div>
-        <button className="flex items-center gap-2 bg-[#16a34a] text-white text-sm font-semibold px-4 py-2.5 rounded-full hover:bg-[#15803d] transition-all">
-          <Plus className="w-4 h-4" /> Add New
-        </button>
-      </div>
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-gray-100 bg-gray-50 text-left">
-                <th className="p-4 font-semibold text-gray-600">Title</th>
-                <th className="p-4 font-semibold text-gray-600">Type</th>
-                <th className="p-4 font-semibold text-gray-600">Region</th>
-                <th className="p-4 font-semibold text-gray-600">Duration</th>
-                <th className="p-4 font-semibold text-gray-600">Difficulty</th>
-                <th className="p-4 font-semibold text-gray-600">Price</th>
-                <th className="p-4 font-semibold text-gray-600">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {items.map(t => (
-                <tr key={t.id} className="border-b border-gray-50 hover:bg-gray-50/50">
-                  <td className="p-4 font-medium text-gray-800">{t.title}</td>
-                  <td className="p-4"><span className={`text-xs font-semibold px-2 py-1 rounded-full ${t.type==='yatra'?'bg-orange-100 text-orange-700':'bg-blue-100 text-blue-700'}`}>{t.type}</span></td>
-                  <td className="p-4 text-gray-600 capitalize">{t.region}</td>
-                  <td className="p-4 text-gray-600">{t.duration}</td>
-                  <td className="p-4 text-gray-600">{t.difficulty}</td>
-                  <td className="p-4 font-semibold">₹{Math.min(...t.pricing.map(p=>p.price)).toLocaleString()}</td>
-                  <td className="p-4">
-                    <div className="flex items-center gap-1">
-                      <Link href={`/treks/${t.id}`} className="p-1.5 text-gray-400 hover:text-[#16a34a]"><Eye className="w-4 h-4" /></Link>
-                      <button className="p-1.5 text-gray-400 hover:text-green-500"><Pencil className="w-4 h-4" /></button>
-                      <button className="p-1.5 text-gray-400 hover:text-red-500"><Trash2 className="w-4 h-4" /></button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <AdminPageHeader
+        breadcrumb="Content"
+        title="Treks & Yatras"
+        description={`${items.length} experiences in catalog`}
+        actions={
+          <AdminButton icon={<Plus className="h-4 w-4" />} variant="primary">
+            Add trek
+          </AdminButton>
+        }
+      />
+
+      <AdminCard padding={false}>
+        <AdminTableWrap>
+          <AdminTableHead>
+            <AdminTh>Title</AdminTh>
+            <AdminTh>Type</AdminTh>
+            <AdminTh>Region</AdminTh>
+            <AdminTh>Duration</AdminTh>
+            <AdminTh>Difficulty</AdminTh>
+            <AdminTh>From</AdminTh>
+            <AdminTh className="text-right">Actions</AdminTh>
+          </AdminTableHead>
+          <tbody>
+            {items.map((t) => (
+              <AdminTr key={t.id}>
+                <AdminTd className="font-medium text-slate-800">{t.title}</AdminTd>
+                <AdminTd>
+                  <AdminBadge variant={t.type === 'yatra' ? 'warning' : 'info'}>{t.type}</AdminBadge>
+                </AdminTd>
+                <AdminTd className="capitalize text-slate-600">{t.region}</AdminTd>
+                <AdminTd className="text-slate-600">{t.duration}</AdminTd>
+                <AdminTd className="text-slate-600">{t.difficulty}</AdminTd>
+                <AdminTd className="font-semibold tabular-nums">
+                  ₹{Math.min(...t.pricing.map((p) => p.price)).toLocaleString()}
+                </AdminTd>
+                <AdminTd>
+                  <div className="flex items-center justify-end gap-1">
+                    <Link
+                      href={`/treks/${t.id}`}
+                      className="rounded-md p-2 text-slate-400 transition-colors hover:bg-slate-100 hover:text-emerald-600"
+                      title="View live"
+                    >
+                      <Eye className="h-4 w-4" />
+                    </Link>
+                    <button type="button" className="rounded-md p-2 text-slate-400 hover:bg-slate-100 hover:text-emerald-600" title="Edit">
+                      <Pencil className="h-4 w-4" />
+                    </button>
+                    <button type="button" className="rounded-md p-2 text-slate-400 hover:bg-slate-100 hover:text-rose-600" title="Delete">
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                  </div>
+                </AdminTd>
+              </AdminTr>
+            ))}
+          </tbody>
+        </AdminTableWrap>
+      </AdminCard>
     </div>
   );
 }

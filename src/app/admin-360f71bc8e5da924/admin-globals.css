@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+/* Admin-only surface styles — isolated from storefront it-body / hero / retro UI. */
+.admin-app {
+  font-family: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.admin-app *,
+.admin-app *::before,
+.admin-app *::after {
+  box-sizing: border-box;
+}

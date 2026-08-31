@@ -205,7 +205,12 @@ const parentArticles = [
   },
 ];
 
-export default function SeniorCitizenTreksPageView() {
+export default function SeniorCitizenTreksPageView({
+  blogArticles,
+}: {
+  blogArticles?: typeof parentArticles;
+}) {
+  const articles = blogArticles ?? parentArticles;
   const list = treksForProgram(program).slice(0, 6).map(toListingTrek);
 
   return (
@@ -428,7 +433,7 @@ export default function SeniorCitizenTreksPageView() {
 
           {/* Mobile: blog-style horizontal cards */}
           <div className="it-senior__blog-mobile">
-            {parentArticles.map((article) => (
+            {articles.map((article) => (
               <Link key={article.href} href={article.href} className="it-senior__blog-mcard">
                 <span className="it-senior__blog-mcard-media">
                   <Image src={article.image} alt="" fill sizes="120px" />
@@ -445,19 +450,19 @@ export default function SeniorCitizenTreksPageView() {
 
           {/* Desktop: featured + grid like homepage Blog */}
           <div className="it-senior__blog-desk">
-            {parentArticles[0] ? (
-              <Link href={parentArticles[0].href} className="it-senior__blog-feature">
+            {articles[0] ? (
+              <Link href={articles[0].href} className="it-senior__blog-feature">
                 <span className="it-senior__blog-feature-media">
-                  <Image src={parentArticles[0].image} alt="" fill sizes="(max-width: 1100px) 100vw, 50vw" />
+                  <Image src={articles[0].image} alt="" fill sizes="(max-width: 1100px) 100vw, 50vw" />
                 </span>
                 <span className="it-senior__blog-feature-body">
-                  <span className="it-senior__blog-meta">{parentArticles[0].read}</span>
-                  <strong>{parentArticles[0].title}</strong>
-                  <span className="it-senior__blog-excerpt">{parentArticles[0].excerpt}</span>
+                  <span className="it-senior__blog-meta">{articles[0].read}</span>
+                  <strong>{articles[0].title}</strong>
+                  <span className="it-senior__blog-excerpt">{articles[0].excerpt}</span>
                 </span>
               </Link>
             ) : null}
-            {parentArticles.slice(1).map((article) => (
+            {articles.slice(1).map((article) => (
               <Link key={article.href} href={article.href} className="it-senior__blog-card">
                 <span className="it-senior__blog-card-media">
                   <Image src={article.image} alt="" fill sizes="25vw" />

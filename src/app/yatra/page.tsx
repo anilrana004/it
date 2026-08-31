@@ -1,11 +1,13 @@
 import SacredYatraPageView from '@/components/yatra/SacredYatraPageView';
+import { getYatraLandingArticles } from '@/lib/knowledge/landing-page-articles';
 
 export const metadata = {
-  title: 'Sacred Yatras & Spiritual Trips | Char Dham, Do Dham, Kedarnath | Indian Treks',
+  title: 'Sacred Yatra Tours | Kedarnath, Char Dham & Himalayan Pilgrimage | Indian Treks',
   description:
-    'Book Himalayan sacred yatras with Indian Treks — Char Dham, Do Dham, Kedarnath, Kedarnath Chopta Tungnath circuits and Panch Kedar. Guided pilgrimages from Rishikesh and Haridwar.',
+    'Organised Himalayan yatra tours to Kedarnath, Badrinath, Char Dham and more. Safe darshan logistics, experienced coordinators and comfortable stays with Indian Treks.',
 };
 
-export default function YatraPage() {
-  return <SacredYatraPageView />;
+export default async function YatraPage() {
+  const blogArticles = await getYatraLandingArticles();
+  return <SacredYatraPageView blogArticles={blogArticles} />;
 }

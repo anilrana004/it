@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import LearningProgramLandingView from '@/components/corporate/LearningProgramLandingView';
 import { schoolLanding } from '@/lib/corporate/school-landing';
+import { getSchoolProgramsLandingArticles, mergeLandingArticles } from '@/lib/knowledge/landing-page-articles';
 
 export const metadata: Metadata = {
   title: 'School Programs | Educational Himalayan Outings | Indian Treks',
@@ -8,6 +9,9 @@ export const metadata: Metadata = {
     'Safe, curriculum-aligned school trekking and outdoor learning programs in Uttarakhand and Himachal — nature camps, leadership trails, and heritage journeys.',
 };
 
-export default function SchoolProgramsPage() {
-  return <LearningProgramLandingView content={schoolLanding} />;
+export default async function SchoolProgramsPage() {
+  const blogArticles = await getSchoolProgramsLandingArticles();
+  return (
+    <LearningProgramLandingView content={mergeLandingArticles(schoolLanding, blogArticles)} />
+  );
 }

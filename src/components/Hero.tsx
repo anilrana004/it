@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import type { LucideIcon } from 'lucide-react';
 import {
   Search, Star, Users,
   ArrowRight, Calendar, Phone,
@@ -32,6 +33,30 @@ const collabItems = HERO_COLLAB_ITEMS;
 const deskSlides = HERO_DESK_SLIDES;
 const destinations = HERO_SEARCH_DESTINATIONS;
 
+type SearchCategory = 'all' | 'trek' | 'yatra' | 'international';
+
+function HeroInfoRow({
+  icon: Icon,
+  label,
+  value,
+  accent,
+}: {
+  icon: LucideIcon;
+  label: string;
+  value: string;
+  accent?: boolean;
+}) {
+  return (
+    <div className="flex items-center gap-2.5">
+      <Icon className={`w-4 h-4 ${accent ? 'text-[#4ade80]' : 'text-white/40'}`} />
+      <div>
+        <div className="text-[10px] text-white/40 font-medium uppercase tracking-wider">{label}</div>
+        <div className={`text-sm font-semibold ${accent ? 'text-[#4ade80]' : 'text-white/80'}`}>{value}</div>
+      </div>
+    </div>
+  );
+}
+
 export default function Hero() {
   const router = useRouter();
   /* -- shared state -- */
@@ -43,7 +68,7 @@ export default function Hero() {
   const [showSearch, setShowSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchIdx, setSearchIdx] = useState(-1);
-  const [searchCategory, setSearchCategory] = useState<'all' | 'trek' | 'yatra' | 'international'>('all');
+  const [searchCategory, setSearchCategory] = useState<SearchCategory>('all');
   const searchRef = useRef<HTMLInputElement>(null);
   const searchListRef = useRef<HTMLDivElement>(null);
 
@@ -113,16 +138,6 @@ export default function Hero() {
     return () => clearInterval(t);
   }, []);
 
-  const InfoRow = ({ icon: Icon, label, value, accent }: { icon: any; label: string; value: string; accent?: boolean }) => (
-    <div className="flex items-center gap-2.5">
-      <Icon className={`w-4 h-4 ${accent ? 'text-[#4ade80]' : 'text-white/40'}`} />
-      <div>
-        <div className="text-[10px] text-white/40 font-medium uppercase tracking-wider">{label}</div>
-        <div className={`text-sm font-semibold ${accent ? 'text-[#4ade80]' : 'text-white/80'}`}>{value}</div>
-      </div>
-    </div>
-  );
-
   /* ======================== DESKTOP LAYOUT ======================== */
   const slide = deskSlides[deskSlide];
   const href = `/${slide.t === 'yatra' ? 'yatra' : 'treks'}/${slide.id}`;
@@ -169,12 +184,12 @@ export default function Hero() {
 
               {/* Info grid - 2x3 */}
               <div className="grid grid-cols-2 gap-x-8 gap-y-2.5 mb-5 max-w-md">
-                <InfoRow icon={Star} label="Rating" value={`${slide.rating} (${slide.reviews} reviews)`} accent />
-                <InfoRow icon={Calendar} label="Duration" value={slide.duration} />
-                <InfoRow icon={Mountain} label="Max Altitude" value={slide.altitude} />
-                <InfoRow icon={Footprints} label="Distance" value={slide.distance} />
-                <InfoRow icon={SunMedium} label="Best Season" value={slide.season} />
-                <InfoRow icon={Users} label="Group Size" value={slide.group} />
+                <HeroInfoRow icon={Star} label="Rating" value={`${slide.rating} (${slide.reviews} reviews)`} accent />
+                <HeroInfoRow icon={Calendar} label="Duration" value={slide.duration} />
+                <HeroInfoRow icon={Mountain} label="Max Altitude" value={slide.altitude} />
+                <HeroInfoRow icon={Footprints} label="Distance" value={slide.distance} />
+                <HeroInfoRow icon={SunMedium} label="Best Season" value={slide.season} />
+                <HeroInfoRow icon={Users} label="Group Size" value={slide.group} />
               </div>
 
               <div className="flex items-center gap-2.5 mb-4">
@@ -423,7 +438,7 @@ export default function Hero() {
                 { key: 'yatra', label: 'Yatras' },
                 { key: 'international', label: 'International' },
               ].map(c => (
-                <button key={c.key} type="button" onClick={() => { setSearchCategory(c.key as any); setSearchIdx(-1); }}
+                <button key={c.key} type="button" onClick={() => { setSearchCategory(c.key as SearchCategory); setSearchIdx(-1); }}
                   className={`shrink-0 px-3 py-1 rounded-full text-xs font-medium transition-all ${searchCategory === c.key ? 'bg-[#16a34a] text-white' : 'bg-gray-100 text-gray-500 hover:bg-gray-200'}`}>
                   {c.label}
                 </button>

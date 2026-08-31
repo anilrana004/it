@@ -4,8 +4,6 @@ export type SupportHubId =
   | 'safety'
   | 'faqs'
   | 'reviews'
-  | 'blogs'
-  | 'news'
   | 'affiliates'
   | 'payment'
   | 'cancellation'
@@ -23,8 +21,6 @@ export const SUPPORT_HUB_LINKS: {
   { id: 'safety', label: 'Safety', href: '/safety', icon: 'fa-shield-halved' },
   { id: 'faqs', label: 'FAQs', href: '/faqs', icon: 'fa-circle-question' },
   { id: 'reviews', label: 'Reviews', href: '/reviews', icon: 'fa-star' },
-  { id: 'blogs', label: 'Blogs', href: '/blog', icon: 'fa-newspaper' },
-  { id: 'news', label: 'News', href: '/news', icon: 'fa-bullhorn' },
   { id: 'affiliates', label: 'Affiliates', href: '/affiliates', icon: 'fa-handshake' },
   {
     id: 'payment',
@@ -56,21 +52,15 @@ export const SUPPORT_HUB_PATHS = [
   '/faqs',
   '/reviews',
   '/safety',
-  '/news',
   '/affiliates',
   '/payment-policy',
   '/cancellation-policy',
   '/terms',
   '/beware-of-fraudulent-activities',
-  '/blog',
   '/about',
 ] as const;
 
 export function isSupportHubPath(pathname: string) {
-  // Blog listing uses the support hub chrome; article pages use the main site navbar
-  // (same pattern as /how-to-prepare).
-  if (pathname.startsWith('/blog/')) return false;
-
   return SUPPORT_HUB_PATHS.some(
     (base) => pathname === base || pathname.startsWith(`${base}/`),
   );

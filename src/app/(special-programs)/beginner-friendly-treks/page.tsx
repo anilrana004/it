@@ -1,12 +1,14 @@
 import type { Metadata } from 'next';
 import BeginnerFriendlyTreksPageView from '@/components/special-programs/BeginnerFriendlyTreksPageView';
+import { getBeginnerTreksLandingArticles } from '@/lib/knowledge/landing-page-articles';
 
 export const metadata: Metadata = {
-  title: 'Beginner-Friendly Himalayan Treks | First Trek Made Easy | Indian Treks',
+  title: 'Beginner-Friendly Treks | Easy Himalayan Routes | Indian Treks',
   description:
-    'Start your first Himalayan trek on well-marked, beginner-friendly trails with gradual climbs, clear guidance, and scenic routes chosen for newcomers.',
+    'Start your Himalayan journey on beginner-friendly treks with gentle trails, expert guides, and supportive group pacing from Indian Treks.',
 };
 
-export default function BeginnerFriendlyTreksPage() {
-  return <BeginnerFriendlyTreksPageView />;
+export default async function BeginnerFriendlyTreksPage() {
+  const blogArticles = await getBeginnerTreksLandingArticles();
+  return <BeginnerFriendlyTreksPageView blogArticles={blogArticles} />;
 }

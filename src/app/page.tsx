@@ -15,10 +15,15 @@ import Newsletter from "@/components/Newsletter";
 import HowItWorks from "@/components/home/HowItWorks";
 import { HOME_BANNERS } from "@/lib/content/home-banners";
 import Banners from "@/components/Banners";
+import { fetchHomeFeaturedPosts } from "@/lib/knowledge/adapter";
 
 const banners = HOME_BANNERS;
 
-export default function Home() {
+export const revalidate = 300;
+
+export default async function Home() {
+  const featuredPosts = await fetchHomeFeaturedPosts(4);
+
   return (
     <>
       <Hero />
@@ -41,7 +46,7 @@ export default function Home() {
       <WhyChooseUs />
       <HowItWorks />
       <VideoGallery />
-      <Blog />
+      <Blog posts={featuredPosts} />
       <FAQ />
       <Recognitions />
       <Newsletter />

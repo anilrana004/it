@@ -35,22 +35,6 @@ export const HELP_CENTRE_TOPICS: HelpCentreTopic[] = [
     group: 'explore',
   },
   {
-    id: 'blogs',
-    title: 'Blogs',
-    description: 'Trek guides, travel stories, and Himalayan inspiration.',
-    href: '/blog',
-    icon: 'fa-newspaper',
-    group: 'explore',
-  },
-  {
-    id: 'news',
-    title: 'News',
-    description: 'Trail updates, seasonal openings, and company announcements.',
-    href: '/news',
-    icon: 'fa-bullhorn',
-    group: 'explore',
-  },
-  {
     id: 'affiliates',
     title: 'Affiliates',
     description: 'Partner with IndianTreks — B2B agents, campus ambassadors, corporate groups, and referral programmes.',

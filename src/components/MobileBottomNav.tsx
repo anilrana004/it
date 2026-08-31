@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Home, Compass, CalendarCheck, Heart, User } from 'lucide-react';
 import { isSupportHubPath } from '@/lib/support-hub-nav';
+import { isBlogPath } from '@/lib/blog-nav';
 import { isCorporateHubPath } from '@/lib/corporate-hub-nav';
 import { isSpecialProgramsHubPath } from '@/lib/special-programs-hub-nav';
 
@@ -25,7 +26,7 @@ function shouldHideNav(path: string) {
 
 export default function MobileBottomNav() {
   const path = usePathname();
-  if (shouldHideNav(path) || isSupportHubPath(path) || isCorporateHubPath(path) || isSpecialProgramsHubPath(path)) return null;
+  if (shouldHideNav(path) || isSupportHubPath(path) || isCorporateHubPath(path) || isSpecialProgramsHubPath(path) || isBlogPath(path)) return null;
 
   return (
     <nav className="fixed inset-x-0 bottom-0 z-50 bg-white border-t border-gray-200 lg:hidden pb-[env(safe-area-inset-bottom,0px)] shadow-[0_-2px_10px_rgba(0,0,0,0.08)]">

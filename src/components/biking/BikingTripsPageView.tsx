@@ -18,7 +18,7 @@ import {
   bikingWhyPoints,
   tripsForBikingRegion,
 } from '@/lib/biking-trips-content';
-import { bikingArticles, bikingReviews } from '@/lib/landing-social-content';
+import { bikingArticles, bikingReviews, type LandingArticle } from '@/lib/landing-social-content';
 import LandingReviewsBlog from '@/components/landing/LandingReviewsBlog';
 import LandingTripCard from '@/components/landing/LandingTripCard';
 import BikingPremiumHero from '@/components/biking/BikingPremiumHero';
@@ -30,7 +30,7 @@ function scrollToId(id: string) {
   el.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-export default function BikingTripsPageView() {
+export default function BikingTripsPageView({ blogArticles }: { blogArticles?: LandingArticle[] }) {
   const [activeId, setActiveId] = useState<string>('explore-biking');
   const [pickedDiscovery, setPickedDiscovery] = useState<string | null>(null);
   const [stickyStuck, setStickyStuck] = useState(false);
@@ -252,7 +252,7 @@ export default function BikingTripsPageView() {
         articles={{
           kicker: 'From the blog',
           title: 'Read before you ride',
-          items: bikingArticles,
+          items: blogArticles ?? bikingArticles,
         }}
       />
 

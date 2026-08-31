@@ -89,6 +89,7 @@ html {
   text-size-adjust: 100%;
 }
 body.it-body,
+.it-body,
 body {
   font-family: var(--font-sans);
   color: var(--ih-text);

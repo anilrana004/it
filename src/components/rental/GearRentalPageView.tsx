@@ -35,6 +35,7 @@ import GearRentalIntro from '@/components/rental/GearRentalIntro';
 import GearRentModal from '@/components/rental/GearRentModal';
 import StoryReviewsSection from '@/components/reviews/StoryReviewsSection';
 import LandingBlogSection from '@/components/landing/LandingBlogSection';
+import type { LandingArticle } from '@/lib/landing-social-content';
 import '../landing/landing-reviews-blog.css';
 import './gear-rental.css';
 
@@ -132,11 +133,15 @@ function GearRentalCard({
 
 type Props = {
   initialTrekId?: string;
+  blogArticles?: LandingArticle[];
 };
 
-export default function GearRentalPageView({ initialTrekId }: Props) {
+export default function GearRentalPageView({ initialTrekId, blogArticles: blogArticlesProp }: Props) {
   const router = useRouter();
-  const blogArticles = useMemo(() => getGearBlogArticlesSafe(), []);
+  const blogArticles = useMemo(
+    () => blogArticlesProp ?? getGearBlogArticlesSafe(),
+    [blogArticlesProp],
+  );
   const [category, setCategory] = useState<GearCategory>('all');
   const [trekId, setTrekId] = useState(initialTrekId ?? '');
   const [lines, setLines] = useState<GearCartLine[]>([]);

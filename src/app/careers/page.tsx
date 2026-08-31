@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import CareersPageView from '@/components/careers/CareersPageView';
+import { getCareersLandingArticles } from '@/lib/knowledge/landing-page-articles';
 
 export const metadata: Metadata = {
   title: 'Careers | Indian Treks — Join Our Himalayan Adventure Team',
@@ -8,6 +9,7 @@ export const metadata: Metadata = {
 };
 
 /** Careers UI — structure mirrored from Thrillophilia careers */
-export default function CareersPage() {
-  return <CareersPageView />;
+export default async function CareersPage() {
+  const blogArticles = await getCareersLandingArticles();
+  return <CareersPageView blogArticles={blogArticles} />;
 }

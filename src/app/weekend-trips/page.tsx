@@ -1,4 +1,5 @@
 import TrendingLandingPageView from '@/components/trending/TrendingLandingPageView';
+import { getWeekendTripsLandingArticles } from '@/lib/knowledge/landing-page-articles';
 import { weekendTripsLandingConfig } from '@/lib/weekend-trips-content';
 
 export const metadata = {
@@ -7,6 +8,11 @@ export const metadata = {
     'Book 2–3 day weekend treks across Himachal and Uttarakhand — Triund, Nag Tibba, Kheerganga, Beas Kund, Chopta and more with Indian Treks.',
 };
 
-export default function WeekendTripsPage() {
-  return <TrendingLandingPageView config={weekendTripsLandingConfig} />;
+export default async function WeekendTripsPage() {
+  const blogArticles = await getWeekendTripsLandingArticles();
+  const config = {
+    ...weekendTripsLandingConfig,
+    articles: { ...weekendTripsLandingConfig.articles, items: blogArticles },
+  };
+  return <TrendingLandingPageView config={config} />;
 }

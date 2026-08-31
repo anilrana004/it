@@ -43,7 +43,12 @@ const categories = [
   { label: 'Treks by Region', href: '/treks', icon: Users },
 ];
 
-export default function CorporateTeamBuildingPageView() {
+export default function CorporateTeamBuildingPageView({
+  blogArticles,
+}: {
+  blogArticles?: Array<{ title: string; href: string; image: string; read: string; excerpt?: string }>;
+}) {
+  const articles = blogArticles ?? corporateArticles;
   const [activeProg, setActiveProg] = useState(corporateProgrammes[0].id);
   const [showVideo, setShowVideo] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -403,7 +408,7 @@ export default function CorporateTeamBuildingPageView() {
             <h2>Learn more about the impact of our corporate programmes</h2>
           </div>
           <div className="it-corp__articles">
-            {corporateArticles.map((article) => (
+            {articles.map((article) => (
               <Link key={article.title} href={article.href} className="it-corp__article">
                 <span className="it-corp__article-media">
                   <Image src={article.image} alt="" fill sizes="(max-width: 760px) 100vw, 25vw" />

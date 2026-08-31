@@ -47,7 +47,7 @@ const companyLinks = [
   { label: 'Safety', href: '/safety' },
   { label: 'Reviews', href: '/reviews' },
   { label: 'Blogs', href: '/blog' },
-  { label: 'News & Media', href: '/news' },
+  { label: 'News & Media', href: '/blog/news' },
   { label: 'Affiliates', href: '/affiliates' },
 ];
 

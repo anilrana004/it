@@ -16,10 +16,10 @@ import {
   type CareerTeam,
 } from '@/lib/careers-content';
 import LandingBlogSection from '@/components/landing/LandingBlogSection';
-import { careersArticles } from '@/lib/landing-social-content';
+import { careersArticles, type LandingArticle } from '@/lib/landing-social-content';
 import './careers-page.css';
 
-export default function CareersPageView() {
+export default function CareersPageView({ blogArticles }: { blogArticles?: LandingArticle[] }) {
   const [team, setTeam] = useState<CareerTeam>('all');
 
   const openings = useMemo(
@@ -265,7 +265,7 @@ export default function CareersPageView() {
         className="it-lx__section cr-section--blog"
         kicker={CAREER_BLOG_SECTION.kicker}
         title={CAREER_BLOG_SECTION.title}
-        items={careersArticles}
+        items={blogArticles ?? careersArticles}
       />
     </div>
   );

@@ -1,10 +1,9 @@
 import type { TrekExtendedContent } from '@/lib/treks/trek-extended-types';
-import { kedarkanthaExtended } from '@/lib/treks/kedarkantha-extended';
+import { getTrekContent } from '@/lib/content/treks';
 
-const EXTENDED: Record<string, TrekExtendedContent> = {
-  kedarkantha: kedarkanthaExtended,
-};
+/** @deprecated Import from `@/lib/content/treks` — kept for existing import paths. */
+export { kedarkanthaExtended } from '@/lib/content/treks/kedarkantha';
 
 export function getTrekExtended(trekId: string): TrekExtendedContent | undefined {
-  return EXTENDED[trekId];
+  return getTrekContent(trekId);
 }

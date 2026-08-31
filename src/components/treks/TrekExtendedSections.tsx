@@ -1,4 +1,7 @@
+'use client';
+
 import type { RichBlock, TrekRichSection } from '@/lib/treks/trek-extended-types';
+import YouTubeLazyPlayer from '@/components/ui/YouTubeLazyPlayer';
 
 export function RichBlocks({ blocks }: { blocks: RichBlock[] }) {
   return (
@@ -14,6 +17,22 @@ export function RichBlocks({ blocks }: { blocks: RichBlock[] }) {
                 <li key={item}>{item}</li>
               ))}
             </ul>
+          );
+        }
+        if (block.type === 'video') {
+          return (
+            <div key={`video-${block.youtubeId}-${index}`} className="kg-overview-video">
+              <div className="kg-video-frame">
+                <YouTubeLazyPlayer
+                  youtubeId={block.youtubeId}
+                  title={block.title}
+                  playLabel="Play"
+                  nowLabel="video"
+                  buttonSize="compact"
+                />
+              </div>
+              {block.caption ? <p>{block.caption}</p> : null}
+            </div>
           );
         }
         return <p key={`${block.text.slice(0, 24)}-${index}`}>{block.text}</p>;

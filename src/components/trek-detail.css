@@ -1091,22 +1091,53 @@
   font-weight: 600;
 }
 
+.kg-overview-card {
+  display: flex;
+  flex-direction: column;
+}
+
 .kg-overview-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.12fr) minmax(280px, 0.88fr);
+  grid-template-areas: 'copy points';
   gap: 24px 28px;
   align-items: start;
+  flex: 1 1 auto;
   margin-bottom: 0;
+}
+
+.kg-overview-copy {
+  grid-area: copy;
+  min-width: 0;
+  position: relative;
+}
+
+.kg-overview-footer {
+  flex-shrink: 0;
+  padding-top: 12px;
+  min-width: 0;
+}
+
+.kg-overview-card.is-collapsed .kg-overview-copy {
+  max-height: 26rem;
+  overflow: hidden;
 }
 
 .kg-overview-card.is-expanded .kg-overview-grid {
   grid-template-columns: minmax(0, 1fr);
+  grid-template-areas:
+    'copy'
+    'points';
   gap: 24px;
 }
 
 .kg-overview-card.is-expanded .kg-overview-copy {
   max-height: none;
   overflow: visible;
+}
+
+.kg-overview-card.is-expanded .kg-overview-copy::after {
+  display: none;
 }
 
 .kg-overview-card.is-expanded .kg-overview-points {
@@ -1126,25 +1157,15 @@
   max-width: none;
 }
 
-.kg-overview-copy {
-  min-width: 0;
-  position: relative;
-}
-
-.kg-overview-card.is-collapsed .kg-overview-copy {
-  max-height: 280px;
-  overflow: hidden;
-}
-
 .kg-overview-card.is-collapsed .kg-overview-copy::after {
   content: '';
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
-  height: 88px;
+  height: 2.5rem;
   pointer-events: none;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(247, 253, 249, 0.92) 52%, #ffffff 100%);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #f4fbf7 92%);
 }
 
 .kg-overview-copy p {
@@ -1190,9 +1211,9 @@
   align-items: center;
   gap: 12px;
   flex-wrap: wrap;
-  margin-top: 22px;
+  margin-top: 0;
   margin-bottom: 0;
-  padding-top: 20px;
+  padding-top: 14px;
   border-top: 1px solid rgba(21, 128, 61, 0.1);
 }
 
@@ -1228,6 +1249,7 @@
 }
 
 .kg-overview-points {
+  grid-area: points;
   display: grid;
   gap: 10px;
   padding: 18px 18px 16px;
@@ -5352,20 +5374,19 @@
 
   .kg-overview-grid {
     grid-template-columns: 1fr;
+    grid-template-areas:
+      'copy'
+      'points';
     gap: 16px;
-    margin-bottom: 16px;
+    margin-bottom: 0;
+  }
+
+  .kg-overview-footer {
+    padding-top: 16px;
   }
 
   .kg-overview-card.is-expanded .kg-overview-points {
     grid-template-columns: 1fr;
-  }
-
-  .kg-overview-card.is-collapsed .kg-overview-copy {
-    max-height: 240px;
-  }
-
-  .kg-overview-card.is-collapsed .kg-overview-copy::after {
-    height: 72px;
   }
 
   .kg-overview-actions {
@@ -7838,8 +7859,8 @@ html.it-chrome-hidden .kg-page .kg-section {
 }
 
 .kg-page .kg-overview-actions {
-  margin-top: 22px;
-  padding-top: 20px;
+  margin-top: 0;
+  padding-top: 12px;
 }
 
 .kg-page .kg-overview-btn {

@@ -13,10 +13,11 @@ import {
   resolveRouteGeometry,
 } from '@/lib/treks/geography/route-geometry-utils';
 import { activityLabel } from '@/lib/treks/route-profile-utils';
+import { getMapboxToken } from '@/lib/env/public-env';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import './trek-route-map.css';
 
-const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN ?? '';
+const MAPBOX_TOKEN = getMapboxToken();
 const STYLE_OUTDOORS = 'mapbox://styles/mapbox/outdoors-v12';
 const STYLE_SATELLITE = 'mapbox://styles/mapbox/satellite-streets-v12';
 
@@ -185,9 +186,10 @@ export default function TrekRouteMapbox({
   const styleReadyRef = useRef(false);
 
   const [resolvedSegments, setResolvedSegments] = useState<RouteSegment[]>(geography.segments);
-  const [routeLoading, setRouteLoading] = useState(
-    geography.segments.some((s) => s.geometryKind === 'driving-network'),
+  const [segmentsReady, setSegmentsReady] = useState(
+    () => !geography.segments.some((s) => s.geometryKind === 'driving-network'),
   );
+  const routeLoading = !segmentsReady;
   const [mapReady, setMapReady] = useState(false);
   const [mapError, setMapError] = useState<string | null>(null);
   const [terrainOn, setTerrainOn] = useState(true);
@@ -322,11 +324,17 @@ export default function TrekRouteMapbox({
 
   useEffect(() => {
     let cancelled = false;
-    setRouteLoading(geography.segments.some((s) => s.geometryKind === 'driving-network'));
+    const needsDriving = geography.segments.some((s) => s.geometryKind === 'driving-network');
+    if (!needsDriving) {
+      setResolvedSegments(geography.segments);
+      setSegmentsReady(true);
+      return;
+    }
+    setSegmentsReady(false);
     resolveDrivingSegments(geography.segments).then((segs) => {
       if (!cancelled) {
         setResolvedSegments(segs);
-        setRouteLoading(false);
+        setSegmentsReady(true);
       }
     });
     return () => {

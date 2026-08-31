@@ -22,6 +22,7 @@ import {
 import {
   sacredYatraArticles,
   sacredYatraReviews,
+  type LandingArticle,
 } from '@/lib/landing-social-content';
 import LandingReviewsBlog from '@/components/landing/LandingReviewsBlog';
 import LandingTripCard from '@/components/landing/LandingTripCard';
@@ -41,7 +42,7 @@ function scrollToId(id: string) {
   el.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-export default function SacredYatraPageView() {
+export default function SacredYatraPageView({ blogArticles }: { blogArticles?: LandingArticle[] }) {
   const [activeId, setActiveId] = useState<string>('explore-yatra');
   const [pickedDiscovery, setPickedDiscovery] = useState<string | null>(null);
   const [stickyStuck, setStickyStuck] = useState(false);
@@ -263,7 +264,7 @@ export default function SacredYatraPageView() {
         articles={{
           kicker: 'From the blog',
           title: 'Read before you go',
-          items: sacredYatraArticles,
+          items: blogArticles ?? sacredYatraArticles,
         }}
       />
 

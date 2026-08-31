@@ -8,6 +8,7 @@ import BrandLogo from '@/components/BrandLogo';
 import { CONTACT, mailtoUrl, SOCIAL_LINKS, telUrl, whatsappUrl } from '@/lib/contact';
 import { DESK_HEADER_H, DESK_MAIN_H, DESK_TOP_H, CHROME_HIDDEN_CLASS } from '@/lib/layout';
 import { isSupportHubPath } from '@/lib/support-hub-nav';
+import { isBlogPath } from '@/lib/blog-nav';
 import { isCorporateHubPath } from '@/lib/corporate-hub-nav';
 import { isSpecialProgramsHubPath } from '@/lib/special-programs-hub-nav';
 import {
@@ -121,6 +122,7 @@ function NavLabel({
 export default function Header() {
   const pathname = usePathname();
   const isSupportHub = isSupportHubPath(pathname);
+  const isBlog = isBlogPath(pathname);
   const isCorporateHub = isCorporateHubPath(pathname);
   const isSpecialProgramsHub = isSpecialProgramsHubPath(pathname);
 
@@ -325,7 +327,7 @@ export default function Header() {
   }, []);
 
   /** Support / corporate hub pages use their own dedicated headers */
-  if (isSupportHub || isCorporateHub || isSpecialProgramsHub) {
+  if (isSupportHub || isCorporateHub || isSpecialProgramsHub || isBlog) {
     return null;
   }
 

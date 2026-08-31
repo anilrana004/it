@@ -17,14 +17,24 @@ export interface BlogPost {
   description?: string;
   /** Optional <title> override. */
   seoTitle?: string;
+  /** Canonical URL override from CMS. */
+  canonicalUrl?: string;
+  /** ISO updated timestamp when available. */
+  updatedAt?: string;
+  /** Robots directive, e.g. index,follow */
+  robots?: string;
   /** When true, content is rendered as lightweight markdown. */
   markdown?: boolean;
   /** Trek / yatra / trip ids this post is specifically about. */
   treks?: string[];
   regions?: string[];
   types?: string[];
+  /** Category names for structured data. */
+  categories?: string[];
   /** Matched against a trip's title, state, season and grade. */
   keywords?: string[];
+  /** AEO / authority content when populated from DB. */
+  authority?: BlogAuthority;
 }
 
 /**
@@ -42,6 +52,21 @@ export interface RelatedSubject {
 }
 
 export type RelatedPost = BlogPost & { related: boolean };
+
+export type BlogKeyFact = { label: string; value: string };
+
+export type BlogAuthority = {
+  quickAnswer?: string;
+  quickAnswerDisplay?: boolean;
+  keyFacts?: BlogKeyFact[];
+  faqs?: { question: string; answer: string }[];
+  sources?: { title: string; url?: string; type?: string; verifiedAt?: string }[];
+  authorBio?: string;
+  authorRole?: string;
+  reviewerName?: string;
+  lastVerified?: string;
+  expertReviewed?: boolean;
+};
 
 const MONTHS_SHORT = [
   'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
@@ -141,6 +166,28 @@ export function getPostBySlug(slug: string): BlogPost | undefined {
 export function blogDate(publishedAt: string) {
   const [, month, day] = publishedAt.split('-');
   return `${Number(day)} ${MONTHS_SHORT[Number(month) - 1]}`;
+}
+
+const MONTHS_LONG = [
+  'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December',
+];
+
+/** "2026-08-27" → "August 27, 2026" */
+export function blogDateLong(publishedAt: string) {
+  const [year, month, day] = publishedAt.split('-');
+  return `${MONTHS_LONG[Number(month) - 1]} ${Number(day)}, ${year}`;
+}
+
+export function blogExcerpt(content: string, maxLen = 160) {
+  const plain = content
+    .replace(/\*\*/g, '')
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    .replace(/^#+\s+/gm, '')
+    .replace(/\n+/g, ' ')
+    .trim();
+  if (plain.length <= maxLen) return plain;
+  return `${plain.slice(0, maxLen).replace(/\s+\S*$/, '')}…`;
 }
 
 export function getLatestPosts(count = 3): BlogPost[] {

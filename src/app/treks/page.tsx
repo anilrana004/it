@@ -1,5 +1,6 @@
 import { Suspense } from 'react';
 import AllTreksExplorer from '@/components/treks/AllTreksExplorer';
+import { getTreksLandingArticles } from '@/lib/knowledge/landing-page-articles';
 import { getAllListingTreks, getTopCategories } from '@/lib/treks-listing';
 
 export const metadata = {
@@ -16,13 +17,19 @@ function TreksFallback() {
   );
 }
 
-export default function TreksPage() {
+export default async function TreksPage() {
   const listings = getAllListingTreks();
   const categories = getTopCategories(listings);
+  const blogArticles = await getTreksLandingArticles();
 
   return (
     <Suspense fallback={<TreksFallback />}>
-      <AllTreksExplorer treks={listings} categories={categories} year={2026} />
+      <AllTreksExplorer
+        treks={listings}
+        categories={categories}
+        year={2026}
+        blogArticles={blogArticles}
+      />
     </Suspense>
   );
 }

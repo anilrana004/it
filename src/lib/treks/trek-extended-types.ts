@@ -3,7 +3,8 @@ import type { TrekRouteProfileData } from '@/lib/treks/route-profile-types';
 export type RichBlock =
   | { type: 'p'; text: string }
   | { type: 'h3'; text: string }
-  | { type: 'ul'; items: string[] };
+  | { type: 'ul'; items: string[] }
+  | { type: 'video'; youtubeId: string; title: string; caption?: string };
 
 export type TrekRichSection = {
   id: string;

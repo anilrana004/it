@@ -505,10 +505,12 @@ export default function TrekDetailContent({
   trek,
   type,
   initialGuests = 1,
+  relatedBlogPosts,
 }: {
   trek: Trek;
   type: 'trek' | 'yatra';
   initialGuests?: number;
+  relatedBlogPosts?: RelatedPost[];
 }) {
   const router = useRouter();
   const isYatra = type === 'yatra';
@@ -538,7 +540,10 @@ export default function TrekDetailContent({
     text: item.text,
   }));
   const [nearbyPromo, offersPromo, topRatedPromo] = useMemo(() => getPromoBanners(trek), [trek]);
-  const relatedPosts = useMemo(() => getRelatedPosts(trek, 3), [trek]);
+  const relatedPosts = useMemo(
+    () => relatedBlogPosts ?? getRelatedPosts(trek, 3),
+    [relatedBlogPosts, trek],
+  );
   const baseOverviewParas = useMemo(() => {
     const base = [...paragraphs(trek.brief), ...paragraphs(trek.description)];
     if (extended?.overviewExtra?.length) {
@@ -546,6 +551,10 @@ export default function TrekDetailContent({
     }
     return base;
   }, [trek, extended]);
+  const collapsedOverviewBlocks = useMemo(
+    () => extended?.overviewExtra?.slice(0, 9) ?? [],
+    [extended],
+  );
 
   const related = useMemo(
     () =>
@@ -1239,9 +1248,11 @@ export default function TrekDetailContent({
                         {para}
                       </p>
                     ))}
-                    {overviewOpen && extended?.overviewExtra?.length ? (
+                    {extended?.overviewExtra?.length ? (
                       <div className="kg-extended-rich">
-                        <RichBlocks blocks={extended.overviewExtra} />
+                        <RichBlocks
+                          blocks={overviewOpen ? extended.overviewExtra : collapsedOverviewBlocks}
+                        />
                       </div>
                     ) : null}
                     {!extended?.overviewExtra?.length ? (
@@ -1275,12 +1286,12 @@ export default function TrekDetailContent({
                 </div>
               </div>
 
-              <div className="kg-overview-extra">
+              <div className="kg-overview-footer">
                 <div className="kg-overview-actions">
                   <button
                     type="button"
                     className="kg-overview-btn kg-overview-btn-primary"
-                    onClick={() => setOverviewOpen((v) => !v)}
+                    onClick={() => setOverviewOpen((open) => !open)}
                   >
                     {overviewOpen ? 'Read Less' : 'Read More'}
                   </button>

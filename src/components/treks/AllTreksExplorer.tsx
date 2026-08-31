@@ -44,7 +44,7 @@ import {
 import type { SpecialProgramId } from '@/lib/special-programs-content';
 import type { Trek } from '@/lib/data';
 import { CONTACT, telUrl } from '@/lib/contact';
-import { treksArticles, treksReviews } from '@/lib/landing-social-content';
+import { treksArticles, treksReviews, type LandingArticle } from '@/lib/landing-social-content';
 import LandingReviewsBlog from '@/components/landing/LandingReviewsBlog';
 import TreksWhySection from '@/components/treks/TreksWhySection';
 import TreksDesktopHero from '@/components/treks/TreksDesktopHero';
@@ -152,10 +152,12 @@ export default function AllTreksExplorer({
   treks,
   categories,
   year = 2026,
+  blogArticles,
 }: {
   treks: ListingTrek[];
   categories: TopCategory[];
   year?: number;
+  blogArticles?: LandingArticle[];
 }) {
   const router = useRouter();
   const pathname = usePathname();
@@ -791,7 +793,7 @@ export default function AllTreksExplorer({
         articles={{
           kicker: 'From the blog',
           title: 'Trek guides & tips',
-          items: treksArticles,
+          items: blogArticles ?? treksArticles,
         }}
       />
 

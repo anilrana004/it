@@ -1,11 +1,13 @@
 import DomesticToursPageView from '@/components/domestic/DomesticToursPageView';
+import { getDomesticLandingArticles } from '@/lib/knowledge/landing-page-articles';
 
 export const metadata = {
-  title: 'Domestic Tours | India Customised Tour Packages | Indian Treks',
+  title: 'Domestic Tours in India | Himalayan & Heritage Getaways | Indian Treks',
   description:
-    'India, your way — customised domestic tour packages across Kashmir, Ladakh, Spiti, Himachal, Uttarakhand, Meghalaya, Rajasthan and South India. Handpicked itineraries from Indian Treks.',
+    'Curated domestic tours across India — Himalayan treks, heritage circuits, and regional getaways with Indian Treks fixed departures and small groups.',
 };
 
-export default function DomesticToursPage() {
-  return <DomesticToursPageView />;
+export default async function DomesticToursPage() {
+  const blogArticles = await getDomesticLandingArticles();
+  return <DomesticToursPageView blogArticles={blogArticles} />;
 }

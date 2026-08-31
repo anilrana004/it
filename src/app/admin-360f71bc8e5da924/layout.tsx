@@ -1,12 +1,20 @@
-import AdminSidebar from '@/components/AdminSidebar';
+import type { Metadata } from 'next';
+import AdminLayoutShell from '@/components/admin/AdminLayoutShell';
+import './admin-globals.css';
+
+export const metadata: Metadata = {
+  title: {
+    default: 'Indian Treks Admin',
+    template: '%s | Indian Treks Admin',
+  },
+  description: 'Internal admin console for Indian Treks.',
+  robots: { index: false, follow: false },
+};
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen bg-gray-50 lg:flex">
-      <AdminSidebar />
-      <main className="flex-1 p-4 lg:p-8 pt-16 lg:pt-8 pb-24 lg:pb-8 min-h-screen overflow-x-hidden">
-        {children}
-      </main>
+    <div className="admin-app min-h-dvh bg-[#f8fafc] text-slate-900 antialiased">
+      <AdminLayoutShell>{children}</AdminLayoutShell>
     </div>
   );
 }

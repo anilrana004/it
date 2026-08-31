@@ -1,10 +1,16 @@
 import Link from 'next/link';
 import { Calendar, Clock, ArrowRight } from 'lucide-react';
-import { HOME_BLOG_SECTION, HOME_FEATURED_BLOG_POSTS } from '@/lib/content/home-blog';
+import { HOME_BLOG_SECTION } from '@/lib/content/home-blog';
+import type { HomeFeaturedBlogPost } from '@/lib/content/home-blog';
 
-export default function Blog() {
-  const blogs = HOME_FEATURED_BLOG_POSTS;
-  const featured = blogs[0];
+type Props = {
+  posts: HomeFeaturedBlogPost[];
+};
+
+export default function Blog({ posts }: Props) {
+  if (posts.length === 0) return null;
+
+  const featured = posts[0];
 
   return (
     <section className="py-8 lg:py-16 bg-gray-50">
@@ -21,7 +27,7 @@ export default function Blog() {
 
         <div className="lg:hidden overflow-x-auto scrollbar-none -mx-4 px-4">
           <div className="flex gap-3 pb-2 w-max">
-            {blogs.map(b => (
+            {posts.map(b => (
               <Link key={b.id} href={b.href} className="group flex w-[320px] shrink-0 bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-lg transition-all">
                 <div className="w-[120px] shrink-0 overflow-hidden">
                   <img src={b.img} alt={b.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
@@ -51,7 +57,7 @@ export default function Blog() {
               <h3 className="font-semibold text-base text-gray-900 leading-snug line-clamp-3 group-hover:text-[#16a34a] transition-colors">{featured.title}</h3>
             </div>
           </Link>
-          {blogs.slice(1).map(b => (
+          {posts.slice(1).map(b => (
             <Link key={b.id} href={b.href} className="group bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-lg transition-all">
               <div className="relative h-36 overflow-hidden">
                 <img src={b.img} alt={b.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />

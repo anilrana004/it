@@ -1,92 +1,148 @@
 'use client';
-import { useState } from 'react';
-import { bookings as storeBookings, updateBookingStatus } from '@/lib/admin/store';
-import { CalendarCheck, Search } from 'lucide-react';
+
+import { useCallback, useEffect, useState } from 'react';
+import { CalendarCheck } from 'lucide-react';
+import {
+  fetchAdminBookings,
+  patchBookingStatus,
+} from '@/lib/admin/operations-api';
+import type { Booking, BookingStatus } from '@/lib/operations/types';
+import AdminDbUnavailable, { AdminLoading } from '@/components/admin/AdminDbState';
+import AdminBadge, { statusToBadge } from '@/components/admin/ui/AdminBadge';
+import AdminCard from '@/components/admin/ui/AdminCard';
+import AdminEmptyState from '@/components/admin/ui/AdminEmptyState';
+import AdminPageHeader from '@/components/admin/ui/AdminPageHeader';
+import AdminSearchInput from '@/components/admin/ui/AdminSearchInput';
+import { AdminTableHead, AdminTd, AdminTh, AdminTr, AdminTableWrap } from '@/components/admin/ui/AdminTable';
 
 export default function AdminBookings() {
-  const [b, setB] = useState(storeBookings);
+  const [bookings, setBookings] = useState<Booking[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [dbUnavailable, setDbUnavailable] = useState(false);
   const [search, setSearch] = useState('');
 
-  const filtered = b.filter(book => 
-    book.name.toLowerCase().includes(search.toLowerCase()) ||
-    book.trekTitle.toLowerCase().includes(search.toLowerCase()) ||
-    book.phone.includes(search)
+  const load = useCallback(async () => {
+    setLoading(true);
+    setDbUnavailable(false);
+    try {
+      setBookings(await fetchAdminBookings());
+    } catch {
+      setDbUnavailable(true);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    load();
+  }, [load]);
+
+  const filtered = bookings.filter(
+    (book) =>
+      book.name.toLowerCase().includes(search.toLowerCase()) ||
+      book.trekTitle.toLowerCase().includes(search.toLowerCase()) ||
+      book.phone.includes(search),
   );
 
-  const updateStatus = (id: string, status: string) => {
-    const result = updateBookingStatus(id, status as any);
-    if (result) setB([...storeBookings]);
+  const updateStatus = async (id: string, status: BookingStatus) => {
+    try {
+      await patchBookingStatus(id, status);
+      await load();
+    } catch {
+      /* keep list as-is */
+    }
   };
+
+  if (loading) return <AdminLoading label="Loading bookings…" />;
+  if (dbUnavailable) return <AdminDbUnavailable onRetry={load} />;
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="font-[family-name:var(--font-heading)] text-2xl font-bold text-[#000000]">Bookings</h1>
-          <p className="text-gray-500 text-sm">{b.length} total bookings</p>
-        </div>
-        <div className="relative">
-          <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-          <input type="text" placeholder="Search..." value={search} onChange={e => setSearch(e.target.value)}
-            className="pl-9 pr-4 py-2 rounded-xl border border-gray-200 text-sm outline-none focus:border-[#16a34a] w-48 lg:w-64" />
-        </div>
-      </div>
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-gray-100 bg-gray-50 text-left">
-                <th className="p-4 font-semibold text-gray-600">Name</th>
-                <th className="p-4 font-semibold text-gray-600">Trek</th>
-                <th className="p-4 font-semibold text-gray-600">Package</th>
-                <th className="p-4 font-semibold text-gray-600">Persons</th>
-                <th className="p-4 font-semibold text-gray-600">Date</th>
-                <th className="p-4 font-semibold text-gray-600">Amount</th>
-                <th className="p-4 font-semibold text-gray-600">Status</th>
-                <th className="p-4 font-semibold text-gray-600">Actions</th>
-              </tr>
-            </thead>
+      <AdminPageHeader
+        breadcrumb="Operations"
+        title="Bookings"
+        description={`${bookings.length} total reservations`}
+        actions={
+          <AdminSearchInput
+            placeholder="Search name, trek, phone…"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            wrapperClassName="w-48 lg:w-72"
+          />
+        }
+      />
+
+      <AdminCard padding={false}>
+        {filtered.length === 0 ? (
+          <AdminEmptyState icon={CalendarCheck} title="No bookings found" description="New reservations from the storefront will appear here." />
+        ) : (
+          <AdminTableWrap>
+            <AdminTableHead>
+              <AdminTh>Customer</AdminTh>
+              <AdminTh>Trek</AdminTh>
+              <AdminTh>Package</AdminTh>
+              <AdminTh>Persons</AdminTh>
+              <AdminTh>Date</AdminTh>
+              <AdminTh>Amount</AdminTh>
+              <AdminTh>Status</AdminTh>
+              <AdminTh>Actions</AdminTh>
+            </AdminTableHead>
             <tbody>
-              {filtered.length === 0 ? (
-                <tr><td colSpan={8} className="p-8 text-center text-gray-400">No bookings found</td></tr>
-              ) : filtered.map(book => (
-                <tr key={book.id} className="border-b border-gray-50 hover:bg-gray-50/50">
-                  <td className="p-4">
-                    <div className="font-medium text-gray-800">{book.name}</div>
-                    <div className="text-xs text-gray-400">{book.phone}</div>
-                  </td>
-                  <td className="p-4 text-gray-600">{book.trekTitle}</td>
-                  <td className="p-4"><span className="text-xs font-semibold text-[#16a34a]">{book.package}</span></td>
-                  <td className="p-4 text-gray-600">{book.persons}</td>
-                  <td className="p-4 text-gray-600">{book.date}</td>
-                  <td className="p-4 font-semibold">₹{book.amount.toLocaleString()}</td>
-                  <td className="p-4">
-                    <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${
-                      book.status === 'confirmed' ? 'bg-green-100 text-green-700' : 
-                      book.status === 'pending' ? 'bg-yellow-100 text-yellow-700' : 
-                      book.status === 'cancelled' ? 'bg-red-100 text-red-700' : 
-                      'bg-blue-100 text-blue-700'
-                    }`}>{book.status}</span>
-                  </td>
-                  <td className="p-4">
-                    <div className="flex gap-1">
-                      {book.status === 'pending' && (
+              {filtered.map((book) => (
+                <AdminTr key={book.id}>
+                  <AdminTd>
+                    <p className="font-medium text-slate-800">{book.name}</p>
+                    <p className="text-xs text-slate-400">{book.phone}</p>
+                  </AdminTd>
+                  <AdminTd className="text-slate-600">{book.trekTitle}</AdminTd>
+                  <AdminTd>
+                    <span className="text-xs font-semibold text-emerald-700">{book.package}</span>
+                  </AdminTd>
+                  <AdminTd className="text-slate-600">{book.persons}</AdminTd>
+                  <AdminTd className="text-slate-600">{book.date}</AdminTd>
+                  <AdminTd className="font-semibold tabular-nums">₹{book.amount.toLocaleString()}</AdminTd>
+                  <AdminTd>
+                    <AdminBadge variant={statusToBadge(book.status)} dot>
+                      {book.status}
+                    </AdminBadge>
+                  </AdminTd>
+                  <AdminTd>
+                    <div className="flex flex-wrap gap-1">
+                      {book.status === 'pending' ? (
                         <>
-                          <button onClick={() => updateStatus(book.id, 'confirmed')} className="text-xs font-semibold px-2.5 py-1.5 bg-green-500 text-white rounded-lg hover:bg-green-600">Confirm</button>
-                          <button onClick={() => updateStatus(book.id, 'cancelled')} className="text-xs font-semibold px-2.5 py-1.5 bg-red-500 text-white rounded-lg hover:bg-red-600">Cancel</button>
+                          <button
+                            type="button"
+                            onClick={() => updateStatus(book.id, 'confirmed')}
+                            className="rounded-md bg-emerald-600 px-2.5 py-1.5 text-xs font-semibold text-white hover:bg-emerald-700"
+                          >
+                            Confirm
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => updateStatus(book.id, 'cancelled')}
+                            className="rounded-md bg-rose-600 px-2.5 py-1.5 text-xs font-semibold text-white hover:bg-rose-700"
+                          >
+                            Cancel
+                          </button>
                         </>
-                      )}
-                      {book.status === 'confirmed' && (
-                        <button onClick={() => updateStatus(book.id, 'completed')} className="text-xs font-semibold px-2.5 py-1.5 bg-blue-500 text-white rounded-lg hover:bg-blue-600">Complete</button>
-                      )}
+                      ) : null}
+                      {book.status === 'confirmed' ? (
+                        <button
+                          type="button"
+                          onClick={() => updateStatus(book.id, 'completed')}
+                          className="rounded-md bg-blue-600 px-2.5 py-1.5 text-xs font-semibold text-white hover:bg-blue-700"
+                        >
+                          Complete
+                        </button>
+                      ) : null}
                     </div>
-                  </td>
-                </tr>
+                  </AdminTd>
+                </AdminTr>
               ))}
             </tbody>
-          </table>
-        </div>
-      </div>
+          </AdminTableWrap>
+        )}
+      </AdminCard>
     </div>
   );
 }

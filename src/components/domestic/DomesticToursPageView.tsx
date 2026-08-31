@@ -22,7 +22,7 @@ import {
   packagesByBudget,
   packagesForDestination,
 } from '@/lib/domestic-tours-content';
-import { domesticArticles, domesticReviews } from '@/lib/landing-social-content';
+import { domesticArticles, domesticReviews, type LandingArticle } from '@/lib/landing-social-content';
 import LandingReviewsBlog from '@/components/landing/LandingReviewsBlog';
 import LandingTripCard from '@/components/landing/LandingTripCard';
 import DomesticHero, { domesticSearchDestinationId } from '@/components/domestic/DomesticHero';
@@ -36,7 +36,7 @@ function scrollToId(id: string) {
   el.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-export default function DomesticToursPageView() {
+export default function DomesticToursPageView({ blogArticles }: { blogArticles?: LandingArticle[] }) {
   const [activeId, setActiveId] = useState('explore-india');
   const [stickyStuck, setStickyStuck] = useState(false);
   const [budgetTab, setBudgetTab] = useState<BudgetTab>('under-20k');
@@ -393,7 +393,7 @@ export default function DomesticToursPageView() {
         articles={{
           kicker: 'Blogs',
           title: 'Our blogs',
-          items: domesticArticles,
+          items: blogArticles ?? domesticArticles,
         }}
       />
 

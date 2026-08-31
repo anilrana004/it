@@ -1,11 +1,13 @@
 import InternationalGetawaysPageView from '@/components/international/InternationalGetawaysPageView';
+import { getInternationalLandingArticles } from '@/lib/knowledge/landing-page-articles';
 
 export const metadata = {
-  title: 'International Getaways | Everest & Annapurna Treks in Nepal | Indian Treks',
+  title: 'International Getaways | Nepal, Bhutan & Beyond | Indian Treks',
   description:
-    'International Himalayan treks from Indian Treks — Everest Base Camp, Annapurna Base Camp and Annapurna Circuit. Permits, lodges and guided departures planned from India.',
+    'International group getaways from India — Nepal treks, Bhutan journeys, and curated overseas adventures with Indian Treks.',
 };
 
-export default function InternationalGetawaysPage() {
-  return <InternationalGetawaysPageView />;
+export default async function InternationalGetawaysPage() {
+  const blogArticles = await getInternationalLandingArticles();
+  return <InternationalGetawaysPageView blogArticles={blogArticles} />;
 }

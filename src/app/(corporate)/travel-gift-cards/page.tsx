@@ -1,19 +1,17 @@
 import type { Metadata } from 'next';
-import GiftPurchasePanel from '@/components/corporate/GiftPurchasePanel';
 import LearningProgramLandingView from '@/components/corporate/LearningProgramLandingView';
 import { giftLanding } from '@/lib/corporate/gift-landing';
+import { getTravelGiftCardsLandingArticles, mergeLandingArticles } from '@/lib/knowledge/landing-page-articles';
 
 export const metadata: Metadata = {
-  title: 'Travel Gift Cards | Gift a Himalayan Adventure | Indian Treks',
+  title: 'Travel Gift Cards | Indian Treks',
   description:
-    'Give the gift of the mountains. Indian Treks Travel Gift Cards — personalised e-gifts redeemable on Himalayan treks and yatras, valid for one year.',
+    'Gift Himalayan adventures with Indian Treks travel gift cards — perfect for birthdays, milestones, and experience-led gifting.',
 };
 
-export default function TravelGiftCardsPage() {
+export default async function TravelGiftCardsPage() {
+  const blogArticles = await getTravelGiftCardsLandingArticles();
   return (
-    <LearningProgramLandingView
-      content={giftLanding}
-      beforeInquiry={<GiftPurchasePanel amounts={giftLanding.gift?.amounts} />}
-    />
+    <LearningProgramLandingView content={mergeLandingArticles(giftLanding, blogArticles)} />
   );
 }

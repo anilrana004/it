@@ -21,6 +21,7 @@ import {
 import {
   backpackingArticles,
   backpackingReviews,
+  type LandingArticle,
 } from '@/lib/landing-social-content';
 import LandingReviewsBlog from '@/components/landing/LandingReviewsBlog';
 import LandingTripCard from '@/components/landing/LandingTripCard';
@@ -33,7 +34,7 @@ function scrollToId(id: string) {
   el.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-export default function BackpackingTripsPageView() {
+export default function BackpackingTripsPageView({ blogArticles }: { blogArticles?: LandingArticle[] }) {
   const [activeId, setActiveId] = useState<string>('explore-regions');
   const [pickedDiscovery, setPickedDiscovery] = useState<string | null>(null);
   const [stickyStuck, setStickyStuck] = useState(false);
@@ -257,7 +258,7 @@ export default function BackpackingTripsPageView() {
         articles={{
           kicker: 'From the blog',
           title: 'Guides for your next trip',
-          items: backpackingArticles,
+          items: blogArticles ?? backpackingArticles,
         }}
       />
 

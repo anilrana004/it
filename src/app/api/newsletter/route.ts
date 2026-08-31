@@ -1,17 +1,24 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { addSubscriber } from '@/lib/admin/store';
+import { dbUnavailableResponse } from '@/lib/api/responses';
+import { isDbConfigured } from '@/lib/db';
+import { addSubscriber } from '@/lib/operations/service';
 
 export async function POST(req: NextRequest) {
+  if (!isDbConfigured()) return dbUnavailableResponse();
+
   try {
     const body = await req.json();
     const { email } = body;
-    if (!email) {
+
+    if (!email || typeof email !== 'string') {
       return NextResponse.json({ error: 'Email is required' }, { status: 400 });
     }
-    const result = addSubscriber(email);
+
+    const result = await addSubscriber(email);
     if (!result) {
       return NextResponse.json({ error: 'Already subscribed' }, { status: 409 });
     }
+
     return NextResponse.json(result, { status: 201 });
   } catch {
     return NextResponse.json({ error: 'Invalid request' }, { status: 400 });

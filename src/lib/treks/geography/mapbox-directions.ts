@@ -1,4 +1,6 @@
-const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN ?? '';
+import { getMapboxToken } from '@/lib/env/public-env';
+
+const MAPBOX_TOKEN = getMapboxToken();
 
 export type DirectionsResult = {
   coordinates: [number, number][];

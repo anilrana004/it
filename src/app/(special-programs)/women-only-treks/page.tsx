@@ -1,12 +1,14 @@
 import type { Metadata } from 'next';
 import WomenOnlyTreksPageView from '@/components/special-programs/WomenOnlyTreksPageView';
+import { getWomenOnlyTreksLandingArticles } from '@/lib/knowledge/landing-page-articles';
 
 export const metadata: Metadata = {
-  title: 'Women-Only Treks in the Himalayas | Safe & Supportive Groups | Indian Treks',
+  title: 'Women-Only Treks | All-Girls Himalayan Groups | Indian Treks',
   description:
-    'Join women-only Himalayan treks with supportive groups, clear safety culture, and scenic routes perfect for solo travellers and first-time women trekkers.',
+    'Join women-only Himalayan treks with safe, supportive groups, experienced female leaders, and routes designed for comfort and confidence.',
 };
 
-export default function WomenOnlyTreksPage() {
-  return <WomenOnlyTreksPageView />;
+export default async function WomenOnlyTreksPage() {
+  const blogArticles = await getWomenOnlyTreksLandingArticles();
+  return <WomenOnlyTreksPageView blogArticles={blogArticles} />;
 }

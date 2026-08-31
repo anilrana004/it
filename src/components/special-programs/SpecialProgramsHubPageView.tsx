@@ -1,8 +1,14 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { CONTACT, mailtoUrl, telUrl, whatsappUrl } from '@/lib/contact';
 import { SPECIAL_PROGRAMS } from '@/lib/special-programs-content';
+import type { LandingArticle } from '@/lib/landing-social-content';
 
-export default function SpecialProgramsHubPageView() {
+export default function SpecialProgramsHubPageView({
+  blogArticles = [],
+}: {
+  blogArticles?: LandingArticle[];
+}) {
   return (
     <div className="it-sp-landing">
       <div className="it-sp-landing__wrap">
@@ -72,6 +78,38 @@ export default function SpecialProgramsHubPageView() {
             ))}
           </ul>
         </section>
+
+        {blogArticles.length > 0 ? (
+          <section className="it-sp-landing__blog" aria-labelledby="sp-blog-heading">
+            <div className="it-sp-landing__blog-head">
+              <h2 id="sp-blog-heading" className="it-sp-landing__collections-label">
+                Guides & stories
+              </h2>
+              <Link href="/blog" className="it-sp-landing__blog-all">
+                View all
+                <i className="fa-solid fa-arrow-right" aria-hidden />
+              </Link>
+            </div>
+            <ul className="it-sp-landing__blog-list">
+              {blogArticles.map((article) => (
+                <li key={article.href}>
+                  <Link href={article.href} className="it-sp-landing__blog-card">
+                    <span className="it-sp-landing__blog-media">
+                      <Image src={article.image} alt="" fill sizes="120px" />
+                    </span>
+                    <span className="it-sp-landing__blog-body">
+                      <span className="it-sp-landing__blog-meta">{article.read}</span>
+                      <strong>{article.title}</strong>
+                      {article.excerpt ? (
+                        <span className="it-sp-landing__blog-excerpt">{article.excerpt}</span>
+                      ) : null}
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
       </div>
     </div>
   );

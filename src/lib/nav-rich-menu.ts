@@ -16,6 +16,7 @@ import {
   MapPin,
   Megaphone,
   Mountain,
+  Newspaper,
   Package,
   School,
   Sparkles,
@@ -266,6 +267,15 @@ export const MORE_RICH: RichNavItem[] = [
     iconTile: 'border-emerald-200 bg-emerald-50',
     iconColor: 'text-[#16a34a]',
     live: true,
+  },
+  {
+    id: 'blog',
+    title: 'Blog',
+    subtitle: 'Trek guides & Himalayan stories',
+    href: '/blog',
+    Icon: Newspaper,
+    iconTile: 'border-emerald-200 bg-emerald-50',
+    iconColor: 'text-[#16a34a]',
   },
   {
     id: 'prepare',

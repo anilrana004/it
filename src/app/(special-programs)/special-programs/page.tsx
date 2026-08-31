@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import SpecialProgramsHubPageView from '@/components/special-programs/SpecialProgramsHubPageView';
+import { getSpecialProgramsHubLandingArticles } from '@/lib/knowledge/landing-page-articles';
 
 export const metadata: Metadata = {
   title: 'Special Programs | Indian Treks — Women, Family, Senior & Beginner Treks',
@@ -7,6 +8,7 @@ export const metadata: Metadata = {
     'Curated Himalayan trek collections for women-only groups, senior citizens, families, and beginner-friendly first treks with Indian Treks.',
 };
 
-export default function SpecialProgramsHubPage() {
-  return <SpecialProgramsHubPageView />;
+export default async function SpecialProgramsHubPage() {
+  const blogArticles = await getSpecialProgramsHubLandingArticles();
+  return <SpecialProgramsHubPageView blogArticles={blogArticles} />;
 }

@@ -1,87 +1,152 @@
 'use client';
-import { useState } from 'react';
-import { getGiftCards, addGiftCard } from '@/lib/admin/store';
-import { Gift, Plus, Copy } from 'lucide-react';
+
+import { useCallback, useEffect, useState } from 'react';
+import { Copy, Gift, Plus } from 'lucide-react';
+import {
+  createAdminGiftCard,
+  fetchAdminGiftCards,
+} from '@/lib/admin/operations-api';
+import type { GiftCard } from '@/lib/operations/types';
+import AdminDbUnavailable, { AdminLoading } from '@/components/admin/AdminDbState';
+import AdminBadge, { statusToBadge } from '@/components/admin/ui/AdminBadge';
+import AdminButton from '@/components/admin/ui/AdminButton';
+import AdminCard from '@/components/admin/ui/AdminCard';
+import AdminPageHeader from '@/components/admin/ui/AdminPageHeader';
+import { AdminTableHead, AdminTd, AdminTh, AdminTr, AdminTableWrap } from '@/components/admin/ui/AdminTable';
+
+const inputClass =
+  'h-10 w-full rounded-lg border border-slate-200 px-3.5 text-sm text-slate-900 outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20';
 
 export default function AdminGiftCards() {
-  const [cards, setCards] = useState(getGiftCards());
+  const [cards, setCards] = useState<GiftCard[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [dbUnavailable, setDbUnavailable] = useState(false);
   const [showForm, setShowForm] = useState(false);
+  const [saving, setSaving] = useState(false);
   const [form, setForm] = useState({ amount: 1000, recipientName: '', recipientEmail: '', message: '' });
 
-  const generateCode = () => 'TR' + Math.random().toString(36).substring(2, 10).toUpperCase();
+  const load = useCallback(async () => {
+    setLoading(true);
+    setDbUnavailable(false);
+    try {
+      setCards(await fetchAdminGiftCards());
+    } catch {
+      setDbUnavailable(true);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    load();
+  }, [load]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const code = generateCode();
-    addGiftCard({
-      code, amount: form.amount, balance: form.amount,
-      recipientName: form.recipientName, recipientEmail: form.recipientEmail,
-      message: form.message, status: 'active',
-      expiresAt: new Date(Date.now() + 365*24*60*60*1000).toISOString(),
-    });
-    setCards([...getGiftCards()]);
-    setShowForm(false);
-    setForm({ amount: 1000, recipientName: '', recipientEmail: '', message: '' });
+    setSaving(true);
+    try {
+      await createAdminGiftCard(form);
+      setShowForm(false);
+      setForm({ amount: 1000, recipientName: '', recipientEmail: '', message: '' });
+      await load();
+    } finally {
+      setSaving(false);
+    }
   };
+
+  if (loading) return <AdminLoading label="Loading gift cards…" />;
+  if (dbUnavailable) return <AdminDbUnavailable onRetry={load} />;
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="font-[family-name:var(--font-heading)] text-2xl font-bold text-[#000000]">Gift Cards</h1>
-          <p className="text-gray-500 text-sm">{cards.length} gift cards issued</p>
-        </div>
-        <button onClick={() => setShowForm(!showForm)}
-          className="flex items-center gap-2 bg-[#16a34a] text-white text-sm font-semibold px-4 py-2.5 rounded-full hover:bg-[#15803d] transition-all">
-          <Plus className="w-4 h-4" /> Issue Gift Card
-        </button>
-      </div>
+      <AdminPageHeader
+        breadcrumb="Marketing"
+        title="Gift cards"
+        description={`${cards.length} cards issued`}
+        actions={
+          <AdminButton icon={<Plus className="h-4 w-4" />} onClick={() => setShowForm(!showForm)}>
+            Issue card
+          </AdminButton>
+        }
+      />
 
-      {showForm && (
-        <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 lg:p-6 mb-6 space-y-4">
-          <h3 className="font-bold text-lg">Issue New Gift Card</h3>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <div><label className="block text-sm font-medium text-gray-700 mb-1">Amount (₹)</label><input type="number" required min={500} value={form.amount} onChange={e => setForm(f=>({...f,amount:parseInt(e.target.value)}))} className="w-full px-4 py-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#16a34a] text-sm" /></div>
-            <div><label className="block text-sm font-medium text-gray-700 mb-1">Recipient Name</label><input type="text" required value={form.recipientName} onChange={e => setForm(f=>({...f,recipientName:e.target.value}))} className="w-full px-4 py-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#16a34a] text-sm" /></div>
-            <div><label className="block text-sm font-medium text-gray-700 mb-1">Recipient Email</label><input type="email" required value={form.recipientEmail} onChange={e => setForm(f=>({...f,recipientEmail:e.target.value}))} className="w-full px-4 py-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#16a34a] text-sm" /></div>
-            <div><label className="block text-sm font-medium text-gray-700 mb-1">Message (optional)</label><input type="text" value={form.message} onChange={e => setForm(f=>({...f,message:e.target.value}))} className="w-full px-4 py-2.5 rounded-xl border border-gray-200 outline-none focus:border-[#16a34a] text-sm" /></div>
-          </div>
-          <div className="flex gap-3">
-            <button type="submit" className="bg-[#16a34a] text-white font-semibold px-6 py-2.5 rounded-full text-sm hover:bg-[#15803d]">Issue Card</button>
-            <button type="button" onClick={() => setShowForm(false)} className="border border-gray-200 text-gray-700 font-semibold px-6 py-2.5 rounded-full text-sm hover:bg-gray-50">Cancel</button>
-          </div>
-        </form>
-      )}
+      {showForm ? (
+        <AdminCard className="mb-6">
+          <h3 className="mb-4 text-base font-semibold text-slate-900">Issue new gift card</h3>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+              <div>
+                <label className="mb-1.5 block text-sm font-medium text-slate-700">Amount (₹)</label>
+                <input type="number" required min={500} value={form.amount} onChange={(e) => setForm((f) => ({ ...f, amount: parseInt(e.target.value, 10) }))} className={inputClass} />
+              </div>
+              <div>
+                <label className="mb-1.5 block text-sm font-medium text-slate-700">Recipient name</label>
+                <input type="text" required value={form.recipientName} onChange={(e) => setForm((f) => ({ ...f, recipientName: e.target.value }))} className={inputClass} />
+              </div>
+              <div>
+                <label className="mb-1.5 block text-sm font-medium text-slate-700">Recipient email</label>
+                <input type="email" required value={form.recipientEmail} onChange={(e) => setForm((f) => ({ ...f, recipientEmail: e.target.value }))} className={inputClass} />
+              </div>
+              <div>
+                <label className="mb-1.5 block text-sm font-medium text-slate-700">Message (optional)</label>
+                <input type="text" value={form.message} onChange={(e) => setForm((f) => ({ ...f, message: e.target.value }))} className={inputClass} />
+              </div>
+            </div>
+            <div className="flex gap-2">
+              <AdminButton type="submit" disabled={saving}>{saving ? 'Issuing…' : 'Issue card'}</AdminButton>
+              <AdminButton type="button" variant="secondary" onClick={() => setShowForm(false)}>
+                Cancel
+              </AdminButton>
+            </div>
+          </form>
+        </AdminCard>
+      ) : null}
 
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-gray-100 bg-gray-50 text-left">
-                <th className="p-4 font-semibold text-gray-600">Code</th>
-                <th className="p-4 font-semibold text-gray-600">Recipient</th>
-                <th className="p-4 font-semibold text-gray-600">Amount</th>
-                <th className="p-4 font-semibold text-gray-600">Balance</th>
-                <th className="p-4 font-semibold text-gray-600">Status</th>
-                <th className="p-4 font-semibold text-gray-600">Expires</th>
-              </tr>
-            </thead>
-            <tbody>
-              {cards.map(c => (
-                <tr key={c.id} className="border-b border-gray-50 hover:bg-gray-50/50">
-                  <td className="p-4 font-mono font-semibold text-[#16a34a] flex items-center gap-2">{c.code} <button onClick={() => navigator.clipboard.writeText(c.code)} className="text-gray-400 hover:text-[#16a34a]"><Copy className="w-3.5 h-3.5" /></button></td>
-                  <td className="p-4 text-gray-600">{c.recipientName}<br /><span className="text-xs text-gray-400">{c.recipientEmail}</span></td>
-                  <td className="p-4 font-semibold">₹{c.amount.toLocaleString()}</td>
-                  <td className="p-4 text-gray-600">₹{c.balance.toLocaleString()}</td>
-                  <td className="p-4"><span className={`text-xs font-semibold px-2 py-1 rounded-full ${c.status === 'active' ? 'bg-green-100 text-green-700' : c.status === 'redeemed' ? 'bg-blue-100 text-blue-700' : 'bg-red-100 text-red-700'}`}>{c.status}</span></td>
-                  <td className="p-4 text-gray-500 text-xs">{new Date(c.expiresAt).toLocaleDateString()}</td>
-                </tr>
-              ))}
-              {cards.length === 0 && <tr><td colSpan={6} className="p-8 text-center text-gray-400">No gift cards issued</td></tr>}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <AdminCard padding={false}>
+        <AdminTableWrap>
+          <AdminTableHead>
+            <AdminTh>Code</AdminTh>
+            <AdminTh>Recipient</AdminTh>
+            <AdminTh>Amount</AdminTh>
+            <AdminTh>Balance</AdminTh>
+            <AdminTh>Status</AdminTh>
+            <AdminTh>Expires</AdminTh>
+          </AdminTableHead>
+          <tbody>
+            {cards.map((c) => (
+              <AdminTr key={c.id}>
+                <AdminTd>
+                  <span className="inline-flex items-center gap-2 font-mono font-semibold text-emerald-700">
+                    {c.code}
+                    <button type="button" onClick={() => navigator.clipboard.writeText(c.code)} className="text-slate-400 hover:text-emerald-600">
+                      <Copy className="h-3.5 w-3.5" />
+                    </button>
+                  </span>
+                </AdminTd>
+                <AdminTd className="text-slate-600">
+                  {c.recipientName}
+                  <br />
+                  <span className="text-xs text-slate-400">{c.recipientEmail}</span>
+                </AdminTd>
+                <AdminTd className="font-semibold tabular-nums">₹{c.amount.toLocaleString()}</AdminTd>
+                <AdminTd className="tabular-nums text-slate-600">₹{c.balance.toLocaleString()}</AdminTd>
+                <AdminTd>
+                  <AdminBadge variant={statusToBadge(c.status)}>{c.status}</AdminBadge>
+                </AdminTd>
+                <AdminTd className="text-xs text-slate-500">{new Date(c.expiresAt).toLocaleDateString()}</AdminTd>
+              </AdminTr>
+            ))}
+            {cards.length === 0 ? (
+              <AdminTr>
+                <AdminTd colSpan={6} className="py-12 text-center text-slate-400">
+                  <Gift className="mx-auto mb-2 h-8 w-8 opacity-40" />
+                  No gift cards issued yet
+                </AdminTd>
+              </AdminTr>
+            ) : null}
+          </tbody>
+        </AdminTableWrap>
+      </AdminCard>
     </div>
   );
 }

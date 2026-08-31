@@ -1,44 +1,78 @@
 'use client';
-import { users } from '@/lib/admin/store';
+
+import { useCallback, useEffect, useState } from 'react';
 import { Users as UsersIcon } from 'lucide-react';
+import { fetchAdminUsers } from '@/lib/admin/operations-api';
+import type { SiteUser } from '@/lib/operations/types';
+import AdminDbUnavailable, { AdminLoading } from '@/components/admin/AdminDbState';
+import AdminBadge from '@/components/admin/ui/AdminBadge';
+import AdminCard from '@/components/admin/ui/AdminCard';
+import AdminEmptyState from '@/components/admin/ui/AdminEmptyState';
+import AdminPageHeader from '@/components/admin/ui/AdminPageHeader';
+import { AdminTableHead, AdminTd, AdminTh, AdminTr, AdminTableWrap } from '@/components/admin/ui/AdminTable';
 
 export default function AdminUsers() {
+  const [users, setUsers] = useState<SiteUser[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [dbUnavailable, setDbUnavailable] = useState(false);
+
+  const load = useCallback(async () => {
+    setLoading(true);
+    setDbUnavailable(false);
+    try {
+      setUsers(await fetchAdminUsers());
+    } catch {
+      setDbUnavailable(true);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    load();
+  }, [load]);
+
+  if (loading) return <AdminLoading label="Loading users…" />;
+  if (dbUnavailable) return <AdminDbUnavailable onRetry={load} />;
+
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="font-[family-name:var(--font-heading)] text-2xl font-bold text-[#000000]">Users</h1>
-          <p className="text-gray-500 text-sm">{users.length} registered users</p>
-        </div>
-      </div>
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-gray-100 bg-gray-50 text-left">
-                <th className="p-4 font-semibold text-gray-600">Name</th>
-                <th className="p-4 font-semibold text-gray-600">Email</th>
-                <th className="p-4 font-semibold text-gray-600">Phone</th>
-                <th className="p-4 font-semibold text-gray-600">Role</th>
-                <th className="p-4 font-semibold text-gray-600">Bookings</th>
-                <th className="p-4 font-semibold text-gray-600">Joined</th>
-              </tr>
-            </thead>
+      <AdminPageHeader
+        breadcrumb="Operations"
+        title="Users"
+        description={`${users.length} registered accounts`}
+      />
+
+      <AdminCard padding={false}>
+        {users.length === 0 ? (
+          <AdminEmptyState icon={UsersIcon} title="No users yet" />
+        ) : (
+          <AdminTableWrap>
+            <AdminTableHead>
+              <AdminTh>Name</AdminTh>
+              <AdminTh>Email</AdminTh>
+              <AdminTh>Phone</AdminTh>
+              <AdminTh>Role</AdminTh>
+              <AdminTh>Bookings</AdminTh>
+              <AdminTh>Joined</AdminTh>
+            </AdminTableHead>
             <tbody>
-              {users.map(u => (
-                <tr key={u.id} className="border-b border-gray-50 hover:bg-gray-50/50">
-                  <td className="p-4 font-medium text-gray-800">{u.name}</td>
-                  <td className="p-4 text-gray-600">{u.email}</td>
-                  <td className="p-4 text-gray-600">{u.phone || '-'}</td>
-                  <td className="p-4"><span className={`text-xs font-semibold px-2 py-1 rounded-full ${u.role === 'admin' ? 'bg-purple-100 text-purple-700' : 'bg-gray-100 text-gray-700'}`}>{u.role}</span></td>
-                  <td className="p-4 text-gray-600">{u.bookings}</td>
-                  <td className="p-4 text-gray-600">{u.createdAt}</td>
-                </tr>
+              {users.map((u) => (
+                <AdminTr key={u.id}>
+                  <AdminTd className="font-medium text-slate-800">{u.name}</AdminTd>
+                  <AdminTd className="text-slate-600">{u.email}</AdminTd>
+                  <AdminTd className="text-slate-600">{u.phone || '—'}</AdminTd>
+                  <AdminTd>
+                    <AdminBadge variant={u.role === 'admin' ? 'purple' : 'neutral'}>{u.role}</AdminBadge>
+                  </AdminTd>
+                  <AdminTd className="text-slate-600">{u.bookings}</AdminTd>
+                  <AdminTd className="text-slate-500">{u.createdAt}</AdminTd>
+                </AdminTr>
               ))}
             </tbody>
-          </table>
-        </div>
-      </div>
+          </AdminTableWrap>
+        )}
+      </AdminCard>
     </div>
   );
 }
