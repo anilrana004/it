@@ -1,3 +1,5 @@
+import { KEDARKANTHA_HERO } from '@/lib/content/treks/kedarkantha/gallery-content';
+
 /**
  * Reliable public photo URLs for hero / banners / category chips.
  * Prefer direct Unsplash + Cloudinary upload URLs — never bare Cloudinary `fetch/` without a source.
@@ -20,7 +22,7 @@ export const photos = {
   triund: u('photo-1454496522488-7a8e488e8606', 800, 800),
   snow: u('photo-1483728642387-6c3bdd6c93e5', 1400, 900),
   vof: cld('v1785367489/pexels-unaizat97-8673607_anl07u.jpg'),
-  kedarkantha: cld('v1785399843/pexels-sanket-barik-2808574-7846473_efonvw.jpg'),
+  kedarkantha: KEDARKANTHA_HERO,
   /** Women-only special program hero — golden-hour ridge trekkers */
   womenTrek: u('photo-1551632811-561732d1e306', 1400, 900),
   seniorTrek: u('photo-1464822759023-fed622ff2c3b', 1400, 900),

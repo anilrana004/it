@@ -1,3 +1,4 @@
+import { KEDARKANTHA_FEATURE, KEDARKANTHA_GALLERY } from "@/lib/content/treks/kedarkantha/gallery-content";
 import { EXTRA_SITE_PACKAGES, applyLiveSitePricing } from "@/lib/site-packages";
 
 export interface PricingTier {
@@ -139,11 +140,7 @@ const baseTreks: Trek[] = [
     distance: "20 km",
     rating: "4.9",
     reviewCount: "10k+",
-    images: [
-      "https://res.cloudinary.com/pg8uhzw0/image/upload/f_auto,q_auto,c_fill,w_1200/v1785399843/pexels-sanket-barik-2808574-7846473_efonvw.jpg",
-      "https://res.cloudinary.com/pg8uhzw0/image/upload/f_auto,q_auto,c_fill,w_1200/v1785399843/pexels-sanket-barik-2808574-7846473_efonvw.jpg",
-      "https://res.cloudinary.com/pg8uhzw0/image/upload/f_auto,q_auto,c_fill,w_1200/v1785399843/pexels-sanket-barik-2808574-7846473_efonvw.jpg",
-    ],
+    images: [...KEDARKANTHA_GALLERY],
     brief: "At 12,500 ft, Kedarkantha is one of India's most loved winter summits — pine forests, frozen Juda Ka Talab, and 360° views of Swargarohini, Black Peak, and Gangotri ranges from Govind Wildlife Sanctuary.",
     description: "Kedarkantha Summit Trek is the perfect winter Himalayan adventure for beginners and seasoned trekkers alike. Starting from Sankri village, the 20 km trail passes Juda Ka Talab, Kedarkantha Base Camp, and Hargaon before the exhilarating summit push at dawn.\n\nOften crowned the Queen of Winter Treks, Kedarkantha transforms into a snow paradise from December to April. March and April bring blooming rhododendrons and mirror-like reflections at Juda Ka Talab.\n\nKey highlights include Sankri's welcoming Pahadi atmosphere, starlit camping at Kedarkantha Base, and summit views of Bandarpoonch, Draupadi ka Danda, Har Ki Dun and Rupin Valleys.",
     highlights: [
@@ -258,7 +255,7 @@ const baseTreks: Trek[] = [
       { q: "How many days does the trek take?", a: "5 days 4 nights from Dehradun to Dehradun including Sankri drive, trek, summit, and return." },
       { q: "What is the best month for snow?", a: "December, January, and February for fresh snow on trails, campsites, and summit." },
     ],
-    mapImage: "https://res.cloudinary.com/pg8uhzw0/image/upload/f_auto,q_auto,c_fill,w_1200/v1785399843/pexels-sanket-barik-2808574-7846473_efonvw.jpg",
+    mapImage: KEDARKANTHA_FEATURE,
     groupSize: "6-15 persons",
     startEndPoint: "Dehradun to Dehradun",
   },

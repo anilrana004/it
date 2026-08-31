@@ -203,8 +203,17 @@ function seatFillPercent(batch: TrekBatch) {
 
 /** Builds a de-duplicated gallery large enough for the reference grid. */
 function galleryImages(trek: Trek): string[] {
+  const trekImgs = trek.images.map((src) => safeImage(src, trekPhoto(trek.id)));
+  const unique = [...new Set(trekImgs)];
+
+  if (unique.length >= 3) {
+    const map = safeImage(trek.mapImage, '');
+    if (map && !unique.includes(map)) return [...unique, map].slice(0, 12);
+    return unique.slice(0, 12);
+  }
+
   const pool = [
-    ...trek.images.map((src) => safeImage(src, trekPhoto(trek.id))),
+    ...unique,
     safeImage(trek.mapImage, trekPhoto(trek.id)),
     photos.uttarakhand,
     photos.himachal,

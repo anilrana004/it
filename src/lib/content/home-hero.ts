@@ -1,5 +1,6 @@
 import type { BannerItem } from '@/components/Banners';
 import type { CategoryItem } from '@/components/home/CategoryScroller';
+import { KEDARKANTHA_FEATURE } from '@/lib/content/treks/kedarkantha/gallery-content';
 import { photos } from '@/lib/media';
 
 export type HeroMobileBanner = {
@@ -61,7 +62,7 @@ export const HERO_CATEGORY_ITEMS: CategoryItem[] = [
 
 export const HERO_DESK_SLIDES: HeroDesktopSlide[] = [
   { id: 'valley-of-flowers', name: 'Valley of Flowers Trek', sub: 'UNESCO Himalayan Paradise - Alpine meadows, rare flora & stunning snow-capped vistas', img: photos.vof, featureImg: photos.vof, t: 'trek', rating: '4.8', duration: '6D/5N', difficulty: 'Moderate', altitude: '14,107 ft', distance: '38 km', reviews: '8k+', season: 'Jul-Sep', group: '6-15' },
-  { id: 'kedarkantha', name: 'Kedarkantha Trek', sub: 'Winter Wonderland - Snow-trailed summit with 360- Himalayan panoramas', img: photos.kedarkantha, featureImg: photos.snow, t: 'trek', rating: '4.9', duration: '5D/4N', difficulty: 'Easy-Moderate', altitude: '12,500 ft', distance: '22 km', reviews: '10k+', season: 'Dec-Apr', group: '6-15' },
+  { id: 'kedarkantha', name: 'Kedarkantha Trek', sub: 'Winter Wonderland - Snow-trailed summit with 360- Himalayan panoramas', img: photos.kedarkantha, featureImg: KEDARKANTHA_FEATURE, t: 'trek', rating: '4.9', duration: '5D/4N', difficulty: 'Easy-Moderate', altitude: '12,500 ft', distance: '22 km', reviews: '10k+', season: 'Dec-Apr', group: '6-15' },
   { id: 'kedarnath-yatra', name: 'Kedarnath Yatra', sub: 'Sacred Pilgrimage - One of the 12 Jyotirlingas in the Char Dham circuit', img: photos.yatra, featureImg: photos.yatra, t: 'yatra', rating: '4.8', duration: '6D/5N', difficulty: 'Moderate', altitude: '11,755 ft', distance: '16 km', reviews: '12k+', season: 'May-Oct', group: '10-30' },
   { id: 'everest-base-camp', name: 'Everest Base Camp Trek', sub: 'Ultimate Himalayan Dream - Trek to the foot of the world\'s highest peak', img: photos.ebc, featureImg: photos.ebc, t: 'trek', rating: '4.9', duration: '14D/13N', difficulty: 'Moderate', altitude: '17,598 ft', distance: '130 km', reviews: '20k+', season: 'Mar-May,Oct-Nov', group: '4-12' },
   { id: 'hampta-pass', name: 'Hampta Pass Trek', sub: 'Cross-over Adventure - Lush green Kullu meets barren Spiti valley', img: photos.hampta, featureImg: photos.himachal, t: 'trek', rating: '4.7', duration: '5D/4N', difficulty: 'Moderate', altitude: '14,100 ft', distance: '26 km', reviews: '8k+', season: 'Jun-Oct', group: '6-14' },
