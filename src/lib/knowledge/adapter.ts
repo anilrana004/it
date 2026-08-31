@@ -304,43 +304,45 @@ export async function fetchRelatedBlogPosts(
   count = 3,
   pageEntityType: EntityType = 'trek',
 ): Promise<RelatedPost[]> {
-  if (isDbConfigured()) {
-    const linked = await getPostsByEntity({
+  const linked = await withStorefrontDb(() =>
+    getPostsByEntity({
       entityType: pageEntityType,
       entityId: subject.id,
       section: 'blog',
       limit: count,
-    });
+    }),
+  );
 
-    if (linked.length > 0) {
-      return linked.map((post) => ({
+  if (linked && linked.length > 0) {
+    return linked.map((post) => ({
+      ...knowledgePostToBlogPost(post),
+      related: true,
+    }));
+  }
+
+  const related = await withStorefrontDb(() =>
+    getDbRelatedPosts({
+      entityType: pageEntityType,
+      entityId: subject.id,
+      section: 'blog',
+      limit: count,
+    }),
+  );
+
+  if (related && related.length > 0) {
+    return related.map((post) => {
+      const isPrimary =
+        post.primaryEntityType === pageEntityType && post.primaryEntityId === subject.id;
+      const hasExplicitLink = post.entityLinks.some(
+        (link) =>
+          (link.entityType === 'trek' || link.entityType === 'trip' || link.entityType === 'yatra') &&
+          link.entityId === subject.id,
+      );
+      return {
         ...knowledgePostToBlogPost(post),
-        related: true,
-      }));
-    }
-
-    const related = await getDbRelatedPosts({
-      entityType: pageEntityType,
-      entityId: subject.id,
-      section: 'blog',
-      limit: count,
+        related: isPrimary || hasExplicitLink,
+      };
     });
-
-    if (related.length > 0) {
-      return related.map((post) => {
-        const isPrimary =
-          post.primaryEntityType === pageEntityType && post.primaryEntityId === subject.id;
-        const hasExplicitLink = post.entityLinks.some(
-          (link) =>
-            (link.entityType === 'trek' || link.entityType === 'trip' || link.entityType === 'yatra') &&
-            link.entityId === subject.id,
-        );
-        return {
-          ...knowledgePostToBlogPost(post),
-          related: isPrimary || hasExplicitLink,
-        };
-      });
-    }
   }
 
   return getStaticRelatedPosts(subject, count);
@@ -356,11 +358,9 @@ export async function fetchBlogsByTrek(trekId: string, limit = 10): Promise<Blog
 }
 
 export async function fetchBlogsByEntity(filter: PostsByEntityFilter): Promise<BlogPost[]> {
-  if (isDbConfigured()) {
-    const posts = await getPostsByEntity(filter);
-    if (posts.length > 0) return posts.map(knowledgePostToBlogPost);
-    return [];
-  }
+  const posts = await withStorefrontDb(() => getPostsByEntity(filter));
+  if (posts && posts.length > 0) return posts.map(knowledgePostToBlogPost);
+  if (posts) return [];
 
   if (filter.entityType === 'trek') {
     return blogPosts.filter((post) => post.treks?.includes(filter.entityId));
@@ -375,8 +375,10 @@ export async function fetchPublishedBlogPostsByEntity(
   const limit = filter.limit ?? 20;
   const offset = filter.offset ?? 0;
 
-  if (isDbConfigured()) {
-    const posts = await getPostsByEntity({ ...filter, limit: limit + offset + 50 });
+  const posts = await withStorefrontDb(() =>
+    getPostsByEntity({ ...filter, limit: limit + offset + 50 }),
+  );
+  if (posts) {
     const slice = posts.slice(offset, offset + limit);
     if (slice.length > 0 || posts.length > 0) {
       return {
@@ -420,37 +422,41 @@ export async function fetchPublishedBlogPostsByTopic(
     return fetchPublishedBlogPosts(options);
   }
 
-  if (isDbConfigured()) {
-    let result: PaginatedPostsResult | null = null;
+  let result: PaginatedPostsResult | null = null;
 
-    if (topic.entityType) {
-      result = await getPublishedPostsByEntityType(topic.entityType, {
+  if (topic.entityType) {
+    result = await withStorefrontDb(() =>
+      getPublishedPostsByEntityType(topic.entityType!, {
         section: 'blog',
         limit,
         offset,
-      });
-    } else if (topic.contentType) {
-      result = await getPublishedPostsPaginated({
+      }),
+    );
+  } else if (topic.contentType) {
+    result = await withStorefrontDb(() =>
+      getPublishedPostsPaginated({
         section: 'blog',
         contentType: topic.contentType,
         limit,
         offset,
-      });
-    } else if (topic.tag) {
-      result = await getPublishedPostsPaginated({
+      }),
+    );
+  } else if (topic.tag) {
+    result = await withStorefrontDb(() =>
+      getPublishedPostsPaginated({
         section: 'blog',
         tag: topic.tag,
         limit,
         offset,
-      });
-    }
+      }),
+    );
+  }
 
-    if (result && (result.posts.length > 0 || result.total > 0)) {
-      return {
-        ...result,
-        items: result.posts.map(knowledgePostToBlogPost),
-      };
-    }
+  if (result && (result.posts.length > 0 || result.total > 0)) {
+    return {
+      ...result,
+      items: result.posts.map(knowledgePostToBlogPost),
+    };
   }
 
   const staticFiltered = blogPosts.filter((post) => {
@@ -469,10 +475,11 @@ export async function fetchRelatedBlogPostsForArticle(
   slug: string,
   limit = 4,
 ): Promise<BlogPost[]> {
-  if (isDbConfigured()) {
-    const related = await getDbRelatedPosts({ excludeSlug: slug, section: 'blog', limit });
-    if (related.length > 0) return related.map(knowledgePostToBlogPost);
-  }
+  const related = await withStorefrontDb(() =>
+    getDbRelatedPosts({ excludeSlug: slug, section: 'blog', limit }),
+  );
+  if (related && related.length > 0) return related.map(knowledgePostToBlogPost);
+
   const current = blogPosts.find((post) => post.slug === slug);
   if (!current) return blogPosts.slice(0, limit);
   return getStaticRelatedPosts(
