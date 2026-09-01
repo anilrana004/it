@@ -1,28 +1,41 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import type { BlogTocItem } from '@/components/BlogMarkdown';
 
-type Props = {
-  items: BlogTocItem[];
-  variant?: 'sidebar' | 'inline';
-};
+const SCROLL_OFFSET = 88;
 
-export default function BlogArticleToc({ items, variant = 'sidebar' }: Props) {
+function scrollToSection(id: string) {
+  const el = document.getElementById(id);
+  if (!el) return;
+
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const top = el.getBoundingClientRect().top + window.scrollY - SCROLL_OFFSET;
+
+  window.scrollTo({
+    top: Math.max(0, top),
+    behavior: prefersReducedMotion ? 'auto' : 'smooth',
+  });
+
+  window.history.replaceState(null, '', `#${id}`);
+}
+
+function useBlogArticleToc(items: BlogTocItem[]) {
   const [activeId, setActiveId] = useState<string | null>(items[0]?.id ?? null);
-  const [open, setOpen] = useState(true);
-  const listRef = useRef<HTMLOListElement>(null);
-  const isInline = variant === 'inline';
+  const isUserScrolling = useRef(false);
+  const scrollTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const listScrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (items.length === 0) return;
 
     let frame = 0;
-    const offset = 140;
 
     const update = () => {
       frame = 0;
-      const checkpoint = window.scrollY + offset;
+      if (isUserScrolling.current) return;
+
+      const checkpoint = window.scrollY + SCROLL_OFFSET + 24;
       let current = items[0].id;
 
       for (const item of items) {
@@ -32,7 +45,8 @@ export default function BlogArticleToc({ items, variant = 'sidebar' }: Props) {
           current = item.id;
         }
       }
-      setActiveId(current);
+
+      setActiveId((prev) => (prev === current ? prev : current));
     };
 
     const onScroll = () => {
@@ -50,16 +64,41 @@ export default function BlogArticleToc({ items, variant = 'sidebar' }: Props) {
     };
   }, [items]);
 
+  const handleSectionClick = useCallback((id: string, onNavigate?: () => void) => {
+    isUserScrolling.current = true;
+    if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
+
+    setActiveId(id);
+    scrollToSection(id);
+    onNavigate?.();
+
+    scrollTimeout.current = setTimeout(() => {
+      isUserScrolling.current = false;
+    }, 800);
+  }, []);
+
   useEffect(() => {
-    if (!activeId || !listRef.current) return;
-    const activeLink = listRef.current.querySelector<HTMLAnchorElement>(`a[href="#${activeId}"]`);
-    activeLink?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-  }, [activeId]);
+    return () => {
+      if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
+    };
+  }, []);
 
-  if (items.length === 0) return null;
+  const activeItem = items.find((item) => item.id === activeId) ?? items[0];
 
-  const list = (
-    <ol ref={listRef} className="it-blog__toc-list">
+  return { activeId, activeItem, handleSectionClick, listScrollRef };
+}
+
+function TocList({
+  items,
+  activeId,
+  onSelect,
+}: {
+  items: BlogTocItem[];
+  activeId: string | null;
+  onSelect: (id: string) => void;
+}) {
+  return (
+    <ol className="it-blog__toc-list">
       {items.map((item) => (
         <li
           key={item.id}
@@ -67,7 +106,10 @@ export default function BlogArticleToc({ items, variant = 'sidebar' }: Props) {
         >
           <a
             href={`#${item.id}`}
-            onClick={() => setOpen(false)}
+            onClick={(event) => {
+              event.preventDefault();
+              onSelect(item.id);
+            }}
             aria-current={activeId === item.id ? 'location' : undefined}
           >
             {item.title}
@@ -76,23 +118,100 @@ export default function BlogArticleToc({ items, variant = 'sidebar' }: Props) {
       ))}
     </ol>
   );
+}
 
-  if (isInline) {
+type Props = {
+  items: BlogTocItem[];
+  variant?: 'sidebar' | 'mobile';
+};
+
+export default function BlogArticleToc({ items, variant = 'sidebar' }: Props) {
+  const [open, setOpen] = useState(false);
+  const [sheetOpen, setSheetOpen] = useState(false);
+  const { activeId, activeItem, handleSectionClick, listScrollRef } = useBlogArticleToc(items);
+
+  useEffect(() => {
+    if (variant !== 'sidebar' || !activeId || !listScrollRef.current) return;
+    const activeLink = listScrollRef.current.querySelector<HTMLAnchorElement>(
+      `a[href="#${activeId}"]`,
+    );
+    activeLink?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  }, [activeId, variant, listScrollRef]);
+
+  useEffect(() => {
+    if (variant !== 'mobile' || !sheetOpen) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setSheetOpen(false);
+    };
+
+    document.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener('keydown', onKeyDown);
+    };
+  }, [variant, sheetOpen]);
+
+  if (items.length === 0) return null;
+
+  if (variant === 'mobile') {
     return (
-      <nav className="it-blog__toc it-blog__toc--inline" aria-label="On this page">
-        <div className="it-blog__toc-inline-head">
-          <span className="it-blog__toc-inline-icon" aria-hidden>
-            <i className="fa-solid fa-list-ul" />
+      <div className="it-blog__toc-mobile" data-open={sheetOpen ? 'true' : 'false'}>
+        <button
+          type="button"
+          className="it-blog__toc-fab"
+          aria-expanded={sheetOpen}
+          aria-controls="blog-toc-mobile-sheet"
+          onClick={() => setSheetOpen(true)}
+        >
+          <i className="fa-solid fa-list-ul" aria-hidden />
+          <span className="it-blog__toc-fab-text">
+            <span className="it-blog__toc-fab-kicker">Jump to section</span>
+            <span className="it-blog__toc-fab-title">{activeItem?.title ?? 'Sections'}</span>
           </span>
-          <div>
-            <p className="it-blog__toc-label">On this page</p>
-            <p className="it-blog__toc-inline-sub">
-              {items.length} sections · tap to jump
-            </p>
+        </button>
+
+        <div
+          className={`it-blog__toc-sheet-backdrop${sheetOpen ? ' is-open' : ''}`}
+          onClick={() => setSheetOpen(false)}
+          aria-hidden={!sheetOpen}
+        />
+
+        <div
+          id="blog-toc-mobile-sheet"
+          className={`it-blog__toc-sheet${sheetOpen ? ' is-open' : ''}`}
+          role="dialog"
+          aria-modal={sheetOpen}
+          aria-label="Jump to section"
+          aria-hidden={!sheetOpen}
+        >
+          <div className="it-blog__toc-sheet-handle" aria-hidden />
+          <div className="it-blog__toc-sheet-head">
+            <div>
+              <p className="it-blog__toc-sheet-kicker">On this page</p>
+              <h2 className="it-blog__toc-sheet-title">Jump to section</h2>
+            </div>
+            <button
+              type="button"
+              className="it-blog__toc-sheet-close"
+              aria-label="Close section menu"
+              onClick={() => setSheetOpen(false)}
+            >
+              <i className="fa-solid fa-xmark" aria-hidden />
+            </button>
+          </div>
+          <div className="it-blog__toc-sheet-scroll">
+            <TocList
+              items={items}
+              activeId={activeId}
+              onSelect={(id) => handleSectionClick(id, () => setSheetOpen(false))}
+            />
           </div>
         </div>
-        {list}
-      </nav>
+      </div>
     );
   }
 
@@ -110,8 +229,18 @@ export default function BlogArticleToc({ items, variant = 'sidebar' }: Props) {
       </button>
 
       <div className={`it-blog__toc-panel${open ? ' is-open' : ''}`}>
-        <p className="it-blog__toc-label">Jump to section</p>
-        {list}
+        <div className="it-blog__toc-sticky">
+          <p className="it-blog__toc-label">Jump to section</p>
+          <div className="it-blog__toc-scroll" ref={listScrollRef}>
+            <TocList
+              items={items}
+              activeId={activeId}
+              onSelect={(id) => {
+                handleSectionClick(id, () => setOpen(false));
+              }}
+            />
+          </div>
+        </div>
       </div>
     </nav>
   );

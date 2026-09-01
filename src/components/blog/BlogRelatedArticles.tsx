@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { blogDateLong, blogExcerpt, blogPath, type BlogPost } from '@/lib/blog';
+import { blogExcerpt, blogPath, type BlogPost } from '@/lib/blog';
 import { cldBlogImage } from '@/lib/cloudinary';
 import { safeImage } from '@/lib/safe-image';
 
@@ -16,7 +16,7 @@ export default function BlogRelatedArticles({
     <section className="it-blog__related" aria-labelledby="blog-related-heading">
       <div className="it-blog__related-head">
         <h2 id="blog-related-heading">{title}</h2>
-        <Link href="/blog">View all</Link>
+        <Link href="/blog">See all</Link>
       </div>
       <ul className="it-blog__related-grid">
         {posts.map((post) => (
@@ -34,7 +34,7 @@ export default function BlogRelatedArticles({
               </span>
               <span className="it-blog__related-body">
                 <span className="it-blog__related-meta">
-                  {post.read} · {blogDateLong(post.publishedAt)}
+                  {post.categories?.[0] ?? 'Trek Guides'} · {post.read}
                 </span>
                 <strong>{post.title}</strong>
                 <span>{post.description ?? blogExcerpt(post.content, 120)}</span>

@@ -1,4 +1,5 @@
 import { KEDARKANTHA_FEATURE, KEDARKANTHA_GALLERY } from "@/lib/content/treks/kedarkantha/gallery-content";
+import { photos } from "@/lib/media";
 import { EXTRA_SITE_PACKAGES, applyLiveSitePricing } from "@/lib/site-packages";
 
 export interface PricingTier {
@@ -81,11 +82,7 @@ const baseTreks: Trek[] = [
     distance: "38 km",
     rating: "4.8",
     reviewCount: "8k+",
-    images: [
-      "https://res.cloudinary.com/pg8uhzw0/image/upload/v1785367489/pexels-unaizat97-8673607_anl07u.jpg",
-      "https://res.cloudinary.com/pg8uhzw0/image/upload/f_auto,q_auto,c_fill,w_1200/v1785367489/pexels-unaizat97-8673607_anl07u.jpg",
-      "https://res.cloudinary.com/pg8uhzw0/image/upload/f_auto,q_auto,c_fill,w_1200/v1785367489/pexels-unaizat97-8673607_anl07u.jpg",
-    ],
+    images: [photos.vof, photos.vof, photos.vof],
     brief: "The Valley of Flowers is a UNESCO World Heritage Site located in the Western Himalayas of Uttarakhand.",
     description: "The Valley of Flowers Trek is one of the most beautiful treks in India, renowned for its meadows of endemic alpine flowers and the variety of flora.",
     highlights: [
@@ -119,7 +116,7 @@ const baseTreks: Trek[] = [
       { q: "Is this trek suitable for beginners?", a: "Yes, with proper preparation and a good fitness level, beginners can complete this trek." },
       { q: "What should I pack?", a: "Carry warm clothes (layers), waterproof jacket, trekking shoes, sunscreen, sunglasses, water bottle, energy bars, personal medications, and a torch." },
     ],
-    mapImage: "https://res.cloudinary.com/pg8uhzw0/image/upload/f_auto,q_auto,c_fill,w_1200/v1785367489/pexels-unaizat97-8673607_anl07u.jpg",
+    mapImage: photos.vof,
     groupSize: "6-15 persons",
     startEndPoint: "Rishikesh to Rishikesh",
   },

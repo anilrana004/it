@@ -1,4 +1,11 @@
 import crypto from 'crypto';
+import {
+  getCloudinaryApiKey,
+  getCloudinaryApiSecret,
+  getCloudinaryCloudName,
+  getCloudinaryUploadPreset,
+  isCloudinaryUploadConfigured,
+} from '@/lib/env/cloudinary-env';
 
 export type CloudinaryUploadResult = {
   url: string;
@@ -8,31 +15,16 @@ export type CloudinaryUploadResult = {
   height: number;
 };
 
-function cloudName(): string {
-  return (
-    process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME ||
-    process.env.CLOUDINARY_CLOUD_NAME ||
-    'pg8uhzw0'
-  );
-}
-
-export function isCloudinaryUploadConfigured(): boolean {
-  const preset =
-    process.env.CLOUDINARY_UPLOAD_PRESET || process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
-  const hasSigned =
-    Boolean(process.env.CLOUDINARY_API_KEY) && Boolean(process.env.CLOUDINARY_API_SECRET);
-  return Boolean(preset || hasSigned);
-}
+export { isCloudinaryUploadConfigured };
 
 export async function uploadToCloudinary(
   file: File | Blob,
   folder = 'indiantreks/blog',
 ): Promise<CloudinaryUploadResult> {
-  const name = cloudName();
-  const apiKey = process.env.CLOUDINARY_API_KEY;
-  const apiSecret = process.env.CLOUDINARY_API_SECRET;
-  const uploadPreset =
-    process.env.CLOUDINARY_UPLOAD_PRESET || process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
+  const name = getCloudinaryCloudName();
+  const apiKey = getCloudinaryApiKey();
+  const apiSecret = getCloudinaryApiSecret();
+  const uploadPreset = getCloudinaryUploadPreset();
 
   const formData = new FormData();
   formData.append('file', file);

@@ -1,10 +1,10 @@
-import { apiUrl, useExternalApi } from '@/lib/env/api-url';
+import { apiUrl, isExternalApiEnabled } from '@/lib/env/api-url';
 
 const ADMIN_TOKEN_KEY = 'indiantreks_admin_token';
 
 /** Map legacy Next.js `/api/*` paths to Railway `/api/v1/*` paths. */
 export function resolveApiPath(path: string, method?: string): string {
-  if (!useExternalApi()) return path;
+  if (!isExternalApiEnabled()) return path;
 
   if (path === '/api/auth' || path.startsWith('/api/auth?')) {
     return method === 'DELETE' ? apiUrl('/auth/logout') : apiUrl('/auth/login');
@@ -95,7 +95,7 @@ export async function publicApiFetch(input: string, init?: RequestInit): Promise
   const url = resolveApiPath(input, init?.method);
   return fetch(url, {
     ...init,
-    credentials: useExternalApi() ? 'omit' : 'same-origin',
+    credentials: isExternalApiEnabled() ? 'omit' : 'same-origin',
   });
 }
 

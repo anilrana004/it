@@ -4,6 +4,7 @@ import BlogEntityLinks from '@/components/blog/BlogEntityLinks';
 import BlogAuthorityPanel from '@/components/blog/BlogAuthorityPanel';
 import BlogArticleToc from '@/components/blog/BlogArticleToc';
 import BlogArticleProgress from '@/components/blog/BlogArticleProgress';
+import BlogArticleShare from '@/components/blog/BlogArticleShare';
 import BlogRelatedArticles from '@/components/blog/BlogRelatedArticles';
 import BlogRelatedTreks from '@/components/blog/BlogRelatedTreks';
 import BlogSidebar from '@/components/blog/BlogSidebar';
@@ -19,12 +20,16 @@ import type { BreadcrumbItem } from '@/lib/seo/json-ld';
 import Link from 'next/link';
 
 import '@/components/prep/prep-guides.css';
-
 import '@/components/blog/blog-page.css';
 import '@/components/blog/blog-prose.css';
+import '@/components/blog/blog-article.css';
 
 function stripMdLight(text: string) {
   return text.replace(/\*\*/g, '').replace(/\[([^\]]+)\]\([^)]+\)/g, '$1');
+}
+
+function postCategory(post: BlogPost): string {
+  return post.categories?.[0] ?? post.types?.[0] ?? 'Trek Guides';
 }
 
 export default function BlogPostPageView({
@@ -51,56 +56,57 @@ export default function BlogPostPageView({
   const toc = post.markdown ? extractBlogToc(post.content).slice(0, 20) : [];
   const heroImage = post.image ? cldBlogImage(safeImage(post.image), 'featured') : '';
   const articlePath = blogPath(post.slug);
-
-  const category = post.categories?.[0];
+  const category = postCategory(post);
   const updatedLabel = post.updatedAt ? blogDateLong(post.updatedAt.slice(0, 10)) : null;
 
   return (
     <article className="it-blog it-blog--article">
       <BlogArticleProgress />
-      <header className="it-blog__hero it-blog__hero--article it-blog__hero--premium">
-        <div className="it-blog__hero-media" aria-hidden={false}>
-          {heroImage ? <img src={heroImage} alt={post.title} referrerPolicy="no-referrer" /> : null}
-        </div>
-        <div className="it-blog__hero-shade" aria-hidden />
-        <div className="it-blog__hero-inner">
-          <Breadcrumbs items={breadcrumbs} className="it-blog__breadcrumbs" />
-          <div className="it-blog__hero-badges">
-            {category ? (
-              <span className="it-blog__hero-badge it-blog__hero-badge--category">{category}</span>
-            ) : null}
-            {post.authority?.expertReviewed ? (
-              <span className="it-blog__hero-badge it-blog__hero-badge--verified">
-                <i className="fa-solid fa-shield-check" aria-hidden />
-                Expert reviewed
-              </span>
-            ) : null}
-            <span className="it-blog__hero-badge">
-              <i className="fa-solid fa-mountain-sun" aria-hidden />
-              Himalayan guide
-            </span>
+
+      <header className="mono-article-hero">
+        {heroImage ? (
+          <div className="mono-article-hero__media">
+            <img src={heroImage} alt={post.title} loading="eager" referrerPolicy="no-referrer" />
           </div>
-          <h1 className="it-blog__title">{post.title}</h1>
-          {lead ? <p className="it-blog__lead">{lead}</p> : null}
-          <div className="it-blog__chips">
-            <span className="it-blog__chip">
-              <i className="fa-regular fa-calendar" aria-hidden />
-              {blogDateLong(post.publishedAt)}
-            </span>
-            {updatedLabel ? (
-              <span className="it-blog__chip">
-                <i className="fa-solid fa-rotate" aria-hidden />
-                Updated {updatedLabel}
-              </span>
-            ) : null}
-            <span className="it-blog__chip">
-              <i className="fa-regular fa-clock" aria-hidden />
-              {post.read}
-            </span>
-            <span className="it-blog__chip">
-              <i className="fa-solid fa-user" aria-hidden />
-              {post.author}
-            </span>
+        ) : null}
+
+        <div className="mono-article-hero__content">
+          <div className="mono-article-hero__inner">
+            <Breadcrumbs items={breadcrumbs} />
+
+            <div className="mono-article-hero__badges">
+              <span className="mono-kicker">{category}</span>
+              {post.authority?.expertReviewed ? (
+                <span className="mono-article-hero__badge mono-article-hero__badge--verified">
+                  <i className="fa-solid fa-shield-check" aria-hidden />
+                  Expert reviewed
+                </span>
+              ) : null}
+            </div>
+
+            <h1>{post.title}</h1>
+            {lead ? <p className="mono-article-hero__lead">{lead}</p> : null}
+
+            <div className="mono-article-hero__byline">
+              <div className="mono-article-hero__meta">
+                <span>
+                  By <strong>{post.author}</strong>
+                </span>
+                <span aria-hidden>·</span>
+                <span>{blogDateLong(post.publishedAt)}</span>
+                <span aria-hidden>·</span>
+                <span>{post.read}</span>
+                {updatedLabel ? (
+                  <>
+                    <span aria-hidden>·</span>
+                    <span>Updated {updatedLabel}</span>
+                  </>
+                ) : null}
+              </div>
+              <div className="mono-article-hero__share">
+                <BlogArticleShare title={post.title} path={articlePath} />
+              </div>
+            </div>
           </div>
         </div>
       </header>
@@ -117,7 +123,6 @@ export default function BlogPostPageView({
           {post.authority ? <BlogAuthorityPanel authority={post.authority} /> : null}
 
           <div id="article-body" className="it-blog__article">
-            {toc.length > 0 ? <BlogArticleToc items={toc} variant="inline" /> : null}
             {post.markdown ? (
               <BlogMarkdown content={post.content} />
             ) : (
@@ -185,6 +190,8 @@ export default function BlogPostPageView({
           sharePath={articlePath}
         />
       </div>
+
+      {toc.length > 0 ? <BlogArticleToc items={toc} variant="mobile" /> : null}
     </article>
   );
 }

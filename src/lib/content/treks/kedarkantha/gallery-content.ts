@@ -1,26 +1,47 @@
-/** Real Kedarkantha trek photos — Cloudinary-hosted, auto-format for browsers (incl. HEIC). */
-const CLOUD = 'https://res.cloudinary.com/pg8uhzw0/image/upload';
+import { cloudinaryAssetUrl } from '@/lib/cloudinary';
 
+/**
+ * Kedarkantha trek photos — jum1mpl0 Cloudinary collection.
+ * @see https://collection.cloudinary.com/jum1mpl0/9a377cf707ed2f097052f8a0d4bf9b8b
+ */
 export function kedarkanthaImage(path: string, w = 1200): string {
-  return `${CLOUD}/f_auto,q_auto,c_fill,g_auto,w_${w}/${path}`;
+  return cloudinaryAssetUrl(path, { w, crop: 'fill', gravity: 'auto' });
 }
 
+/** Curated hero-first order; duplicates removed at build time. */
 const KEDARKANTHA_IMAGE_PATHS = [
-  'v1788173419/IMG_5641_hcausq.heic',
-  'v1788173431/IMG-20230309-WA0019_k1bkhc.jpg',
-  'v1788173456/IMG-20241118-WA0007_eusuvv.jpg',
-  'v1788173472/IMG-20241210-WA0035_in52ma.jpg',
-  'v1788173487/IMG-20230330-WA0006_yorihf.jpg',
-  'v1788173595/IMG-20230401-WA0034_rrfiju.jpg',
-  'v1788173618/IMG-20231130-WA0039_2_siimus.jpg',
-  'v1788173646/IMG_3372_bi72hc.jpg',
-  'v1788173656/IMG_20240131_152245_oswkz7.jpg',
+  'v1788246754/IMG_5641.heic',
+  'v1788246748/IMG-20230309-WA0019.jpg',
+  'v1788246738/IMG-20241118-WA0007.jpg',
+  'v1788246739/IMG-20241210-WA0035.jpg',
+  'v1788246747/IMG-20230330-WA0006.jpg',
+  'v1788246744/IMG-20230401-WA0034.jpg',
+  'v1788246742/IMG-20231130-WA0039_2.jpg',
+  'v1788246753/IMG_6024.heic',
+  'v1788246750/IMG-20221221-WA0006.jpg',
+  'v1788246746/IMG-20230401-WA0033.jpg',
+  'v1788246743/IMG-20230401-WA0035.jpg',
+  'v1788246740/IMG-20231218-WA0012.jpg',
+  'v1788246739/IMG-20231227-WA0040_1.jpg',
+  'v1788246739/IMG-20240110-WA0004.jpg',
+  'v1788246759/palak-pitroda-t63q3FkRt-E-unsplash.jpg',
+  'v1788246760/ram-kumar-By7tQlz_ymc-unsplash.jpg',
 ] as const;
 
-/** Full gallery for the trek detail hero grid, lightbox, and mobile slider. */
-export const KEDARKANTHA_GALLERY: readonly string[] = KEDARKANTHA_IMAGE_PATHS.map((path) =>
-  kedarkanthaImage(path),
-);
+function uniqueGalleryUrls(paths: readonly string[]): string[] {
+  const seen = new Set<string>();
+  const urls: string[] = [];
+  for (const path of paths) {
+    const url = kedarkanthaImage(path);
+    if (seen.has(url)) continue;
+    seen.add(url);
+    urls.push(url);
+  }
+  return urls;
+}
+
+/** Full gallery for trek detail hero, lightbox, and mobile slider. */
+export const KEDARKANTHA_GALLERY: readonly string[] = uniqueGalleryUrls(KEDARKANTHA_IMAGE_PATHS);
 
 /** Primary hero — summit celebration at 12,500 ft. */
 export const KEDARKANTHA_HERO = KEDARKANTHA_GALLERY[0];

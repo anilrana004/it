@@ -11,23 +11,24 @@ export default function BlogTopicNav() {
 
   return (
     <nav className="blog-topic-nav" aria-label="Browse blog topics">
-      <div className="blog-topic-nav__scroll">
+      <ul className="blog-topic-nav__list">
         {BLOG_TOPICS.map((topic) => {
           const isActive =
             !activeEntity &&
             (topic.id === activeTopic || (topic.id === 'all' && !searchParams.get('topic')));
           return (
-            <Link
-              key={topic.id}
-              href={topic.href}
-              className={`blog-topic-nav__pill${isActive ? ' is-active' : ''}`}
-              title={topic.description}
-            >
-              {topic.label}
-            </Link>
+            <li key={topic.id}>
+              <Link
+                href={topic.href}
+                className={`blog-topic-nav__link${isActive ? ' is-active' : ''}`}
+                title={topic.description}
+              >
+                {topic.label}
+              </Link>
+            </li>
           );
         })}
-      </div>
+      </ul>
     </nav>
   );
 }

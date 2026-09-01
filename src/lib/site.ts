@@ -1,3 +1,5 @@
+import { SITE_LOGO_URL } from '@/lib/brand-assets';
+
 /** Canonical public site origin — override in production via env. */
 export const SITE_URL =
   (process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.indiantreks.in').replace(/\/$/, '');
@@ -8,8 +10,7 @@ export const SITE_DESCRIPTION =
   'Book Himalayan treks and sacred yatras in Uttarakhand, Himachal Pradesh, and Nepal. Trusted adventure travel operator.';
 
 /** Cloudinary wordmark — same asset as site header. */
-export const SITE_LOGO =
-  'https://res.cloudinary.com/pg8uhzw0/image/upload/f_auto,q_auto/v1786284069/indiantreks-01-1-1536x284_af65nt.png';
+export const SITE_LOGO = SITE_LOGO_URL;
 
 export const ORGANIZATION = {
   name: SITE_NAME,

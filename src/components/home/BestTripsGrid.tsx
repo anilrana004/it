@@ -1,8 +1,9 @@
 import Link from 'next/link';
 import { Star, MapPin } from 'lucide-react';
+import { photos } from '@/lib/media';
 
 const trips = [
-  { title: 'Valley of Flowers Trek', loc: 'Joshimath, Uttarakhand', rating: '4.8', rev: '8k+', img: 'https://res.cloudinary.com/pg8uhzw0/image/upload/f_auto,q_auto,w_600,h_400,c_fill,g_auto/v1785367489/pexels-unaizat97-8673607_anl07u.jpg', href: '/treks/valley-of-flowers', badge: 'UNESCO Site' },
+  { title: 'Valley of Flowers Trek', loc: 'Joshimath, Uttarakhand', rating: '4.8', rev: '8k+', img: photos.vof, href: '/treks/valley-of-flowers', badge: 'UNESCO Site' },
   { title: 'Kedarkantha Trek', loc: 'Sankri, Uttarakhand', rating: '4.9', rev: '10k+', img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', href: '/treks/kedarkantha', badge: 'Winter Special' },
   { title: 'Everest Base Camp Trek', loc: 'Lukla, Nepal', rating: '4.9', rev: '20k+', img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', href: '/treks/everest-base-camp', badge: 'Bucket List' },
   { title: 'Hampta Pass Trek', loc: 'Manali, Himachal', rating: '4.7', rev: '8k+', img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80', href: '/treks/hampta-pass', badge: 'Valley Cross' },

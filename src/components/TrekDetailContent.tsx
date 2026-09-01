@@ -201,15 +201,13 @@ function seatFillPercent(batch: TrekBatch) {
   return Math.round(((batch.capacity - batch.seatsLeft) / batch.capacity) * 100);
 }
 
-/** Builds a de-duplicated gallery large enough for the reference grid. */
+/** Builds a de-duplicated gallery for the hero grid and lightbox. */
 function galleryImages(trek: Trek): string[] {
   const trekImgs = trek.images.map((src) => safeImage(src, trekPhoto(trek.id)));
-  const unique = [...new Set(trekImgs)];
+  const unique = [...new Set(trekImgs.filter(Boolean))];
 
   if (unique.length >= 3) {
-    const map = safeImage(trek.mapImage, '');
-    if (map && !unique.includes(map)) return [...unique, map].slice(0, 12);
-    return unique.slice(0, 12);
+    return unique.slice(0, 20);
   }
 
   const pool = [
@@ -537,6 +535,9 @@ export default function TrekDetailContent({
   }, []);
 
   const images = useMemo(() => galleryImages(trek), [trek]);
+  const heroImage = images[0] ?? trekPhoto(trek.id);
+  const sideImageA = images[1] ?? heroImage;
+  const sideImageB = images[2] ?? heroImage;
   const batches = useMemo(() => getDepartureBatches(trek, 4, 3), [trek]);
   const seasons = useMemo(() => getSeasonGuide(trek), [trek]);
   const reachSteps = useMemo(
@@ -872,17 +873,26 @@ export default function TrekDetailContent({
   // ---- Mobile slider ------------------------------------------------------
   const mobileTrackRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    setSlide((current) => (images.length === 0 ? 0 : Math.min(current, images.length - 1)));
+    setLightbox((current) =>
+      current === null || images.length === 0 ? current : Math.min(current, images.length - 1),
+    );
+  }, [images.length]);
+
   const goToSlide = (index: number) => {
     const track = mobileTrackRef.current;
-    if (!track) return;
-    track.scrollTo({ left: index * track.clientWidth, behavior: 'smooth' });
-    setSlide(index);
+    if (!track || images.length === 0) return;
+    const next = Math.max(0, Math.min(index, images.length - 1));
+    track.scrollTo({ left: next * track.clientWidth, behavior: 'smooth' });
+    setSlide(next);
   };
 
   const onMobileScroll = () => {
     const track = mobileTrackRef.current;
-    if (!track || !track.clientWidth) return;
-    setSlide(Math.round(track.scrollLeft / track.clientWidth));
+    if (!track || track.clientWidth <= 0 || images.length === 0) return;
+    const next = Math.round(track.scrollLeft / track.clientWidth);
+    setSlide(Math.max(0, Math.min(next, images.length - 1)));
   };
 
   // ---- Gear + testimonial carousels --------------------------------------
@@ -1034,8 +1044,19 @@ export default function TrekDetailContent({
 
         {/* Desktop gallery */}
         <section className="kg-gallery">
-          <button type="button" className="kg-main" onClick={() => setLightbox(0)}>
-            <img src={images[0]} alt={trek.title} referrerPolicy="no-referrer" />
+          <div
+            className="kg-main"
+            role="button"
+            tabIndex={0}
+            onClick={() => setLightbox(0)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                setLightbox(0);
+              }
+            }}
+          >
+            <img src={heroImage} alt={trek.title} referrerPolicy="no-referrer" />
             <div className="kg-overlay-top">
               <div className="kg-tags">
                 <span className="kg-tag">
@@ -1060,14 +1081,14 @@ export default function TrekDetailContent({
                 <i className="fa-regular fa-images" aria-hidden /> View Photos
               </span>
             </div>
-          </button>
+          </div>
 
           <div className="kg-side">
             <button type="button" className="kg-side-card" onClick={() => setLightbox(1)}>
-              <img src={images[1] ?? images[0]} alt={`${trek.title} photo 2`} referrerPolicy="no-referrer" />
+              <img src={sideImageA} alt={`${trek.title} photo 2`} referrerPolicy="no-referrer" />
             </button>
             <button type="button" className="kg-side-card" onClick={() => setLightbox(2)}>
-              <img src={images[2] ?? images[0]} alt={`${trek.title} photo 3`} referrerPolicy="no-referrer" />
+              <img src={sideImageB} alt={`${trek.title} photo 3`} referrerPolicy="no-referrer" />
               {images.length > 3 && <span className="kg-more-overlay">+{images.length - 3} More</span>}
             </button>
           </div>
@@ -1078,7 +1099,7 @@ export default function TrekDetailContent({
           <div className="kg-mobile-stage">
             <div className="kg-mobile-track" ref={mobileTrackRef} onScroll={onMobileScroll}>
               {images.map((src, i) => (
-                <div className="kg-mobile-slide" key={src}>
+                <div className="kg-mobile-slide" key={`kg-slide-${i}`}>
                   <button type="button" className="kg-main" onClick={() => setLightbox(i)}>
                     <img src={src} alt={`${trek.title} photo ${i + 1}`} referrerPolicy="no-referrer" />
                   </button>
@@ -1090,7 +1111,7 @@ export default function TrekDetailContent({
               {images.slice(0, 4).map((src, i) => (
                 <button
                   type="button"
-                  key={`thumb-${src}`}
+                  key={`kg-thumb-${i}`}
                   className={`kg-mobile-thumb${slide === i ? ' is-active' : ''}`}
                   aria-label={`Go to photo ${i + 1}`}
                   onClick={() => goToSlide(i)}
@@ -1104,10 +1125,10 @@ export default function TrekDetailContent({
             </div>
 
             <div className="kg-mobile-dots">
-              {images.map((src, i) => (
+              {images.map((_, i) => (
                 <button
                   type="button"
-                  key={`dot-${src}`}
+                  key={`kg-dot-${i}`}
                   className={`kg-mobile-dot${slide === i ? ' is-active' : ''}`}
                   aria-label={`Photo ${i + 1}`}
                   onClick={() => goToSlide(i)}

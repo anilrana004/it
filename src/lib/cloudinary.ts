@@ -1,9 +1,4 @@
-const CLOUD_NAME =
-  process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME ||
-  process.env.CLOUDINARY_CLOUD_NAME ||
-  'pg8uhzw0';
-const UPLOAD_BASE = `https://res.cloudinary.com/${CLOUD_NAME}/image/upload`;
-const FETCH_BASE = `https://res.cloudinary.com/${CLOUD_NAME}/image/fetch`;
+import { getCloudinaryCloudName } from '@/lib/env/cloudinary-env';
 
 export type CldCrop = 'fill' | 'fit' | 'scale' | 'pad' | 'thumb';
 
@@ -26,7 +21,27 @@ const BLOG_PRESETS: Record<BlogImageRole, CldOptions> = {
 };
 
 export function cloudinaryCloudName(): string {
-  return CLOUD_NAME;
+  return getCloudinaryCloudName();
+}
+
+function uploadBase(): string {
+  return `https://res.cloudinary.com/${getCloudinaryCloudName()}/image/upload`;
+}
+
+function fetchBase(): string {
+  return `https://res.cloudinary.com/${getCloudinaryCloudName()}/image/fetch`;
+}
+
+/** Build a Cloudinary upload URL from a versioned asset path (e.g. v1234/photo.jpg). */
+export function cloudinaryAssetUrl(assetPath: string, opts?: CldOptions): string {
+  const path = assetPath.replace(/^\//, '');
+  return `${uploadBase()}/${buildTransformSegment(opts)}/${path}`;
+}
+
+/** Normalize stored Cloudinary URLs to the configured account. */
+export function normalizeCloudinaryCloud(url: string): string {
+  const cloud = getCloudinaryCloudName();
+  return url.replace(/res\.cloudinary\.com\/[^/]+\/image\//i, `res.cloudinary.com/${cloud}/image/`);
 }
 
 export function isCloudinaryUrl(src: string): boolean {
@@ -50,19 +65,20 @@ function buildTransformSegment(opts?: CldOptions): string {
 /** Remote or site-relative URL via Cloudinary fetch. */
 export function cldUrl(src: string, opts?: CldOptions): string {
   if (!src) return '';
-  const trimmed = src.trim();
-  if (trimmed.startsWith(FETCH_BASE)) return trimmed;
+  const trimmed = normalizeCloudinaryCloud(src.trim());
+  const fetchBaseUrl = fetchBase();
+  if (trimmed.startsWith(fetchBaseUrl)) return trimmed;
   if (trimmed.startsWith('/') && !trimmed.startsWith('//')) {
     const site = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '') ?? '';
-    if (site) return `${FETCH_BASE}/${buildTransformSegment(opts)}/${encodeURIComponent(`${site}${trimmed}`)}`;
+    if (site) return `${fetchBaseUrl}/${buildTransformSegment(opts)}/${encodeURIComponent(`${site}${trimmed}`)}`;
   }
   if (isCloudinaryUrl(trimmed)) return cldOptimize(trimmed, opts);
-  return `${FETCH_BASE}/${buildTransformSegment(opts)}/${encodeURIComponent(trimmed)}`;
+  return `${fetchBaseUrl}/${buildTransformSegment(opts)}/${encodeURIComponent(trimmed)}`;
 }
 
 /** Rebuild an upload/fetch Cloudinary URL with fresh transforms. */
 export function cldOptimize(src: string, opts?: CldOptions): string {
-  const trimmed = src.trim();
+  const trimmed = normalizeCloudinaryCloud(src.trim());
   if (!trimmed) return '';
 
   if (!isCloudinaryUrl(trimmed)) {

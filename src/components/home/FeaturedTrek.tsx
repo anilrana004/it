@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { MapPin, Clock, TrendingUp, ChevronRight } from 'lucide-react';
+import { photos } from '@/lib/media';
 
 const featured = {
   title: 'Valley of Flowers Trek',
@@ -11,7 +12,7 @@ const featured = {
   reviews: '8k+ reviews',
   price: 8999,
   originalPrice: 11999,
-  img: 'https://res.cloudinary.com/pg8uhzw0/image/upload/f_auto,q_auto,w_800,h_600,c_fill,g_auto/v1785367489/pexels-unaizat97-8673607_anl07u.jpg',
+  img: photos.vof,
   badge: 'Trek of the Week',
   gradient: 'from-[#16a34a] to-[#16a34a]',
   href: '/treks/valley-of-flowers',

@@ -2,14 +2,14 @@
 
 import { RefreshCw } from 'lucide-react';
 import AdminButton from '@/components/admin/ui/AdminButton';
-import { useExternalApi } from '@/lib/env/api-url';
+import { isExternalApiEnabled } from '@/lib/env/api-url';
 
 type Props = {
   onRetry?: () => void;
 };
 
 export default function AdminDbUnavailable({ onRetry }: Props) {
-  const external = useExternalApi();
+  const external = isExternalApiEnabled();
 
   return (
     <div className="mx-auto mt-12 max-w-xl rounded-xl border border-amber-200 bg-amber-50 p-8 text-center shadow-sm">

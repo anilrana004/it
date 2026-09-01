@@ -1,6 +1,6 @@
 import { revalidatePath, revalidateTag } from 'next/cache';
 import { CACHE_TAGS, PUBLIC_ROUTES } from '@/lib/knowledge/config';
-import type { EntityLink, KnowledgePost } from '@/lib/knowledge/types';
+import type { EntityLink, EntityType, KnowledgePost } from '@/lib/knowledge/types';
 
 /**
  * Revalidate storefront paths affected by a published/updated post.
@@ -19,7 +19,7 @@ export function revalidatePostSurfaces(post: KnowledgePost): void {
 export function revalidatePublishedPostSurfaces(payload: {
   slug: string;
   section: string;
-  primaryEntityType?: string | null;
+  primaryEntityType?: EntityType | null;
   primaryEntityId?: string | null;
   entityLinks?: EntityLink[];
 }): void {

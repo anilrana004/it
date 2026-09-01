@@ -1,9 +1,9 @@
 
 function cloudName(): string {
   return (
-    process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME ||
-    process.env.CLOUDINARY_CLOUD_NAME ||
-    'pg8uhzw0'
+    process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME?.trim() ||
+    process.env.CLOUDINARY_CLOUD_NAME?.trim() ||
+    'jum1mpl0'
   );
 }
 
@@ -86,8 +86,10 @@ export async function uploadToCloudinary(
 /** Build featured/inline URLs without Next.js cloudinary helper. */
 export function cldBlogTransform(url: string, width: number): string {
   if (!url.includes('res.cloudinary.com')) return url;
-  const parts = url.split('/upload/');
-  if (parts.length !== 2) return url;
+  const cloud = cloudName();
+  const normalized = url.replace(/res\.cloudinary\.com\/[^/]+\/image\//i, `res.cloudinary.com/${cloud}/image/`);
+  const parts = normalized.split('/upload/');
+  if (parts.length !== 2) return normalized;
   return `${parts[0]}/upload/c_fill,w_${width},q_auto,f_auto/${parts[1]}`;
 }
 

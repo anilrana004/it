@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { ArrowRight, Lock, Mountain, ShieldCheck } from 'lucide-react';
 import { ADMIN_PREFIX } from '@/lib/admin/constants';
 import { clearStoredAdminToken, resolveApiPath, setStoredAdminToken, unwrapApiJson } from '@/lib/api/client';
-import { useExternalApi } from '@/lib/env/api-url';
+import { isExternalApiEnabled } from '@/lib/env/api-url';
 
 export default function AdminLogin() {
   const [form, setForm] = useState({ email: '', password: '' });
@@ -24,7 +24,7 @@ export default function AdminLogin() {
     setError('');
     setLoading(true);
     try {
-      const loginPath = useExternalApi() ? resolveApiPath('/api/auth') : '/api/auth';
+      const loginPath = isExternalApiEnabled() ? resolveApiPath('/api/auth') : '/api/auth';
       const res = await fetch(loginPath, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -32,7 +32,7 @@ export default function AdminLogin() {
         credentials: 'include',
       });
       if (res.ok) {
-        if (useExternalApi()) {
+        if (isExternalApiEnabled()) {
           const body = unwrapApiJson<{ token?: string }>(await res.json());
           if (body.token) setStoredAdminToken(body.token);
         }

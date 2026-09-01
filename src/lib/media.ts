@@ -7,9 +7,6 @@ import { KEDARKANTHA_HERO } from '@/lib/content/treks/kedarkantha/gallery-conten
 const u = (id: string, w = 1200, h = 800) =>
   `https://images.unsplash.com/${id}?ixlib=rb-4.0.3&auto=format&fit=crop&w=${w}&h=${h}&q=80`;
 
-const cld = (path: string, w = 1200) =>
-  `https://res.cloudinary.com/pg8uhzw0/image/upload/f_auto,q_auto,c_fill,g_auto,w_${w}/${path}`;
-
 export const photos = {
   himachal: u('photo-1626621341517-bbf3d9990a23', 1400, 900),
   uttarakhand: u('photo-1506905925346-21bda4d32df4', 1400, 900),
@@ -21,7 +18,7 @@ export const photos = {
   hampta: u('photo-1486870591958-9b9d0d1dda99', 1400, 900),
   triund: u('photo-1454496522488-7a8e488e8606', 800, 800),
   snow: u('photo-1483728642387-6c3bdd6c93e5', 1400, 900),
-  vof: cld('v1785367489/pexels-unaizat97-8673607_anl07u.jpg'),
+  vof: u('photo-1464822759023-fed622ff2c3b', 1400, 900),
   kedarkantha: KEDARKANTHA_HERO,
   /** Women-only special program hero — golden-hour ridge trekkers */
   womenTrek: u('photo-1551632811-561732d1e306', 1400, 900),
@@ -39,9 +36,8 @@ export const photos = {
   backpackingHero: u('photo-1517824809574-7c93d6a3c0c0', 1400, 900),
   /** Altitude sickness guide — trekker above cloud sea */
   altitudeHero: u('photo-1506905925346-21bda4d32df4', 1400, 900),
-  /** Designed promo creative (copy/CTA baked into the asset) — do not crop aggressively */
-  choptaSale:
-    'https://res.cloudinary.com/pg8uhzw0/image/upload/f_auto,q_auto/v1787222468/Screenshot_2026-08-20_161024_qsice7.png',
+  /** Designed promo creative — re-upload to Cloudinary when a new banner asset is ready */
+  choptaSale: u('photo-1464822759023-fed622ff2c3b', 1400, 900),
   /** Rajasthan — Amber Fort & desert heritage */
   rajasthan: u('photo-1477587457783-2cddac358176', 1400, 900),
   /** South India — Kerala backwaters & coastal greenery */

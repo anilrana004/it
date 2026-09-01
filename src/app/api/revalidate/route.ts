@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { ENTITY_TYPES } from '@/lib/knowledge/config';
 import { revalidatePublishedPostSurfaces } from '@/lib/knowledge/revalidation';
-import type { EntityLink, PostSection } from '@/lib/knowledge/types';
+import type { EntityLink, EntityType, PostSection } from '@/lib/knowledge/types';
 
 type RevalidatePayload = {
   slug?: string;
@@ -9,6 +10,11 @@ type RevalidatePayload = {
   primaryEntityId?: string | null;
   entityLinks?: EntityLink[];
 };
+
+function parseEntityType(value: unknown): EntityType | null {
+  if (typeof value !== 'string') return null;
+  return ENTITY_TYPES.includes(value as EntityType) ? (value as EntityType) : null;
+}
 
 export async function POST(req: NextRequest) {
   const secret = process.env.REVALIDATE_SECRET?.trim();
@@ -38,7 +44,7 @@ export async function POST(req: NextRequest) {
   revalidatePublishedPostSurfaces({
     slug,
     section,
-    primaryEntityType: body.primaryEntityType ?? null,
+    primaryEntityType: parseEntityType(body.primaryEntityType),
     primaryEntityId: body.primaryEntityId ?? null,
     entityLinks: Array.isArray(body.entityLinks) ? body.entityLinks : undefined,
   });

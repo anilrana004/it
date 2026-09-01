@@ -30,11 +30,9 @@ export default function BlogNewsPageView({ items, total, page, pageSize, recentP
           </header>
 
           {items.length === 0 ? (
-            <div className="rounded-2xl border border-dashed border-gray-200 bg-white p-10 text-center">
-              <h2 className="text-lg font-bold text-gray-800 mb-2">No travel news yet</h2>
-              <p className="text-sm text-gray-500">
-                Check back soon for policy updates and destination news.
-              </p>
+            <div className="mono-empty">
+              <h2>No travel news yet</h2>
+              <p>Check back soon for policy updates and destination news.</p>
             </div>
           ) : (
             <div className="blog-news__list">
@@ -64,26 +62,27 @@ export default function BlogNewsPageView({ items, total, page, pageSize, recentP
           )}
 
           {totalPages > 1 ? (
-            <nav className="flex items-center justify-center gap-2 mt-8" aria-label="News pagination">
+            <nav className="mono-pagination" aria-label="News pagination">
               {page > 1 ? (
                 <Link
                   href={page === 2 ? '/blog/news' : `/blog/news?page=${page - 1}`}
-                  className="px-4 py-2 rounded-full border border-gray-200 text-sm font-semibold hover:bg-gray-50"
+                  className="mono-pagination__btn"
                 >
                   Previous
                 </Link>
-              ) : null}
-              <span className="text-sm text-gray-500 px-2">
+              ) : (
+                <span />
+              )}
+              <span className="mono-pagination__status">
                 Page {page} of {totalPages}
               </span>
               {page < totalPages ? (
-                <Link
-                  href={`/blog/news?page=${page + 1}`}
-                  className="px-4 py-2 rounded-full border border-gray-200 text-sm font-semibold hover:bg-gray-50"
-                >
+                <Link href={`/blog/news?page=${page + 1}`} className="mono-pagination__btn">
                   Next
                 </Link>
-              ) : null}
+              ) : (
+                <span />
+              )}
             </nav>
           ) : null}
         </div>

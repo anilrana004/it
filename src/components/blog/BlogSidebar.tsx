@@ -2,7 +2,6 @@ import Link from 'next/link';
 import { blogDateLong, blogPath, type BlogPost } from '@/lib/blog';
 import { CONTACT, SOCIAL_LINKS } from '@/lib/contact';
 import BlogNewsletterForm from '@/components/blog/BlogNewsletterForm';
-import BlogArticleShare from '@/components/blog/BlogArticleShare';
 import BlogArticleMeta from '@/components/blog/BlogArticleMeta';
 import './blog-sidebar.css';
 
@@ -35,9 +34,8 @@ export default function BlogSidebar({
 
   return (
     <aside className={`blog-sidebar${post ? ' blog-sidebar--article' : ''}`} aria-label="Blog sidebar">
-      {post && sharePath ? (
+      {post ? (
         <div className="blog-sidebar__article-tools">
-          <BlogArticleShare title={post.title} path={sharePath} />
           <BlogArticleMeta post={post} />
         </div>
       ) : null}

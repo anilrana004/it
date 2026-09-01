@@ -1,4 +1,5 @@
 import { photos } from '@/lib/media';
+import { normalizeCloudinaryCloud } from '@/lib/cloudinary';
 
 /** Broken Cloudinary fetch URLs that end with `/` and have no remote source. */
 export function isBrokenCldFetch(url: string | undefined | null): boolean {
@@ -45,5 +46,5 @@ export function trekPhoto(id: string, fallback: string = photos.uttarakhand): st
 /** Prefer a working src; fall back when Cloudinary fetch is empty/broken. */
 export function safeImage(src: string | undefined, fallback: string = photos.uttarakhand): string {
   if (!src || isBrokenCldFetch(src)) return fallback;
-  return src;
+  return normalizeCloudinaryCloud(src);
 }

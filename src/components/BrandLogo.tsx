@@ -1,5 +1,6 @@
-const LOGO_SRC =
-  'https://res.cloudinary.com/pg8uhzw0/image/upload/f_auto,q_auto/v1786284069/indiantreks-01-1-1536x284_af65nt.png';
+import { SITE_LOGO_URL } from '@/lib/brand-assets';
+
+const LOGO_SRC = SITE_LOGO_URL;
 
 type BrandLogoProps = {
   /** Tailwind size classes. Wide wordmark - keep height modest. */
@@ -18,6 +19,7 @@ export default function BrandLogo({
       height={36}
       className={className}
       decoding="async"
+      fetchPriority="high"
     />
   );
 }

@@ -6,7 +6,7 @@ export function getApiBaseUrl(): string {
 }
 
 /** True when frontends should call the external Railway API instead of local Next.js routes. */
-export function useExternalApi(): boolean {
+export function isExternalApiEnabled(): boolean {
   return Boolean(getApiBaseUrl());
 }
 

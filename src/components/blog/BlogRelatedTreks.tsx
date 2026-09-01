@@ -16,8 +16,8 @@ export default function BlogRelatedTreks({ post }: { post: BlogPost }) {
   return (
     <section className="it-blog__treks" aria-labelledby="blog-treks-heading">
       <div className="it-blog__treks-head">
-        <h2 id="blog-treks-heading">Treks mentioned in this article</h2>
-        <Link href="/treks">Browse all treks</Link>
+        <h2 id="blog-treks-heading">Treks in this story</h2>
+        <Link href="/treks">Browse all</Link>
       </div>
       <ul className="it-blog__treks-grid">
         {treks.map((trek) => (
