@@ -22,7 +22,15 @@ export type TrekExtendedContent = {
   reachSteps?: { title: string; items: { label: string; text: string }[] }[];
   bookingPolicyRows?: [string, string][];
   cancellationPolicyRows?: [string, string][];
-  testimonials?: { name: string; text: string }[];
+  cancellationPolicySection?: TrekRichSection;
+  testimonials?: {
+    name: string;
+    text: string;
+    platform?: 'google' | 'tripadvisor';
+    verifyUrl?: string;
+    posted?: string;
+    rating?: number;
+  }[];
   departure?: {
     pickupTime: string;
     dropTime: string;
@@ -30,4 +38,5 @@ export type TrekExtendedContent = {
     notes: string[];
   };
   routeProfile?: TrekRouteProfileData;
+  packingSection?: TrekRichSection;
 };

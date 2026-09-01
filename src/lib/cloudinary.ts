@@ -107,8 +107,13 @@ export function cldBlogImage(
   return cldOptimize(src.trim(), BLOG_PRESETS[role]);
 }
 
-/** Markdown snippet for an inline or section-break image. */
-export function blogImageMarkdown(url: string, caption = 'Trek photo'): string {
-  const safeCaption = caption.replace(/"/g, "'");
-  return `\n\n![${safeCaption}](${url} "${safeCaption}")\n\n`;
+/** Markdown snippet for an inline article image with optional visible caption. */
+export function blogImageMarkdown(url: string, description = ''): string {
+  const desc = description.trim();
+  const alt = desc || 'Trek photo';
+  const safeDesc = desc.replace(/"/g, "'");
+  if (safeDesc) {
+    return `\n\n![${alt}](${url} "${safeDesc}")\n\n`;
+  }
+  return `\n\n![${alt}](${url})\n\n`;
 }

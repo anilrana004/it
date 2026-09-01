@@ -1,0 +1,178 @@
+/* Kedarkantha fitness — uses .kg-page design tokens from trek-detail.css */
+
+.kg-fit-card {
+  border-radius: var(--kg-card-radius);
+  border: 1px solid var(--kg-card-border);
+  background: var(--kg-card-bg);
+  box-shadow: var(--kg-card-shadow);
+  overflow: hidden;
+}
+
+.kg-fit-head {
+  padding: 24px 24px 8px;
+}
+
+.kg-fit-head h2 {
+  margin: 12px 0 8px;
+  font-size: var(--kg-text-lg);
+  color: var(--kg-heading-color);
+  letter-spacing: -0.02em;
+}
+
+.kg-fit-head p {
+  margin: 0;
+  color: var(--kg-muted-color);
+  font-size: var(--kg-text-sm);
+  line-height: var(--kg-leading-snug);
+  max-width: 62ch;
+}
+
+.kg-fit-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: 20px;
+  padding: 16px 24px 24px;
+}
+
+.kg-fit-form {
+  display: grid;
+  gap: 14px;
+}
+
+.kg-fit-field {
+  display: grid;
+  gap: 6px;
+}
+
+.kg-fit-field span {
+  font-size: var(--kg-text-sm);
+  font-weight: var(--kg-label-weight);
+  color: var(--kg-body-color);
+  line-height: 1.4;
+}
+
+.kg-fit-field select {
+  width: 100%;
+  border: 1px solid var(--kg-inset-border);
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-size: var(--kg-text-sm);
+  color: var(--kg-heading-color);
+  background: var(--kg-inset-bg);
+}
+
+.kg-fit-field select:focus {
+  outline: 2px solid var(--kg-focus-ring);
+  outline-offset: 1px;
+}
+
+.kg-fit-form-submit {
+  margin-top: 4px;
+}
+
+.kg-fit-result h3 {
+  margin: 18px 0 8px;
+  font-size: var(--kg-text-sm);
+  color: var(--kg-heading-color);
+  letter-spacing: 0.02em;
+}
+
+.kg-fit-result .kg-rich-list {
+  margin-bottom: 0;
+}
+
+.kg-fit-level {
+  display: grid;
+  gap: 4px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid transparent;
+}
+
+.kg-fit-level-label {
+  font-size: var(--kg-label-size);
+  font-weight: var(--kg-label-weight);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+
+.kg-fit-level strong {
+  font-size: 22px;
+  line-height: 1.2;
+}
+
+.kg-fit-score {
+  font-size: var(--kg-text-xs);
+  font-weight: 700;
+}
+
+.kg-fit-level--prep {
+  background: var(--kg-danger-surface);
+  border-color: var(--kg-danger-border);
+  color: var(--kg-danger-text);
+}
+
+.kg-fit-level--base {
+  background: var(--kg-warning-surface);
+  border-color: var(--kg-warning-border);
+  color: var(--kg-warning-text);
+}
+
+.kg-fit-level--ready {
+  background: var(--kg-success-surface);
+  border-color: var(--kg-success-border);
+  color: var(--kg-success-text);
+}
+
+.kg-fit-level--strong {
+  background: var(--kg-emerald-surface);
+  border-color: var(--kg-emerald-border);
+  color: var(--kg-emerald-text);
+}
+
+.kg-fit-summary,
+.kg-fit-readiness,
+.kg-fit-timeline {
+  margin: 0 0 8px;
+  color: var(--kg-body-color);
+  font-size: var(--kg-text-sm);
+  line-height: var(--kg-leading-snug);
+}
+
+.kg-fit-downloads {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.kg-fit-placeholder {
+  min-height: 280px;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 12px;
+  text-align: center;
+  color: var(--kg-muted-color);
+  padding: 24px;
+}
+
+.kg-fit-placeholder i {
+  font-size: 32px;
+  color: var(--primary);
+  opacity: 0.65;
+}
+
+.kg-fit-placeholder p {
+  margin: 0;
+  max-width: 28ch;
+  font-size: var(--kg-text-sm);
+  line-height: var(--kg-leading-snug);
+}
+
+@media (max-width: 900px) {
+  .kg-fit-grid {
+    grid-template-columns: 1fr;
+  }
+}

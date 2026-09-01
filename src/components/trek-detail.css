@@ -81,6 +81,34 @@
   --kg-label-size: 10px;
   --kg-label-weight: 700;
 
+  /* Semantic surfaces — brand emerald + amber caution + rose alert */
+  --kg-success-surface: #f0fdf4;
+  --kg-success-border: #bbf7d0;
+  --kg-success-text: #166534;
+  --kg-warning-surface: #fffbeb;
+  --kg-warning-border: #fde68a;
+  --kg-warning-text: #b45309;
+  --kg-danger-surface: #fef2f2;
+  --kg-danger-border: #fecaca;
+  --kg-danger-text: #b91c1c;
+  --kg-emerald-surface: #ecfdf5;
+  --kg-emerald-border: #6ee7b7;
+  --kg-emerald-text: #065f46;
+
+  --kg-inset-bg: #ffffff;
+  --kg-inset-border: rgba(21, 128, 61, 0.1);
+  --kg-inset-shadow: 0 10px 24px rgba(22, 101, 52, 0.05);
+  --kg-inset-radius: 18px;
+  --kg-focus-ring: rgba(22, 163, 74, 0.35);
+  --kg-chip-bg: rgba(22, 163, 74, 0.1);
+  --kg-chip-text: var(--primary-dark);
+
+  --kg-btn-primary-bg: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  --kg-btn-primary-shadow: 0 10px 20px rgba(22, 163, 74, 0.2);
+  --kg-btn-ghost-bg: var(--white);
+  --kg-btn-ghost-border: var(--kg-card-border);
+  --kg-btn-ghost-text: var(--kg-body-color);
+
   background: var(--kg-page-bg);
   color: var(--ink);
   font-family: var(--font-body);
@@ -1246,6 +1274,59 @@
 .kg-overview-btn-soft {
   background: var(--primary-soft);
   color: var(--primary);
+}
+
+/* Compact pill actions — fitness calculator, downloads, inline CTAs */
+.kg-pill-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  border: 1px solid var(--kg-btn-ghost-border);
+  border-radius: 999px;
+  padding: 6px 11px;
+  background: var(--kg-btn-ghost-bg);
+  color: var(--kg-btn-ghost-text);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1.25;
+  cursor: pointer;
+  transition: transform 0.18s var(--ease), box-shadow 0.18s var(--ease), border-color 0.18s var(--ease);
+}
+
+.kg-pill-btn i {
+  font-size: 10px;
+  color: var(--primary);
+}
+
+.kg-pill-btn:hover {
+  transform: translateY(-1px);
+  border-color: rgba(16, 185, 129, 0.28);
+  box-shadow: var(--kg-inset-shadow);
+}
+
+.kg-pill-btn--primary {
+  border-color: transparent;
+  background: var(--kg-btn-primary-bg);
+  color: var(--white);
+  box-shadow: var(--kg-btn-primary-shadow);
+}
+
+.kg-pill-btn--primary i {
+  color: var(--white);
+}
+
+.kg-pill-btn--primary:hover {
+  box-shadow: 0 12px 24px rgba(22, 163, 74, 0.28);
+}
+
+/* Inset panels inside section cards */
+.kg-detail-inset {
+  padding: 18px;
+  border-radius: var(--kg-inset-radius);
+  background: var(--kg-inset-bg);
+  border: 1px solid var(--kg-inset-border);
+  box-shadow: var(--kg-inset-shadow);
 }
 
 .kg-overview-points {
@@ -2872,9 +2953,9 @@
   font-weight: 600;
 }
 
-.kg-season-text ul,
-.kg-season-text ol {
-  margin: 8px 0 0 18px;
+.kg-page .kg-season-text ul,
+.kg-page .kg-season-text ol {
+  margin: 8px 0 0;
   padding: 0;
 }
 
@@ -2893,6 +2974,39 @@
 
 .kg-carry-head {
   margin-bottom: 18px;
+}
+
+.kg-carry-rich {
+  margin-top: 4px;
+}
+
+.kg-carry-rich h3 {
+  margin: 20px 0 10px;
+  color: var(--kg-heading-color);
+  font-size: 17px;
+  line-height: 1.35;
+  font-weight: 800;
+}
+
+.kg-carry-rich h3:first-child {
+  margin-top: 0;
+}
+
+.kg-carry-rich p {
+  margin: 0 0 12px;
+  color: var(--kg-body-color);
+  font-size: var(--kg-text-sm);
+  line-height: var(--kg-leading-normal);
+  font-weight: 400;
+}
+
+.kg-carry-rich .kg-rich-list {
+  margin: 0 0 16px;
+}
+
+.kg-carry-card .kg-overview-footer {
+  margin-top: 8px;
+  padding-top: 0;
 }
 
 .kg-carry-head p {
@@ -2957,9 +3071,11 @@
 .kg-carry-list {
   display: grid;
   gap: 0;
+  counter-reset: kg-carry-step;
 }
 
 .kg-carry-item {
+  counter-increment: kg-carry-step;
   display: flex;
   align-items: flex-start;
   gap: 12px;
@@ -2974,23 +3090,30 @@
   font-weight: 600;
 }
 
+.kg-carry-item::before {
+  content: counter(kg-carry-step);
+  margin-top: 2px;
+  width: 1.65rem;
+  height: 1.65rem;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #16a34a, #15803d);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1;
+  flex: 0 0 auto;
+  box-shadow: 0 4px 10px rgba(22, 163, 74, 0.18);
+}
+
 .kg-carry-item:last-child {
   padding-bottom: 0;
   border-bottom: 0;
 }
 
 .kg-carry-item i {
-  margin-top: 5px;
-  width: 20px;
-  height: 20px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  background: rgba(22, 163, 74, 0.08);
-  color: var(--primary);
-  font-size: 10px;
-  flex: 0 0 auto;
+  display: none;
 }
 
 .kg-reach-head {
@@ -3008,42 +3131,107 @@
 .kg-reach-flow {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 12px;
+  gap: 0;
 }
 
 .kg-reach-step {
   position: relative;
   display: grid;
-  grid-template-columns: 44px minmax(0, 1fr);
-  gap: 14px;
+  grid-template-columns: 52px minmax(0, 1fr);
+  gap: 16px;
   align-items: start;
-  padding: 18px;
-  border-radius: 22px;
-  background: #fff;
-  border: 1px solid rgba(16, 24, 40, 0.08);
-  box-shadow: 0 12px 26px rgba(16, 24, 40, 0.04);
+  padding: 0 0 22px;
+}
+
+.kg-reach-step:last-child {
+  padding-bottom: 0;
+}
+
+.kg-reach-step-rail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100%;
+}
+
+.kg-reach-step-line {
+  flex: 1;
+  width: 2px;
+  min-height: 24px;
+  margin-top: 8px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(22, 163, 74, 0.45), rgba(22, 163, 74, 0.08));
 }
 
 .kg-reach-step-badge {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 34px;
-  height: 34px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   background: linear-gradient(135deg, var(--primary), var(--primary-dark));
   color: var(--white);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 900;
   box-shadow: 0 10px 18px rgba(22, 163, 74, 0.18);
+  flex-shrink: 0;
+}
+
+.kg-reach-step-body {
+  padding: 16px 18px 18px;
+  border-radius: var(--kg-inset-radius);
+  background: var(--kg-card-bg);
+  border: 1px solid var(--kg-card-border);
+  box-shadow: var(--kg-inset-shadow);
 }
 
 .kg-reach-step h3 {
-  margin: 0 0 8px;
-  color: var(--ink);
+  margin: 0 0 14px;
+  color: var(--kg-heading-color);
   font-size: 19px;
   line-height: 1.25;
   font-weight: 900;
+}
+
+.kg-reach-items {
+  display: grid;
+  gap: 10px;
+}
+
+.kg-reach-item {
+  display: grid;
+  grid-template-columns: minmax(120px, 168px) minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: linear-gradient(180deg, var(--kg-inset-bg) 0%, var(--kg-muted-surface) 100%);
+  border: 1px solid var(--kg-inset-border);
+}
+
+.kg-reach-item-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 28px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--kg-chip-bg);
+  color: var(--kg-chip-text);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  text-align: left;
+  line-height: 1.25;
+}
+
+.kg-reach-item p {
+  margin: 0;
+  color: var(--kg-body-color);
+  font-size: var(--kg-text-sm);
+  line-height: var(--kg-leading-normal);
+  font-weight: 400;
 }
 
 .kg-reach-step-text,
@@ -3108,6 +3296,51 @@
 
 .kg-policy-panel.is-active {
   display: block;
+}
+
+.kg-policy-rich {
+  padding: 18px 20px 8px;
+  border-radius: var(--kg-card-radius);
+  border: 1px solid var(--kg-card-border);
+  box-shadow: var(--kg-card-shadow);
+  background: var(--kg-card-bg);
+}
+
+.kg-policy-rich-title {
+  margin: 0 0 14px;
+  color: var(--kg-heading-color);
+  font-size: 18px;
+  line-height: 1.35;
+  font-weight: 800;
+}
+
+.kg-policy-rich-body h3 {
+  margin: 18px 0 8px;
+  color: var(--kg-heading-color);
+  font-size: 16px;
+  line-height: 1.35;
+  font-weight: 800;
+}
+
+.kg-policy-rich-body h3:first-child {
+  margin-top: 0;
+}
+
+.kg-policy-rich-body p {
+  margin: 0 0 10px;
+  color: var(--kg-body-color);
+  font-size: var(--kg-text-sm);
+  line-height: var(--kg-leading-normal);
+  font-weight: 400;
+}
+
+.kg-policy-rich-body .kg-rich-list {
+  margin: 0 0 14px;
+}
+
+.kg-policy-rich .kg-overview-footer {
+  margin-top: 4px;
+  padding-top: 0;
 }
 
 .kg-policy-table-wrap {
@@ -4772,6 +5005,29 @@
   font-weight: 700;
 }
 
+.kg-testi-verify {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 14px;
+  padding: 7px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--kg-card-border);
+  background: var(--white);
+  color: var(--kg-body-color);
+  font-size: 11px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: transform 0.18s var(--ease), box-shadow 0.18s var(--ease), border-color 0.18s var(--ease);
+}
+
+.kg-testi-verify:hover {
+  transform: translateY(-1px);
+  border-color: rgba(16, 185, 129, 0.28);
+  box-shadow: var(--kg-inset-shadow);
+  color: var(--kg-heading-color);
+}
+
 .kg-testi-nav {
   display: flex;
   align-items: center;
@@ -5617,13 +5873,30 @@
   }
 
   .kg-reach-flow {
-    grid-template-columns: 1fr;
-    gap: 14px;
+    gap: 0;
   }
 
   .kg-reach-step {
-    padding: 16px;
+    grid-template-columns: 44px minmax(0, 1fr);
+    gap: 12px;
+    padding-bottom: 18px;
+  }
+
+  .kg-reach-step-body {
+    padding: 14px 14px 16px;
     border-radius: 18px;
+  }
+
+  .kg-reach-item {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 11px 12px;
+  }
+
+  .kg-reach-item-label {
+    justify-content: flex-start;
+    width: fit-content;
+    text-align: left;
   }
 
   .kg-acc-toggle {
@@ -6546,7 +6819,7 @@
   font-weight: 500;
 }
 
-.kg-overview-text .kg-extended-rich ul {
+.kg-overview-text .kg-extended-rich ul:not(.kg-rich-list) {
   list-style: none;
   margin: 8px 0 18px;
   padding: 0;
@@ -6554,7 +6827,7 @@
   gap: 12px;
 }
 
-.kg-overview-text .kg-extended-rich ul li {
+.kg-overview-text .kg-extended-rich ul:not(.kg-rich-list) li {
   position: relative;
   display: flex;
   align-items: flex-start;
@@ -6566,7 +6839,7 @@
   font-weight: 400;
 }
 
-.kg-overview-text .kg-extended-rich ul li::before {
+.kg-overview-text .kg-extended-rich ul:not(.kg-rich-list) li::before {
   content: '';
   flex: 0 0 auto;
   width: 7px;
@@ -7483,23 +7756,86 @@
   margin: 1.1rem 0 0.45rem;
   font-size: 1.02rem;
   font-weight: 800;
-  color: #0f172a;
+  color: var(--kg-heading-color);
 }
 
 .kg-extended-rich p {
   margin: 0 0 0.75rem;
-  line-height: 1.72;
-  color: #334155;
+  line-height: var(--kg-leading-normal);
+  color: var(--kg-body-color);
 }
 
 .kg-extended-rich ul {
   margin: 0 0 1rem;
   padding-left: 1.15rem;
-  color: #334155;
+  color: var(--kg-body-color);
 }
 
 .kg-extended-rich li + li {
-  margin-top: 0.35rem;
+  margin-top: 0;
+}
+
+/* Numbered rich lists — fitness, safety, food, seasons, reach, calculator */
+.kg-page .kg-rich-list {
+  list-style: none;
+  counter-reset: kg-rich-step;
+  margin: 10px 0 18px;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}
+
+.kg-page .kg-rich-list > li {
+  counter-increment: kg-rich-step;
+  display: grid;
+  grid-template-columns: 2rem 1fr;
+  gap: 12px;
+  align-items: start;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid var(--kg-inset-border);
+  background: linear-gradient(180deg, var(--kg-inset-bg) 0%, var(--kg-muted-surface) 100%);
+  color: var(--kg-body-color);
+  font-size: var(--kg-text-sm);
+  line-height: var(--kg-leading-snug);
+  font-weight: 400;
+}
+
+.kg-page .kg-rich-list > li::before {
+  content: counter(kg-rich-step);
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  background: var(--kg-btn-primary-bg);
+  color: var(--white);
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1;
+  box-shadow: var(--kg-btn-primary-shadow);
+}
+
+.kg-page .kg-rich-list--compact {
+  gap: 10px;
+  margin: 8px 0 14px;
+}
+
+.kg-page .kg-rich-list--compact > li {
+  padding: 10px 12px;
+  grid-template-columns: 1.65rem 1fr;
+  font-size: 13px;
+}
+
+.kg-page .kg-rich-list--compact > li::before {
+  width: 1.65rem;
+  height: 1.65rem;
+  font-size: 11px;
+}
+
+.kg-page .kg-extended-rich .kg-rich-list + h3,
+.kg-page .kg-overview-text .kg-rich-list + h3 {
+  margin-top: 1.35rem;
 }
 
 .kg-departure-card {
@@ -7612,7 +7948,28 @@ html.it-chrome-hidden .kg-page .kg-section {
   color: #059669;
 }
 
+.kg-page .kg-carry-rich h3 {
+  color: var(--kg-heading-color);
+  font-size: var(--kg-text-md);
+  font-weight: 700;
+}
+
+.kg-page .kg-carry-rich p {
+  font-size: var(--kg-text-sm);
+  line-height: var(--kg-leading-normal);
+  font-weight: 400;
+  color: var(--kg-body-color);
+}
+
 .kg-page .kg-reach-step {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  padding-bottom: 22px;
+}
+
+.kg-page .kg-reach-step-body {
   border: 1px solid var(--kg-card-border);
   border-radius: 20px;
   background:
@@ -7624,6 +7981,23 @@ html.it-chrome-hidden .kg-page .kg-section {
 .kg-page .kg-reach-step-badge {
   background: linear-gradient(135deg, #4ade80, #16a34a);
   box-shadow: 0 8px 16px rgba(22, 163, 74, 0.2);
+}
+
+.kg-page .kg-reach-item {
+  border-color: rgba(16, 185, 129, 0.14);
+  background: rgba(255, 255, 255, 0.88);
+}
+
+.kg-page .kg-reach-item-label {
+  background: rgba(22, 163, 74, 0.12);
+  color: #047857;
+}
+
+.kg-page .kg-reach-item p {
+  color: var(--kg-body-color);
+  font-size: var(--kg-text-sm);
+  line-height: var(--kg-leading-normal);
+  font-weight: 400;
 }
 
 .kg-page .kg-policy-tab {
@@ -7642,9 +8016,33 @@ html.it-chrome-hidden .kg-page .kg-section {
 }
 
 .kg-page .kg-policy-table-wrap,
+.kg-page .kg-policy-rich,
 .kg-page .kg-policy-note {
   border: 1px solid var(--kg-card-border);
   box-shadow: 0 10px 24px rgba(22, 101, 52, 0.05);
+}
+
+.kg-page .kg-policy-rich {
+  background: linear-gradient(180deg, #ffffff, #f7fdf9);
+}
+
+.kg-page .kg-policy-rich-title {
+  color: var(--kg-heading-color);
+  font-size: var(--kg-text-md);
+  font-weight: 700;
+}
+
+.kg-page .kg-policy-rich-body h3 {
+  color: var(--kg-heading-color);
+  font-size: var(--kg-text-sm);
+  font-weight: 700;
+}
+
+.kg-page .kg-policy-rich-body p {
+  font-size: var(--kg-text-sm);
+  line-height: var(--kg-leading-normal);
+  font-weight: 400;
+  color: var(--kg-body-color);
 }
 
 .kg-page .kg-policy-table thead th {
@@ -8128,7 +8526,7 @@ html.it-chrome-hidden .kg-page .kg-section {
 .kg-page .kg-reach-step h3 {
   font-size: var(--kg-text-md);
   font-weight: 700;
-  margin-bottom: 6px;
+  margin-bottom: 14px;
 }
 
 .kg-page .kg-reach-step-text,
@@ -8143,7 +8541,7 @@ html.it-chrome-hidden .kg-page .kg-section {
 .kg-page .kg-reach-step-text ul,
 .kg-page .kg-reach-step-text ol {
   margin: 8px 0 0;
-  padding-left: 1.15rem;
+  padding: 0;
 }
 
 .kg-page .kg-reach-step-text li + li {

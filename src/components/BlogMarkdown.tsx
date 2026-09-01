@@ -74,6 +74,11 @@ export type BlogTocItem = { id: string; title: string; level: 2 | 3 };
 export function extractBlogToc(content: string): BlogTocItem[] {
   const items: BlogTocItem[] = [];
   const seen = new Set<string>();
+  const skipPlaceholders = new Set([
+    'section heading',
+    'subheading',
+    'detail heading',
+  ]);
   for (const line of content.replace(/\r\n/g, '\n').split('\n')) {
     let level: 2 | 3 | null = null;
     let raw = '';
@@ -90,6 +95,7 @@ export function extractBlogToc(content: string): BlogTocItem[] {
       continue;
     }
     const title = stripMd(raw);
+    if (skipPlaceholders.has(title.toLowerCase())) continue;
     let id = slugify(title);
     if (!id) continue;
     if (seen.has(id)) id = `${id}-${seen.size}`;
@@ -128,11 +134,13 @@ function parseCallout(raw: string): { kind: CalloutKind; text: string } {
 function parseImageLine(line: string): ImgBlock | null {
   const m = line.trim().match(IMG_RE);
   if (!m) return null;
+  const alt = m[1] || 'Trek photo';
+  const title = m[3]?.trim();
   return {
     type: 'img',
-    alt: m[1] || '',
+    alt,
     src: m[2],
-    caption: m[3] || m[1] || undefined,
+    caption: title || undefined,
   };
 }
 
@@ -171,15 +179,12 @@ function isBlockStarter(line: string): boolean {
 function parseSections(content: string): {
   intro: Block[];
   sections: Section[];
-  breaks: Map<number, ImgBlock>;
 } {
   const lines = content.replace(/\r\n/g, '\n').split('\n');
   const intro: Block[] = [];
   const sections: Section[] = [];
-  const breaks = new Map<number, ImgBlock>();
   const seen = new Set<string>();
   let i = 0;
-  let pendingBreak: ImgBlock | null = null;
 
   const state: { current: Section | null } = { current: null };
   const target = () => (state.current ? state.current.blocks : intro);
@@ -189,10 +194,6 @@ function parseSections(content: string): {
     let id = slugify(title) || `section-${sections.length + 1}`;
     if (seen.has(id)) id = `${id}-${seen.size}`;
     seen.add(id);
-    if (pendingBreak) {
-      breaks.set(sections.length, pendingBreak);
-      pendingBreak = null;
-    }
     state.current = { id, title, blocks: [] };
     sections.push(state.current);
   };
@@ -221,21 +222,7 @@ function parseSections(content: string): {
 
     const img = parseImageLine(line);
     if (img) {
-      const current = state.current;
-      if (current && current.blocks.length > 0) {
-        let j = i + 1;
-        while (j < lines.length && !lines[j].trim()) j += 1;
-        const next = lines[j] ?? '';
-        if (next.startsWith('## ') && !next.startsWith('### ')) {
-          pendingBreak = img;
-        } else {
-          current.blocks.push(img);
-        }
-      } else if (current) {
-        current.blocks.push(img);
-      } else {
-        intro.push(img);
-      }
+      target().push(img);
       i += 1;
       continue;
     }
@@ -321,7 +308,7 @@ function parseSections(content: string): {
     target().push({ type: 'p', text: para.join(' ') });
   }
 
-  return { intro, sections, breaks };
+  return { intro, sections };
 }
 
 const CALLOUT_META: Record<CalloutKind, { label: string; icon: string }> = {
@@ -348,21 +335,26 @@ function Figure({
   src,
   alt,
   caption,
-  variant = 'inline',
 }: {
   src: string;
   alt: string;
   caption?: string;
-  variant?: 'inline' | 'break';
 }) {
-  const optimized = cldBlogImage(safeImage(src), variant === 'break' ? 'break' : 'inline');
+  const optimized = cldBlogImage(safeImage(src), 'inline');
 
   return (
-    <figure className={variant === 'break' ? 'it-blog__figure it-blog__figure--break' : 'it-blog__figure'}>
+    <figure className="it-blog__figure">
       <div className="it-blog__figure-frame">
         <img src={optimized} alt={alt || ''} loading="lazy" decoding="async" referrerPolicy="no-referrer" />
       </div>
-      {caption ? <figcaption>{caption}</figcaption> : null}
+      {caption ? (
+        <figcaption className="it-blog__figure-caption">
+          <span className="it-blog__figure-caption-label" aria-hidden>
+            Photo
+          </span>
+          {caption}
+        </figcaption>
+      ) : null}
     </figure>
   );
 }
@@ -396,9 +388,7 @@ function Blocks({ blocks }: { blocks: Block[] }) {
           );
         }
         if (block.type === 'img') {
-          return (
-            <Figure key={idx} src={block.src} alt={block.alt} caption={block.caption} variant="inline" />
-          );
+          return <Figure key={idx} src={block.src} alt={block.alt} caption={block.caption} />;
         }
         if (block.type === 'callout') {
           return <Callout key={idx} kind={block.kind} text={block.text} />;
@@ -456,7 +446,7 @@ function Blocks({ blocks }: { blocks: Block[] }) {
 
 /** Renders markdown as structured premium article sections. */
 export default function BlogMarkdown({ content }: { content: string }) {
-  const { intro, sections, breaks } = parseSections(content);
+  const { intro, sections } = parseSections(content);
 
   return (
     <div className="it-blog__prose it-prep__content">
@@ -465,23 +455,15 @@ export default function BlogMarkdown({ content }: { content: string }) {
           <Blocks blocks={intro} />
         </section>
       ) : null}
-      {sections.map((section, idx) => {
-        const br = breaks.get(idx);
-        return (
-          <div key={section.id} className="it-blog__stack">
-            {br ? (
-              <Figure src={br.src} alt={br.alt} caption={br.caption} variant="break" />
-            ) : null}
-            <section id={section.id} className="it-prep__section it-blog__section">
-              <h2 className="it-prep__section-title it-blog__section-title">
-                <span className="it-blog__section-accent" aria-hidden />
-                {section.title}
-              </h2>
-              <Blocks blocks={section.blocks} />
-            </section>
-          </div>
-        );
-      })}
+      {sections.map((section) => (
+        <section key={section.id} id={section.id} className="it-prep__section it-blog__section">
+          <h2 className="it-prep__section-title it-blog__section-title">
+            <span className="it-blog__section-accent" aria-hidden />
+            {section.title}
+          </h2>
+          <Blocks blocks={section.blocks} />
+        </section>
+      ))}
     </div>
   );
 }

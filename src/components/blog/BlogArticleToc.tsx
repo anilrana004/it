@@ -2,25 +2,41 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { BlogTocItem } from '@/components/BlogMarkdown';
+import { useBlogScrollRoot } from '@/components/blog/blog-scroll-context';
 
 const SCROLL_OFFSET = 88;
 
-function scrollToSection(id: string) {
+function scrollToSection(id: string, scrollRoot: HTMLElement | null) {
   const el = document.getElementById(id);
   if (!el) return;
 
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const top = el.getBoundingClientRect().top + window.scrollY - SCROLL_OFFSET;
 
-  window.scrollTo({
-    top: Math.max(0, top),
-    behavior: prefersReducedMotion ? 'auto' : 'smooth',
-  });
+  if (scrollRoot) {
+    const top =
+      el.getBoundingClientRect().top -
+      scrollRoot.getBoundingClientRect().top +
+      scrollRoot.scrollTop -
+      SCROLL_OFFSET;
+    scrollRoot.scrollTo({
+      top: Math.max(0, top),
+      behavior: prefersReducedMotion ? 'auto' : 'smooth',
+    });
+  } else {
+    const top = el.getBoundingClientRect().top + window.scrollY - SCROLL_OFFSET;
+    window.scrollTo({
+      top: Math.max(0, top),
+      behavior: prefersReducedMotion ? 'auto' : 'smooth',
+    });
+  }
 
-  window.history.replaceState(null, '', `#${id}`);
+  if (!scrollRoot) {
+    window.history.replaceState(null, '', `#${id}`);
+  }
 }
 
 function useBlogArticleToc(items: BlogTocItem[]) {
+  const scrollRootRef = useBlogScrollRoot();
   const [activeId, setActiveId] = useState<string | null>(items[0]?.id ?? null);
   const isUserScrolling = useRef(false);
   const scrollTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -29,19 +45,25 @@ function useBlogArticleToc(items: BlogTocItem[]) {
   useEffect(() => {
     if (items.length === 0) return;
 
+    const root = scrollRootRef?.current ?? null;
     let frame = 0;
 
     const update = () => {
       frame = 0;
       if (isUserScrolling.current) return;
 
-      const checkpoint = window.scrollY + SCROLL_OFFSET + 24;
+      const scrollTop = root ? root.scrollTop : window.scrollY;
+      const rootTop = root ? root.getBoundingClientRect().top : 0;
+      const checkpoint = scrollTop + SCROLL_OFFSET + 24;
       let current = items[0].id;
 
       for (const item of items) {
         const el = document.getElementById(item.id);
         if (!el) continue;
-        if (el.getBoundingClientRect().top + window.scrollY <= checkpoint) {
+        const elTop = root
+          ? el.getBoundingClientRect().top - rootTop + root.scrollTop
+          : el.getBoundingClientRect().top + window.scrollY;
+        if (elTop <= checkpoint) {
           current = item.id;
         }
       }
@@ -55,33 +77,38 @@ function useBlogArticleToc(items: BlogTocItem[]) {
     };
 
     update();
-    window.addEventListener('scroll', onScroll, { passive: true });
+    const target: HTMLElement | Window = root ?? window;
+    target.addEventListener('scroll', onScroll as EventListener, { passive: true });
     window.addEventListener('resize', onScroll);
     return () => {
       if (frame) window.cancelAnimationFrame(frame);
-      window.removeEventListener('scroll', onScroll);
+      target.removeEventListener('scroll', onScroll as EventListener);
       window.removeEventListener('resize', onScroll);
     };
-  }, [items]);
+  }, [items, scrollRootRef]);
 
   const handleSectionClick = useCallback((id: string, onNavigate?: () => void) => {
     isUserScrolling.current = true;
     if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
 
     setActiveId(id);
-    scrollToSection(id);
+    scrollToSection(id, scrollRootRef?.current ?? null);
     onNavigate?.();
 
     scrollTimeout.current = setTimeout(() => {
       isUserScrolling.current = false;
     }, 800);
-  }, []);
+  }, [scrollRootRef]);
 
   useEffect(() => {
     return () => {
       if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
     };
   }, []);
+
+  useEffect(() => {
+    setActiveId(items[0]?.id ?? null);
+  }, [items]);
 
   const activeItem = items.find((item) => item.id === activeId) ?? items[0];
 
@@ -123,10 +150,11 @@ function TocList({
 type Props = {
   items: BlogTocItem[];
   variant?: 'sidebar' | 'mobile';
+  defaultOpen?: boolean;
 };
 
-export default function BlogArticleToc({ items, variant = 'sidebar' }: Props) {
-  const [open, setOpen] = useState(false);
+export default function BlogArticleToc({ items, variant = 'sidebar', defaultOpen = false }: Props) {
+  const [open, setOpen] = useState(defaultOpen);
   const [sheetOpen, setSheetOpen] = useState(false);
   const { activeId, activeItem, handleSectionClick, listScrollRef } = useBlogArticleToc(items);
 

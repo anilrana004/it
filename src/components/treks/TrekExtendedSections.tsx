@@ -1,10 +1,10 @@
 'use client';
 
+import { useState } from 'react';
 import type { RichBlock, TrekRichSection } from '@/lib/treks/trek-extended-types';
 import YouTubeLazyPlayer from '@/components/ui/YouTubeLazyPlayer';
 
-export function RichBlocks({ blocks }: { blocks: RichBlock[] }) {
-  return (
+export function RichBlocks({ blocks }: { blocks: RichBlock[] }) {  return (
     <>
       {blocks.map((block, index) => {
         if (block.type === 'h3') {
@@ -12,7 +12,7 @@ export function RichBlocks({ blocks }: { blocks: RichBlock[] }) {
         }
         if (block.type === 'ul') {
           return (
-            <ul key={`ul-${index}`}>
+            <ul key={`ul-${index}`} className="kg-rich-list">
               {block.items.map((item) => (
                 <li key={item}>{item}</li>
               ))}
@@ -41,8 +41,43 @@ export function RichBlocks({ blocks }: { blocks: RichBlock[] }) {
   );
 }
 
-const SECTION_ICONS: Record<string, string> = {
-  fitness: 'fa-solid fa-dumbbell',
+type CollapsibleRichBlocksProps = {
+  blocks: RichBlock[];
+  previewCount?: number;
+  className?: string;
+};
+
+export function CollapsibleRichBlocks({
+  blocks,
+  previewCount = 6,
+  className = 'kg-overview-text kg-extended-rich',
+}: CollapsibleRichBlocksProps) {
+  const [expanded, setExpanded] = useState(false);
+  const visibleBlocks = expanded ? blocks : blocks.slice(0, previewCount);
+
+  return (
+    <>
+      <div className={className}>
+        <RichBlocks blocks={visibleBlocks} />
+      </div>
+      {blocks.length > previewCount ? (
+        <div className="kg-overview-footer">
+          <div className="kg-overview-actions">
+            <button
+              type="button"
+              className="kg-overview-btn kg-overview-btn-primary"
+              onClick={() => setExpanded((open) => !open)}
+            >
+              {expanded ? 'Read Less' : 'Read More'}
+            </button>
+          </div>
+        </div>
+      ) : null}
+    </>
+  );
+}
+
+const SECTION_ICONS: Record<string, string> = {  fitness: 'fa-solid fa-dumbbell',
   safety: 'fa-solid fa-shield-heart',
   food: 'fa-solid fa-utensils',
   'why-choose': 'fa-solid fa-award',

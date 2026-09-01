@@ -47,14 +47,19 @@ function profilePoint(profile: RouteProfile, day: number): RoutePoint | undefine
   return profile.points.find((p) => p.day === day);
 }
 
-function popupHtml(wp: ResolvedWaypoint, point: RoutePoint | undefined, kindLabel: string) {
+function popupHtml(
+  wp: ResolvedWaypoint,
+  point: RoutePoint | undefined,
+  kindLabel: string,
+  day: number,
+) {
   const alt =
     point?.altitudeLabel ??
     (wp.elevationM ? `${Math.round(wp.elevationM * 3.28084).toLocaleString('en-IN')} ft` : '—');
 
   return `
     <div class="kg-map-popup">
-      <span class="kg-map-popup-day">Day ${wp.day}</span>
+      <span class="kg-map-popup-day">Day ${day}</span>
       <strong class="kg-map-popup-title">${wp.name}</strong>
       ${point?.title ? `<p class="kg-map-popup-sub">${point.title}</p>` : ''}
       <dl class="kg-map-popup-meta">
@@ -69,23 +74,44 @@ function popupHtml(wp: ResolvedWaypoint, point: RoutePoint | undefined, kindLabe
   `;
 }
 
-function markerSize(priority: ResolvedWaypoint['priority'], active: boolean) {
-  if (active) return priority === 3 ? 48 : priority === 2 ? 44 : 38;
-  return priority === 3 ? 44 : priority === 2 ? 38 : 32;
-}
-
-function createMarkerElement(wp: ResolvedWaypoint, active: boolean) {
+function createTrailStopMarker(wp: ResolvedWaypoint, active: boolean) {
+  const isSummit = wp.kind === 'summit';
   const el = document.createElement('button');
   el.type = 'button';
-  const size = markerSize(wp.priority, active);
-  el.className = `kg-map-marker kg-map-marker--${wp.kind}${active ? ' is-active' : ''} kg-map-marker--p${wp.priority}`;
-  el.style.width = `${size}px`;
-  el.style.height = `${size}px`;
-  el.setAttribute('aria-label', `${wp.name}, day ${wp.day}`);
-  el.innerHTML =
-    wp.priority >= 2
-      ? `<span class="kg-map-marker-ico"><i class="${KIND_ICON[wp.kind]}" aria-hidden="true"></i></span><span class="kg-map-marker-day">D${wp.day}</span>`
-      : `<span class="kg-map-marker-day">D${wp.day}</span>`;
+  el.className = [
+    'kg-map-marker',
+    isSummit ? 'kg-map-marker--summit-red kg-map-marker--summit-pin' : `kg-map-marker--trail-stop kg-map-marker--${wp.kind}`,
+    active ? 'is-active' : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
+  el.setAttribute('aria-label', wp.name);
+
+  if (isSummit) {
+    el.innerHTML = `
+      <span class="kg-map-marker-pin" aria-hidden="true">
+        <span class="kg-map-marker-pin-head"><i class="fa-solid fa-mountain"></i></span>
+      </span>
+      <span class="kg-map-marker-summit-label">Summit</span>
+    `;
+  } else {
+    el.innerHTML = `
+      <span class="kg-map-marker-dot"><i class="${KIND_ICON[wp.kind]}" aria-hidden="true"></i></span>
+      <span class="kg-map-marker-stop-label">${wp.name}</span>
+    `;
+  }
+  return el;
+}
+
+function createDriveMarker(wp: ResolvedWaypoint, active: boolean, label: string) {
+  const el = document.createElement('button');
+  el.type = 'button';
+  el.className = `kg-map-marker kg-map-marker--drive kg-map-marker--trail-stop${active ? ' is-active' : ''}`;
+  el.setAttribute('aria-label', label);
+  el.innerHTML = `
+    <span class="kg-map-marker-dot"><i class="${KIND_ICON[wp.kind]}" aria-hidden="true"></i></span>
+    <span class="kg-map-marker-stop-label">${label}</span>
+  `;
   return el;
 }
 
@@ -116,6 +142,32 @@ function addTerrainAndRouteLayers(map: mapboxgl.Map) {
 
 function ensureRouteLayers(map: mapboxgl.Map) {
   const layers: mapboxgl.AnyLayer[] = [
+    // Drive — muted corridor
+    {
+      id: 'drive-route-glow',
+      type: 'line',
+      source: 'drive-route-full',
+      layout: { 'line-cap': 'round', 'line-join': 'round' },
+      paint: {
+        'line-color': '#ffffff',
+        'line-width': ['interpolate', ['linear'], ['zoom'], 6, 4, 10, 7, 14, 10],
+        'line-opacity': 0.45,
+        'line-blur': 0.6,
+      },
+    },
+    {
+      id: 'drive-route-line',
+      type: 'line',
+      source: 'drive-route-full',
+      layout: { 'line-cap': 'round', 'line-join': 'round' },
+      paint: {
+        'line-color': '#64748b',
+        'line-width': ['interpolate', ['linear'], ['zoom'], 6, 2, 10, 3, 14, 4.5],
+        'line-opacity': 0.75,
+        'line-dasharray': [2, 2],
+      },
+    },
+    // Trek — premium red with halo
     {
       id: 'trek-route-glow',
       type: 'line',
@@ -123,21 +175,20 @@ function ensureRouteLayers(map: mapboxgl.Map) {
       layout: { 'line-cap': 'round', 'line-join': 'round' },
       paint: {
         'line-color': '#ffffff',
-        'line-width': ['interpolate', ['linear'], ['zoom'], 8, 7, 12, 11, 14, 15],
-        'line-opacity': 0.55,
-        'line-blur': 0.8,
+        'line-width': ['interpolate', ['linear'], ['zoom'], 8, 8, 12, 12, 14, 16],
+        'line-opacity': 0.65,
+        'line-blur': 0.9,
       },
     },
     {
-      id: 'trek-route-remaining',
+      id: 'trek-route-line',
       type: 'line',
       source: 'trek-route-full',
       layout: { 'line-cap': 'round', 'line-join': 'round' },
       paint: {
-        'line-color': '#86efac',
-        'line-width': ['interpolate', ['linear'], ['zoom'], 8, 2, 12, 3.5, 14, 5],
-        'line-opacity': 0.45,
-        'line-dasharray': [2, 2],
+        'line-color': '#dc2626',
+        'line-width': ['interpolate', ['linear'], ['zoom'], 8, 3.5, 12, 5.5, 14, 7.5],
+        'line-opacity': 0.92,
       },
     },
     {
@@ -146,9 +197,9 @@ function ensureRouteLayers(map: mapboxgl.Map) {
       source: 'trek-route-progress',
       layout: { 'line-cap': 'round', 'line-join': 'round' },
       paint: {
-        'line-color': '#16a34a',
-        'line-width': ['interpolate', ['linear'], ['zoom'], 8, 6, 12, 9, 14, 12],
-        'line-opacity': 0.28,
+        'line-color': '#ffffff',
+        'line-width': ['interpolate', ['linear'], ['zoom'], 8, 10, 12, 14, 14, 18],
+        'line-opacity': 0.55,
         'line-blur': 1,
       },
     },
@@ -158,9 +209,9 @@ function ensureRouteLayers(map: mapboxgl.Map) {
       source: 'trek-route-progress',
       layout: { 'line-cap': 'round', 'line-join': 'round' },
       paint: {
-        'line-color': '#15803d',
-        'line-width': ['interpolate', ['linear'], ['zoom'], 8, 3, 12, 5, 14, 7],
-        'line-opacity': 0.98,
+        'line-color': '#b91c1c',
+        'line-width': ['interpolate', ['linear'], ['zoom'], 8, 4.5, 12, 7, 14, 9],
+        'line-opacity': 1,
       },
     },
   ];
@@ -207,8 +258,8 @@ export default function TrekRouteMapbox({
   );
 
   const openPopup = useCallback(
-    (map: mapboxgl.Map, wp: ResolvedWaypoint) => {
-      const point = profilePoint(profile, wp.day);
+    (map: mapboxgl.Map, wp: ResolvedWaypoint, day: number) => {
+      const point = profilePoint(profile, day);
       popupRef.current?.remove();
       popupRef.current = new mapboxgl.Popup({
         closeButton: true,
@@ -218,7 +269,7 @@ export default function TrekRouteMapbox({
         maxWidth: '300px',
       })
         .setLngLat([wp.lng, wp.lat])
-        .setHTML(popupHtml(wp, point, kindLabel))
+        .setHTML(popupHtml(wp, point, kindLabel, day))
         .addTo(map);
     },
     [kindLabel, profile],
@@ -229,56 +280,73 @@ export default function TrekRouteMapbox({
       markersRef.current.forEach((m) => m.remove());
       markersRef.current = [];
 
-      for (const wp of geography.waypoints) {
-        if (wp.priority === 1 && wp.day !== activeDay) continue;
+      const driveWp = geography.waypoints.find((w) => w.kind === 'start' || w.kind === 'end');
+      if (driveWp) {
+        const isDriveActive = activeDay === 1 || activeDay === 5;
+        const el = createDriveMarker(driveWp, isDriveActive, 'Dehradun');
+        const marker = new mapboxgl.Marker({ element: el, anchor: 'bottom' })
+          .setLngLat([driveWp.lng, driveWp.lat])
+          .addTo(map);
+        el.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const day = activeDay === 5 ? 5 : 1;
+          onDayChange(day);
+          openPopup(map, driveWp, day);
+        });
+        markersRef.current.push(marker);
+      }
 
-        const el = createMarkerElement(wp, wp.day === activeDay);
-        const marker = new mapboxgl.Marker({ element: el, anchor: 'center' })
+      for (const wp of geography.trailStops) {
+        const stopDay = wp.day || activeDay;
+        const isActive = stopDay === activeDay || (wp.kind === 'summit' && activeDay === 4);
+        const el = createTrailStopMarker(wp, isActive);
+        const marker = new mapboxgl.Marker({ element: el, anchor: 'bottom' })
           .setLngLat([wp.lng, wp.lat])
           .addTo(map);
 
         el.addEventListener('click', (e) => {
           e.stopPropagation();
-          onDayChange(wp.day);
-          openPopup(map, wp);
+          const day = wp.day || activeDay;
+          onDayChange(day);
+          openPopup(map, wp, day);
         });
-
-        el.addEventListener('mouseenter', () => {
-          if (window.matchMedia('(hover: hover)').matches) el.classList.add('is-hover');
-        });
-        el.addEventListener('mouseleave', () => el.classList.remove('is-hover'));
 
         markersRef.current.push(marker);
       }
     },
-    [activeDay, geography.waypoints, onDayChange, openPopup],
+    [activeDay, geography.trailStops, geography.waypoints, onDayChange, openPopup],
   );
 
   const updateRouteSources = useCallback(
     (map: mapboxgl.Map) => {
-      if (routeGeom.hasDrawableRoute) {
-        upsertGeoJsonSource(map, 'trek-route-full', lineFeature(routeGeom.allCoordinates, trekTitle));
+      const hasTrek = routeGeom.hasDrawableTrekRoute && routeGeom.trekCoordinates.length >= 2;
+      const hasDrive = routeGeom.driveCoordinates.length >= 2;
+
+      if (hasDrive) {
+        upsertGeoJsonSource(map, 'drive-route-full', lineFeature(routeGeom.driveCoordinates, 'drive'));
+      }
+      if (hasTrek) {
+        upsertGeoJsonSource(map, 'trek-route-full', lineFeature(routeGeom.trekCoordinates, trekTitle));
         upsertGeoJsonSource(
           map,
           'trek-route-progress',
           lineFeature(
-            routeGeom.progressCoordinates.length >= 2
-              ? routeGeom.progressCoordinates
-              : routeGeom.allCoordinates.slice(0, 2),
-            'progress',
+            routeGeom.trekProgressCoordinates.length >= 2
+              ? routeGeom.trekProgressCoordinates
+              : routeGeom.trekCoordinates.slice(0, 2),
+            'trek-progress',
           ),
         );
-        ensureRouteLayers(map);
-        ['trek-route-glow', 'trek-route-remaining', 'trek-route-progress', 'trek-route-progress-glow'].forEach(
-          (id) => map.setLayoutProperty(id, 'visibility', 'visible'),
-        );
-      } else {
-        ['trek-route-glow', 'trek-route-remaining', 'trek-route-progress', 'trek-route-progress-glow'].forEach(
-          (id) => {
-            if (map.getLayer(id)) map.setLayoutProperty(id, 'visibility', 'none');
-          },
-        );
       }
+
+      ensureRouteLayers(map);
+
+      ['drive-route-glow', 'drive-route-line'].forEach((id) => {
+        if (map.getLayer(id)) map.setLayoutProperty(id, 'visibility', hasDrive ? 'visible' : 'none');
+      });
+      ['trek-route-glow', 'trek-route-line', 'trek-route-progress-glow', 'trek-route-progress'].forEach((id) => {
+        if (map.getLayer(id)) map.setLayoutProperty(id, 'visibility', hasTrek ? 'visible' : 'none');
+      });
     },
     [routeGeom, trekTitle],
   );
@@ -429,13 +497,20 @@ export default function TrekRouteMapbox({
   useEffect(() => {
     const map = mapRef.current;
     if (!map || !readyRef.current) return;
-    const wp = getWaypointForDay(geography, activeDay);
-    if (!wp) return;
 
-    openPopup(map, wp);
+    const displayWp =
+      geography.trailStops.find((wp) => wp.day === activeDay) ??
+      geography.waypoints.find((wp) => wp.day === activeDay);
+    const wp = getWaypointForDay(geography, activeDay);
+    if (!displayWp || !wp) return;
+
+    openPopup(map, displayWp, activeDay);
     map.easeTo({
-      center: [wp.lng, wp.lat],
-      zoom: Math.max(map.getZoom(), wp.priority === 3 ? 11.8 : 11.2),
+      center: [displayWp.lng, displayWp.lat],
+      zoom: Math.max(
+        map.getZoom(),
+        displayWp.kind === 'summit' ? 12.4 : displayWp.priority === 3 ? 11.5 : 11,
+      ),
       pitch: is3D ? 54 : 0,
       bearing: is3D ? -22 : 0,
       duration: 900,
@@ -519,9 +594,9 @@ export default function TrekRouteMapbox({
         </button>
       </div>
 
-      {!routeGeom.hasDrawableRoute && mapReady && (
+      {!routeGeom.hasDrawableTrekRoute && mapReady && (
         <div className="kg-map-notice" role="status">
-          Verified waypoints shown — GPS trail geometry not available for all segments.
+          Verified trail stops shown — GPS trail geometry pending verification for this segment.
         </div>
       )}
 

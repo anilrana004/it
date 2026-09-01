@@ -3,7 +3,7 @@
 import { useRef, useState } from 'react';
 import { ImagePlus, Loader2, Upload } from 'lucide-react';
 import { adminFetch } from '@/lib/admin/admin-fetch';
-import { unwrapApiJson } from '@/lib/api/client';
+import { parseApiJson } from '@/lib/api/client';
 import { cldBlogImage } from '@/lib/cloudinary';
 
 type Props = {
@@ -34,16 +34,7 @@ export default function CloudinaryImageField({
       const body = new FormData();
       body.append('file', file);
       const res = await adminFetch('/api/admin/media/upload', { method: 'POST', body });
-      const data = unwrapApiJson<{ url?: string; error?: string }>(await res.json());
-      if (!res.ok) {
-        const message =
-          typeof data.error === 'object' && data.error && 'message' in data.error
-            ? String((data.error as { message: string }).message)
-            : typeof data.error === 'string'
-              ? data.error
-              : 'Upload failed';
-        throw new Error(message);
-      }
+      const data = await parseApiJson<{ url?: string }>(res);
       if (!data.url) throw new Error('No image URL returned');
       onChange(data.url);
     } catch (err) {

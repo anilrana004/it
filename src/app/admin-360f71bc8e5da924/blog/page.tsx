@@ -114,11 +114,16 @@ export default function AdminBlogPage() {
 
   const enrich = async (entity: EditorFormState['primaryEntity']) => {
     if (!entity) return null;
-    const results = await searchEntities(entity.entityId, entity.entityType);
-    return (
-      results.find((r) => r.entityId === entity.entityId && r.entityType === entity.entityType) ??
-      entity
-    );
+    try {
+      const results = await searchEntities(entity.entityId, entity.entityType);
+      return (
+        results.find((r) => r.entityId === entity.entityId && r.entityType === entity.entityType) ??
+        entity
+      );
+    } catch {
+      // Title enrichment is optional — keep editing even if entity search is unavailable.
+      return entity;
+    }
   };
 
   async function enrichEditorForm(base: EditorFormState): Promise<EditorFormState> {
@@ -144,6 +149,7 @@ export default function AdminBlogPage() {
   const openEdit = async (id: string) => {
     try {
       setSaving(true);
+      setError(null);
       const post = await fetchAdminPost(id);
       const base = postToEditorForm(post);
       const enriched = await enrichEditorForm(base);
@@ -191,6 +197,7 @@ export default function AdminBlogPage() {
       }
 
       await loadData();
+      setError(null);
       setForm(await enrichEditorForm(postToEditorForm(saved)));
     } catch (err) {
       const e = err as Error & { fieldErrors?: Record<string, string> };
@@ -404,10 +411,19 @@ export default function AdminBlogPage() {
       </div>
 
       {error && (
-        <div className="mb-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-          {error.toLowerCase() === 'unauthorized'
-            ? 'Your session expired. Please sign in again — you will be redirected automatically.'
-            : error}
+        <div className="mb-4 flex items-start justify-between gap-3 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+          <p>
+            {error.toLowerCase() === 'unauthorized'
+              ? 'Your session expired. Please sign in again — you will be redirected automatically.'
+              : error}
+          </p>
+          <button
+            type="button"
+            onClick={() => setError(null)}
+            className="shrink-0 text-xs font-semibold text-red-800 hover:underline"
+          >
+            Dismiss
+          </button>
         </div>
       )}
 

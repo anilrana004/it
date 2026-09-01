@@ -17,7 +17,14 @@ export type TrekReachStep = {
   items: { label: string; text: string }[];
 };
 
-export type TrekTestimonial = { name: string; text: string };
+export type TrekTestimonial = {
+  name: string;
+  text: string;
+  platform?: 'google' | 'tripadvisor';
+  verifyUrl?: string;
+  posted?: string;
+  rating?: number;
+};
 
 export type TrekDepartureInfo = {
   pickupTime: string;
@@ -27,3 +34,13 @@ export type TrekDepartureInfo = {
 };
 
 export type TrekPolicyRows = [string, string][];
+
+export type ItineraryDay = {
+  day: number;
+  title: string;
+  description: string;
+  meals: string;
+  altitude?: string;
+  distance?: string;
+  duration?: string;
+};

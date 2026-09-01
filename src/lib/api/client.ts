@@ -56,8 +56,36 @@ export function unwrapApiJson<T>(body: unknown): T {
   return body as T;
 }
 
+function invalidApiResponseMessage(res: Response): string {
+  if (isExternalApiEnabled()) {
+    return `Admin API returned an unexpected response (${res.status}). Check that NEXT_PUBLIC_API_URL points to your Railway API and that you are signed in.`;
+  }
+  if (res.status === 401) {
+    return 'Your session expired. Please sign in again.';
+  }
+  return `Server returned an unexpected response (${res.status}). Try signing in again or restarting the dev server.`;
+}
+
+/** Parse admin/public API JSON safely — avoids raw "<!DOCTYPE" parse errors on HTML error pages. */
 export async function parseApiJson<T>(res: Response): Promise<T> {
-  const body = (await res.json()) as JsonRecord;
+  const text = await res.text();
+  const trimmed = text.trim();
+
+  if (!trimmed) {
+    if (!res.ok) throw new Error(invalidApiResponseMessage(res));
+    return {} as T;
+  }
+
+  if (trimmed.startsWith('<')) {
+    throw new Error(invalidApiResponseMessage(res));
+  }
+
+  let body: JsonRecord;
+  try {
+    body = JSON.parse(trimmed) as JsonRecord;
+  } catch {
+    throw new Error(invalidApiResponseMessage(res));
+  }
 
   if (!res.ok) {
     const err = new Error(errorMessage(body, res.status)) as Error & {

@@ -1,14 +1,30 @@
 /**
- * Pre-defined GPS trail geometry from OpenStreetMap path data (Aug 2026).
- * Source: OSM ways tagged highway=path in Govind Pashu Vihar / Kedarkantha corridor.
- * Isolated from UI — do not edit coordinates in components.
+ * Pre-defined route geometry — split per itinerary day.
+ * Trek geometry for Kedarkantha: see trails/kedarkantha-trail.ts (canonical source).
  */
+import { KEDARKANTHA_TREK_LINE } from './trails/kedarkantha-trail';
+import {
+  KEDARKANTHA_DAY1_DRIVE_LINE,
+  KEDARKANTHA_DAY5_DRIVE_LINE,
+} from './trails/kedarkantha-drive';
+
 export const ROUTE_TRACKS: Record<
   string,
   { source: string; coordinates: [number, number][] }
 > = {
-  'kedarkantha-trek': {
-    source: 'openstreetmap-trail — hiking path ways Sankri–Juda Ka Talab–Base–Summit–Hargaon',
+  /** Full Kedarkantha trekking loop — canonical trail from trails/kedarkantha-trail.ts */
+  'kedarkantha-trek-full': {
+    source: 'openstreetmap-trail — Sankri–Juda Ka Talab–Base–Summit–Hargaon loop',
+    coordinates: KEDARKANTHA_TREK_LINE,
+  },
+  /** Day 1 — Dehradun → Sankri via Naugaon → Purola → Mori → Netwar */
+  'kedarkantha-day1-drive': {
+    source: 'road-corridor — Naugaon → Purola → Mori → Netwar (OSM town anchors, Sep 2026)',
+    coordinates: KEDARKANTHA_DAY1_DRIVE_LINE,
+  },
+  /** Day 2 — Sankri → Juda Ka Talab (5 km) */
+  'kedarkantha-day2-trek': {
+    source: 'openstreetmap-trail — Day 2 Sankri to Juda Ka Talab',
     coordinates: [
       [78.18411, 31.07802],
       [78.18385, 31.0755],
@@ -17,9 +33,23 @@ export const ROUTE_TRACKS: Record<
       [78.1843, 31.0675],
       [78.18428, 31.0648],
       [78.1843, 31.05249],
+    ],
+  },
+  /** Day 3 — Juda Ka Talab → Kedarkantha Base Camp (3 km) */
+  'kedarkantha-day3-trek': {
+    source: 'openstreetmap-trail — Day 3 Juda Ka Talab to Base Camp',
+    coordinates: [
+      [78.1843, 31.05249],
       [78.1839, 31.0542],
       [78.1828, 31.0558],
       [78.1819, 31.0572],
+      [78.18022, 31.05865],
+    ],
+  },
+  /** Day 4 — Base Camp → Kedarkantha Summit (summit push) */
+  'kedarkantha-day4-summit': {
+    source: 'openstreetmap-trail — Day 4 Base Camp to Summit',
+    coordinates: [
       [78.18022, 31.05865],
       [78.1794, 31.0575],
       [78.1782, 31.052],
@@ -28,15 +58,34 @@ export const ROUTE_TRACKS: Record<
       [78.1742, 31.034],
       [78.1728, 31.028],
       [78.17185, 31.02257],
+    ],
+  },
+  /** Day 4 — Summit → Hargaon Thach (descent) */
+  'kedarkantha-day4-descent': {
+    source: 'openstreetmap-trail — Day 4 Summit to Hargaon Thach',
+    coordinates: [
+      [78.17185, 31.02257],
       [78.1725, 31.026],
       [78.174, 31.032],
       [78.176, 31.038],
       [78.178, 31.044],
       [78.1795, 31.05],
       [78.18007, 31.05817],
+    ],
+  },
+  /** Day 5 — Hargaon Thach → Sankri (4.5 km trek) */
+  'kedarkantha-day5-trek': {
+    source: 'openstreetmap-trail — Day 5 Hargaon Thach to Sankri',
+    coordinates: [
+      [78.18007, 31.05817],
       [78.1815, 31.065],
       [78.183, 31.072],
       [78.18411, 31.07802],
     ],
+  },
+  /** Day 5 — Sankri → Dehradun via Netwar → Mori → Purola → Naugaon */
+  'kedarkantha-day5-drive': {
+    source: 'road-corridor — return via Netwar → Mori → Purola → Naugaon (OSM town anchors)',
+    coordinates: KEDARKANTHA_DAY5_DRIVE_LINE,
   },
 };

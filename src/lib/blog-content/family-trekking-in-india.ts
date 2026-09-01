@@ -25,7 +25,7 @@ A Himalayan family trek can become a memory that stays with children long after 
 
 At Indian Treks, we believe trekking can be much more than an outdoor adventure. For families, it can become a way to reconnect, build confidence, discover new strengths, and create meaningful memories together.
 
-![Walking a Himalayan trail together as a family](https://images.unsplash.com/photo-1501555088652-021faa106b9b?w=1400&h=800&fit=crop&q=80)
+![Walking a Himalayan trail together as a family](https://images.unsplash.com/photo-1501555088652-021faa106b9b?w=1400&h=800&fit=crop&q=80 "Walking a Himalayan trail together as a family")
 
 ## What Is Family Trekking?
 
@@ -51,7 +51,7 @@ The goal is not always to walk the fastest or climb the highest.
 
 The goal is to experience the journey together.
 
-![Forest trail through the Himalayan foothills](https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1400&h=700&fit=crop&q=80)
+![Forest trail through the Himalayan foothills](https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1400&h=700&fit=crop&q=80 "Forest trail through the Himalayan foothills")
 
 ## Why Is a Family Trek Different From a Family Holiday?
 
@@ -71,7 +71,7 @@ A child who initially says, "I can't walk anymore," may eventually discover that
 
 These small experiences can change how family members see each other.
 
-![A family pausing on a mountain path above the valley](https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1400&h=700&fit=crop&q=80)
+![A family pausing on a mountain path above the valley](https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1400&h=700&fit=crop&q=80 "A family pausing on a mountain path above the valley")
 
 ## 1. Families Finally Get Time Without Distractions
 
@@ -97,7 +97,7 @@ A family trek allows children to experience trees and forests, soil and rocks, r
 
 This direct experience can make children more comfortable with the natural world. They learn that nature is not always perfectly controlled — and sometimes the view is so beautiful that all the difficulty suddenly feels worthwhile.
 
-![Children discovering forests, streams, and mountain air](https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=1400&h=800&fit=crop&q=80)
+![Children discovering forests, streams, and mountain air](https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=1400&h=800&fit=crop&q=80 "Children discovering forests, streams, and mountain air")
 
 ## 3. Trekking Teaches Children Flexibility
 
@@ -169,7 +169,7 @@ The mountain teaches something that modern life often forgets: **Slow does not m
 
 ## 10. Family Trekking Creates Shared Memories
 
-![Camping under Himalayan skies after a day on the trail](https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?w=1400&h=800&fit=crop&q=80)
+![Camping under Himalayan skies after a day on the trail](https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?w=1400&h=800&fit=crop&q=80 "Camping under Himalayan skies after a day on the trail")
 
 Ask someone about a family holiday from ten years ago and they may remember a hotel or a destination. But ask them about an unusual family adventure and the stories often become much more detailed.
 
@@ -223,7 +223,7 @@ Trekking brings attention back to the present. Where is the trail? How far is th
 
 For a few days, the family's attention becomes focused on what is happening right now. That sense of presence can be one of the most refreshing aspects of a mountain journey.
 
-![Sunrise over snow-capped Himalayan peaks](https://images.unsplash.com/photo-1486870591958-9b9d0d1dda99?w=1400&h=700&fit=crop&q=80)
+![Sunrise over snow-capped Himalayan peaks](https://images.unsplash.com/photo-1486870591958-9b9d0d1dda99?w=1400&h=700&fit=crop&q=80 "Sunrise over snow-capped Himalayan peaks")
 
 ## What Do Children Actually Learn From a Family Trek?
 
@@ -309,7 +309,7 @@ However, suitability depends on the specific itinerary, season, altitude, age of
 
 ## Family Trekking in Uttarakhand
 
-![Alpine meadows and mountain villages in Uttarakhand](https://images.unsplash.com/photo-1454496522488-7a8e488e8606?w=1400&h=800&fit=crop&q=80)
+![Alpine meadows and mountain villages in Uttarakhand](https://images.unsplash.com/photo-1454496522488-7a8e488e8606?w=1400&h=800&fit=crop&q=80 "Alpine meadows and mountain villages in Uttarakhand")
 
 Uttarakhand offers an exceptional setting for families who want to experience the Himalayas. From accessible mountain walks to longer Himalayan trekking routes, the state offers diverse landscapes within a relatively compact region.
 
@@ -345,7 +345,7 @@ Parents can become friends with their children for a while. Children can become 
 
 ## The Memory Is Bigger Than the Mountain
 
-![A Himalayan summit view after walking it together](https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1400&h=800&fit=crop&q=80)
+![A Himalayan summit view after walking it together](https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1400&h=800&fit=crop&q=80 "A Himalayan summit view after walking it together")
 
 Years later, your child may not remember every detail of the trail, the exact altitude, the name of every campsite, or how many kilometres they walked.
 

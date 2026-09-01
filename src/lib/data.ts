@@ -1,4 +1,10 @@
 import { KEDARKANTHA_FEATURE, KEDARKANTHA_GALLERY } from "@/lib/content/treks/kedarkantha/gallery-content";
+import {
+  KEDARKANTHA_EXCLUSIONS,
+  KEDARKANTHA_INCLUSIONS,
+} from "@/lib/content/treks/kedarkantha/inclusion-exclusion-content";
+import { KEDARKANTHA_ITINERARY } from "@/lib/content/treks/kedarkantha/itinerary-content";
+import type { ItineraryDay } from "@/lib/content/treks/types";
 import { photos } from "@/lib/media";
 import { EXTRA_SITE_PACKAGES, applyLiveSitePricing } from "@/lib/site-packages";
 
@@ -12,15 +18,7 @@ export interface PricingTier {
   exclusions: string[];
 }
 
-export interface ItineraryDay {
-  day: number;
-  title: string;
-  description: string;
-  meals: string;
-  altitude?: string;
-  distance?: string;
-  duration?: string;
-}
+export type { ItineraryDay } from "@/lib/content/treks/types";
 
 export interface Trek {
   id: string;
@@ -152,79 +150,9 @@ const baseTreks: Trek[] = [
       "Perfect beginner winter trek with established campsites and expert guides",
       "Pickup & drop Dehradun Railway Station · ₹5,499/person",
     ],
-    itinerary: [
-      {
-        day: 1,
-        title: "Dehradun Railway Station pickup — Drive to Sankri (base camp)",
-        description: "Total distance: 190 km, 8–9 hours by Tempo Traveller. Elevation: Sankri 1,920 m (6,400 ft). Overnight: hotel/guesthouse.\n\nIndian Treks organizes transport from Dehradun Railway Station around 6:00–7:00 AM. The scenic drive passes Mussoorie, Kempty Falls, Purola, Mori, and the Tons River Valley before reaching Sankri — gateway to Kedarkantha and other Garhwal treks.\n\nCheck in, freshen up, evening snacks with mountain views, trek briefing, optional village walk, dinner and overnight stay in Sankri.",
-        meals: "Dinner",
-        altitude: "6,400 ft (Sankri)",
-        distance: "190 km drive",
-        duration: "8–9 hrs",
-      },
-      {
-        day: 2,
-        title: "Sankri to Juda Ka Talab trek",
-        description: "Trek distance: 5 km · Duration: 4–5 hours on foot · Elevation: Juda Ka Talab 2,700 m · Accommodation: shared camp tents.\n\nAfter breakfast at 7:30 AM, depart at 8:30 AM into Govind National Park's pine, oak, and rhododendron forests. Trail highlights include water crossings, glimpses of Swargarohini and Bandarpoonch, and arrival at Juda Ka Talab — a scenic alpine lake that freezes in winter and reflects peaks in spring.",
-        meals: "Breakfast, Lunch, Dinner",
-        altitude: "9,000 ft (Juda Ka Talab)",
-        distance: "5 km",
-        duration: "4–5 hrs",
-      },
-      {
-        day: 3,
-        title: "Juda Ka Talab to Kedarkantha Base Camp trek",
-        description: "Trek distance: 3 km · Duration: 2–3 hours · Elevation: Kedarkantha Base Camp 3,200 m (11,250 ft) · Twin-share tents.\n\nGradual ascent through meadows and pine forests — often snow-covered in winter. Kedarkantha Peak appears closer with every step. Base camp is a wide meadow with 360° Himalayan views — ideal for acclimatization and the summit push next morning.",
-        meals: "Breakfast, Lunch, Dinner",
-        altitude: "11,250 ft (Base Camp)",
-        distance: "3 km",
-        duration: "2–3 hrs",
-      },
-      {
-        day: 4,
-        title: "Summit day — Kedarkantha Peak & descent to Hargaon Thach",
-        description: "Trek distance: 11 km · Duration: 7–8 hours · Elevation: Hargaon 2,645 m · Twin-share tents.\n\nWake around 3:30 AM for the summit climb. Steep but rewarding — reach the top for sunrise and a spellbinding 360° panorama of Swargarohini, Bandarpoonch, Black Peak, and Gangotri–Yamunotri ranges. Small temples at the summit. Descend to Hargaon Thach for overnight camp.",
-        meals: "Breakfast, Lunch, Dinner",
-        altitude: "12,500 ft (summit)",
-        distance: "11 km",
-        duration: "7–8 hrs",
-      },
-      {
-        day: 5,
-        title: "Hargaon Thach to Sankri — Drive to Dehradun",
-        description: "Trek distance: 4.5 km (2–3 hrs) + 190 km drive to Dehradun. Descend through forest clearings and apple orchards to Sankri. Final breakfast with the team, certificate distribution, group photos. Transport to Dehradun Railway Station departs ~11:30 AM — expected arrival 9:00–10:00 PM.",
-        meals: "Breakfast",
-        altitude: "6,400 ft (Sankri)",
-        distance: "4.5 km trek + 190 km drive",
-        duration: "2–3 hrs trek + 8–9 hrs drive",
-      },
-    ],
-    inclusions: [
-      "Day 1: triple/quad/penta guesthouse in Sankri (separate male/female rooms)",
-      "Days 2–4: twin-sharing tents at campsites",
-      "Meals: dinner Day 1 through breakfast Day 5 (paneer + vegetable menu)",
-      "Mountain/tap water for drinking while trekking",
-      "Base camp manager, certified trek leader (mountaineering + first aid)",
-      "High-altitude cook, local guides, helpers as per group size",
-      "Trek equipment: sleeping bags, liners, mattresses, utensils, 3-man all-season tent",
-      "Toilet tent, kitchen & dining tent, walkie-talkie, camping stool",
-      "Ice axe, ropes, helmet, harness, gaiters, microspikes (when required)",
-      "First aid: oxygen cylinder, oxygen meter, stethoscope, medical kit, stretcher",
-      "Cloakroom for extra luggage at base camp",
-      "All permits and entry fees (Indian nationals)",
-      "Achievement certificate",
-    ],
-    exclusions: [
-      "Meals or accommodation not listed in the itinerary",
-      "Air or bus fare to/from journey start or end point",
-      "Personal medical costs and medicines",
-      "Personal services: phone calls, laundry, alcohol, mineral water",
-      "Camera fees; monument/monastery/museum/temple entry fees",
-      "Backpack offloading by mule/porter (₹300/day online; ₹1,200 at base; max 10 kg/bag)",
-      "Emergency evacuation charges",
-      "Any services not listed under inclusions",
-      "5% GST on package price",
-    ],
+    itinerary: KEDARKANTHA_ITINERARY,
+    inclusions: KEDARKANTHA_INCLUSIONS,
+    exclusions: KEDARKANTHA_EXCLUSIONS,
     pricing: [
       { name: "Economic", price: 5499, originalPrice: 7499, deposit: 1499, badge: "Best Value", inclusions: ["Shared tent (twin/triple)", "All meals as per itinerary", "Tempo Traveller Dehradun–Sankri", "Standard trek gear", "Certified guide"], exclusions: ["Backpack offloading", "Personal porter"] },
       { name: "Standard", price: 7499, originalPrice: 9499, deposit: 1999, badge: "Most Popular", inclusions: ["Twin-sharing tent", "All meals (veg + egg)", "Tempo Traveller", "Premium gear + gaiters/microspikes", "Guide (1:10)", "Sleeping bag liner"], exclusions: ["Personal porter"] },

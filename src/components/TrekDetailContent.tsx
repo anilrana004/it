@@ -39,7 +39,10 @@ import {
 import GearRentModal from '@/components/rental/GearRentModal';
 import { getTrekExtended } from '@/lib/treks/get-trek-extended';
 import { getRouteProfile } from '@/lib/treks/get-route-profile';
-import { RichBlocks, TrekRichSectionCard } from '@/components/treks/TrekExtendedSections';
+import { CollapsibleRichBlocks, RichBlocks, TrekExtendedNavItems, TrekRichSectionCard } from '@/components/treks/TrekExtendedSections';
+import KedarkanthaFitnessSection from '@/components/treks/KedarkanthaFitnessSection';
+import KedarkanthaPackingSection from '@/components/treks/KedarkanthaPackingSection';
+import KedarkanthaWhyChooseSection from '@/components/treks/KedarkanthaWhyChooseSection';
 import TrekRouteMapSection from '@/components/treks/TrekRouteMapSection';
 import TrekAltitudeChartSection from '@/components/treks/TrekAltitudeChartSection';
 import { DESK_HEADER_H, MOBILE_HEADER_H, CHROME_HIDDEN_CLASS } from '@/lib/layout';
@@ -54,6 +57,10 @@ const NAV_SHORT_LABELS: Record<string, string> = {
   'route-map': 'Map',
   'altitude-chart': 'Chart',
   'inclusion-exclusion': 'Inclusions',
+  fitness: 'Fitness',
+  safety: 'Safety',
+  food: 'Food',
+  'why-choose': 'Why choose',
   'things-to-carry': 'Things to pack',
   'how-to-reach': 'How to reach',
   'rent-gear': 'Rent gear',
@@ -79,6 +86,29 @@ const baseNavLinks = [
 ];
 
 const inr = (n: number) => `₹${n.toLocaleString('en-IN')}`;
+
+function GoogleLogoIcon({ size = 18 }: { size?: number }) {
+  return (
+    <svg viewBox="0 0 24 24" width={size} height={size} aria-hidden>
+      <path
+        fill="#4285F4"
+        d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+      />
+      <path
+        fill="#34A853"
+        d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+      />
+      <path
+        fill="#FBBC05"
+        d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+      />
+      <path
+        fill="#EA4335"
+        d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+      />
+    </svg>
+  );
+}
 
 /** Roopkund Heaven booking card: pricing tiers surface as occupancy pills. */
 const OCCUPANCY_LABEL: Record<string, string> = {
@@ -529,10 +559,34 @@ export default function TrekDetailContent({
   /** Sticky nav — content sections only (dates live in hero departures band). */
   const navLinks = useMemo(() => {
     const beforeInclusion = baseNavLinks.slice(0, 3);
-    const fromInclusion = baseNavLinks.slice(3, 5);
-    const afterReach = baseNavLinks.slice(5);
-    return [...beforeInclusion, ...routeNavLinks, ...fromInclusion, ...afterReach];
-  }, []);
+    const inclusionLink = baseNavLinks.slice(3, 4);
+    const bestTimeLink = baseNavLinks.slice(4, 5);
+    const carryReachLinks = baseNavLinks.slice(5, 7);
+    const policyFaqLinks = baseNavLinks.slice(7, 9);
+    const rentGearLink = baseNavLinks.slice(9);
+
+    const midPageSections = extended?.sections
+      ? TrekExtendedNavItems(
+          extended.sections.filter((section) => ['fitness', 'safety', 'food'].includes(section.id)),
+        )
+      : [];
+
+    const whyChooseNav = extended?.sections
+      ? TrekExtendedNavItems(extended.sections.filter((section) => section.id === 'why-choose'))
+      : [];
+
+    return [
+      ...beforeInclusion,
+      ...routeNavLinks,
+      ...inclusionLink,
+      ...midPageSections,
+      ...bestTimeLink,
+      ...carryReachLinks,
+      ...policyFaqLinks,
+      ...whyChooseNav,
+      ...rentGearLink,
+    ];
+  }, [extended]);
 
   const images = useMemo(() => galleryImages(trek), [trek]);
   const heroImage = images[0] ?? trekPhoto(trek.id);
@@ -1024,6 +1078,7 @@ export default function TrekDetailContent({
     return `${f.q} ${f.a}`.toLowerCase().includes(q);
   });
 
+  const cancellationPolicySection = extended?.cancellationPolicySection;
   const policyRows =
     policyTab === 'booking'
       ? extended?.bookingPolicyRows ?? bookingPolicyRows
@@ -1477,7 +1532,7 @@ export default function TrekDetailContent({
               <div className="kg-inc-note">
                 <i className="fa-solid fa-circle-info" aria-hidden />
                 <div>
-                  <ul>
+                  <ul className="kg-rich-list kg-rich-list--compact">
                     <li>Bag offloading is charged at {inr(addOns[0].price)} per bag.</li>
                     <li>Maximum weight per offloaded bag should not exceed 10 kg.</li>
                     <li>All package prices are quoted before 5% GST.</li>
@@ -1489,9 +1544,13 @@ export default function TrekDetailContent({
 
           {extended?.sections
             .filter((section) => ['fitness', 'safety', 'food'].includes(section.id))
-            .map((section) => (
-              <TrekRichSectionCard key={section.id} section={section} />
-            ))}
+            .map((section) =>
+              trek.id === 'kedarkantha' && section.id === 'fitness' ? (
+                <KedarkanthaFitnessSection key={section.id} section={section} />
+              ) : (
+                <TrekRichSectionCard key={section.id} section={section} />
+              ),
+            )}
 
           {/* Best time */}
           <section id="best-time" className="kg-section">
@@ -1516,7 +1575,7 @@ export default function TrekDetailContent({
                     <h3>{season.title}</h3>
                     <div className="kg-season-text">
                       <p>{season.body}</p>
-                      <ul>
+                      <ul className="kg-rich-list">
                         {season.bullets.map((b) => (
                           <li key={b}>{b}</li>
                         ))}
@@ -1529,41 +1588,45 @@ export default function TrekDetailContent({
           </section>
 
           {/* Things to carry */}
-          <section id="things-to-carry" className="kg-section">
-            <div className="kg-carry-card">
-              <div className="kg-carry-head">
-                <span className="kg-carry-kicker">
-                  <i className="fa-solid fa-suitcase" aria-hidden /> Packing Guide
-                </span>
-                <h2>Things to Carry</h2>
-                <div>
-                  <p>
-                    Pack for two realities — warm sunshine at the base city and near-freezing nights
-                    at {trek.maxAltitude}. Keep your pack under 10 kg; anything heavier compounds
-                    fatigue on long trail days.
-                  </p>
+          {trek.id === 'kedarkantha' && extended?.packingSection ? (
+            <KedarkanthaPackingSection section={extended.packingSection} />
+          ) : (
+            <section id="things-to-carry" className="kg-section">
+              <div className="kg-carry-card">
+                <div className="kg-carry-head">
+                  <span className="kg-carry-kicker">
+                    <i className="fa-solid fa-suitcase" aria-hidden /> Packing Guide
+                  </span>
+                  <h2>Things to Carry</h2>
+                  <div>
+                    <p>
+                      Pack for two realities — warm sunshine at the base city and near-freezing nights
+                      at {trek.maxAltitude}. Keep your pack under 10 kg; anything heavier compounds
+                      fatigue on long trail days.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="kg-carry-grid">
+                  {carryGroups.map((group) => (
+                    <div className="kg-carry-box" key={group.title}>
+                      <h3>
+                        <i className={group.icon} aria-hidden /> {group.title}
+                      </h3>
+                      <div className="kg-carry-list">
+                        {group.items.map((item) => (
+                          <div className="kg-carry-item" key={item}>
+                            <i className="fa-solid fa-check" aria-hidden />
+                            <span>{item}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
-
-              <div className="kg-carry-grid">
-                {carryGroups.map((group) => (
-                  <div className="kg-carry-box" key={group.title}>
-                    <h3>
-                      <i className={group.icon} aria-hidden /> {group.title}
-                    </h3>
-                    <div className="kg-carry-list">
-                      {group.items.map((item) => (
-                        <div className="kg-carry-item" key={item}>
-                          <i className="fa-solid fa-check" aria-hidden />
-                          <span>{item}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
+            </section>
+          )}
 
           <div className="kg-promo">
             <Banners items={offersPromo} embedded />
@@ -1588,17 +1651,19 @@ export default function TrekDetailContent({
               <div className="kg-reach-flow">
                 {reachSteps.map((step, i) => (
                   <div className="kg-reach-step" key={step.title}>
-                    <span className="kg-reach-step-badge">{i + 1}</span>
-                    <div>
+                    <div className="kg-reach-step-rail" aria-hidden>
+                      <span className="kg-reach-step-badge">{i + 1}</span>
+                      {i < reachSteps.length - 1 ? <span className="kg-reach-step-line" /> : null}
+                    </div>
+                    <div className="kg-reach-step-body">
                       <h3>{step.title}</h3>
-                      <div className="kg-reach-step-text">
-                        <ul>
-                          {step.items.map((item) => (
-                            <li key={item.label}>
-                              <strong>{item.label}:</strong> {item.text}
-                            </li>
-                          ))}
-                        </ul>
+                      <div className="kg-reach-items">
+                        {step.items.map((item) => (
+                          <div className="kg-reach-item" key={item.label}>
+                            <span className="kg-reach-item-label">{item.label}</span>
+                            <p>{item.text}</p>
+                          </div>
+                        ))}
                       </div>
                     </div>
                   </div>
@@ -1636,29 +1701,40 @@ export default function TrekDetailContent({
                   className={`kg-policy-tab${policyTab === 'cancellation' ? ' is-active' : ''}`}
                   onClick={() => setPolicyTab('cancellation')}
                 >
-                  Cancellation Policy
+                  Cancellation &amp; Refund
                 </button>
               </div>
 
               <div className="kg-policy-panel is-active">
-                <div className="kg-policy-table-wrap">
-                  <table className="kg-policy-table">
-                    <thead>
-                      <tr>
-                        <th>{policyHead[0]}</th>
-                        <th>{policyHead[1]}</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {policyRows.map(([label, detail]) => (
-                        <tr key={label}>
-                          <td>{label}</td>
-                          <td>{detail}</td>
+                {policyTab === 'cancellation' && cancellationPolicySection ? (
+                  <div className="kg-policy-rich">
+                    <h3 className="kg-policy-rich-title">{cancellationPolicySection.title}</h3>
+                    <CollapsibleRichBlocks
+                      blocks={cancellationPolicySection.blocks}
+                      previewCount={6}
+                      className="kg-overview-text kg-extended-rich kg-policy-rich-body"
+                    />
+                  </div>
+                ) : (
+                  <div className="kg-policy-table-wrap">
+                    <table className="kg-policy-table">
+                      <thead>
+                        <tr>
+                          <th>{policyHead[0]}</th>
+                          <th>{policyHead[1]}</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                      </thead>
+                      <tbody>
+                        {policyRows.map(([label, detail]) => (
+                          <tr key={label}>
+                            <td>{label}</td>
+                            <td>{detail}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
               </div>
 
               <div className="kg-policy-note">
@@ -1727,9 +1803,13 @@ export default function TrekDetailContent({
 
           {extended?.sections
             .filter((section) => section.id === 'why-choose')
-            .map((section) => (
-              <TrekRichSectionCard key={section.id} section={section} />
-            ))}
+            .map((section) =>
+              trek.id === 'kedarkantha' ? (
+                <KedarkanthaWhyChooseSection key={section.id} section={section} />
+              ) : (
+                <TrekRichSectionCard key={section.id} section={section} />
+              ),
+            )}
 
           <div className="kg-promo">
             <Banners items={topRatedPromo} embedded />
@@ -2119,27 +2199,50 @@ export default function TrekDetailContent({
           </div>
 
           <div className="kg-testi-track" ref={testiRef}>
-            {pageTestimonials.map((t) => (
-              <article className="kg-testi-item" key={t.name}>
+            {pageTestimonials.map((t, index) => {
+              const rating = t.rating ?? 5;
+              return (
+              <article className="kg-testi-item" key={`${t.name}-${index}`}>
                 <div className="kg-testi-item-top">
                   <div className="kg-testi-user">
                     <span className="kg-testi-avatar">{t.name.slice(0, 2)}</span>
                     <div>
                       <strong>{t.name}</strong>
-                      <span>{trek.title}</span>
+                      <span>{t.posted ?? trek.title}</span>
                     </div>
                   </div>
+                  {t.platform === 'google' ? (
+                    <span className="kg-testi-badge kg-testi-badge-logo" aria-label="Google review">
+                      <GoogleLogoIcon />
+                    </span>
+                  ) : null}
                 </div>
-                <div className="kg-testi-stars">
+                <div className="kg-testi-stars" aria-label={`${rating} out of 5 stars`}>
                   {[0, 1, 2, 3, 4].map((s) => (
-                    <i className="fa-solid fa-star" key={s} aria-hidden />
+                    <i
+                      className={s < rating ? 'fa-solid fa-star' : 'fa-regular fa-star'}
+                      key={s}
+                      aria-hidden
+                    />
                   ))}
                 </div>
                 <div>
                   <p>{t.text}</p>
                 </div>
+                {t.verifyUrl ? (
+                  <a
+                    href={t.verifyUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="kg-testi-verify"
+                  >
+                    <GoogleLogoIcon size={16} />
+                    Verify on Google
+                  </a>
+                ) : null}
               </article>
-            ))}
+            );
+            })}
           </div>
 
           <div className="kg-testi-nav">

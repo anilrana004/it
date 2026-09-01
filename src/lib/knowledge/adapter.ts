@@ -35,6 +35,7 @@ import {
 import type { EntityType, KnowledgePost, PaginatedPostsResult, PostsByEntityFilter } from '@/lib/knowledge/types';
 import { cldBlogImage } from '@/lib/cloudinary';
 import { getBlogTopic, type BlogTopicId } from '@/lib/blog-taxonomy';
+import { mergeCanonicalBlogPost } from '@/lib/knowledge/static-blog-canonical';
 import { unstable_cache } from 'next/cache';
 
 /** Run a storefront DB read; fall back when unset, admin-only build, or connection fails. */
@@ -220,8 +221,9 @@ const cachedTravelNews = unstable_cache(
 
 export async function fetchPublishedBlogPost(slug: string): Promise<BlogPost | null> {
   const post = await withStorefrontDb(() => getPublishedPostBySlug(slug));
-  if (post) return knowledgePostToBlogPost(post);
-  return getStaticPostBySlug(slug) ?? null;
+  if (post) return mergeCanonicalBlogPost(knowledgePostToBlogPost(post));
+  const staticPost = getStaticPostBySlug(slug);
+  return staticPost ? mergeCanonicalBlogPost(staticPost) : null;
 }
 
 export async function fetchPublishedBlogPosts(

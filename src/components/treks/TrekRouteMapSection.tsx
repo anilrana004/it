@@ -41,18 +41,18 @@ export default function TrekRouteMapSection({
         <span className="kg-route-kicker">
           <i className="fa-solid fa-map-location-dot" aria-hidden /> Route Map
         </span>
-        <h2>Day-by-day trail map</h2>
-        <p>
-          {geography?.caption ??
-            profile.mapCaption ??
-            `Interactive terrain map for ${trekTitle} with verified waypoints from the trek itinerary.`}
-        </p>
+                <h2>Itinerary route map</h2>
+                <p>
+                  {geography?.caption ??
+                    profile.mapCaption ??
+                    `Day-by-day route for ${trekTitle} — select a day to highlight that leg of the itinerary.`}
+                </p>
       </div>
 
       <div className="kg-route-stats">
         <div className="kg-route-stat">
-          <strong>{geography?.waypoints.length ?? profile.points.length}</strong>
-          <span>Mapped stops</span>
+          <strong>{profile.points.length}</strong>
+          <span>Day stops</span>
         </div>
         <div className="kg-route-stat">
           <strong>{formatAltitude(profile.maxAltitudeFt)}</strong>

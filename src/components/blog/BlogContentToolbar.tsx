@@ -1,6 +1,7 @@
 'use client';
 
 import { BLOG_CONTENT_SNIPPETS, type BlogSnippetKey } from '@/lib/blog-content-snippets';
+import { headingSnippet } from '@/lib/blog/markdown-editor';
 
 const TOOL_GROUPS: Array<{
   label: string;
@@ -9,7 +10,7 @@ const TOOL_GROUPS: Array<{
   {
     label: 'Headings',
     tools: [
-      { key: 'h2', title: 'Section (##)', icon: 'H2' },
+      { key: 'h2', title: 'Section (##) — adds TOC entry', icon: 'H2' },
       { key: 'h3', title: 'Subheading (###)', icon: 'H3' },
       { key: 'h4', title: 'Detail (####)', icon: 'H4' },
       { key: 'boldLine', title: 'Bold lead line', icon: 'B' },
@@ -36,12 +37,25 @@ const TOOL_GROUPS: Array<{
     label: 'Layout',
     tools: [
       { key: 'divider', title: 'Section divider', icon: '—' },
-      { key: 'image', title: 'Image placeholder', icon: '🖼' },
+      { key: 'image', title: 'Image markdown block', icon: '🖼' },
     ],
   },
 ];
 
-export default function BlogContentToolbar({ onInsert }: { onInsert: (snippet: string) => void }) {
+function snippetForKey(key: BlogSnippetKey, selectedText?: string): string {
+  if (key === 'h2') return headingSnippet(2, selectedText?.trim() ?? '');
+  if (key === 'h3') return headingSnippet(3, selectedText?.trim() ?? '');
+  if (key === 'h4') return headingSnippet(4, selectedText?.trim() ?? '');
+  return BLOG_CONTENT_SNIPPETS[key];
+}
+
+export default function BlogContentToolbar({
+  onInsert,
+  getSelectedText,
+}: {
+  onInsert: (snippet: string, cursorOffset?: number) => void;
+  getSelectedText?: () => string;
+}) {
   return (
     <div className="mb-2 space-y-2 rounded-xl border border-emerald-100 bg-gradient-to-br from-emerald-50/60 to-white p-3">
       <p className="text-[11px] font-bold uppercase tracking-wide text-emerald-800">Format blocks</p>
@@ -54,7 +68,16 @@ export default function BlogContentToolbar({ onInsert }: { onInsert: (snippet: s
                 key={tool.key}
                 type="button"
                 title={tool.title}
-                onClick={() => onInsert(BLOG_CONTENT_SNIPPETS[tool.key])}
+                onClick={() => {
+                  const selected = getSelectedText?.() ?? '';
+                  const snippet = snippetForKey(tool.key, selected);
+                  if (tool.key === 'h2' || tool.key === 'h3' || tool.key === 'h4') {
+                    const cursorFromEnd = tool.key === 'h2' ? 3 : tool.key === 'h3' ? 4 : 5;
+                    onInsert(snippet, cursorFromEnd);
+                    return;
+                  }
+                  onInsert(snippet);
+                }}
                 className="min-w-[2rem] rounded-lg border border-gray-200 bg-white px-2 py-1 text-[11px] font-bold text-gray-700 hover:border-emerald-300 hover:bg-emerald-50 hover:text-emerald-900"
               >
                 {tool.icon}

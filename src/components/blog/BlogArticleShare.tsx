@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo } from 'react';
+import { absoluteUrl } from '@/lib/site';
 
 type Props = {
   title: string;
@@ -8,11 +8,7 @@ type Props = {
 };
 
 export default function BlogArticleShare({ title, path }: Props) {
-  const url = useMemo(() => {
-    if (typeof window === 'undefined') return path;
-    const origin = window.location.origin;
-    return `${origin}${path.startsWith('/') ? path : `/${path}`}`;
-  }, [path]);
+  const url = absoluteUrl(path);
 
   const encodedUrl = encodeURIComponent(url);
   const encodedTitle = encodeURIComponent(title);

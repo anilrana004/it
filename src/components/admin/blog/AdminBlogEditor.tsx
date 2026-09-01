@@ -1,7 +1,10 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { Eye, X } from 'lucide-react';
+import { Eye, LayoutTemplate, PencilLine, X } from 'lucide-react';
+import AdminBlogStorefrontPreview from '@/components/admin/blog/AdminBlogStorefrontPreview';
+import AdminSeoScorecard from '@/components/admin/blog/AdminSeoScorecard';
+import AdminAeoGeoReadiness from '@/components/admin/blog/AdminAeoGeoReadiness';
 import PrimaryEntityPicker from '@/components/admin/blog/PrimaryEntityPicker';
 import PlacementPanel from '@/components/admin/blog/PlacementPanel';
 import BlogContentEditor from '@/components/admin/blog/BlogContentEditor';
@@ -53,6 +56,7 @@ export default function AdminBlogEditor({
   onCancel,
 }: Props) {
   const [slugManual, setSlugManual] = useState(mode === 'edit');
+  const [editorView, setEditorView] = useState<'write' | 'preview'>('write');
 
   const set = <K extends keyof EditorFormState>(key: K, value: EditorFormState[K]) => {
     onChange({ ...form, [key]: value });
@@ -192,6 +196,10 @@ export default function AdminBlogEditor({
 
   const error = (field: string) => fieldErrors[field];
 
+  const authorName = authors.find((a) => a.id === form.authorId)?.name;
+  const reviewerName = authors.find((a) => a.id === form.reviewerId)?.name;
+  const categoryName = categories.find((c) => c.id === form.categoryId)?.name;
+
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 lg:p-6 mb-6 space-y-6">
       <div className="flex items-start justify-between gap-4">
@@ -208,12 +216,49 @@ export default function AdminBlogEditor({
             </p>
           )}
         </div>
-        <button type="button" onClick={onCancel} className="p-2 text-gray-400 hover:text-gray-600">
-          <X className="w-5 h-5" />
-        </button>
+        <div className="flex items-center gap-2">
+          <div className="inline-flex rounded-full border border-gray-200 bg-gray-50 p-0.5">
+            <button
+              type="button"
+              onClick={() => setEditorView('write')}
+              className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold transition-colors ${
+                editorView === 'write'
+                  ? 'bg-white text-gray-900 shadow-sm'
+                  : 'text-gray-500 hover:text-gray-700'
+              }`}
+            >
+              <PencilLine className="h-3.5 w-3.5" />
+              Write
+            </button>
+            <button
+              type="button"
+              onClick={() => setEditorView('preview')}
+              className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold transition-colors ${
+                editorView === 'preview'
+                  ? 'bg-white text-gray-900 shadow-sm'
+                  : 'text-gray-500 hover:text-gray-700'
+              }`}
+            >
+              <LayoutTemplate className="h-3.5 w-3.5" />
+              Storefront preview
+            </button>
+          </div>
+          <button type="button" onClick={onCancel} className="p-2 text-gray-400 hover:text-gray-600">
+            <X className="w-5 h-5" />
+          </button>
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+      {editorView === 'preview' ? (
+        <AdminBlogStorefrontPreview
+          form={form}
+          authorName={authorName}
+          categoryName={categoryName}
+          reviewerName={reviewerName}
+        />
+      ) : null}
+
+      <div className={`grid grid-cols-1 xl:grid-cols-3 gap-6${editorView === 'preview' ? ' hidden' : ''}`}>
         <div className="xl:col-span-2 space-y-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <div>
@@ -257,6 +302,26 @@ export default function AdminBlogEditor({
             value={form.content}
             onChange={(content) => set('content', content)}
             error={error('content')}
+            previewMeta={{
+              title: form.title,
+              excerpt: form.excerpt,
+              featuredImageUrl: form.featuredImageUrl,
+              categoryName,
+              authorName,
+              reviewerName,
+              expertReviewed: form.expertReviewed,
+              slug: form.slug,
+              section: form.section,
+              tags: form.tags,
+              primaryEntity: form.primaryEntity,
+              relatedEntities: form.relatedEntities,
+              quickAnswer: form.quickAnswer,
+              quickAnswerDisplay: form.quickAnswerDisplay,
+              keyFacts: form.keyFacts,
+              faqs: form.faqs,
+              sources: form.sources,
+              lastFactCheckedAt: form.lastFactCheckedAt,
+            }}
           />
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -361,7 +426,7 @@ export default function AdminBlogEditor({
               value={form.featuredImageUrl}
               onChange={(url) => set('featuredImageUrl', url)}
               previewRole="featured"
-              hint="Hero banner on the blog article page. Upload or paste a Cloudinary URL."
+              hint="Used on blog cards and social previews — not shown as a banner on the article page."
             />
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Tags (comma-separated)</label>
@@ -386,6 +451,11 @@ export default function AdminBlogEditor({
 
           <AdminContentInsights cannibalization={cannibalization} topicGaps={topicGaps} />
         </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <AdminSeoScorecard form={form} />
+        <AdminAeoGeoReadiness form={form} />
       </div>
 
       <PlacementPanel

@@ -12,8 +12,6 @@ import BlogSidebar from '@/components/blog/BlogSidebar';
 import Breadcrumbs from '@/components/seo/Breadcrumbs';
 
 import { blogDateLong, blogPath, type BlogPost } from '@/lib/blog';
-import { cldBlogImage } from '@/lib/cloudinary';
-import { safeImage } from '@/lib/safe-image';
 
 import type { BreadcrumbItem } from '@/lib/seo/json-ld';
 
@@ -37,11 +35,13 @@ export default function BlogPostPageView({
   recentPosts,
   relatedPosts = [],
   breadcrumbs,
+  compact = false,
 }: {
   post: BlogPost;
   recentPosts: BlogPost[];
   relatedPosts?: BlogPost[];
   breadcrumbs: BreadcrumbItem[];
+  compact?: boolean;
 }) {
   const lead = post.description
     ? post.description
@@ -54,22 +54,15 @@ export default function BlogPostPageView({
       );
 
   const toc = post.markdown ? extractBlogToc(post.content).slice(0, 20) : [];
-  const heroImage = post.image ? cldBlogImage(safeImage(post.image), 'featured') : '';
   const articlePath = blogPath(post.slug);
   const category = postCategory(post);
   const updatedLabel = post.updatedAt ? blogDateLong(post.updatedAt.slice(0, 10)) : null;
 
   return (
-    <article className="it-blog it-blog--article">
-      <BlogArticleProgress />
+    <article className={`it-blog it-blog--article${compact ? ' it-blog--compact' : ''}`}>
+      {compact ? null : <BlogArticleProgress />}
 
       <header className="mono-article-hero">
-        {heroImage ? (
-          <div className="mono-article-hero__media">
-            <img src={heroImage} alt={post.title} loading="eager" referrerPolicy="no-referrer" />
-          </div>
-        ) : null}
-
         <div className="mono-article-hero__content">
           <div className="mono-article-hero__inner">
             <Breadcrumbs items={breadcrumbs} />
@@ -111,10 +104,15 @@ export default function BlogPostPageView({
         </div>
       </header>
 
-      <div className={`it-blog__shell it-blog__shell--article${toc.length > 0 ? ' has-toc' : ''}`}>
+      <div
+        className={`it-blog__shell it-blog__shell--article${toc.length > 0 ? ' has-toc' : ''}`}
+      >
         {toc.length > 0 ? (
-          <aside className="it-blog__aside-left it-blog__aside-left--sticky" aria-label="Table of contents">
-            <BlogArticleToc items={toc} variant="sidebar" />
+          <aside
+            className="it-blog__aside-left it-blog__aside-left--sticky"
+            aria-label="Table of contents"
+          >
+            <BlogArticleToc items={toc} variant="sidebar" defaultOpen />
           </aside>
         ) : null}
 
@@ -135,8 +133,9 @@ export default function BlogPostPageView({
           </div>
 
           <BlogRelatedTreks post={post} />
-          <BlogRelatedArticles posts={relatedPosts} />
+          {compact ? null : <BlogRelatedArticles posts={relatedPosts} />}
 
+          {compact ? null : (
           <div className="it-blog__trust-bar" aria-label="Editorial trust signals">
             {post.authority?.lastVerified ? (
               <span>
@@ -155,7 +154,9 @@ export default function BlogPostPageView({
               Written for Indian Himalayan trekkers
             </span>
           </div>
+          )}
 
+          {compact ? null : (
           <footer className="it-blog__article-footer">
             <div className="it-blog__cta">
               <div>
@@ -181,17 +182,20 @@ export default function BlogPostPageView({
               </div>
             </div>
           </footer>
+          )}
         </div>
 
+        {compact ? null : (
         <BlogSidebar
           recentPosts={recentPosts}
           activeSlug={post.slug}
           post={post}
           sharePath={articlePath}
         />
+        )}
       </div>
 
-      {toc.length > 0 ? <BlogArticleToc items={toc} variant="mobile" /> : null}
+      {toc.length > 0 && !compact ? <BlogArticleToc items={toc} variant="mobile" /> : null}
     </article>
   );
 }

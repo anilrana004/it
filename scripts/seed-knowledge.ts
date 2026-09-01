@@ -6,11 +6,13 @@ import { blogPosts, blogExcerpt } from '../src/lib/blog';
 import { travelNewsItems } from '../src/lib/content/travel-news';
 import { closeDb, getDb } from '../src/lib/db';
 import { seedEntityRegistryFromTreks } from '../src/lib/knowledge/entity-registry';
+import { savePostAuthority } from '../src/lib/knowledge/authority';
 import {
   computeReadingTimeMin,
   resolvePostIdsBySlugs,
   upsertAuthor,
 } from '../src/lib/knowledge/posts';
+import { getStaticBlogSeedExtras } from '../src/lib/knowledge/static-blog-canonical';
 import type { CreatePostInput, EntityLinkRole, EntityType } from '../src/lib/knowledge/types';
 import { eq, sql } from 'drizzle-orm';
 import { schema } from '../src/lib/db';
@@ -27,6 +29,9 @@ type SeedPost = CreatePostInput & {
   entityLinks?: SeedLink[];
   categorySlug?: string;
   relatedSlugs?: string[];
+  expertReviewed?: boolean;
+  contentFreshness?: 'evergreen' | 'seasonal' | 'time_sensitive';
+  lastFactCheckedAt?: string;
 };
 
 const DEFAULT_AUTHOR = {
@@ -73,6 +78,8 @@ function blogSeedPosts(): SeedPost[] {
       relatedSlugs.push('first-himalayan-trek', 'group-travel-himalayas');
     }
 
+    const extras = getStaticBlogSeedExtras(post.slug);
+
     return {
       slug: post.slug,
       title: post.title,
@@ -86,6 +93,16 @@ function blogSeedPosts(): SeedPost[] {
       seoTitle: post.seoTitle ?? post.title,
       seoDescription: post.description ?? blogExcerpt(post.content, 160),
       publishedAt: `${post.publishedAt}T09:00:00.000Z`,
+      expertReviewed: extras?.expertReviewed ?? false,
+      contentFreshness: extras?.contentFreshness ?? 'evergreen',
+      lastFactCheckedAt: extras?.lastFactCheckedAt,
+      quickAnswer: extras?.quickAnswer
+        ? {
+            quickAnswer: extras.quickAnswer,
+            keyFacts: extras.keyFacts ?? [],
+            display: extras.quickAnswerDisplay ?? true,
+          }
+        : undefined,
       tags: [
         ...(post.types ?? []),
         ...(post.regions ?? []),
@@ -179,6 +196,9 @@ async function upsertSeedPost(authorId: string, seed: SeedPost) {
       primaryEntityId: primaryLink?.entityId ?? seed.primaryEntityId ?? null,
       seoTitle: seed.seoTitle ?? seed.title,
       seoDescription: seed.seoDescription ?? seed.excerpt ?? null,
+      expertReviewed: seed.expertReviewed ?? false,
+      contentFreshness: seed.contentFreshness ?? 'evergreen',
+      lastFactCheckedAt: seed.lastFactCheckedAt ? new Date(seed.lastFactCheckedAt) : null,
       publishedAt,
       updatedAt: new Date(),
     })
@@ -197,6 +217,9 @@ async function upsertSeedPost(authorId: string, seed: SeedPost) {
         readingTimeMin: sql`excluded.reading_time_min`,
         primaryEntityType: sql`excluded.primary_entity_type`,
         primaryEntityId: sql`excluded.primary_entity_id`,
+        expertReviewed: sql`excluded.expert_reviewed`,
+        contentFreshness: sql`excluded.content_freshness`,
+        lastFactCheckedAt: sql`excluded.last_fact_checked_at`,
         seoTitle: sql`excluded.seo_title`,
         seoDescription: sql`excluded.seo_description`,
         publishedAt: sql`excluded.published_at`,
@@ -204,6 +227,10 @@ async function upsertSeedPost(authorId: string, seed: SeedPost) {
       },
     })
     .returning({ id: posts.id });
+
+  if (seed.quickAnswer !== undefined) {
+    await savePostAuthority(row.id, { quickAnswer: seed.quickAnswer });
+  }
 
   await db.delete(postTags).where(eq(postTags.postId, row.id));
   await db.delete(postEntityLinks).where(eq(postEntityLinks.postId, row.id));
