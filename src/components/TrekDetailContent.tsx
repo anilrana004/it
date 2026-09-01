@@ -37,6 +37,7 @@ import {
   type GearItem,
 } from '@/lib/gear-rental';
 import GearRentModal from '@/components/rental/GearRentModal';
+import type { TrekTestimonial } from '@/lib/content/treks/types';
 import { getTrekExtended } from '@/lib/treks/get-trek-extended';
 import { getRouteProfile } from '@/lib/treks/get-route-profile';
 import { CollapsibleRichBlocks, RichBlocks, TrekExtendedNavItems, TrekRichSectionCard } from '@/components/treks/TrekExtendedSections';
@@ -599,10 +600,12 @@ export default function TrekDetailContent({
     [extended, trek],
   );
   const carryGroups = extended?.packingGroups ?? packingGroups;
-  const pageTestimonials = extended?.testimonials ?? detailTestimonials.map((item) => ({
-    name: item.name,
-    text: item.text,
-  }));
+  const pageTestimonials: TrekTestimonial[] =
+    extended?.testimonials ??
+    detailTestimonials.map((item) => ({
+      name: item.name,
+      text: item.text,
+    }));
   const [nearbyPromo, offersPromo, topRatedPromo] = useMemo(() => getPromoBanners(trek), [trek]);
   const relatedPosts = useMemo(
     () => relatedBlogPosts ?? getRelatedPosts(trek, 3),

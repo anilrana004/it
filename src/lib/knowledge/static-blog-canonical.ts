@@ -61,21 +61,21 @@ function mergeAuthority(
 
   const merged: BlogAuthority = {
     ...fromExtras,
-    ...canonical?.authority,
+    ...canonical,
     ...fromDb,
     keyFacts: [
       ...(fromExtras.keyFacts ?? []),
-      ...(canonical?.authority?.keyFacts ?? []),
+      ...(canonical?.keyFacts ?? []),
       ...(fromDb?.keyFacts ?? []),
     ].filter(
       (fact, index, list) => list.findIndex((item) => item.label === fact.label) === index,
     ),
-    sources: [...(canonical?.authority?.sources ?? []), ...(fromDb?.sources ?? [])],
-    faqs: fromDb?.faqs?.length ? fromDb.faqs : canonical?.authority?.faqs,
+    sources: [...(canonical?.sources ?? []), ...(fromDb?.sources ?? [])],
+    faqs: fromDb?.faqs?.length ? fromDb.faqs : canonical?.faqs,
     expertReviewed:
-      fromDb?.expertReviewed ?? canonical?.authority?.expertReviewed ?? fromExtras.expertReviewed,
+      fromDb?.expertReviewed ?? canonical?.expertReviewed ?? fromExtras.expertReviewed,
     lastVerified:
-      fromDb?.lastVerified ?? canonical?.authority?.lastVerified ?? fromExtras.lastVerified,
+      fromDb?.lastVerified ?? canonical?.lastVerified ?? fromExtras.lastVerified,
   };
 
   const hasPanelContent =
