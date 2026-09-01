@@ -41,9 +41,9 @@ import type { TrekTestimonial } from '@/lib/content/treks/types';
 import { getTrekExtended } from '@/lib/treks/get-trek-extended';
 import { getRouteProfile } from '@/lib/treks/get-route-profile';
 import { CollapsibleRichBlocks, RichBlocks, TrekExtendedNavItems, TrekRichSectionCard } from '@/components/treks/TrekExtendedSections';
-import KedarkanthaFitnessSection from '@/components/treks/KedarkanthaFitnessSection';
-import KedarkanthaPackingSection from '@/components/treks/KedarkanthaPackingSection';
-import KedarkanthaWhyChooseSection from '@/components/treks/KedarkanthaWhyChooseSection';
+import TrekFitnessSection from '@/components/treks/TrekFitnessSection';
+import TrekPackingSection from '@/components/treks/TrekPackingSection';
+import TrekWhyChooseSection from '@/components/treks/TrekWhyChooseSection';
 import TrekRouteMapSection from '@/components/treks/TrekRouteMapSection';
 import TrekAltitudeChartSection from '@/components/treks/TrekAltitudeChartSection';
 import { DESK_HEADER_H, MOBILE_HEADER_H, CHROME_HIDDEN_CLASS } from '@/lib/layout';
@@ -555,7 +555,7 @@ export default function TrekDetailContent({
   const kindLabel = isYatra ? 'Yatra' : 'Trek';
   const listHref = isYatra ? '/yatra' : '/treks';
 
-  const extended = useMemo(() => getTrekExtended(trek.id), [trek.id]);
+  const extended = useMemo(() => getTrekExtended(trek), [trek]);
   const routeProfile = useMemo(() => getRouteProfile(trek, extended), [trek, extended]);
   /** Sticky nav — content sections only (dates live in hero departures band). */
   const navLinks = useMemo(() => {
@@ -1548,8 +1548,8 @@ export default function TrekDetailContent({
           {extended?.sections
             .filter((section) => ['fitness', 'safety', 'food'].includes(section.id))
             .map((section) =>
-              trek.id === 'kedarkantha' && section.id === 'fitness' ? (
-                <KedarkanthaFitnessSection key={section.id} section={section} />
+              section.id === 'fitness' ? (
+                <TrekFitnessSection key={section.id} trek={trek} section={section} />
               ) : (
                 <TrekRichSectionCard key={section.id} section={section} />
               ),
@@ -1591,8 +1591,8 @@ export default function TrekDetailContent({
           </section>
 
           {/* Things to carry */}
-          {trek.id === 'kedarkantha' && extended?.packingSection ? (
-            <KedarkanthaPackingSection section={extended.packingSection} />
+          {extended?.packingSection ? (
+            <TrekPackingSection section={extended.packingSection} />
           ) : (
             <section id="things-to-carry" className="kg-section">
               <div className="kg-carry-card">
@@ -1806,13 +1806,9 @@ export default function TrekDetailContent({
 
           {extended?.sections
             .filter((section) => section.id === 'why-choose')
-            .map((section) =>
-              trek.id === 'kedarkantha' ? (
-                <KedarkanthaWhyChooseSection key={section.id} section={section} />
-              ) : (
-                <TrekRichSectionCard key={section.id} section={section} />
-              ),
-            )}
+            .map((section) => (
+              <TrekWhyChooseSection key={section.id} section={section} />
+            ))}
 
           <div className="kg-promo">
             <Banners items={topRatedPromo} embedded />

@@ -1,17 +1,18 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import type { Trek } from '@/lib/data';
 import type { TrekRichSection } from '@/lib/treks/trek-extended-types';
 import { RichBlocks } from '@/components/treks/TrekExtendedSections';
 import {
-  assessKedarkanthaFitness,
+  assessTrekFitness,
   type FitnessAssessmentInput,
-} from '@/lib/content/treks/kedarkantha/fitness-calculator';
+} from '@/lib/treks/fitness-calculator';
 import {
-  downloadKedarkanthaFitnessPlan,
-  printKedarkanthaFitnessPlan,
-} from '@/lib/content/treks/kedarkantha/fitness-plan-download';
-import './kedarkantha-fitness.css';
+  downloadFitnessPlanPdf,
+  printFitnessPlanPdf,
+} from '@/lib/treks/fitness-plan-pdf';
+import './trek-fitness.css';
 
 const DEFAULT_INPUT: FitnessAssessmentInput = {
   exerciseDays: '2-3',
@@ -29,16 +30,26 @@ const LEVEL_CLASS: Record<string, string> = {
 };
 
 type Props = {
+  trek: Trek;
   section: TrekRichSection;
 };
 
-export default function KedarkanthaFitnessSection({ section }: Props) {
+export default function TrekFitnessSection({ trek, section }: Props) {
   const [expanded, setExpanded] = useState(false);
   const [input, setInput] = useState<FitnessAssessmentInput>(DEFAULT_INPUT);
   const [assessed, setAssessed] = useState(false);
 
-  const result = useMemo(() => assessKedarkanthaFitness(input), [input]);
+  const result = useMemo(() => assessTrekFitness(input, trek.title), [input, trek.title]);
   const visibleBlocks = expanded ? section.blocks : section.blocks.slice(0, 3);
+  const planMeta = useMemo(
+    () => ({
+      trekTitle: trek.title,
+      trekId: trek.id,
+      maxAltitude: trek.maxAltitude,
+      startEndPoint: trek.startEndPoint,
+    }),
+    [trek],
+  );
 
   const update = <K extends keyof FitnessAssessmentInput>(
     key: K,
@@ -86,7 +97,7 @@ export default function KedarkanthaFitnessSection({ section }: Props) {
             <span className="kg-overview-kicker">
               <i className="fa-solid fa-heart-pulse" aria-hidden /> Fitness calculator
             </span>
-            <h2>Check your Kedarkantha readiness</h2>
+            <h2>Check your {trek.title} readiness</h2>
             <p>
               Answer five quick questions to get a personalised preparation plan with weekly exercises
               tailored to your fitness level.
@@ -203,23 +214,23 @@ export default function KedarkanthaFitnessSection({ section }: Props) {
                     <button
                       type="button"
                       className="kg-pill-btn kg-pill-btn--primary"
-                      onClick={() => downloadKedarkanthaFitnessPlan(result)}
+                      onClick={() => downloadFitnessPlanPdf(result, planMeta)}
                     >
-                      <i className="fa-solid fa-download" aria-hidden /> Download training plan
+                      <i className="fa-solid fa-download" aria-hidden /> Download training plan (PDF)
                     </button>
                     <button
                       type="button"
                       className="kg-pill-btn"
-                      onClick={() => printKedarkanthaFitnessPlan(result)}
+                      onClick={() => printFitnessPlanPdf(result, planMeta)}
                     >
-                      <i className="fa-solid fa-print" aria-hidden /> Print / Save as PDF
+                      <i className="fa-solid fa-print" aria-hidden /> Print plan
                     </button>
                   </div>
                 </>
               ) : (
                 <div className="kg-fit-placeholder">
                   <i className="fa-solid fa-clipboard-list" aria-hidden />
-                  <p>Complete the form and tap calculate to see your personalised Kedarkantha fitness plan.</p>
+                  <p>Complete the form and tap calculate to see your personalised {trek.title} fitness plan.</p>
                 </div>
               )}
             </div>

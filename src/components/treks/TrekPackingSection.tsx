@@ -10,7 +10,7 @@ type Props = {
   section: TrekRichSection;
 };
 
-export default function KedarkanthaPackingSection({ section }: Props) {
+export default function TrekPackingSection({ section }: Props) {
   const [expanded, setExpanded] = useState(false);
   const visibleBlocks = expanded ? section.blocks : section.blocks.slice(0, PREVIEW_BLOCK_COUNT);
 

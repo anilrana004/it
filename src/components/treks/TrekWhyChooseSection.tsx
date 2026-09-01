@@ -9,7 +9,7 @@ type Props = {
   section: TrekRichSection;
 };
 
-export default function KedarkanthaWhyChooseSection({ section }: Props) {
+export default function TrekWhyChooseSection({ section }: Props) {
   return (
     <section id={section.id} className="kg-section">
       <div className="kg-overview-card">
