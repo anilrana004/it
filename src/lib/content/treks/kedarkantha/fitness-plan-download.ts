@@ -13,11 +13,11 @@ const KEDARKANTHA_META: FitnessPlanMeta = {
 };
 
 /** @deprecated Use `downloadFitnessPlanPdf` from `@/lib/treks/fitness-plan-pdf`. */
-export function downloadKedarkanthaFitnessPlan(result: FitnessAssessmentResult): void {
-  downloadFitnessPlanPdf(result, KEDARKANTHA_META);
+export async function downloadKedarkanthaFitnessPlan(result: FitnessAssessmentResult): Promise<void> {
+  await downloadFitnessPlanPdf(result, KEDARKANTHA_META);
 }
 
 /** @deprecated Use `printFitnessPlanPdf` from `@/lib/treks/fitness-plan-pdf`. */
-export function printKedarkanthaFitnessPlan(result: FitnessAssessmentResult): void {
-  printFitnessPlanPdf(result, KEDARKANTHA_META);
+export async function printKedarkanthaFitnessPlan(result: FitnessAssessmentResult): Promise<void> {
+  await printFitnessPlanPdf(result, KEDARKANTHA_META);
 }

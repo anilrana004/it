@@ -214,14 +214,18 @@ export default function TrekFitnessSection({ trek, section }: Props) {
                     <button
                       type="button"
                       className="kg-pill-btn kg-pill-btn--primary"
-                      onClick={() => downloadFitnessPlanPdf(result, planMeta)}
+                      onClick={() => {
+                        void downloadFitnessPlanPdf(result, planMeta);
+                      }}
                     >
                       <i className="fa-solid fa-download" aria-hidden /> Download training plan (PDF)
                     </button>
                     <button
                       type="button"
                       className="kg-pill-btn"
-                      onClick={() => printFitnessPlanPdf(result, planMeta)}
+                      onClick={() => {
+                        void printFitnessPlanPdf(result, planMeta);
+                      }}
                     >
                       <i className="fa-solid fa-print" aria-hidden /> Print plan
                     </button>
