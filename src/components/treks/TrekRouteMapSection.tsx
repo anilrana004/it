@@ -1,6 +1,8 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import { useMemo } from 'react';
+import type { MapSelection } from '@/types/trek-map';
 import type { RouteProfile } from '@/lib/treks/route-profile-types';
 import { getTrekGeography } from '@/lib/treks/geography/get-trek-geography';
 import {
@@ -9,31 +11,64 @@ import {
   formatAltitude,
   formatDistance,
 } from '@/lib/treks/route-profile-utils';
-import TrekRouteMapbox from '@/components/treks/TrekRouteMapbox';
+import MapFallback from '@/components/trek-map/MapFallback';
+
+const TrekMap = dynamic(() => import('@/components/trek-map/TrekMap'), {
+  ssr: false,
+  loading: () => (
+    <div className="tm-loading" aria-live="polite" style={{ minHeight: 280, position: 'relative' }}>
+      <span className="tm-loading-pulse" aria-hidden />
+      Loading route map…
+    </div>
+  ),
+});
 
 type Props = {
   trekId: string;
   profile: RouteProfile;
-  activeDay: number;
-  onDayChange: (day: number) => void;
+  selection: MapSelection;
+  onSelectionChange: (selection: MapSelection) => void;
   kindLabel: string;
   trekTitle: string;
+  profileFocusKm?: number | null;
+  onProfileFocusChange?: (km: number | null) => void;
 };
+
+function selectionToDay(selection: MapSelection): number | null {
+  if (typeof selection === 'number') return selection;
+  return null;
+}
+
+function activePointForSelection(profile: RouteProfile, selection: MapSelection) {
+  if (selection === 'overview') return profile.points[0];
+  if (selection === 'summit') {
+    return profile.points.find((p) => p.activity === 'summit') ?? profile.points.at(-1);
+  }
+  return profile.points.find((p) => p.day === selection) ?? profile.points[0];
+}
 
 export default function TrekRouteMapSection({
   trekId,
   profile,
-  activeDay,
-  onDayChange,
+  selection,
+  onSelectionChange,
   kindLabel,
   trekTitle,
+  profileFocusKm = null,
+  onProfileFocusChange,
 }: Props) {
   const geography = useMemo(() => getTrekGeography(trekId, profile), [trekId, profile]);
+  const hasSummit = useMemo(
+    () => profile.points.some((p) => p.activity === 'summit'),
+    [profile.points],
+  );
 
   const activePoint = useMemo(
-    () => profile.points.find((p) => p.day === activeDay) ?? profile.points[0],
-    [profile.points, activeDay],
+    () => activePointForSelection(profile, selection),
+    [profile, selection],
   );
+
+  const activeDayNum = selectionToDay(selection);
 
   return (
     <div className="kg-route-card">
@@ -41,12 +76,12 @@ export default function TrekRouteMapSection({
         <span className="kg-route-kicker">
           <i className="fa-solid fa-map-location-dot" aria-hidden /> Route Map
         </span>
-                <h2>Itinerary route map</h2>
-                <p>
-                  {geography?.caption ??
-                    profile.mapCaption ??
-                    `Day-by-day route for ${trekTitle} — select a day to highlight that leg of the itinerary.`}
-                </p>
+        <h2>Itinerary route map</h2>
+        <p id="kg-route-map-desc">
+          {geography?.caption ??
+            profile.mapCaption ??
+            `Explore ${trekTitle} as one continuous journey — Complete journey or a day to highlight the route.`}
+        </p>
       </div>
 
       <div className="kg-route-stats">
@@ -72,47 +107,86 @@ export default function TrekRouteMapSection({
         </div>
       </div>
 
-      <div className="kg-route-daybar" role="tablist" aria-label="Select day on map">
+      <div className="kg-route-daybar" role="tablist" aria-label="Select map view">
+        <button
+          type="button"
+          role="tab"
+          aria-selected={selection === 'overview'}
+          className={`kg-route-daypill${selection === 'overview' ? ' is-active' : ''}`}
+          onClick={() => onSelectionChange('overview')}
+        >
+          <span className="kg-route-daypill-num">All</span>
+          <span className="kg-route-daypill-label">Complete journey</span>
+        </button>
         {profile.points.map((point) => (
           <button
             key={point.day}
             type="button"
             role="tab"
-            aria-selected={activeDay === point.day}
-            className={`kg-route-daypill${activeDay === point.day ? ' is-active' : ''}`}
-            onClick={() => onDayChange(point.day)}
+            aria-selected={selection === point.day}
+            className={`kg-route-daypill${selection === point.day ? ' is-active' : ''}`}
+            onClick={() => onSelectionChange(point.day)}
           >
             <span className="kg-route-daypill-num">D{point.day}</span>
             <span className="kg-route-daypill-label">{point.label}</span>
           </button>
         ))}
+        {hasSummit && (
+          <button
+            type="button"
+            role="tab"
+            aria-selected={selection === 'summit'}
+            className={`kg-route-daypill kg-route-daypill--summit${selection === 'summit' ? ' is-active' : ''}`}
+            onClick={() => onSelectionChange('summit')}
+          >
+            <span className="kg-route-daypill-num">
+              <i className="fa-solid fa-mountain" aria-hidden />
+            </span>
+            <span className="kg-route-daypill-label">Summit</span>
+          </button>
+        )}
+      </div>
+
+      <div className="kg-route-legend" aria-label="Map route key">
+        <span className="kg-route-legend-item">
+          <span className="kg-route-legend-line kg-route-legend-line--drive" aria-hidden /> Road transfer
+        </span>
+        <span className="kg-route-legend-item">
+          <span className="kg-route-legend-line kg-route-legend-line--trek" aria-hidden /> Full trek route
+        </span>
+        <span className="kg-route-legend-item">
+          <span className="kg-route-legend-line kg-route-legend-line--trek-active" aria-hidden /> Itinerary progress (green)
+        </span>
       </div>
 
       <div className="kg-route-body">
         {geography ? (
-          <TrekRouteMapbox
+          <TrekMap
             geography={geography}
             profile={profile}
-            activeDay={activeDay}
-            onDayChange={onDayChange}
             trekTitle={trekTitle}
-            kindLabel={kindLabel}
+            selection={selection}
+            onSelectionChange={onSelectionChange}
+            profileFocusKm={profileFocusKm}
+            onProfileFocusChange={onProfileFocusChange}
           />
         ) : (
-          <div className="kg-map-unavailable">
-            <i className="fa-solid fa-map" aria-hidden />
-            <strong>Geographic route data unavailable</strong>
-            <p>
-              Verified coordinates for this {kindLabel.toLowerCase()} are not yet mapped. Itinerary
-              and altitude chart remain available below.
-            </p>
-          </div>
+          <MapFallback
+            message={`Verified coordinates for this ${kindLabel.toLowerCase()} are not yet mapped.`}
+            detail="Itinerary and altitude chart remain available below."
+          />
         )}
 
         {activePoint && (
           <aside className="kg-route-detail" aria-live="polite">
             <div className="kg-route-detail-head">
-              <span className="kg-route-detail-day">Day {activePoint.day}</span>
+              <span className="kg-route-detail-day">
+                {selection === 'overview'
+                  ? 'Overview'
+                  : selection === 'summit'
+                    ? 'Summit'
+                    : `Day ${activePoint.day}`}
+              </span>
               <h3>{activePoint.label}</h3>
               <p className="kg-route-detail-title">{activePoint.title}</p>
             </div>
@@ -158,13 +232,15 @@ export default function TrekRouteMapSection({
                 <div>
                   <strong>{kindLabel} segment</strong>
                   <span>
-                    {activePoint.day} of {profile.points.length}
+                    {activeDayNum != null
+                      ? `${activeDayNum} of ${profile.points.length}`
+                      : `${profile.points.length} days`}
                   </span>
                 </div>
               </div>
             </div>
 
-            {activePoint.description && (
+            {activePoint.description && selection !== 'overview' && (
               <div className="kg-route-detail-copy">
                 {activePoint.description.split(/\n{2,}/).slice(0, 2).map((part) => (
                   <p key={part.slice(0, 48)}>{part}</p>
@@ -174,6 +250,28 @@ export default function TrekRouteMapSection({
           </aside>
         )}
       </div>
+
+      <details className="kg-route-a11y">
+        <summary>Text route list (accessible alternative to the map)</summary>
+        <ol className="kg-route-a11y-list">
+          <li className={selection === 'overview' ? 'is-active' : undefined}>
+            <button type="button" onClick={() => onSelectionChange('overview')}>
+              <span>Complete journey</span> — pickup to drop-off
+            </button>
+          </li>
+          {profile.points.map((point) => (
+            <li key={point.day} className={selection === point.day ? 'is-active' : undefined}>
+              <button type="button" onClick={() => onSelectionChange(point.day)}>
+                <span>Day {point.day}</span> — {point.label}
+                <span className="kg-route-a11y-meta">
+                  {activityLabel(point.activity)}
+                  {point.altitudeLabel ? ` · ${point.altitudeLabel}` : ''}
+                </span>
+              </button>
+            </li>
+          ))}
+        </ol>
+      </details>
     </div>
   );
 }

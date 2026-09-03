@@ -1,4 +1,5 @@
 import type { MapDisplayWaypoint, ResolvedWaypoint, RouteSegment, TrekGeography } from './types';
+import { computeBoundsFromCoords } from '@/lib/trek-map/geo-utils';
 
 function coordsNear(a: [number, number], b: [number, number], epsilon = 0.003): boolean {
   return Math.abs(a[0] - b[0]) <= epsilon && Math.abs(a[1] - b[1]) <= epsilon;
@@ -93,25 +94,6 @@ export function waypointPriority(kind: ResolvedWaypoint['kind']): 1 | 2 | 3 {
   return 1;
 }
 
-export function computeBoundsFromCoords(
-  coords: [number, number][],
-): [[number, number], [number, number]] {
-  let minLng = Infinity;
-  let minLat = Infinity;
-  let maxLng = -Infinity;
-  let maxLat = -Infinity;
-  for (const [lng, lat] of coords) {
-    minLng = Math.min(minLng, lng);
-    minLat = Math.min(minLat, lat);
-    maxLng = Math.max(maxLng, lng);
-    maxLat = Math.max(maxLat, lat);
-  }
-  return [
-    [minLng, minLat],
-    [maxLng, maxLat],
-  ];
-}
-
 export function mergeSegmentCoordinates(
   segments: RouteSegment[],
   category?: 'drive' | 'trek',
@@ -191,15 +173,18 @@ export function resolveRouteGeometry(
   const driveCoordinates = mergeSegmentCoordinates(segments, 'drive');
   const allCoordinates = mergeSegmentCoordinates(segments);
   const trekProgressCoordinates = progressCoordinatesForDay(segments, waypoints, activeDay, 'trek');
+  const driveProgressCoordinates = progressCoordinatesForDay(segments, waypoints, activeDay, 'drive');
   const progressCoordinates = progressCoordinatesForDay(segments, waypoints, activeDay);
   return {
     allCoordinates,
     trekCoordinates,
     driveCoordinates,
     trekProgressCoordinates,
+    driveProgressCoordinates,
     progressCoordinates,
     hasDrawableRoute: allCoordinates.length >= 2,
     hasDrawableTrekRoute: trekCoordinates.length >= 2,
+    hasDrawableDriveRoute: driveCoordinates.length >= 2,
   };
 }
 

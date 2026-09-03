@@ -19,7 +19,7 @@ export default async function TripDetailPage({ params }: { params: Promise<{ id:
   return (
     <TrekDetailContent
       trek={trek}
-      type={trek.type === 'yatra' ? 'yatra' : 'trek'}
+      type="trip"
       relatedBlogPosts={relatedBlogPosts}
     />
   );

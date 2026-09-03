@@ -16,14 +16,24 @@ import {
   nearestSampleIndex,
 } from '@/lib/treks/elevation-profile-utils';
 import { formatAltitude } from '@/lib/treks/route-profile-utils';
+import type { MapSelection } from '@/types/trek-map';
 import './trek-altitude-chart.css';
 
 type Props = {
   profile: RouteProfile;
-  activeDay: number;
-  onDayChange: (day: number) => void;
+  selection: MapSelection;
+  onSelectionChange: (selection: MapSelection) => void;
   trekTitle: string;
+  onProfileFocusChange?: (distanceKm: number | null) => void;
 };
+
+function highlightDay(selection: MapSelection, profile: RouteProfile): number | null {
+  if (typeof selection === 'number') return selection;
+  if (selection === 'summit') {
+    return profile.points.find((p) => p.activity === 'summit')?.day ?? null;
+  }
+  return null;
+}
 
 const VIEW = { w: 920, h: 360, pad: { top: 36, right: 24, bottom: 58, left: 62 } };
 
@@ -133,10 +143,12 @@ function distanceFromPointer(svg: SVGSVGElement, clientX: number, plot: NonNulla
 
 export default function TrekAltitudeChartSection({
   profile,
-  activeDay,
-  onDayChange,
+  selection,
+  onSelectionChange,
   trekTitle,
+  onProfileFocusChange,
 }: Props) {
+  const highlightDayNum = highlightDay(selection, profile);
   const gradientId = useId().replace(/:/g, '');
   const svgRef = useRef<SVGSVGElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -146,8 +158,11 @@ export default function TrekAltitudeChartSection({
   const plot = useMemo(() => buildPlot(profile), [profile]);
 
   const activeWaypoint = useMemo(
-    () => plot?.waypoints.find((w) => w.day === activeDay) ?? plot?.waypoints[0],
-    [plot, activeDay],
+    () =>
+      highlightDayNum != null
+        ? (plot?.waypoints.find((w) => w.day === highlightDayNum) ?? plot?.waypoints[0])
+        : plot?.waypoints[0],
+    [plot, highlightDayNum],
   );
 
   const hoverPoint = hoverIndex != null && plot ? plot.samples[hoverIndex] : null;
@@ -165,8 +180,9 @@ export default function TrekAltitudeChartSection({
         const ratio = point.x / VIEW.w;
         setTooltipSide(ratio > 0.62 ? 'left' : 'right');
       }
+      onProfileFocusChange?.(km);
     },
-    [plot],
+    [onProfileFocusChange, plot],
   );
 
   const onPointerMove = (e: ReactPointerEvent<SVGSVGElement>) => {
@@ -178,10 +194,13 @@ export default function TrekAltitudeChartSection({
     const km = distanceFromPointer(svgRef.current, e.clientX, plot);
     const idx = nearestSampleIndex(plot.elevation.samples, km);
     setHoverIndex(idx);
-    onDayChange(plot.samples[idx].day);
+    onSelectionChange(plot.samples[idx].day);
   };
 
-  const onPointerLeave = () => setHoverIndex(null);
+  const onPointerLeave = () => {
+    setHoverIndex(null);
+    onProfileFocusChange?.(null);
+  };
 
   if (!plot) {
     return (
@@ -253,9 +272,9 @@ export default function TrekAltitudeChartSection({
             key={point.day}
             type="button"
             role="tab"
-            aria-selected={activeDay === point.day}
-            className={`kg-elev-daypill${activeDay === point.day ? ' is-active' : ''}`}
-            onClick={() => onDayChange(point.day)}
+            aria-selected={highlightDayNum === point.day}
+            className={`kg-elev-daypill${highlightDayNum === point.day ? ' is-active' : ''}`}
+            onClick={() => onSelectionChange(point.day)}
           >
             <span className="kg-elev-daypill-num">D{point.day}</span>
             <span className="kg-elev-daypill-label">{point.label}</span>
@@ -308,7 +327,7 @@ export default function TrekAltitudeChartSection({
           })}
 
           {dayBands.map((band) => (
-            <g key={band.day} className={`kg-elev-day-band${band.day === activeDay ? ' is-active' : ''}`}>
+            <g key={band.day} className={`kg-elev-day-band${band.day === highlightDayNum ? ' is-active' : ''}`}>
               <rect
                 x={band.x1}
                 y={VIEW.pad.top}
@@ -397,7 +416,7 @@ export default function TrekAltitudeChartSection({
           )}
 
           {waypoints.map((wp, wpIndex) => {
-            const isActive = wp.day === activeDay;
+            const isActive = wp.day === highlightDayNum;
             const isSummit = wp.index === summit.index;
             const isStart = wpIndex === 0;
             const isEnd = wpIndex === waypoints.length - 1;
@@ -409,7 +428,7 @@ export default function TrekAltitudeChartSection({
                     cy={wp.y}
                     r={isActive ? 7 : 5}
                     className={`kg-elev-waypoint${isActive ? ' is-active' : ''}`}
-                    onClick={() => onDayChange(wp.day)}
+                    onClick={() => onSelectionChange(wp.day)}
                   />
                 )}
                 {isSummit && (
@@ -420,7 +439,7 @@ export default function TrekAltitudeChartSection({
                       cy={wp.y}
                       r={7}
                       className={`kg-elev-summit${isActive ? ' is-active' : ''}`}
-                      onClick={() => onDayChange(wp.day)}
+                      onClick={() => onSelectionChange(wp.day)}
                     />
                     <text x={wp.x} y={wp.y - 18} className="kg-elev-summit-label">
                       <tspan className="kg-elev-summit-icon" aria-hidden>
@@ -517,8 +536,8 @@ export default function TrekAltitudeChartSection({
               return (
                 <tr
                   key={point.day}
-                  className={point.day === activeDay ? 'is-active' : undefined}
-                  onClick={() => onDayChange(point.day)}
+                  className={point.day === highlightDayNum ? 'is-active' : undefined}
+                  onClick={() => onSelectionChange(point.day)}
                 >
                   <td>Day {point.day}</td>
                   <td>{point.label}</td>

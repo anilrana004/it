@@ -546,14 +546,24 @@ export default function TrekDetailContent({
   relatedBlogPosts,
 }: {
   trek: Trek;
-  type: 'trek' | 'yatra';
+  type: 'trek' | 'yatra' | 'trip';
   initialGuests?: number;
   relatedBlogPosts?: RelatedPost[];
 }) {
   const router = useRouter();
   const isYatra = type === 'yatra';
-  const kindLabel = isYatra ? 'Yatra' : 'Trek';
-  const listHref = isYatra ? '/yatra' : '/treks';
+  const isTrip = type === 'trip';
+  const isInternational = trek.region === 'nepal' || trek.region === 'kashmir';
+  const kindLabel = isYatra
+    ? 'Yatra'
+    : isTrip
+      ? isInternational
+        ? 'International Trip'
+        : 'Trip'
+      : isInternational
+        ? 'International Trek'
+        : 'Trek';
+  const listHref = isYatra ? '/yatra' : isTrip ? '/trips' : '/treks';
 
   const extended = useMemo(() => getTrekExtended(trek), [trek]);
   const routeProfile = useMemo(() => getRouteProfile(trek, extended), [trek, extended]);
@@ -638,7 +648,10 @@ export default function TrekDetailContent({
   const [highlightOpen, setHighlightOpen] = useState(false);
   const [overviewOpen, setOverviewOpen] = useState(false);
   const [openDays, setOpenDays] = useState<Set<number>>(() => new Set([1]));
-  const [routeDay, setRouteDay] = useState(1);
+  const [routeSelection, setRouteSelection] = useState<
+    import('@/types/trek-map').MapSelection
+  >('overview');
+  const [routeProfileFocusKm, setRouteProfileFocusKm] = useState<number | null>(null);
   const [policyTab, setPolicyTab] = useState<'booking' | 'cancellation'>('booking');
   const [faqQuery, setFaqQuery] = useState('');
   const [openFaq, setOpenFaq] = useState<number | null>(0);
@@ -1036,13 +1049,34 @@ export default function TrekDetailContent({
     }
   };
 
-  const toggleDay = (day: number) =>
+  const toggleDay = (day: number) => {
+    setRouteSelection(day);
     setOpenDays((prev) => {
       const next = new Set(prev);
       if (next.has(day)) next.delete(day);
       else next.add(day);
       return next;
     });
+  };
+
+  const focusDayOnMap = useCallback(
+    (day: number) => {
+      setRouteSelection(day);
+      setOpenDays((prev) => new Set(prev).add(day));
+      goToSection('route-map');
+    },
+    [goToSection],
+  );
+
+  // Keep itinerary accordion in sync when map / altitude day changes.
+  useEffect(() => {
+    if (typeof routeSelection === 'number') {
+      setOpenDays((prev) => {
+        if (prev.has(routeSelection)) return prev;
+        return new Set(prev).add(routeSelection);
+      });
+    }
+  }, [routeSelection]);
 
   const toggleAddOn = (id: string) =>
     setPicked((prev) => {
@@ -1422,7 +1456,10 @@ export default function TrekDetailContent({
                   ].filter(Boolean) as { icon: string; label: string; value: string }[];
 
                   return (
-                    <div className={`kg-acc-item${open ? ' is-open' : ''}`} key={day.day}>
+                    <div
+                      className={`kg-acc-item${open ? ' is-open' : ''}${routeSelection === day.day ? ' is-map-active' : ''}`}
+                      key={day.day}
+                    >
                       <button type="button" className="kg-acc-toggle" onClick={() => toggleDay(day.day)}>
                         <span className="kg-acc-day">Day {day.day}</span>
                         <span className="kg-acc-title">
@@ -1449,6 +1486,13 @@ export default function TrekDetailContent({
                             {day.description.split(/\n{2,}/).map((part) => (
                               <p key={part.slice(0, 40)}>{part}</p>
                             ))}
+                            <button
+                              type="button"
+                              className="kg-acc-maplink"
+                              onClick={() => focusDayOnMap(day.day)}
+                            >
+                              <i className="fa-solid fa-map-location-dot" aria-hidden /> View on map
+                            </button>
                           </div>
                         </div>
                       </div>
@@ -1464,10 +1508,12 @@ export default function TrekDetailContent({
             <TrekRouteMapSection
               trekId={trek.id}
               profile={routeProfile}
-              activeDay={routeDay}
-              onDayChange={setRouteDay}
+              selection={routeSelection}
+              onSelectionChange={setRouteSelection}
               kindLabel={kindLabel}
               trekTitle={trek.title}
+              profileFocusKm={routeProfileFocusKm}
+              onProfileFocusChange={setRouteProfileFocusKm}
             />
           </section>
 
@@ -1475,9 +1521,10 @@ export default function TrekDetailContent({
           <section id="altitude-chart" className="kg-section">
             <TrekAltitudeChartSection
               profile={routeProfile}
-              activeDay={routeDay}
-              onDayChange={setRouteDay}
+              selection={routeSelection}
+              onSelectionChange={setRouteSelection}
               trekTitle={trek.title}
+              onProfileFocusChange={setRouteProfileFocusKm}
             />
           </section>
 

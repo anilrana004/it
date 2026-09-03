@@ -4,9 +4,25 @@
  */
 import { KEDARKANTHA_TREK_LINE } from './trails/kedarkantha-trail';
 import {
+  CHOPTA_DAY2_TREK_LINE,
+  CHOPTA_DAY3_TREK_LINE,
+} from './trails/chopta-tungnath-trail';
+import {
   KEDARKANTHA_DAY1_DRIVE_LINE,
   KEDARKANTHA_DAY5_DRIVE_LINE,
 } from './trails/kedarkantha-drive';
+import {
+  KUARI_PASS_DAY1_DRIVE_LINE,
+  KUARI_PASS_DAY2_DRIVE_LINE,
+  KUARI_PASS_DAY5_DRIVE_LINE,
+  KUARI_PASS_DAY6_DRIVE_LINE,
+} from './trails/kuari-pass-drive';
+import {
+  KUARI_PASS_DAY2_TREK_LINE,
+  KUARI_PASS_DAY3_TREK_LINE,
+  KUARI_PASS_DAY4_SUMMIT_LINE,
+  KUARI_PASS_DAY5_TREK_LINE,
+} from './trails/kuari-pass-trail';
 
 export const ROUTE_TRACKS: Record<
   string,
@@ -87,5 +103,48 @@ export const ROUTE_TRACKS: Record<
   'kedarkantha-day5-drive': {
     source: 'road-corridor — return via Netwar → Mori → Purola → Naugaon (OSM town anchors)',
     coordinates: KEDARKANTHA_DAY5_DRIVE_LINE,
+  },
+  /** Day 2 — Chopta → Tungnath → Chandrashila → Sari */
+  'chopta-day2-trek': {
+    source: 'trail-corridor — Chopta to Tungnath, Chandrashila and Sari (OSM anchors, Sep 2026)',
+    coordinates: CHOPTA_DAY2_TREK_LINE,
+  },
+  /** Day 3 — Sari → Deoria Tal */
+  'chopta-day3-trek': {
+    source: 'trail-corridor — Sari to Deoria Tal (Wikipedia / Indiahikes, Sep 2026)',
+    coordinates: CHOPTA_DAY3_TREK_LINE,
+  },
+  /** Kuari Pass — Day 1 drive Rishikesh → Joshimath */
+  'kuari-pass-day1-drive': {
+    source: 'road-corridor — Rishikesh → Joshimath via Panch Prayag (OSM anchors)',
+    coordinates: KUARI_PASS_DAY1_DRIVE_LINE,
+  },
+  'kuari-pass-day2-drive': {
+    source: 'road-corridor — Joshimath → Dhak trailhead',
+    coordinates: KUARI_PASS_DAY2_DRIVE_LINE,
+  },
+  'kuari-pass-day2-trek': {
+    source: 'trail-corridor — Dhak → Tugasi → Gulling Top',
+    coordinates: KUARI_PASS_DAY2_TREK_LINE,
+  },
+  'kuari-pass-day3-trek': {
+    source: 'trail-corridor — Gulling Top → Tali Forest Camp',
+    coordinates: KUARI_PASS_DAY3_TREK_LINE,
+  },
+  'kuari-pass-day4-summit': {
+    source: 'trail-corridor — Tali → Khullara → Kuari Pass summit',
+    coordinates: KUARI_PASS_DAY4_SUMMIT_LINE,
+  },
+  'kuari-pass-day5-trek': {
+    source: 'trail-corridor — Khullara → Tugasi road head',
+    coordinates: KUARI_PASS_DAY5_TREK_LINE,
+  },
+  'kuari-pass-day5-drive': {
+    source: 'road-corridor — Tugasi → Joshimath',
+    coordinates: KUARI_PASS_DAY5_DRIVE_LINE,
+  },
+  'kuari-pass-day6-drive': {
+    source: 'road-corridor — Joshimath → Dehradun via Rishikesh (OSM anchors)',
+    coordinates: KUARI_PASS_DAY6_DRIVE_LINE,
   },
 };

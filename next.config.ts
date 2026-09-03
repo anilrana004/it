@@ -1,6 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Ensure the Mapbox public token is always available to client bundles.
+  env: {
+    NEXT_PUBLIC_MAPBOX_TOKEN: process.env.NEXT_PUBLIC_MAPBOX_TOKEN ?? "",
+  },
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "images.unsplash.com" },
@@ -8,6 +12,18 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "storage.googleapis.com" },
       { protocol: "https", hostname: "res.cloudinary.com" },
     ],
+  },
+  async redirects() {
+    return [
+      { source: "/treks/triund", destination: "/treks/mcleodganj-trek", permanent: true },
+      { source: "/treks/triund-trek", destination: "/treks/mcleodganj-trek", permanent: true },
+      { source: "/treks/gomukh-tapovan", destination: "/treks/gaumukh-tapovan", permanent: true },
+      { source: "/yatra/char-dham-yatra", destination: "/yatra/char-dham", permanent: true },
+      { source: "/special-programs/senior-citizen-treks", destination: "/senior-citizen-treks", permanent: true },
+      { source: "/special-programs/family-treks", destination: "/family-treks", permanent: true },
+      { source: "/special-programs/beginner-friendly-treks", destination: "/beginner-friendly-treks", permanent: true },
+      { source: "/special-programs/women-only-treks", destination: "/women-only-treks", permanent: true },
+    ];
   },
   async headers() {
     return [

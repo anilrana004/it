@@ -28,6 +28,7 @@ import {
   EXPERIENCES,
   INFO_BANNERS,
   MONTHS,
+  MONTH_CURATED_TREK_IDS,
   REGIONS,
   SEASONS,
   resolveCuratedTreks,
@@ -294,7 +295,13 @@ export default function AllTreksExplorer({
     if (filters.region) list = list.filter((t) => t.region === filters.region);
     if (filters.difficulty) list = list.filter((t) => t.difficulty === filters.difficulty);
     if (filters.month !== null) {
-      list = list.filter((t) => t.openMonths.includes(filters.month!));
+      const curated = MONTH_CURATED_TREK_IDS[filters.month];
+      if (curated?.length) {
+        const ids = new Set(curated);
+        list = list.filter((t) => ids.has(t.id));
+      } else {
+        list = list.filter((t) => t.openMonths.includes(filters.month!));
+      }
     }
     if (filters.season) list = list.filter((t) => t.seasons.includes(filters.season!));
     if (filters.experience) {

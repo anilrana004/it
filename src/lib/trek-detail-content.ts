@@ -220,6 +220,7 @@ function baseCity(trek: Trek) {
 
 /** Last leg of "X to Y" — the on-trail base village where available. */
 export function baseCamp(trek: Trek) {
+  if (trek.id === 'kuari-pass') return 'Joshimath';
   const parts = (trek.location || '').split(/\s+to\s+/i);
   return (parts[0] || trek.state).trim();
 }
@@ -294,16 +295,31 @@ export function buildHighlightSpecs(
   extended?: {
     departure?: { pickupTime: string; dropTime: string; location: string };
     sections?: { id: string }[];
+    stats?: { label: string; value: string }[];
   },
 ): HighlightSpec[] {
   const hasFitnessSection = extended?.sections?.some((section) => section.id === 'fitness');
-  const durationValue = `${trek.days} days / ${trek.distance}`;
+  const statValue = (label: string) =>
+    extended?.stats?.find((s) => s.label.toLowerCase() === label.toLowerCase())?.value;
+
+  const altitudeValue = statValue('Altitude') ?? trek.maxAltitude;
+  const durationStat = statValue('Duration');
+  const lengthStat = statValue('Trek Length');
+  const durationValue =
+    durationStat && lengthStat
+      ? `${durationStat} / ${lengthStat}`
+      : durationStat ?? `${trek.days} days / ${trek.distance}`;
+  const difficultyValue = statValue('Difficulty') ?? trek.difficulty;
+  const baseCampStat = statValue('Base Camp');
+  const basecampValue = baseCampStat
+    ? `${baseCampStat}, ${trek.state}`
+    : `${baseCamp(trek)}, ${trek.state}`;
 
   return [
     {
       id: 'difficulty',
       label: `${kindLabel} Difficulty`,
-      value: trek.difficulty,
+      value: difficultyValue,
       icon: 'fa-solid fa-signal',
       tone: 'amber',
     },
@@ -317,7 +333,7 @@ export function buildHighlightSpecs(
     {
       id: 'altitude',
       label: 'Highest Altitude',
-      value: trek.maxAltitude,
+      value: altitudeValue,
       icon: 'fa-solid fa-mountain',
       tone: 'green',
     },
@@ -331,7 +347,7 @@ export function buildHighlightSpecs(
     {
       id: 'basecamp',
       label: 'Basecamp',
-      value: `${baseCamp(trek)}, ${trek.state}`,
+      value: basecampValue,
       icon: 'fa-solid fa-route',
       tone: 'green',
       sectionId: 'how-to-reach',

@@ -354,12 +354,97 @@ export const AUTUMN_MONTH_ORDERS: Record<number, readonly string[]> = {
   ],
 };
 
-/** Editorial ordering when a month has a hand-picked shortlist; otherwise all open-month treks are shown. */
+/** March–September hand-picked departures (editorial order). Winter / late-autumn stay on Dec–Feb & Oct–Nov lists. */
+export const MARCH_TREK_IDS = [
+  'annapurna-base-camp',
+  'pangarchulla',
+  'kuari-pass',
+  'har-ki-dun',
+  'ali-bedni-bugyal',
+  'dayara-bugyal',
+  'nag-tibba',
+  'everest-base-camp',
+] as const;
+
+export const APRIL_TREK_IDS = [
+  'annapurna-base-camp',
+  'roopkund',
+  'bhrigu-lake',
+  'ranthan-kharak',
+  'deoban',
+  'dodital-darwa-pass',
+  'pangarchulla',
+  'kuari-pass',
+  'har-ki-dun',
+  'ali-bedni-bugyal',
+  'dayara-bugyal',
+  'everest-base-camp',
+] as const;
+
+export const MAY_TREK_IDS = [
+  'annapurna-base-camp',
+  'gaumukh-tapovan',
+  'bali-pass',
+  'rupin-pass',
+  'buran-ghati',
+  'roopkund',
+  'bhrigu-lake',
+  'ranthan-kharak',
+  'dodital-darwa-pass',
+  'everest-base-camp',
+] as const;
+
+export const JUNE_TREK_IDS = [
+  'annapurna-base-camp',
+  'surya-top',
+  'gaumukh-tapovan',
+  'bali-pass',
+  'rupin-pass',
+  'buran-ghati',
+  'roopkund',
+  'bhrigu-lake',
+  'dodital-darwa-pass',
+  'everest-base-camp',
+] as const;
+
+export const JULY_TREK_IDS = [
+  'valley-of-flowers',
+  'hampta-pass',
+  'kashmir-great-lakes',
+  'tarsar-marsar',
+  'annapurna-base-camp',
+] as const;
+
+export const AUGUST_TREK_IDS = [
+  'valley-of-flowers',
+  'hampta-pass',
+  'kashmir-great-lakes',
+  'tarsar-marsar',
+  'annapurna-base-camp',
+] as const;
+
+export const SEPTEMBER_TREK_IDS = [
+  'valley-of-flowers',
+  'kashmir-great-lakes',
+  'tarsar-marsar',
+  'hampta-pass',
+  'annapurna-base-camp',
+] as const;
+
+/**
+ * Editorial shortlist per month index (0=Jan … 11=Dec).
+ * When set, the month filter shows ONLY these treks (in this order) — not every open-season trail.
+ */
 export const MONTH_CURATED_TREK_IDS: Partial<Record<number, readonly string[]>> = {
   0: DECEMBER_TOP_TREK_IDS,
   1: DECEMBER_TOP_TREK_IDS,
-  2: DECEMBER_TOP_TREK_IDS,
-  8: AUTUMN_MONTH_ORDERS[8],
+  2: MARCH_TREK_IDS,
+  3: APRIL_TREK_IDS,
+  4: MAY_TREK_IDS,
+  5: JUNE_TREK_IDS,
+  6: JULY_TREK_IDS,
+  7: AUGUST_TREK_IDS,
+  8: SEPTEMBER_TREK_IDS,
   9: AUTUMN_MONTH_ORDERS[9],
   10: AUTUMN_MONTH_ORDERS[10],
   11: DECEMBER_TOP_TREK_IDS,

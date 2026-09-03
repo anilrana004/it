@@ -2088,6 +2088,16 @@
   overflow: hidden;
 }
 
+.kg-acc-item.is-map-active {
+  border-color: rgba(34, 197, 94, 0.5);
+  box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.18), 0 10px 24px rgba(16, 24, 40, 0.04);
+}
+
+.kg-acc-item.is-map-active .kg-acc-day {
+  background: #166534;
+  color: #ecfdf5;
+}
+
 .kg-acc-toggle {
   width: 100%;
   border: 0;
@@ -2185,6 +2195,29 @@
   margin-bottom: 0;
 }
 
+.kg-acc-maplink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-top: 0.85rem;
+  padding: 0.45rem 0.85rem;
+  border: 1px solid rgba(22, 163, 74, 0.35);
+  border-radius: 999px;
+  background: rgba(22, 163, 74, 0.08);
+  color: #166534;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.kg-acc-maplink:hover,
+.kg-acc-maplink:focus-visible {
+  background: rgba(22, 163, 74, 0.16);
+  outline: 2px solid #22c55e;
+  outline-offset: 2px;
+}
+
 /* â”€â”€ Route map + altitude chart â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
 .kg-route-card,
@@ -2272,8 +2305,56 @@
   gap: 8px;
   overflow-x: auto;
   padding-bottom: 4px;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
   scrollbar-width: none;
+}
+
+.kg-route-legend {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 14px;
+  margin-bottom: 16px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid rgba(16, 24, 40, 0.08);
+}
+
+.kg-route-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #475467;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.kg-route-legend-line {
+  flex: 0 0 28px;
+  height: 0;
+  border-top-width: 3px;
+  border-top-style: solid;
+  border-radius: 999px;
+}
+
+.kg-route-legend-line--drive {
+  border-top-color: #94a3b8;
+  border-top-style: dashed;
+}
+
+.kg-route-legend-line--trek {
+  border-top-color: #dc2626;
+}
+
+.kg-route-legend-line--drive-active {
+  border-top-color: #475569;
+  border-top-width: 4px;
+}
+
+.kg-route-legend-line--trek-active {
+  border-top-color: #22c55e;
+  border-top-width: 4px;
 }
 
 .kg-route-daybar::-webkit-scrollbar {
@@ -2601,6 +2682,12 @@
 .kg-chart-table td.is-down {
   color: #b45309;
   font-weight: 800;
+}
+
+@media (max-width: 900px) {
+  .kg-route-legend {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 900px) {
@@ -9272,7 +9359,8 @@ html.it-chrome-hidden .kg-page .kg-section {
 
   #route-map .kg-route-head,
   #route-map .kg-route-stats,
-  #route-map .kg-route-daybar {
+  #route-map .kg-route-daybar,
+  #route-map .kg-route-legend {
     padding-left: 14px;
     padding-right: 14px;
   }

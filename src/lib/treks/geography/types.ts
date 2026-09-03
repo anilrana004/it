@@ -34,6 +34,9 @@ export type GeoLocation = {
   lat: number;
   elevationM?: number;
   source: GeoSource;
+  description?: string;
+  /** Cloudinary public ID or versioned asset path — not a raw external URL. */
+  imagePublicId?: string;
 };
 
 export type TrekWaypoint = {
@@ -112,6 +115,10 @@ export type ResolvedWaypoint = {
   markerRole?: 'primary' | 'secondary';
   /** Marker visual weight 1 (minor) – 3 (summit/start) */
   priority: 1 | 2 | 3;
+  description?: string;
+  imagePublicId?: string;
+  /** When true, marker uses exact registry coordinates (never layout-offset). */
+  pinExact?: boolean;
 };
 
 export type MapDisplayWaypoint = ResolvedWaypoint & {
@@ -139,8 +146,11 @@ export type ResolvedRouteGeometry = {
   driveCoordinates: [number, number][];
   /** Completed trek portion up to active day */
   trekProgressCoordinates: [number, number][];
+  /** Completed drive portion up to active day */
+  driveProgressCoordinates: [number, number][];
   /** Completed full route up to active day */
   progressCoordinates: [number, number][];
   hasDrawableRoute: boolean;
   hasDrawableTrekRoute: boolean;
+  hasDrawableDriveRoute: boolean;
 };

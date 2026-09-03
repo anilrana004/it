@@ -1,5 +1,11 @@
 import type { RouteProfile } from '@/lib/treks/route-profile-types';
 import { getLocation } from './locations';
+import {
+  buildAutoCaption,
+  buildAutoRouteSegments,
+  buildAutoTrailStops,
+  straightLineCoords,
+} from './auto-route-segments';
 import { ROUTE_TRACKS } from './route-tracks';
 import { TREK_ROUTES } from './trek-routes';
 import {
@@ -34,10 +40,19 @@ function attachTrackCoordinates(seg: RouteSegment): RouteSegment {
   return { ...seg, coordinates: track.coordinates };
 }
 
-function buildExplicitSegments(def: TrekRouteDefinition): RouteSegment[] {
-  if (!def.routeSegments?.length) return [];
+function attachStraightLineFallback(seg: RouteSegment): RouteSegment {
+  if (seg.coordinates?.length || !seg.driveFrom || !seg.driveTo) return seg;
+  const coords = straightLineCoords(seg.driveFrom, seg.driveTo);
+  if (!coords) return seg;
+  return { ...seg, coordinates: coords };
+}
 
-  return def.routeSegments.map((seg) => {
+function buildExplicitSegments(def: TrekRouteDefinition): RouteSegment[] {
+  const segmentDefs = def.routeSegments?.length
+    ? def.routeSegments
+    : buildAutoRouteSegments(def);
+
+  return segmentDefs.map((seg) => {
     const category: RouteSegment['segmentCategory'] =
       seg.geometryKind === 'gps-track' ? 'trek' : seg.geometryKind === 'driving-network' ? 'drive' : undefined;
 
@@ -53,12 +68,23 @@ function buildExplicitSegments(def: TrekRouteDefinition): RouteSegment[] {
       dayEnd: seg.dayEnd,
     };
 
-    if (seg.geometryKind === 'gps-track' && seg.trackKey) {
-      return attachTrackCoordinates({ ...base, fallbackTrackKey: seg.trackKey });
+    if (seg.geometryKind === 'gps-track') {
+      const withTrack = seg.trackKey
+        ? attachTrackCoordinates({ ...base, fallbackTrackKey: seg.trackKey })
+        : base;
+      if (withTrack.coordinates?.length) return withTrack;
+      if (seg.driveFrom && seg.driveTo) {
+        const coords = straightLineCoords(seg.driveFrom, seg.driveTo);
+        return coords ? { ...withTrack, coordinates: coords } : withTrack;
+      }
+      return withTrack;
     }
 
-    if (seg.geometryKind === 'driving-network' && seg.trackKey) {
-      return attachTrackCoordinates({ ...base, fallbackTrackKey: seg.trackKey });
+    if (seg.geometryKind === 'driving-network') {
+      const withTrack = seg.trackKey
+        ? attachTrackCoordinates({ ...base, fallbackTrackKey: seg.trackKey })
+        : attachStraightLineFallback(base);
+      return withTrack;
     }
 
     return base;
@@ -66,17 +92,18 @@ function buildExplicitSegments(def: TrekRouteDefinition): RouteSegment[] {
 }
 
 function buildSegments(def: TrekRouteDefinition): RouteSegment[] {
-  const explicit = buildExplicitSegments(def);
-  if (explicit.length) return explicit;
+  const segments = buildExplicitSegments(def);
+  if (segments.length) return segments;
 
-  const segments: RouteSegment[] = [];
   const wps = def.waypoints;
+  const fallback: RouteSegment[] = [];
 
   if (def.trackKey && ROUTE_TRACKS[def.trackKey]) {
-    segments.push(
+    fallback.push(
       attachTrackCoordinates({
         id: `${def.trekId}-trek-track`,
         geometryKind: 'gps-track',
+        segmentCategory: 'trek',
         fallbackTrackKey: def.trackKey,
         dayStart: wps.find((w) => w.activity === 'trek' || w.kind === 'summit')?.day ?? 2,
         dayEnd: wps.filter((w) => w.activity === 'trek' || w.kind === 'summit').at(-1)?.day ?? 5,
@@ -84,24 +111,7 @@ function buildSegments(def: TrekRouteDefinition): RouteSegment[] {
     );
   }
 
-  for (let i = 0; i < wps.length - 1; i += 1) {
-    const a = wps[i];
-    const b = wps[i + 1];
-    if (a.activity !== 'drive' && b.activity !== 'drive') continue;
-    if (a.locationKey === b.locationKey) continue;
-
-    segments.push({
-      id: `${def.trekId}-drive-${i}`,
-      geometryKind: 'driving-network',
-      driveFrom: a.locationKey,
-      driveTo: b.locationKey,
-      driveVia: def.driveVia,
-      dayStart: a.day,
-      dayEnd: b.day,
-    });
-  }
-
-  return segments;
+  return fallback;
 }
 
 function buildFromDefinition(def: TrekRouteDefinition, profile?: RouteProfile): TrekGeography | null {
@@ -124,14 +134,17 @@ function buildFromDefinition(def: TrekRouteDefinition, profile?: RouteProfile): 
       profileDay: wp.day,
       markerRole: wp.markerRole ?? 'primary',
       priority: waypointPriority(wp.kind),
+      description: loc.description,
+      imagePublicId: loc.imagePublicId,
     });
   }
 
   const waypoints = dedupeWaypoints(resolved);
   if (waypoints.length < 1) return null;
 
+  const trailStopDefs = buildAutoTrailStops(def);
   const trailStops: ResolvedWaypoint[] = [];
-  for (const stop of def.trailStops ?? []) {
+  for (const stop of trailStopDefs) {
     const loc = getLocation(stop.locationKey);
     if (!loc) continue;
     trailStops.push({
@@ -146,6 +159,9 @@ function buildFromDefinition(def: TrekRouteDefinition, profile?: RouteProfile): 
       source: loc.source,
       markerRole: 'primary',
       priority: stop.kind === 'summit' ? 3 : stop.kind === 'base-camp' ? 3 : 2,
+      description: loc.description,
+      imagePublicId: loc.imagePublicId,
+      pinExact: stop.pinExact ?? stop.kind === 'summit',
     });
   }
 
@@ -158,7 +174,7 @@ function buildFromDefinition(def: TrekRouteDefinition, profile?: RouteProfile): 
 
   return {
     trekId: def.trekId,
-    caption: def.caption,
+    caption: buildAutoCaption(def),
     waypoints,
     trailStops,
     segments,
@@ -181,16 +197,18 @@ export function getWaypointForDay(geography: TrekGeography, day: number): Resolv
   );
 }
 
-/** Kedarkantha drive legs use the verified Naugaon corridor — Mapbox may reroute via Uttarkashi. */
+/** Kedarkantha / Kuari Pass drive legs use verified corridors — Mapbox may reroute poorly. */
 function useVerifiedDriveTrack(seg: RouteSegment): boolean {
-  return Boolean(seg.fallbackTrackKey?.match(/^kedarkantha-day\d+-drive$/));
+  return Boolean(
+    seg.fallbackTrackKey?.match(/^(kedarkantha|kuari-pass)-day\d+-drive$/),
+  );
 }
 
 /** Resolve driving-network segments via Mapbox Directions (client-side). */
 export async function resolveDrivingSegments(
   segments: RouteSegment[],
 ): Promise<RouteSegment[]> {
-  const { fetchDrivingRoute } = await import('./mapbox-directions');
+  const { fetchDrivingRoute } = await import('./driving-directions');
   const resolved: RouteSegment[] = [];
 
   for (const seg of segments) {
@@ -224,9 +242,16 @@ export async function resolveDrivingSegments(
     );
 
     if (result) {
-      resolved.push({ ...seg, coordinates: result.coordinates, geometryKind: 'driving-network' });
+      resolved.push({
+        ...seg,
+        segmentCategory: 'drive',
+        coordinates: result.coordinates,
+        geometryKind: 'driving-network',
+      });
     } else {
-      resolved.push(attachTrackCoordinates({ ...seg, geometryKind: 'driving-network' }));
+      const withTrack = attachTrackCoordinates({ ...seg, segmentCategory: 'drive' });
+      const withLine = withTrack.coordinates?.length ? withTrack : attachStraightLineFallback({ ...seg, segmentCategory: 'drive' });
+      resolved.push(withLine.coordinates?.length ? withLine : { ...seg, segmentCategory: 'drive', geometryKind: 'none' });
     }
   }
 

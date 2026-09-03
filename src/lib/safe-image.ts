@@ -37,6 +37,15 @@ const byId: Record<string, string> = {
   'kathmandu-tour': photos.nepal,
   'pokhara-tour': photos.nepal,
   'chitwan-safari': photos.nepal,
+  pangarchulla: photos.uttarakhand,
+  'ali-bedni-bugyal': photos.vof,
+  roopkund: photos.snow,
+  'ranthan-kharak': photos.uttarakhand,
+  deoban: photos.uttarakhand,
+  'dodital-darwa-pass': photos.uttarakhand,
+  'surya-top': photos.uttarakhand,
+  'kashmir-great-lakes': photos.himachal,
+  'tarsar-marsar': photos.himachal,
 };
 
 export function trekPhoto(id: string, fallback: string = photos.uttarakhand): string {

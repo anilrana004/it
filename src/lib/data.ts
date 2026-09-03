@@ -4,6 +4,17 @@ import {
   KEDARKANTHA_INCLUSIONS,
 } from "@/lib/content/treks/kedarkantha/inclusion-exclusion-content";
 import { KEDARKANTHA_ITINERARY } from "@/lib/content/treks/kedarkantha/itinerary-content";
+import { CHOPTA_TUNGNATH_ITINERARY } from "@/lib/content/treks/chopta-tungnath/itinerary-content";
+import { KUARI_PASS_ITINERARY } from "@/lib/content/treks/kuari-pass/itinerary-content";
+import { KUARI_PASS_FAQ } from "@/lib/content/treks/kuari-pass/faq-content";
+import {
+  KUARI_PASS_EXCLUSIONS,
+  KUARI_PASS_INCLUSIONS,
+} from "@/lib/content/treks/kuari-pass/inclusion-exclusion-content";
+import {
+  CHOPTA_TUNGNATH_EXCLUSIONS,
+  CHOPTA_TUNGNATH_INCLUSIONS,
+} from "@/lib/content/treks/chopta-tungnath/inclusion-exclusion-content";
 import type { ItineraryDay } from "@/lib/content/treks/types";
 import { photos } from "@/lib/media";
 import { EXTRA_SITE_PACKAGES, applyLiveSitePricing } from "@/lib/site-packages";
@@ -53,14 +64,33 @@ export interface Trek {
 }
 
 export function getTrekById(id: string | string[] | undefined): Trek | undefined {
-  const slug = decodeURIComponent(String(Array.isArray(id) ? id[0] : id ?? "")).trim();
-  if (!slug) return undefined;
+  const raw = decodeURIComponent(String(Array.isArray(id) ? id[0] : id ?? "")).trim();
+  if (!raw) return undefined;
+  const slug = TREK_ID_ALIASES[raw.toLowerCase()] ?? raw;
   return treks.find((t) => t.id === slug);
 }
 
 export function trekDetailPath(trek: Trek) {
   return trek.type === "yatra" ? `/yatra/${trek.id}` : `/treks/${trek.id}`;
 }
+
+/** Common wrong / legacy slugs → canonical trek ids (avoids 404s from reviews & old links). */
+const TREK_ID_ALIASES: Record<string, string> = {
+  triund: "mcleodganj-trek",
+  "triund-trek": "mcleodganj-trek",
+  mcleodganj: "mcleodganj-trek",
+  "mcleod-ganj": "mcleodganj-trek",
+  "gomukh-tapovan": "gaumukh-tapovan",
+  gomukh: "gaumukh-tapovan",
+  abc: "annapurna-base-camp",
+  "annapurna-base-camp-trek": "annapurna-base-camp",
+  "everest-base-camp-trek": "everest-base-camp",
+  ebc: "everest-base-camp",
+  "valley-of-flowers-trek": "valley-of-flowers",
+  "hampta-pass-trek": "hampta-pass",
+  "char-dham-yatra": "char-dham",
+  "kedarnath": "kedarnath-yatra",
+};
 
 const baseTreks: Trek[] = [
   {
@@ -483,13 +513,13 @@ const baseTreks: Trek[] = [
     state: "Uttarakhand",
     region: "uttarakhand",
     type: "trek",
-    duration: "3N/4D",
-    nights: 3,
-    days: 4,
-    maxAltitude: "12,073 ft",
+    duration: "2N/3D",
+    nights: 2,
+    days: 3,
+    maxAltitude: "13,550 ft",
     difficulty: "Easy to Moderate",
-    bestSeason: "March - June, September - December",
-    distance: "20 km",
+    bestSeason: "April - November",
+    distance: "28 km",
     rating: "4.7",
     reviewCount: "7k+",
     images: [
@@ -497,8 +527,8 @@ const baseTreks: Trek[] = [
       "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80",
       "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80",
     ],
-    brief: "Chopta, known as 'Mini Switzerland', offers stunning views of Himalayan peaks and the highest Shiva temple.",
-    description: "Chopta Tungnath Trek takes you through the beautiful meadows of Chopta.",
+    brief: "Perched high in the Garhwal Himalayas, the Tungnath–Chandrashila Trek blends spirituality with nature’s magnificence—the highest Shiva temple in the world and a 360° Himalayan summit.",
+    description: "The journey begins at Chopta, the Mini Switzerland of India, and winds through rhododendron forests to Tungnath Temple and Chandrashila Peak.",
     highlights: [
       "Chopta - Mini Switzerland of India with alpine meadows",
       "Tungnath Temple - Highest Shiva temple in the world (12,073ft)",
@@ -509,14 +539,9 @@ const baseTreks: Trek[] = [
       "Stunning sunrise over Nanda Devi and Trishul peaks",
       "Offbeat destination - less crowded than other treks",
     ],
-    itinerary: [
-      { day: 1, title: "Rishikesh to Chopta (Drive)", description: "Depart from Rishikesh early morning.", meals: "Dinner", altitude: "8,800 ft", duration: "8-9 hrs" },
-      { day: 2, title: "Chopta to Tungnath to Chandrashila Summit", description: "Start early trek to Tungnath temple.", meals: "Breakfast, Lunch, Dinner", altitude: "13,350 ft", distance: "8 km", duration: "6-7 hrs" },
-      { day: 3, title: "Chopta to Deoria Tal & Back", description: "Trek to the beautiful Deoria Tal lake.", meals: "Breakfast, Lunch, Dinner", altitude: "8,000 ft", distance: "6 km", duration: "4-5 hrs" },
-      { day: 4, title: "Chopta to Rishikesh (Drive)", description: "Drive back to Rishikesh.", meals: "Breakfast, Lunch", duration: "8-9 hrs" },
-    ],
-    inclusions: ["Camping/hotel accommodation", "All meals as per itinerary", "Experienced trek leader", "Forest permits and fees", "Sleeping bag, mattress, tent (sharing)", "First aid and oxygen", "Transport from Rishikesh", "Trekking pole"],
-    exclusions: ["Personal expenses", "Backpack offloading", "Travel insurance", "Anything not mentioned"],
+    itinerary: CHOPTA_TUNGNATH_ITINERARY,
+    inclusions: CHOPTA_TUNGNATH_INCLUSIONS,
+    exclusions: CHOPTA_TUNGNATH_EXCLUSIONS,
     pricing: [
       { name: "Economic", price: 5999, originalPrice: 7999, deposit: 1999, badge: "Budget", inclusions: ["Shared tent (3-4 pax)", "Basic veg meals", "Bus/tempo transport", "Standard gear", "Guide (1:15)"], exclusions: ["Backpack offloading", "Personal porter"] },
       { name: "Standard", price: 8999, originalPrice: 11999, deposit: 2999, badge: "Popular", inclusions: ["Twin tent", "All meals (veg + egg)", "Tempo Traveller", "Premium gear", "Guide (1:10)", "Backpack offloading"], exclusions: ["Personal porter", "Extra snacks"] },
@@ -707,10 +732,10 @@ const baseTreks: Trek[] = [
     duration: "5N/6D",
     nights: 5,
     days: 6,
-    maxAltitude: "12,516 ft",
-    difficulty: "Moderate",
+    maxAltitude: "12,516 ft / 4,264 m",
+    difficulty: "Easy to Moderate",
     bestSeason: "December - April",
-    distance: "35 km",
+    distance: "32 km",
     rating: "4.8",
     reviewCount: "7k+",
     images: [
@@ -718,35 +743,27 @@ const baseTreks: Trek[] = [
       "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80",
       "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80",
     ],
-    brief: "Follow the historic Lord Curzon Trail through spectacular avalanche chutes with close-up views of Nanda Devi, India's second-highest peak.",
-    description: "Kuari Pass, known as the Lord Curzon Trail, offers an unparalleled panoramic view of the Garhwal peaks. Named after Lord Curzon who explored this route in the early 1900s, the trail traverses dense forests, open meadows, and snow-covered ridges with breathtaking vistas of Nanda Devi, Dronagiri, Hathi Ghoda, and Kamet.",
+    brief:
+      "Altitude 4,264 m · 6 days · 32 km · Joshimath base · Easy to Moderate. Follow the historic Lord Curzon Trail with close-up views of Nanda Devi and the Garhwal giants.",
+    description:
+      "Kuari Pass, known as the Lord Curzon Trail, is one of the finest first Himalayan treks — unspoiled forests, alpine meadows like Gorson Bugyal, and panoramic views of Nanda Devi, Dronagiri, Chaukhamba, and Hathi Parbat. Winter snow turns the route into a quiet wonderland; summer and shoulder seasons stay equally scenic.",
     highlights: [
-      "180-degree panoramic view of Nanda Devi, Kamet & Dronagiri",
-      "Historic Lord Curzon Trail used by British viceroys",
-      "Pristine snow trekking in winter (Dec-Apr)",
-      "Dense oak, rhododendron, and conifer forests",
-      "Camp at stunning spots like Tali and Khullara",
-      "Traditional Garhwali villages along the route",
+      "Views of Nanda Devi, Dronagiri, Chaukhamba & Hathi Parbat",
+      "Historic Lord Curzon Trail — classic Garhwal winter walk",
+      "Tugasi, Talli Forest, Kuari Pass & Gorson Bugyal",
+      "Easy to Moderate — ideal first Himalayan expedition",
+      "Snow forests and meadow camps in peak winter",
+      "Joshimath gateway with Indian Treks fixed departures",
     ],
-    itinerary: [
-      { day: 1, title: "Rishikesh to Joshimath (Drive)", description: "Scenic drive through the Garhwal region following the Alaknanda River.", meals: "Dinner", altitude: "6,150 ft", duration: "9-10 hrs drive" },
-      { day: 2, title: "Joshimath to Dhak to Tali (Trek)", description: "Short drive to Dhak, then trek through forests to the Tali meadow.", meals: "Breakfast, Lunch, Dinner", altitude: "10,000 ft", distance: "6 km", duration: "4-5 hrs" },
-      { day: 3, title: "Tali to Khullara (Trek)", description: "Trek through stunning snow-covered landscapes with views of Nanda Devi.", meals: "Breakfast, Lunch, Dinner", altitude: "11,200 ft", distance: "7 km", duration: "5-6 hrs" },
-      { day: 4, title: "Khullara to Kuari Pass to Tali (Summit)", description: "Early morning summit to Kuari Pass with unforgettable 180-degree views.", meals: "Breakfast, Lunch, Dinner", altitude: "12,516 ft", distance: "12 km", duration: "7-8 hrs" },
-      { day: 5, title: "Tali to Dhak to Joshimath (Return)", description: "Descend to Dhak, drive to Joshimath for a hot shower.", meals: "Breakfast, Lunch, Dinner", distance: "6 km trek + drive", duration: "5 hrs" },
-      { day: 6, title: "Joshimath to Rishikesh (Drive)", description: "Drive back to Rishikesh.", meals: "Breakfast, Lunch", duration: "9-10 hrs drive" },
-    ],
-    inclusions: ["All meals as per itinerary", "Certified trek leader", "Camping equipment (weatherproof tent, sleeping bag -10°C, mat)", "Permits and forest fees", "First aid kit, oxygen, pulse oximeter", "Trekking pole", "Microspikes and gaiters (winter)", "Expert cook and support staff"],
-    exclusions: ["Personal expenses", "Travel insurance", "Tips", "Personal porters"],
+    itinerary: KUARI_PASS_ITINERARY,
+    inclusions: KUARI_PASS_INCLUSIONS,
+    exclusions: KUARI_PASS_EXCLUSIONS,
     pricing: [
       { name: "Economic", price: 9999, originalPrice: 11999, deposit: 3000, badge: "Budget", inclusions: ["Twin-sharing tent", "Sleeping bag (0°C)", "Basic sleeping mat", "Standard meals"], exclusions: ["No microspikes/gaiters", "No separate toilet tent"] },
       { name: "Standard", price: 14999, originalPrice: 18999, deposit: 5000, badge: "Popular", inclusions: ["Twin-sharing weatherproof tent", "Sleeping bag (-10°C)", "Foam sleeping mat", "Nutritious meals", "Separate toilet tents", "Microspikes & gaiters", "Trekking pole"], exclusions: ["No single tent"] },
       { name: "Premium", price: 21999, originalPrice: 27999, deposit: 7000, badge: "Luxury", inclusions: ["Single tent option", "Premium sleeping bag (-15°C)", "Self-inflating mattress", "Gourmet meals", "Separate toilet & shower tents", "Black Diamond trekking poles", "Pickup from Joshimath helipad"], exclusions: ["Personal porters"] },
     ],
-    faq: [
-      { q: "Why is Kuari Pass called the Lord Curzon Trail?", a: "Lord Curzon trekked this route in the early 1900s and returned annually, making it popular among British officials." },
-      { q: "Is Kuari Pass suitable in winter?", a: "Yes, Dec-Apr offers consistent snow, clear skies, and spectacular views. One of India's best winter treks." },
-    ],
+    faq: KUARI_PASS_FAQ,
     mapImage: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80",
     groupSize: "6-15 persons",
     startEndPoint: "Rishikesh to Rishikesh",
