@@ -48,3 +48,9 @@ export const KEDARKANTHA_HERO = KEDARKANTHA_GALLERY[0];
 
 /** Secondary hero panel — Juda Ka Talab winter scene. */
 export const KEDARKANTHA_FEATURE = KEDARKANTHA_GALLERY[2];
+
+/** Listing / home card cover only — not used on the trek detail page. */
+export const KEDARKANTHA_CARD = kedarkanthaImage(
+  'v1788514322/ChatGPT_Image_Sep_4_2026_03_00_26_PM.png',
+  800,
+);

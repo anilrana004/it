@@ -1,14 +1,14 @@
 import Link from 'next/link';
 import { MapPin, Clock, Star } from 'lucide-react';
 import { trekDetailPath, type Trek } from '@/lib/data';
-import { safeImage, trekPhoto } from '@/lib/safe-image';
+import { trekCover } from '@/lib/catalog';
 
 export default function TrekCard({ trek }: { trek: Trek }) {
   const minPrice = Math.min(...trek.pricing.map(p => p.price));
   const hasDiscount = trek.pricing.some(p => p.originalPrice);
   const eco = trek.pricing.find(p => p.name === 'Economic');
   const originalPrice = eco?.originalPrice;
-  const cover = safeImage(trek.images[0], trekPhoto(trek.id));
+  const cover = trekCover(trek);
 
   return (
     <Link href={trekDetailPath(trek)} className="group block rounded-2xl overflow-hidden transition-all duration-300 relative aspect-[3/4]">

@@ -12,7 +12,7 @@ export function trekOriginalPrice(trek: Trek) {
 }
 
 export function trekCover(trek: Trek) {
-  return safeImage(trek.images[0], trekPhoto(trek.id));
+  return safeImage(trek.cardImage ?? trek.images[0], trekPhoto(trek.id));
 }
 
 export type CatalogCard = {

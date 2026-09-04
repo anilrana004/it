@@ -63,6 +63,7 @@ const NAV_SHORT_LABELS: Record<string, string> = {
   food: 'Food',
   'why-choose': 'Why choose',
   'things-to-carry': 'Things to pack',
+  note: 'Note',
   'how-to-reach': 'How to reach',
   'rent-gear': 'Rent gear',
   'best-time': 'Best time',
@@ -572,7 +573,8 @@ export default function TrekDetailContent({
     const beforeInclusion = baseNavLinks.slice(0, 3);
     const inclusionLink = baseNavLinks.slice(3, 4);
     const bestTimeLink = baseNavLinks.slice(4, 5);
-    const carryReachLinks = baseNavLinks.slice(5, 7);
+    const carryLink = baseNavLinks.slice(5, 6);
+    const reachLink = baseNavLinks.slice(6, 7);
     const policyFaqLinks = baseNavLinks.slice(7, 9);
     const rentGearLink = baseNavLinks.slice(9);
 
@@ -586,13 +588,19 @@ export default function TrekDetailContent({
       ? TrekExtendedNavItems(extended.sections.filter((section) => section.id === 'why-choose'))
       : [];
 
+    const noteNav = extended?.noteSection
+      ? [{ id: 'note', label: 'Note', icon: 'fa-regular fa-sticky-note' }]
+      : [];
+
     return [
       ...beforeInclusion,
       ...routeNavLinks,
       ...inclusionLink,
       ...midPageSections,
       ...bestTimeLink,
-      ...carryReachLinks,
+      ...carryLink,
+      ...noteNav,
+      ...reachLink,
       ...policyFaqLinks,
       ...whyChooseNav,
       ...rentGearLink,
@@ -1677,6 +1685,28 @@ export default function TrekDetailContent({
               </div>
             </section>
           )}
+
+          {extended?.noteSection ? (
+            <section id="note" className="kg-section">
+              <div className="kg-overview-card">
+                <div className="kg-overview-head">
+                  <div>
+                    <span className="kg-overview-kicker">
+                      <i className="fa-regular fa-sticky-note" aria-hidden />{' '}
+                      {extended.noteSection.kicker}
+                    </span>
+                    <h2>{extended.noteSection.title}</h2>
+                    {extended.noteSection.intro ? <p>{extended.noteSection.intro}</p> : null}
+                  </div>
+                </div>
+                <CollapsibleRichBlocks
+                  blocks={extended.noteSection.blocks}
+                  previewCount={5}
+                  className="kg-overview-text kg-extended-rich"
+                />
+              </div>
+            </section>
+          ) : null}
 
           <div className="kg-promo">
             <Banners items={offersPromo} embedded />

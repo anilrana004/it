@@ -1,4 +1,4 @@
-import { KEDARKANTHA_FEATURE, KEDARKANTHA_GALLERY } from "@/lib/content/treks/kedarkantha/gallery-content";
+import { KEDARKANTHA_CARD, KEDARKANTHA_FEATURE, KEDARKANTHA_GALLERY } from "@/lib/content/treks/kedarkantha/gallery-content";
 import {
   KEDARKANTHA_EXCLUSIONS,
   KEDARKANTHA_INCLUSIONS,
@@ -6,6 +6,12 @@ import {
 import { KEDARKANTHA_ITINERARY } from "@/lib/content/treks/kedarkantha/itinerary-content";
 import { CHOPTA_TUNGNATH_ITINERARY } from "@/lib/content/treks/chopta-tungnath/itinerary-content";
 import { KUARI_PASS_ITINERARY } from "@/lib/content/treks/kuari-pass/itinerary-content";
+import { HAR_KI_DUN_ITINERARY } from "@/lib/content/treks/har-ki-dun/itinerary-content";
+import {
+  HAR_KI_DUN_EXCLUSIONS,
+  HAR_KI_DUN_INCLUSIONS,
+} from "@/lib/content/treks/har-ki-dun/inclusion-exclusion-content";
+import { HAR_KI_DUN_FAQ } from "@/lib/content/treks/har-ki-dun/faq-content";
 import { KUARI_PASS_FAQ } from "@/lib/content/treks/kuari-pass/faq-content";
 import {
   KUARI_PASS_EXCLUSIONS,
@@ -49,6 +55,8 @@ export interface Trek {
   rating: string;
   reviewCount: string;
   images: string[];
+  /** Optional cover for listing/home cards only — detail page still uses `images`. */
+  cardImage?: string;
   brief: string;
   description: string;
   highlights: string[];
@@ -166,6 +174,7 @@ const baseTreks: Trek[] = [
     rating: "4.9",
     reviewCount: "10k+",
     images: [...KEDARKANTHA_GALLERY],
+    cardImage: KEDARKANTHA_CARD,
     brief: "At 12,500 ft, Kedarkantha is one of India's most loved winter summits — pine forests, frozen Juda Ka Talab, and 360° views of Swargarohini, Black Peak, and Gangotri ranges from Govind Wildlife Sanctuary.",
     description: "Kedarkantha Summit Trek is the perfect winter Himalayan adventure for beginners and seasoned trekkers alike. Starting from Sankri village, the 20 km trail passes Juda Ka Talab, Kedarkantha Base Camp, and Hargaon before the exhilarating summit push at dawn.\n\nOften crowned the Queen of Winter Treks, Kedarkantha transforms into a snow paradise from December to April. March and April bring blooming rhododendrons and mirror-like reflections at Juda Ka Talab.\n\nKey highlights include Sankri's welcoming Pahadi atmosphere, starlit camping at Kedarkantha Base, and summit views of Bandarpoonch, Draupadi ka Danda, Har Ki Dun and Rupin Valleys.",
     highlights: [
@@ -674,13 +683,13 @@ const baseTreks: Trek[] = [
     state: "Uttarakhand",
     region: "uttarakhand",
     type: "trek",
-    duration: "5N/6D",
-    nights: 5,
-    days: 6,
-    maxAltitude: "11,500 ft",
+    duration: "6N/7D",
+    nights: 6,
+    days: 7,
+    maxAltitude: "12,100 ft",
     difficulty: "Easy to Moderate",
     bestSeason: "March - June, September - November",
-    distance: "48 km",
+    distance: "Approx. 35 km",
     rating: "4.8",
     reviewCount: "5k+",
     images: [
@@ -688,35 +697,27 @@ const baseTreks: Trek[] = [
       "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80",
       "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80",
     ],
-    brief: "Trek through the legendary 'Valley of Gods'  -  a cradle-shaped valley surrounded by snow-capped peaks and ancient villages.",
-    description: "Har Ki Dun, known as the 'Valley of Gods,' is one of the most iconic treks in the Indian Himalayas. This cradle-shaped valley is surrounded by majestic peaks like Swargarohini, Bandarpoonch, and Kalanag. The trail follows the pristine Supin River through remote villages with ancient wooden temples.",
+    brief:
+      "Walk into the legendary Valley of Gods — a Garhwal valley trek from Sankri through forests, villages and the Supin River to Har Ki Dun at 12,100 ft.",
+    description:
+      "Har Ki Dun is one of the most rewarding Himalayan valley treks in Uttarakhand, deep in the upper Tons Valley of the Garhwal Himalayas. From Sankri the trail passes Taluka, Pauni Garaat, Osla, Seema and Kalkattiyadhar before reaching the magnificent Har Ki Dun Valley, framed by Swargarohini and alpine meadows.",
     highlights: [
-      "Camp at the base of the majestic Swargarohini peak",
-      "Explore ancient Himalayan villages Osla and Gangad",
-      "Traverse through dense pine, oak, and rhododendron forests",
-      "Cross scenic suspension bridges over the Supin River",
-      "Mythological significance  -  Pandavas' route to heaven",
-      "Spot Himalayan wildlife  -  musk deer, monal pheasants",
+      "Har Ki Dun Valley at approximately 12,100 ft",
+      "Views of the iconic Swargarohini range",
+      "Trail along the pristine Supin River",
+      "Traditional Himalayan villages Osla and Seema",
+      "Dense forests, alpine meadows and changing seasons",
+      "Mythology of the Pandavas and the Valley of Gods",
     ],
-    itinerary: [
-      { day: 1, title: "Dehradun to Sankri (Drive)", description: "Scenic 6-hour drive to Sankri, the gateway to Garhwal treks.", meals: "Dinner", altitude: "6,400 ft", duration: "6 hrs drive" },
-      { day: 2, title: "Sankri to Juda Ka Talab (Trek)", description: "Begin trekking through mixed forests of pine and rhododendron.", meals: "Breakfast, Lunch, Dinner", altitude: "9,100 ft", distance: "6 km", duration: "4-5 hrs" },
-      { day: 3, title: "Juda Ka Talab to Har Ki Dun (Trek)", description: "Enter the wide, flat valley of Har Ki Dun with panoramic views of Swargarohini.", meals: "Breakfast, Lunch, Dinner", altitude: "11,500 ft", distance: "12 km", duration: "6-7 hrs" },
-      { day: 4, title: "Har Ki Dun  -  Day Hike to Jaundhar Glacier", description: "Hike towards the Jaundhar Glacier, the source of the Supin River.", meals: "Breakfast, Lunch, Dinner", altitude: "15,000 ft (day hike)", distance: "6 km", duration: "4-5 hrs" },
-      { day: 5, title: "Har Ki Dun to Sankri (Return)", description: "Descend back through the valley to Sankri.", meals: "Breakfast, Lunch, Dinner", distance: "18 km", duration: "7-8 hrs" },
-      { day: 6, title: "Sankri to Dehradun (Drive)", description: "Drive back to Dehradun.", meals: "Breakfast, Lunch", duration: "6 hrs drive" },
-    ],
-    inclusions: ["All meals as per itinerary", "Certified trek leader", "Camping equipment (tent, sleeping bag, mat)", "Forest permits and trekking permits", "First aid kit and oxygen cylinder", "Trekking pole per person", "Expert cook and support staff"],
-    exclusions: ["Personal expenses", "Travel insurance", "Tips", "Personal porters"],
+    itinerary: HAR_KI_DUN_ITINERARY,
+    inclusions: HAR_KI_DUN_INCLUSIONS,
+    exclusions: HAR_KI_DUN_EXCLUSIONS,
     pricing: [
       { name: "Economic", price: 8999, originalPrice: 10999, deposit: 2500, badge: "Budget", inclusions: ["Twin-sharing tent", "Basic sleeping bag & mat", "Standard meals"], exclusions: ["No separate toilet tent"] },
       { name: "Standard", price: 12999, originalPrice: 15999, deposit: 4000, badge: "Popular", inclusions: ["Twin-sharing weatherproof tent", "Sleeping bag (-5°C)", "Nutritious meals", "Separate toilet tents", "Trekking pole"], exclusions: [] },
       { name: "Premium", price: 18999, originalPrice: 23999, deposit: 6000, badge: "Luxury", inclusions: ["Single tent option", "Premium sleeping bag (-10°C)", "Self-inflating mattress", "Gourmet meals", "Personal guide (1:4)", "Pickup from Dehradun airport"], exclusions: ["Personal porters"] },
     ],
-    faq: [
-      { q: "What is the difficulty of Har Ki Dun?", a: "Moderate. Well-defined trails with long walking days." },
-      { q: "Is there network connectivity on the trail?", a: "No network beyond Sankri. Last ATM is in Dehradun." },
-    ],
+    faq: HAR_KI_DUN_FAQ,
     mapImage: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80",
     groupSize: "6-15 persons",
     startEndPoint: "Dehradun to Dehradun",

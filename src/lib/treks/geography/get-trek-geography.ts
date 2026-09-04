@@ -197,10 +197,10 @@ export function getWaypointForDay(geography: TrekGeography, day: number): Resolv
   );
 }
 
-/** Kedarkantha / Kuari Pass drive legs use verified corridors — Mapbox may reroute poorly. */
+/** Kedarkantha / Kuari Pass / Har Ki Dun drive legs use verified corridors — Mapbox may reroute poorly. */
 function useVerifiedDriveTrack(seg: RouteSegment): boolean {
   return Boolean(
-    seg.fallbackTrackKey?.match(/^(kedarkantha|kuari-pass)-day\d+-drive$/),
+    seg.fallbackTrackKey?.match(/^(kedarkantha|kuari-pass|har-ki-dun)-day\d+-(drive|jeep)$/),
   );
 }
 

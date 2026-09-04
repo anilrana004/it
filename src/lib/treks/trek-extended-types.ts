@@ -39,4 +39,6 @@ export type TrekExtendedContent = {
   };
   routeProfile?: TrekRouteProfileData;
   packingSection?: TrekRichSection;
+  /** Optional notes block (offloading, special offers, etc.) — shown after Things to Carry. */
+  noteSection?: TrekRichSection;
 };

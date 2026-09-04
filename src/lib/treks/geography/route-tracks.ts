@@ -12,6 +12,15 @@ import {
   KEDARKANTHA_DAY5_DRIVE_LINE,
 } from './trails/kedarkantha-drive';
 import {
+  HAR_KI_DUN_DAY2_DRIVE_LINE,
+  HAR_KI_DUN_DAY2_TREK_LINE,
+  HAR_KI_DUN_DAY3_TREK_LINE,
+  HAR_KI_DUN_DAY4_TREK_LINE,
+  HAR_KI_DUN_DAY5_TREK_LINE,
+  HAR_KI_DUN_DAY6_JEEP_LINE,
+  HAR_KI_DUN_DAY6_TREK_LINE,
+} from './trails/har-ki-dun-trail';
+import {
   KUARI_PASS_DAY1_DRIVE_LINE,
   KUARI_PASS_DAY2_DRIVE_LINE,
   KUARI_PASS_DAY5_DRIVE_LINE,
@@ -37,6 +46,51 @@ export const ROUTE_TRACKS: Record<
   'kedarkantha-day1-drive': {
     source: 'road-corridor — Naugaon → Purola → Mori → Netwar (OSM town anchors, Sep 2026)',
     coordinates: KEDARKANTHA_DAY1_DRIVE_LINE,
+  },
+  /** Har Ki Dun Day 1 — same Dehradun → Sankri Tons-valley corridor */
+  'har-ki-dun-day1-drive': {
+    source: 'road-corridor — Dehradun → Sankri via Mussoorie, Naugaon, Purola, Mori, Netwar (shared with Kedarkantha approach)',
+    coordinates: KEDARKANTHA_DAY1_DRIVE_LINE,
+  },
+  /** Har Ki Dun Day 2 — Sankri → Taluka jeep road */
+  'har-ki-dun-day2-drive': {
+    source: 'road-corridor — Sankri to Taluka (~12 km, OSM anchors)',
+    coordinates: HAR_KI_DUN_DAY2_DRIVE_LINE,
+  },
+  /** Har Ki Dun Day 2 — Taluka → Pauni Garaat along Supin */
+  'har-ki-dun-day2-trek': {
+    source: 'trail-corridor — Taluka to Pauni Garaat riverside camp (OSM Taluka + project itinerary)',
+    coordinates: HAR_KI_DUN_DAY2_TREK_LINE,
+  },
+  /** Har Ki Dun Day 3 — Pauni Garaat → Seema / Osla → Kalkattiyadhar */
+  'har-ki-dun-day3-trek': {
+    source: 'trail-corridor — Pauni Garaat via Seema & Osla to Kalkattiyadhar (OSM Seema/Osla + project itinerary)',
+    coordinates: HAR_KI_DUN_DAY3_TREK_LINE,
+  },
+  /** Har Ki Dun Day 4 — Kalkattiyadhar ↔ Har Ki Dun valley (out and back) */
+  'har-ki-dun-day4-trek': {
+    source: 'trail-corridor — Kalkattiyadhar to Har Ki Dun summit day and return (OSM Har Ki Dun)',
+    coordinates: HAR_KI_DUN_DAY4_TREK_LINE,
+  },
+  /** Har Ki Dun Day 5 — Kalkattiyadhar → Osla → Pauni Garaat (descent) */
+  'har-ki-dun-day5-trek': {
+    source: 'trail-corridor — Kalkattiyadhar via Osla & Seema to Pauni Garaat (reverse of Day 3)',
+    coordinates: HAR_KI_DUN_DAY5_TREK_LINE,
+  },
+  /** Har Ki Dun Day 6 continuity — Pauni → Taluka */
+  'har-ki-dun-day6-trek': {
+    source: 'trail-corridor — Pauni Garaat to Taluka (reverse of Day 2 trek)',
+    coordinates: HAR_KI_DUN_DAY6_TREK_LINE,
+  },
+  /** Har Ki Dun Day 6 continuity — Taluka → Sankri jeep */
+  'har-ki-dun-day6-jeep': {
+    source: 'road-corridor — Taluka to Sankri (reverse of Day 2 drive)',
+    coordinates: HAR_KI_DUN_DAY6_JEEP_LINE,
+  },
+  /** Har Ki Dun Day 7 — Sankri → Dehradun (reverse of Day 1 corridor) */
+  'har-ki-dun-day7-drive': {
+    source: 'road-corridor — Sankri to Dehradun via Netwar, Mori, Purola, Naugaon, Mussoorie (shared return with Kedarkantha)',
+    coordinates: KEDARKANTHA_DAY5_DRIVE_LINE,
   },
   /** Day 2 — Sankri → Juda Ka Talab (5 km) */
   'kedarkantha-day2-trek': {
