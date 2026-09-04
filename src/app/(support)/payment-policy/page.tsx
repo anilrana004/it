@@ -1,21 +1,12 @@
 import type { Metadata } from 'next';
-import PolicyPageView from '@/components/support/PolicyPageView';
-import { PAYMENT_POLICY_SECTIONS } from '@/lib/help-centre-content';
+import PaymentPolicyPageView from '@/components/support/PaymentPolicyPageView';
 
 export const metadata: Metadata = {
-  title: 'Payment Policy | Indian Treks',
+  title: 'Payment Policy | IndianTreks',
   description:
-    'How Indian Treks handles booking deposits, balance payments, accepted payment methods, invoices, and secure transactions.',
+    'IndianTreks payment policy — booking amounts, online payments, bank/UPI details, cancellation charges, transportation, and unforeseen-circumstances terms.',
 };
 
 export default function PaymentPolicyPage() {
-  return (
-    <PolicyPageView
-      eyebrow="Policies"
-      title="Payment Policy"
-      lead="Flexible payment options so you can confirm your Himalayan adventure with confidence."
-      sections={PAYMENT_POLICY_SECTIONS}
-      cta={{ label: 'Back to Help Centre', href: '/help-centre' }}
-    />
-  );
+  return <PaymentPolicyPageView />;
 }

@@ -197,10 +197,12 @@ export function getWaypointForDay(geography: TrekGeography, day: number): Resolv
   );
 }
 
-/** Kedarkantha / Kuari Pass / Har Ki Dun drive legs use verified corridors — Mapbox may reroute poorly. */
-function useVerifiedDriveTrack(seg: RouteSegment): boolean {
+/** Prefer verified road corridors when Mapbox Directions may reroute poorly. */
+function shouldPreferVerifiedDriveTrack(seg: RouteSegment): boolean {
   return Boolean(
-    seg.fallbackTrackKey?.match(/^(kedarkantha|kuari-pass|har-ki-dun)-day\d+-(drive|jeep)$/),
+    seg.fallbackTrackKey?.match(
+      /^(kedarkantha|kuari-pass|har-ki-dun|brahmatal|nag-tibba)-day\d+-(drive|jeep)$/,
+    ),
   );
 }
 
@@ -217,7 +219,7 @@ export async function resolveDrivingSegments(
       continue;
     }
 
-    if (useVerifiedDriveTrack(seg)) {
+    if (shouldPreferVerifiedDriveTrack(seg)) {
       const withTrack = attachTrackCoordinates({ ...seg, geometryKind: 'driving-network' });
       resolved.push(withTrack.coordinates?.length ? withTrack : { ...seg, geometryKind: 'none' });
       continue;

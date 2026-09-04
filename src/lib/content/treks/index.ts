@@ -1,9 +1,11 @@
 import type { TrekExtendedContent } from '@/lib/content/treks/types';
 import { getTrekById } from '@/lib/data';
 import { buildDefaultTrekExtended } from '@/lib/content/treks/default-extended-content';
+import { buildBrahmatalExtended } from '@/lib/content/treks/brahmatal';
 import { buildChoptaTungnathExtended } from '@/lib/content/treks/chopta-tungnath';
 import { buildHarKiDunExtended } from '@/lib/content/treks/har-ki-dun';
 import { buildKuariPassExtended } from '@/lib/content/treks/kuari-pass';
+import { buildNagTibbaExtended } from '@/lib/content/treks/nag-tibba';
 import { kedarkanthaExtended } from '@/lib/content/treks/kedarkantha';
 
 /**
@@ -39,6 +41,14 @@ export function getTrekContent(trekId: string): TrekExtendedContent | undefined 
 
   if (trekId === 'har-ki-dun') {
     return buildHarKiDunExtended(trek);
+  }
+
+  if (trekId === 'brahmatal') {
+    return buildBrahmatalExtended(trek);
+  }
+
+  if (trekId === 'nag-tibba') {
+    return buildNagTibbaExtended(trek);
   }
 
   const base = buildDefaultTrekExtended(trek);

@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import { treks, getTrekById } from '@/lib/data';
 import TrekDetailContent from '@/components/TrekDetailContent';
 import { fetchRelatedBlogPosts } from '@/lib/knowledge/adapter';
+import { getPromoBanners } from '@/lib/trek-detail-content';
 
 export const dynamicParams = true;
 export const revalidate = 300;
@@ -24,6 +25,7 @@ export default async function YatraDetailPage({
   const guests = Number(sp?.guests || '');
   const initialGuests = Number.isFinite(guests) && guests >= 1 ? Math.min(20, Math.floor(guests)) : 1;
   const relatedBlogPosts = await fetchRelatedBlogPosts(trek, 3, 'yatra');
+  const promoBanners = getPromoBanners(trek);
 
   return (
     <TrekDetailContent
@@ -31,6 +33,7 @@ export default async function YatraDetailPage({
       type={trek.type === 'yatra' ? 'yatra' : 'trek'}
       initialGuests={initialGuests}
       relatedBlogPosts={relatedBlogPosts}
+      promoBanners={promoBanners}
     />
   );
 }

@@ -1,5 +1,32 @@
 import type { BannerItem } from '@/components/Banners';
 import { photos } from '@/lib/media';
+import { cloudinaryAssetUrl } from '@/lib/cloudinary';
+
+/**
+ * Kedarkantha winter pre-sell creative.
+ * Native ~2172×724 (≈3:1). Delivered padded to the strip ratio so the slide
+ * fills the box edge-to-edge without letterbox bars; artwork stays intact.
+ */
+const KEDARKANTHA_WINTER_BANNER_PATH =
+  'v1788533034/ChatGPT_Image_Sep_4_2026_08_13_25_PM.png';
+
+/** Mobile/tablet strip (~2.5:1 at 160–200px tall). */
+const kedarkanthaWinterBannerMobile = cloudinaryAssetUrl(KEDARKANTHA_WINTER_BANNER_PATH, {
+  w: 1200,
+  h: 480,
+  crop: 'pad',
+  gravity: 'center',
+  background: 'rgb:8eb4dc',
+});
+
+/** Desktop strip (~4.8:1 at 240px tall) — matches 1920×400 ideal. */
+const kedarkanthaWinterBannerDesktop = cloudinaryAssetUrl(KEDARKANTHA_WINTER_BANNER_PATH, {
+  w: 1920,
+  h: 400,
+  crop: 'pad',
+  gravity: 'center',
+  background: 'rgb:8eb4dc',
+});
 
 export type HomeBannerGroup =
   | 'explore'
@@ -18,7 +45,14 @@ export const HOME_BANNERS: Record<HomeBannerGroup, BannerItem[]> = {
       title: 'Chopta Tungnath Chandrashila',
       designed: true,
     },
-    { src: photos.uttarakhand, href: '/treks?region=uttarakhand', title: 'Uttarakhand  -  Land of Gods & Treks', subtitle: '10 iconic Himalayan treks across Chopta, Kedarkantha, Valley of Flowers & beyond', badge: 'Uttarakhand', discount: 'View All Treks' },
+    {
+      src: kedarkanthaWinterBannerMobile,
+      desktopSrc: kedarkanthaWinterBannerDesktop,
+      href: '/treks?season=winter',
+      title: 'Kedarkantha Trek — Pre Sell · Flat 10% Off',
+      designed: true,
+      fillFrame: true,
+    },
     { src: photos.himachal, href: '/treks?region=himachal', title: 'Himachal  -  Adventure Capital', subtitle: '8 breathtaking treks  -  Hampta, Triund, Bhrigu Lake, Kheerganga & more', badge: 'Himachal', discount: 'Explore Himachal' },
     { src: photos.yatra, href: '/yatra', title: 'Sacred Yatras  -  Spiritual Himalaya', subtitle: 'Kedarnath · Do Dham · Char Dham · Panch Kedar  -  divine journeys', badge: 'Yatra', discount: 'Plan Your Yatra' },
   ],

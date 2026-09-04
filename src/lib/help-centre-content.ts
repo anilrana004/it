@@ -1,5 +1,3 @@
-import { CONTACT } from '@/lib/contact';
-
 export type HelpCentreTopic = {
   id: string;
   title: string;
@@ -106,47 +104,3 @@ export type PolicySection = {
   body?: string;
   bullets?: string[];
 };
-
-export const PAYMENT_POLICY_SECTIONS: PolicySection[] = [
-  {
-    title: 'Booking confirmation',
-    body:
-      'Your seat is confirmed only after the required advance payment is received. The deposit amount varies by trek, yatra, or package. Balance payment must be cleared before departure or as per reporting instructions shared by our team.',
-  },
-  {
-    title: 'Payment options',
-    bullets: [
-      'Full payment — pay the entire amount upfront for a hassle-free experience.',
-      'Partial payment (50%) — pay half now and the remaining 50% before the trek start date.',
-      'Advance deposit — block your seat with the minimum deposit and pay the balance later.',
-    ],
-  },
-  {
-    title: 'Accepted payment methods',
-    bullets: [
-      'UPI (Google Pay, PhonePe, Paytm, and other UPI apps)',
-      'Credit and debit cards',
-      'Net banking',
-      'Direct bank transfer (NEFT / IMPS / RTGS)',
-    ],
-  },
-  {
-    title: 'Balance & reporting',
-    body:
-      'Final balance must be paid before the reporting date shared in your confirmation email and WhatsApp message. Failure to clear dues may result in cancellation of the booking without refund of the deposit.',
-  },
-  {
-    title: 'GST & invoices',
-    body:
-      'Tax invoices are issued for all confirmed bookings. Share your billing details at the time of payment if you need a company invoice.',
-  },
-  {
-    title: 'Secure transactions',
-    body:
-      'All online transactions are processed through secure payment gateways. Indian Treks does not store your card or banking credentials on our servers.',
-  },
-  {
-    title: 'Need payment help?',
-    body: `Email ${CONTACT.email} or call ${CONTACT.phoneDisplay} (${CONTACT.hours}). Our team can guide you on instalments, corporate billing, or gift-card redemptions.`,
-  },
-];

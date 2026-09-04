@@ -32,6 +32,21 @@ import {
   KUARI_PASS_DAY4_SUMMIT_LINE,
   KUARI_PASS_DAY5_TREK_LINE,
 } from './trails/kuari-pass-trail';
+import {
+  BRAHMATAL_DAY1_DRIVE_LINE,
+  BRAHMATAL_DAY6_DRIVE_LINE,
+} from './trails/brahmatal-drive';
+import {
+  BRAHMATAL_DAY2_TREK_LINE,
+  BRAHMATAL_DAY3_TREK_LINE,
+  BRAHMATAL_DAY4_TREK_LINE,
+  BRAHMATAL_DAY5_TREK_LINE,
+} from './trails/brahmatal-trail';
+import { NAG_TIBBA_DAY1_DRIVE_LINE, NAG_TIBBA_DAY2_DRIVE_LINE } from './trails/nag-tibba-drive';
+import {
+  NAG_TIBBA_DAY1_TREK_LINE,
+  NAG_TIBBA_DAY2_TREK_LINE,
+} from './trails/nag-tibba-trail';
 
 export const ROUTE_TRACKS: Record<
   string,
@@ -200,5 +215,63 @@ export const ROUTE_TRACKS: Record<
   'kuari-pass-day6-drive': {
     source: 'road-corridor — Joshimath → Dehradun via Rishikesh (OSM anchors)',
     coordinates: KUARI_PASS_DAY6_DRIVE_LINE,
+  },
+  /** Brahmatal — Day 1 drive Rishikesh → Lohajung via Prayags, Tharali & Deval */
+  'brahmatal-day1-drive': {
+    source:
+      'road-corridor — Rishikesh → Lohajung via Devprayag, Srinagar, Rudraprayag, Karnaprayag, Tharali, Deval (OSM / village anchors)',
+    coordinates: BRAHMATAL_DAY1_DRIVE_LINE,
+  },
+  /** Brahmatal — Day 2 trek Lohajung → Bekaltal via Mundoli, Begum, Gujreni */
+  'brahmatal-day2-trek': {
+    source:
+      'trail-corridor — Lohajung to Bekaltal via Mundoli, Begum, Gujreni (OSM ways 210728232 / 658586491 + village anchors)',
+    coordinates: BRAHMATAL_DAY2_TREK_LINE,
+  },
+  /** Brahmatal — Day 3 trek Bekaltal → Telindi → Brahmatal / Khabekhal */
+  'brahmatal-day3-trek': {
+    source:
+      'trail-corridor — Bekaltal to Brahmatal via Telindi / Tilandi Top (OSM way 575275719 Bekal Tal–Brahma Tal)',
+    coordinates: BRAHMATAL_DAY3_TREK_LINE,
+  },
+  /** Brahmatal — Day 4 summit via Jhandidars then descend to Daldum */
+  'brahmatal-day4-trek': {
+    source:
+      'trail-corridor — Brahmatal → Chota/Bada Jhandidar → Brahmatal Top → Daldum (OSM way 575275707 + descent corridor)',
+    coordinates: BRAHMATAL_DAY4_TREK_LINE,
+  },
+  /** Brahmatal — Day 5 trek Daldum → Lohajung */
+  'brahmatal-day5-trek': {
+    source:
+      'trail-corridor — Daldum left fork via Mundoli stone-path approach into Lohajung (~4 km)',
+    coordinates: BRAHMATAL_DAY5_TREK_LINE,
+  },
+  /** Brahmatal — Day 6 return Lohajung → Rishikesh */
+  'brahmatal-day6-drive': {
+    source: 'road-corridor — Lohajung → Rishikesh (reverse of Day 1 corridor)',
+    coordinates: BRAHMATAL_DAY6_DRIVE_LINE,
+  },
+  /** Nag Tibba — Day 1 drive Dehradun → Pantwari via Mussoorie, Kempty & Nainbagh */
+  'nag-tibba-day1-drive': {
+    source:
+      'road-corridor — Dehradun → Pantwari via Mussoorie, Kempty Falls, Nainbagh (OSM / published Pantwari GPS)',
+    coordinates: NAG_TIBBA_DAY1_DRIVE_LINE,
+  },
+  /** Nag Tibba — Day 1 trek Pantwari → Goat Village → base camp */
+  'nag-tibba-day1-trek': {
+    source:
+      'trail-corridor — Pantwari to Nag Tibba base camp via Goat Village (village / ridge anchors)',
+    coordinates: NAG_TIBBA_DAY1_TREK_LINE,
+  },
+  /** Nag Tibba — Day 2 summit out-and-back then descend to Pantwari */
+  'nag-tibba-day2-trek': {
+    source:
+      'trail-corridor — Base camp → Nag Mandir → summit → reverse via Goat Village to Pantwari (~13 km)',
+    coordinates: NAG_TIBBA_DAY2_TREK_LINE,
+  },
+  /** Nag Tibba — Day 2 return drive Pantwari → Dehradun */
+  'nag-tibba-day2-drive': {
+    source: 'road-corridor — Pantwari → Dehradun (reverse of Day 1 corridor)',
+    coordinates: NAG_TIBBA_DAY2_DRIVE_LINE,
   },
 };

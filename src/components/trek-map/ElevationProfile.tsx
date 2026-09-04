@@ -20,7 +20,24 @@ export default function ElevationProfile({
   const [hoverKm, setHoverKm] = useState<number | null>(null);
 
   const validSamples = samples.filter((s) => s.elevationM > 0);
-  if (validSamples.length < 2 || !totalDistanceKm) {
+  const maxDist = totalDistanceKm;
+  const hasProfile = validSamples.length >= 2 && Boolean(maxDist);
+
+  const handlePointer = useCallback(
+    (clientX: number) => {
+      if (!maxDist) return;
+      const svg = svgRef.current;
+      if (!svg) return;
+      const rect = svg.getBoundingClientRect();
+      const ratio = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+      const km = ratio * maxDist;
+      setHoverKm(km);
+      onFocusChange?.(km);
+    },
+    [maxDist, onFocusChange],
+  );
+
+  if (!hasProfile || !maxDist) {
     return (
       <div className="tm-elevation tm-elevation--empty" aria-live="polite">
         Elevation profile will appear when verified route data is available.
@@ -28,7 +45,6 @@ export default function ElevationProfile({
     );
   }
 
-  const maxDist = totalDistanceKm;
   const minElev = Math.min(...validSamples.map((s) => s.elevationM));
   const maxElev = Math.max(...validSamples.map((s) => s.elevationM));
   const elevRange = maxElev - minElev || 100;
@@ -54,19 +70,6 @@ export default function ElevationProfile({
           Math.abs(p.distanceKm - activeKm) < Math.abs(best.distanceKm - activeKm) ? p : best,
         points[0])
       : null;
-
-  const handlePointer = useCallback(
-    (clientX: number) => {
-      const svg = svgRef.current;
-      if (!svg) return;
-      const rect = svg.getBoundingClientRect();
-      const ratio = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
-      const km = ratio * maxDist;
-      setHoverKm(km);
-      onFocusChange?.(km);
-    },
-    [maxDist, onFocusChange],
-  );
 
   return (
     <div className="tm-elevation" aria-label="Elevation profile">

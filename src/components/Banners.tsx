@@ -12,9 +12,20 @@ export interface BannerItem {
   badge?: string;
   discount?: string;
   desktopSrc?: string;
-  /** Full creative with text/CTA in the image — skip overlays so we don't double up */
+  /**
+   * Designed creative: art already includes title/CTA — skip HTML overlays.
+   */
   designed?: boolean;
+  /**
+   * Asset is sized to the strip aspect — use cover for true edge-to-edge fill.
+   * Prefer exporting at 1920×400 so no pad is needed.
+   */
+  fillFrame?: boolean;
 }
+
+/** Shared promo-slider heights — image never drives layout. */
+const FRAME_HEIGHT = 'h-[160px] sm:h-[200px] lg:h-[240px]';
+const FRAME_HEIGHT_EMBEDDED = 'h-[140px]';
 
 const defaultBanners: BannerItem[] = [
   { src: photos.vof, href: '/treks/valley-of-flowers', title: 'Valley of Flowers Trek', subtitle: 'UNESCO Himalayan Paradise - 6D/5N', badge: 'Best Seller', discount: '₹8,999' },
@@ -28,14 +39,18 @@ function SlideImage({
   src,
   desktopSrc,
   alt,
-  designed,
+  fillFrame,
 }: {
   src: string;
   desktopSrc?: string;
   alt: string;
-  designed?: boolean;
+  fillFrame?: boolean;
 }) {
-  const fit = designed ? 'object-cover object-center' : 'object-cover';
+  const desk = desktopSrc || src;
+  /** fillFrame assets are strip-sized (pad/export) — cover fills the box with no blur bars. */
+  const fit = fillFrame ? 'object-cover object-center' : 'object-contain object-center';
+  const imgClass = `absolute inset-0 m-auto h-full w-full max-h-full max-w-full ${fit}`;
+
   return (
     <>
       {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -45,22 +60,26 @@ function SlideImage({
         loading="lazy"
         decoding="async"
         referrerPolicy="no-referrer"
-        className={`absolute inset-0 h-full w-full ${fit} lg:hidden`}
+        className={`${imgClass} lg:hidden`}
       />
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src={desktopSrc || src}
+        src={desk}
         alt=""
         aria-hidden
         loading="lazy"
         decoding="async"
         referrerPolicy="no-referrer"
-        className={`absolute inset-0 hidden h-full w-full ${fit} lg:block`}
+        className={`${imgClass} hidden lg:block`}
       />
     </>
   );
 }
 
+/**
+ * Promo slider — fixed-height frame; image never expands layout.
+ * object-fit:contain preserves full artwork/text when ratios differ.
+ */
 export default function Banners({
   items = defaultBanners,
   embedded = false,
@@ -70,6 +89,7 @@ export default function Banners({
   embedded?: boolean;
 }) {
   const [index, setIndex] = useState(0);
+  const [autoplayReady, setAutoplayReady] = useState(false);
   const pausedRef = useRef(false);
   const resumeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const count = items.length;
@@ -80,17 +100,30 @@ export default function Banners({
     setIndex(((i % count) + count) % count);
   }, [count]);
 
+  // Defer autoplay until after hydration so SSR HTML always matches the first client paint.
   useEffect(() => {
-    if (count < 2) return;
-    if (typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    setAutoplayReady(true);
+  }, []);
+
+  useEffect(() => {
+    if (!autoplayReady || count < 2) return;
+    if (typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return;
+    }
 
     const id = window.setInterval(() => {
       if (pausedRef.current) return;
-      setIndex(i => (i + 1) % count);
+      setIndex((i) => (i + 1) % count);
     }, 4000);
 
     return () => window.clearInterval(id);
-  }, [count]);
+  }, [autoplayReady, count]);
+
+  // Reset to first slide when the slide set identity changes (not on every parent render).
+  const itemsKey = items.map((b) => b.href).join('|');
+  useEffect(() => {
+    setIndex(0);
+  }, [itemsKey]);
 
   const pause = () => {
     pausedRef.current = true;
@@ -100,9 +133,14 @@ export default function Banners({
 
   if (!count) return null;
 
+  const designedActive = Boolean(items[index]?.designed);
+  const frameH = embedded ? FRAME_HEIGHT_EMBEDDED : FRAME_HEIGHT;
+
   const slider = (
     <div
-      className="relative w-full overflow-hidden rounded-[18px] bg-[#1f2937] shadow-sm"
+      className={`relative w-full overflow-hidden rounded-[18px] shadow-sm ${
+        designedActive ? 'bg-[#eef2f6]' : 'bg-[#1f2937]'
+      }`}
       onPointerDown={pause}
       onMouseEnter={() => { pausedRef.current = true; }}
       onMouseLeave={() => { pausedRef.current = false; }}
@@ -115,12 +153,12 @@ export default function Banners({
         else goTo(index - 1);
       }}
     >
-      <div className={`relative w-full ${embedded ? 'h-[140px]' : 'h-[132px] sm:h-[150px] lg:h-[180px]'}`}>
+      <div className={`relative w-full shrink-0 overflow-hidden ${frameH}`}>
         {items.map((b, i) => {
           const active = i === index;
           return (
             <Link
-              key={`${b.href}-${i}`}
+              key={b.href}
               href={b.href}
               aria-hidden={!active}
               tabIndex={active ? 0 : -1}
@@ -130,7 +168,7 @@ export default function Banners({
                   swiped.current = false;
                 }
               }}
-              className={`absolute inset-0 block transition-opacity duration-700 ease-out ${
+              className={`absolute inset-0 block overflow-hidden transition-opacity duration-700 ease-out ${
                 active ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
               }`}
             >
@@ -138,21 +176,21 @@ export default function Banners({
                 src={b.src}
                 desktopSrc={b.desktopSrc}
                 alt={b.title || 'Promo'}
-                designed={b.designed}
+                fillFrame={b.fillFrame}
               />
 
               {!b.designed && (
                 <>
-                  <div className="absolute inset-0 bg-gradient-to-r from-black/78 via-black/42 to-black/15" />
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/78 via-black/42 to-black/15" />
 
                   {b.badge && (
-                    <div className="absolute top-2.5 left-2.5 lg:top-4 lg:left-4 flex items-center gap-1 bg-[#16a34a]/95 text-white text-[10px] lg:text-xs font-bold px-2.5 py-1 rounded-full shadow-sm">
+                    <div className="absolute top-2.5 left-2.5 z-[1] lg:top-4 lg:left-4 flex items-center gap-1 bg-[#16a34a]/95 text-white text-[10px] lg:text-xs font-bold px-2.5 py-1 rounded-full shadow-sm">
                       <Tag className="w-3 h-3" />
                       {b.badge}
                     </div>
                   )}
 
-                  <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4 lg:p-5 max-w-2xl">
+                  <div className="absolute bottom-0 left-0 right-0 z-[1] p-3 sm:p-4 lg:p-5 max-w-2xl">
                     {b.title && (
                       <h3 className="text-white font-bold text-sm sm:text-base lg:text-xl drop-shadow-sm leading-tight">
                         {b.title}
@@ -180,7 +218,7 @@ export default function Banners({
       {count > 1 && (
         <div
           className={`absolute bottom-2.5 z-20 flex items-center gap-1.5 lg:bottom-3.5 ${
-            items[index]?.designed ? 'left-2.5 lg:left-3.5' : 'right-2.5 lg:right-3.5'
+            designedActive ? 'left-2.5 lg:left-3.5' : 'right-2.5 lg:right-3.5'
           }`}
         >
           {items.map((_, i) => (
@@ -190,7 +228,11 @@ export default function Banners({
               aria-label={`Show banner ${i + 1}`}
               onClick={() => { pause(); goTo(i); }}
               className={`h-1.5 rounded-full transition-all ${
-                i === index ? 'bg-[#16a34a] w-5' : 'bg-white/55 w-1.5 hover:bg-white/80'
+                i === index
+                  ? 'bg-[#16a34a] w-5'
+                  : designedActive
+                    ? 'bg-black/30 w-1.5 hover:bg-black/50'
+                    : 'bg-white/55 w-1.5 hover:bg-white/80'
               }`}
             />
           ))}

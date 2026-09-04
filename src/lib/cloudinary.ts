@@ -8,6 +8,8 @@ export interface CldOptions {
   crop?: CldCrop;
   quality?: number | 'auto';
   gravity?: 'auto' | 'center' | 'face';
+  /** Pad background — e.g. "rgb:eef2f6" or "auto" (edge-aware). Used with crop: "pad". */
+  background?: string;
 }
 
 export type BlogImageRole = 'featured' | 'inline' | 'break' | 'card' | 'thumb';
@@ -59,6 +61,7 @@ function buildTransformSegment(opts?: CldOptions): string {
   if (opts?.h) params.push(`h_${opts.h}`);
   params.push(`c_${opts?.crop || 'fill'}`);
   params.push(`g_${opts?.gravity || 'auto'}`);
+  if (opts?.background) params.push(`b_${opts.background}`);
   return params.join(',');
 }
 

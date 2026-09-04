@@ -7,6 +7,12 @@ import { KEDARKANTHA_ITINERARY } from "@/lib/content/treks/kedarkantha/itinerary
 import { CHOPTA_TUNGNATH_ITINERARY } from "@/lib/content/treks/chopta-tungnath/itinerary-content";
 import { KUARI_PASS_ITINERARY } from "@/lib/content/treks/kuari-pass/itinerary-content";
 import { HAR_KI_DUN_ITINERARY } from "@/lib/content/treks/har-ki-dun/itinerary-content";
+import { NAG_TIBBA_ITINERARY } from "@/lib/content/treks/nag-tibba/itinerary-content";
+import {
+  NAG_TIBBA_EXCLUSIONS,
+  NAG_TIBBA_INCLUSIONS,
+} from "@/lib/content/treks/nag-tibba/inclusion-exclusion-content";
+import { NAG_TIBBA_FAQ } from "@/lib/content/treks/nag-tibba/faq-content";
 import {
   HAR_KI_DUN_EXCLUSIONS,
   HAR_KI_DUN_INCLUSIONS,
@@ -777,13 +783,13 @@ const baseTreks: Trek[] = [
     state: "Uttarakhand",
     region: "uttarakhand",
     type: "trek",
-    duration: "2N/3D",
-    nights: 2,
-    days: 3,
+    duration: "1N/2D",
+    nights: 1,
+    days: 2,
     maxAltitude: "9,915 ft",
     difficulty: "Easy",
     bestSeason: "March - June, September - December",
-    distance: "14 km",
+    distance: "Approx. 16 km",
     rating: "4.5",
     reviewCount: "8k+",
     images: [
@@ -797,26 +803,19 @@ const baseTreks: Trek[] = [
       "Summit the highest peak of the Nag Tibba range",
       "360-degree panorama of Garhwal and Shivalik ranges",
       "Trek through dense oak, pine, and rhododendron forests",
-      "Perfect weekend getaway  -  just 3 days from Delhi",
+      "Perfect weekend getaway  -  just 2 days from Dehradun",
       "Ideal for beginners and families",
       "Camp in a serene forest clearing under the stars",
     ],
-    itinerary: [
-      { day: 1, title: "Dehradun to Pantwari to Campsite (Drive + Trek)", description: "3-hour drive to Pantwari village, then a short trek to the base campsite.", meals: "Dinner", altitude: "8,200 ft", distance: "150 km drive + 3 km trek", duration: "3 hrs drive + 2 hrs trek" },
-      { day: 2, title: "Summit Nag Tibba (9,915 ft) & Return", description: "Early morning summit push for breathtaking sunrise views over the Himalayas.", meals: "Breakfast, Lunch, Dinner", altitude: "9,915 ft", distance: "8 km", duration: "5-6 hrs" },
-      { day: 3, title: "Campsite to Pantwari to Dehradun", description: "Descend to Pantwari and drive back to Dehradun.", meals: "Breakfast, Lunch", distance: "3 km trek + drive", duration: "5 hrs" },
-    ],
-    inclusions: ["All meals as per itinerary", "Experienced trek guide", "Camping equipment (tent, sleeping bag, mat)", "Forest permits", "First aid kit", "Trekking pole"],
-    exclusions: ["Personal expenses", "Travel insurance", "Tips", "Personal porters"],
+    itinerary: NAG_TIBBA_ITINERARY,
+    inclusions: NAG_TIBBA_INCLUSIONS,
+    exclusions: NAG_TIBBA_EXCLUSIONS,
     pricing: [
       { name: "Economic", price: 4999, originalPrice: 6499, deposit: 1500, badge: "Budget", inclusions: ["Twin-sharing basic tent", "Standard sleeping bag & mat", "Simple veg meals"], exclusions: ["No trekking pole", "No separate toilet tent"] },
       { name: "Standard", price: 6999, originalPrice: 8999, deposit: 2000, badge: "Popular", inclusions: ["Twin-sharing weatherproof tent", "Sleeping bag (0°C)", "Nutritious meals", "Separate toilet tent", "Trekking pole"], exclusions: ["No single tent"] },
       { name: "Premium", price: 9999, originalPrice: 12999, deposit: 3000, badge: "Luxury", inclusions: ["Single tent option", "Premium sleeping bag (-5°C)", "Self-inflating mattress", "Gourmet meals", "Pickup & drop from Delhi bus"], exclusions: ["Personal insurance"] },
     ],
-    faq: [
-      { q: "Can I do Nag Tibba without prior experience?", a: "Absolutely. It's one of the easiest treks in Uttarakhand, perfect for first-timers and families." },
-      { q: "Why is it a good weekend trek?", a: "3 days, accessible from Delhi, easy terrain, and quick altitude gain make it the perfect quick Himalayan escape." },
-    ],
+    faq: NAG_TIBBA_FAQ,
     mapImage: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80",
     groupSize: "6-15 persons",
     startEndPoint: "Dehradun to Dehradun",

@@ -3,6 +3,7 @@
 import {
   useCallback,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -117,14 +118,16 @@ export default function TrekMap({
   );
 
   const journeyModeRef = useRef(effectiveMode);
-  journeyModeRef.current = effectiveMode;
 
-  modelRef.current = model;
-  styleModeRef.current = styleMode;
-  is3DRef.current = is3D;
-  selectionRef.current = selection;
-  cinematicRef.current = cinematic;
-  onSelectionChangeRef.current = onSelectionChange;
+  useLayoutEffect(() => {
+    journeyModeRef.current = effectiveMode;
+    modelRef.current = model;
+    styleModeRef.current = styleMode;
+    is3DRef.current = is3D;
+    selectionRef.current = selection;
+    cinematicRef.current = cinematic;
+    onSelectionChangeRef.current = onSelectionChange;
+  }, [effectiveMode, model, styleMode, is3D, selection, cinematic, onSelectionChange]);
 
   const trekCoords = useMemo(
     () => model.segments.filter((s) => s.category === 'trek').flatMap((s) => s.coordinates),
@@ -345,12 +348,6 @@ export default function TrekMap({
       clearTracker(map);
     }
   }, [selection, model, mapReady, is3D, cinematic, effectiveMode]);
-
-  useEffect(() => {
-    if (!model.journey.supportsCompleteJourney && journeyMode === 'complete') {
-      setJourneyMode('trek-only');
-    }
-  }, [model.journey.supportsCompleteJourney, journeyMode]);
 
   useEffect(() => {
     const map = mapRef.current;

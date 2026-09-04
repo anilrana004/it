@@ -27,6 +27,7 @@ import {
   type HeroCarouselReview,
 } from '@/lib/reviews-page-content';
 import { googleReviewsVerifyUrl, googleWriteReviewUrl } from '@/lib/contact';
+import ExperienceReviewsSection from '@/components/support/ExperienceReviewsSection';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import './reviews-page.css';
@@ -498,6 +499,8 @@ export default function ReviewsPageView() {
       </div>
 
       <GoogleReviewsSection />
+
+      <ExperienceReviewsSection />
 
       {/* Popular Reviews */}
       <section className="it-reviews__section" aria-labelledby="it-rv-popular-title">

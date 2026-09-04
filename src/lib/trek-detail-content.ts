@@ -194,19 +194,29 @@ const offerBanners: BannerItem[] = [
 /**
  * Three promo strips shown between detail-page sections. Sets are built from
  * live trek data and never link back to the trek being viewed.
+ * Order is fully deterministic (rating, then id) to avoid SSR/client hydration mismatches.
  */
 export function getPromoBanners(trek: Trek): [BannerItem[], BannerItem[], BannerItem[]] {
-  const others = treks.filter((t) => t.id !== trek.id);
-  const byRating = [...others].sort((a, b) => parseFloat(b.rating) - parseFloat(a.rating));
+  const byId = (a: Trek, b: Trek) => a.id.localeCompare(b.id);
+  const byRatingThenId = (a: Trek, b: Trek) => {
+    const diff = parseFloat(b.rating) - parseFloat(a.rating);
+    return diff !== 0 ? diff : byId(a, b);
+  };
 
-  const sameRegion = others.filter((t) => t.region === trek.region).slice(0, 4);
+  const others = treks.filter((t) => t.id !== trek.id);
+  const byRating = [...others].sort(byRatingThenId);
+
+  const sameRegion = others
+    .filter((t) => t.region === trek.region)
+    .sort(byId)
+    .slice(0, 4);
   const nearby = (sameRegion.length >= 2 ? sameRegion : byRating.slice(0, 4)).map((t) =>
     toBanner(t, `More in ${regionLabel[t.region]}`),
   );
 
   const sameKind = others.filter((t) => t.type === trek.type);
   const topRated = (sameKind.length >= 2 ? sameKind : others)
-    .sort((a, b) => parseFloat(b.rating) - parseFloat(a.rating))
+    .sort(byRatingThenId)
     .slice(0, 4)
     .map((t) => toBanner(t, `★ ${t.rating} Rated`));
 

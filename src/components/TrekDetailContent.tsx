@@ -9,7 +9,7 @@ import { blogDate, blogPath, blogThumb, getRelatedPosts, type RelatedPost } from
 import { safeImage, trekPhoto } from '@/lib/safe-image';
 import { photos } from '@/lib/media';
 import { whatsappUrl } from '@/lib/contact';
-import Banners from '@/components/Banners';
+import Banners, { type BannerItem } from '@/components/Banners';
 import { HighlightIcon } from '@/components/treks/HighlightIcons';
 import {
   addOns,
@@ -46,6 +46,7 @@ import TrekPackingSection from '@/components/treks/TrekPackingSection';
 import TrekWhyChooseSection from '@/components/treks/TrekWhyChooseSection';
 import TrekRouteMapSection from '@/components/treks/TrekRouteMapSection';
 import TrekAltitudeChartSection from '@/components/treks/TrekAltitudeChartSection';
+import TrekGuestReviews from '@/components/treks/TrekGuestReviews';
 import { DESK_HEADER_H, MOBILE_HEADER_H, CHROME_HIDDEN_CLASS } from '@/lib/layout';
 import './trek-detail.css';
 
@@ -88,29 +89,6 @@ const baseNavLinks = [
 ];
 
 const inr = (n: number) => `₹${n.toLocaleString('en-IN')}`;
-
-function GoogleLogoIcon({ size = 18 }: { size?: number }) {
-  return (
-    <svg viewBox="0 0 24 24" width={size} height={size} aria-hidden>
-      <path
-        fill="#4285F4"
-        d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-      />
-      <path
-        fill="#34A853"
-        d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-      />
-      <path
-        fill="#FBBC05"
-        d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
-      />
-      <path
-        fill="#EA4335"
-        d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
-      />
-    </svg>
-  );
-}
 
 /** Roopkund Heaven booking card: pricing tiers surface as occupancy pills. */
 const OCCUPANCY_LABEL: Record<string, string> = {
@@ -533,8 +511,9 @@ function BlogSidebar({ posts }: { posts: RelatedPost[] }) {
 }
 
 function paragraphs(text: string): string[] {
+  // Split on blank lines or real sentence ends — not abbreviations like Mt. / Dr. / St.
   return text
-    .split(/\n{2,}|\.\s+(?=[A-Z])/)
+    .split(/\n{2,}|(?<!\b(?:Mt|Mr|Mrs|Ms|Dr|St|No|vs|approx|etc))\.\s+(?=[A-Z])/)
     .map((s) => s.trim())
     .filter(Boolean)
     .map((s) => (/[.!?]$/.test(s) ? s : `${s}.`));
@@ -545,11 +524,14 @@ export default function TrekDetailContent({
   type,
   initialGuests = 1,
   relatedBlogPosts,
+  promoBanners,
 }: {
   trek: Trek;
   type: 'trek' | 'yatra' | 'trip';
   initialGuests?: number;
   relatedBlogPosts?: RelatedPost[];
+  /** Server-computed promo strips — keeps SSR and client hydration in sync */
+  promoBanners?: [BannerItem[], BannerItem[], BannerItem[]];
 }) {
   const router = useRouter();
   const isYatra = type === 'yatra';
@@ -624,7 +606,10 @@ export default function TrekDetailContent({
       name: item.name,
       text: item.text,
     }));
-  const [nearbyPromo, offersPromo, topRatedPromo] = useMemo(() => getPromoBanners(trek), [trek]);
+  const [nearbyPromo, offersPromo, topRatedPromo] = useMemo(
+    () => promoBanners ?? getPromoBanners(trek),
+    [promoBanners, trek],
+  );
   const relatedPosts = useMemo(
     () => relatedBlogPosts ?? getRelatedPosts(trek, 3),
     [relatedBlogPosts, trek],
@@ -973,9 +958,8 @@ export default function TrekDetailContent({
     setSlide(Math.max(0, Math.min(next, images.length - 1)));
   };
 
-  // ---- Gear + testimonial carousels --------------------------------------
+  // ---- Gear carousel ------------------------------------------------------
   const gearRef = useRef<HTMLDivElement>(null);
-  const testiRef = useRef<HTMLDivElement>(null);
 
   const nudge = (ref: React.RefObject<HTMLDivElement | null>, dir: number) => {
     const el = ref.current;
@@ -2258,89 +2242,17 @@ export default function TrekDetailContent({
         </aside>
       </div>
 
-      {/* Testimonials */}
-      <section className="kg-testi-shell">
-        <div className="kg-testi-card">
-          <div className="kg-testi-head">
-            <div>
-              <span className="kg-testi-kicker">
-                <i className="fa-solid fa-award" aria-hidden /> Trusted by Trekkers
-              </span>
-              <div className="kg-testi-title-row">
-                <h2>Guest Testimonials</h2>
-              </div>
-              <div className="kg-testi-divider" />
-              <p>Real feedback from guests who joined this {kindLabel.toLowerCase()}.</p>
-            </div>
-          </div>
-
-          <div className="kg-testi-track" ref={testiRef}>
-            {pageTestimonials.map((t, index) => {
-              const rating = t.rating ?? 5;
-              return (
-              <article className="kg-testi-item" key={`${t.name}-${index}`}>
-                <div className="kg-testi-item-top">
-                  <div className="kg-testi-user">
-                    <span className="kg-testi-avatar">{t.name.slice(0, 2)}</span>
-                    <div>
-                      <strong>{t.name}</strong>
-                      <span>{t.posted ?? trek.title}</span>
-                    </div>
-                  </div>
-                  {t.platform === 'google' ? (
-                    <span className="kg-testi-badge kg-testi-badge-logo" aria-label="Google review">
-                      <GoogleLogoIcon />
-                    </span>
-                  ) : null}
-                </div>
-                <div className="kg-testi-stars" aria-label={`${rating} out of 5 stars`}>
-                  {[0, 1, 2, 3, 4].map((s) => (
-                    <i
-                      className={s < rating ? 'fa-solid fa-star' : 'fa-regular fa-star'}
-                      key={s}
-                      aria-hidden
-                    />
-                  ))}
-                </div>
-                <div>
-                  <p>{t.text}</p>
-                </div>
-                {t.verifyUrl ? (
-                  <a
-                    href={t.verifyUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="kg-testi-verify"
-                  >
-                    <GoogleLogoIcon size={16} />
-                    Verify on Google
-                  </a>
-                ) : null}
-              </article>
-            );
-            })}
-          </div>
-
-          <div className="kg-testi-nav">
-            <button
-              type="button"
-              className="kg-related-btn"
-              aria-label="Previous testimonial"
-              onClick={() => nudge(testiRef, -1)}
-            >
-              <i className="fa-solid fa-chevron-left" aria-hidden />
-            </button>
-            <button
-              type="button"
-              className="kg-related-btn"
-              aria-label="Next testimonial"
-              onClick={() => nudge(testiRef, 1)}
-            >
-              <i className="fa-solid fa-chevron-right" aria-hidden />
-            </button>
-          </div>
-        </div>
-      </section>
+      {/* Testimonials + guest review submit (trek / yatra / trip) */}
+      <TrekGuestReviews
+        packageId={trek.id}
+        packageTitle={trek.title}
+        packageHref={
+          isYatra ? `/yatra/${trek.id}` : isTrip ? `/trips/${trek.id}` : trekDetailPath(trek)
+        }
+        packageKind={isYatra ? 'yatra' : isTrip ? 'trip' : 'trek'}
+        kindLabel={kindLabel}
+        curated={pageTestimonials}
+      />
 
       {/* Related tours */}
       <section className="kg-related-shell">
