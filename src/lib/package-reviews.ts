@@ -25,12 +25,20 @@ export type PackageReview = {
 
 export const PACKAGE_REVIEWS_STORAGE_KEY = 'it_package_reviews_v1';
 
+/** Fired after local package reviews change so detail-page sidebars can refresh. */
+export const PACKAGE_REVIEWS_CHANGED_EVENT = 'it:package-reviews-changed';
+
 export const PACKAGE_REVIEW_LIMITS = {
   maxPhotos: 4,
   maxImageBytes: 900_000,
   minTextLength: 40,
   maxLocalReviews: 80,
 } as const;
+
+function notifyPackageReviewsChanged() {
+  if (typeof window === 'undefined') return;
+  window.dispatchEvent(new CustomEvent(PACKAGE_REVIEWS_CHANGED_EVENT));
+}
 
 export function loadPackageReviews(): PackageReview[] {
   if (typeof window === 'undefined') return [];
@@ -53,6 +61,7 @@ export function savePackageReviews(reviews: PackageReview[]) {
   } catch {
     /* quota — keep in-memory only */
   }
+  notifyPackageReviewsChanged();
 }
 
 export function reviewsForPackage(reviews: PackageReview[], packageId: string): PackageReview[] {

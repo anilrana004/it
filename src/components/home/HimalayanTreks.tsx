@@ -1,7 +1,7 @@
 'use client';
 import { useState, useRef, useEffect, useMemo } from 'react';
 import Link from 'next/link';
-import { Star, Clock, MapPin } from 'lucide-react';
+import { Clock, MapPin } from 'lucide-react';
 import { getHimalayanBuckets } from '@/lib/catalog';
 
 const diffColors: Record<string, string> = {
@@ -131,28 +131,16 @@ export default function HimalayanTreks() {
                   <MapPin className="w-3 h-3 text-[#16a34a] shrink-0" />
                   <span className="truncate">{t.loc}</span>
                 </div>
-                <h3 className="font-semibold text-sm lg:text-base text-white group-hover:text-[#16a34a] transition-colors line-clamp-1 mb-1">
+                <h3 className="font-semibold text-sm lg:text-base text-white group-hover:text-[#16a34a] transition-colors line-clamp-2 mb-2">
                   {t.title}
                 </h3>
-                <div className="flex items-center gap-2 text-[11px] lg:text-xs text-white/60 mb-2">
-                  <Clock className="w-3 h-3 text-[#16a34a]" />
-                  {t.dur}
-                  <span className="text-white/20">|</span>
-                  <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
-                  {t.rating} ({t.rev})
-                </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="inline-flex items-center gap-1 text-[11px] lg:text-xs text-white/70">
+                    <Clock className="w-3 h-3 text-[#16a34a]" />
+                    {t.dur}
+                  </span>
                   <span className="text-[#16a34a] font-bold text-sm lg:text-base">₹{t.price.toLocaleString()}</span>
-                  <span className="text-white/50 text-xs line-through">₹{t.origPrice.toLocaleString()}</span>
-                  {t.origPrice > t.price && (
-                    <span className="ml-auto bg-green-500/80 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">
-                      {Math.round((1 - t.price / t.origPrice) * 100)}% OFF
-                    </span>
-                  )}
                 </div>
-                <span className="inline-block mt-1.5 text-[10px] text-[#bbf7d0] font-semibold bg-[#14532d]/70 backdrop-blur-sm px-2 py-0.5 rounded">
-                  Book Now, Pay Later
-                </span>
               </div>
             </Link>
           ))}

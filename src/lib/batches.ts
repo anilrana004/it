@@ -1,4 +1,8 @@
 import type { Trek } from '@/lib/data';
+import {
+  KEDARKANTHA_BATCH_CAPACITY,
+  KEDARKANTHA_FIXED_DEPARTURES,
+} from '@/lib/content/treks/kedarkantha/fixed-departures-content';
 
 export type BatchStatus = 'available' | 'filling-fast' | 'almost-full' | 'sold-out';
 
@@ -26,6 +30,25 @@ const MONTHS_SHORT = [
 
 const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
+/** Published fixed calendars — when present, replace generated placeholders. */
+const FIXED_DEPARTURE_SCHEDULES: Record<
+  string,
+  {
+    capacity: number;
+    departures: ReadonlyArray<{
+      start: string;
+      end: string;
+      status: BatchStatus;
+      seatsLeft: number;
+    }>;
+  }
+> = {
+  kedarkantha: {
+    capacity: KEDARKANTHA_BATCH_CAPACITY,
+    departures: KEDARKANTHA_FIXED_DEPARTURES,
+  },
+};
+
 /** Stable 0..n-1 hash from trek id (keeps seats/status consistent per trek). */
 function hashId(id: string): number {
   let h = 0;
@@ -47,6 +70,11 @@ function addDays(d: Date, days: number) {
   return next;
 }
 
+function parseISODate(iso: string) {
+  const [y, m, d] = iso.split('-').map(Number);
+  return new Date(y, m - 1, d);
+}
+
 function formatRange(start: Date, end: Date) {
   const sameMonth = start.getMonth() === end.getMonth() && start.getFullYear() === end.getFullYear();
   if (sameMonth) {
@@ -63,18 +91,70 @@ function statusFromSeats(seatsLeft: number, capacity: number): BatchStatus {
   return 'available';
 }
 
+function todayStart() {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  return today;
+}
+
+function toTrekBatch(
+  trekId: string,
+  start: Date,
+  end: Date,
+  seatsLeft: number,
+  capacity: number,
+  status: BatchStatus,
+): TrekBatch {
+  return {
+    id: `${trekId}-${toISO(start)}`,
+    startDate: toISO(start),
+    endDate: toISO(end),
+    label: formatRange(start, end),
+    monthLabel: `${MONTHS[start.getMonth()]} ${start.getFullYear()}`,
+    weekday: WEEKDAYS[start.getDay()],
+    seatsLeft,
+    capacity,
+    status,
+  };
+}
+
+/** Upcoming published batches for a trek, or null when no fixed calendar exists. */
+function getFixedDepartureBatches(trek: Trek): TrekBatch[] | null {
+  const schedule = FIXED_DEPARTURE_SCHEDULES[trek.id];
+  if (!schedule) return null;
+
+  const today = todayStart();
+  return schedule.departures
+    .map((row) => {
+      const start = parseISODate(row.start);
+      const end = parseISODate(row.end);
+      return toTrekBatch(
+        trek.id,
+        start,
+        end,
+        Math.min(row.seatsLeft, schedule.capacity),
+        schedule.capacity,
+        row.status,
+      );
+    })
+    .filter((batch) => parseISODate(batch.startDate) >= today)
+    .sort((a, b) => a.startDate.localeCompare(b.startDate));
+}
+
 /**
  * Builds 5 upcoming monthly departure batches for any trek / yatra / international trip.
  * Start days rotate by trek so listings feel distinct but stay deterministic.
  */
 export function getMonthlyBatches(trek: Trek, count = 5): TrekBatch[] {
+  const fixed = getFixedDepartureBatches(trek);
+  if (fixed) return fixed.slice(0, count);
+
   const tripDays = Math.max(trek.days || 1, 1);
   const seed = hashId(trek.id);
   const startDayOptions = [5, 8, 12, 15, 18, 22];
   const capacity = 20 + (seed % 5) * 2; // 20-28
 
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+  const today = todayStart();
 
   const batches: TrekBatch[] = [];
   let monthOffset = 0;
@@ -91,17 +171,7 @@ export function getMonthlyBatches(trek: Trek, count = 5): TrekBatch[] {
     const seatsLeft = Math.max(0, capacity - ((seed + batches.length * 7) % (capacity + 1)));
     const status = statusFromSeats(seatsLeft, capacity);
 
-    batches.push({
-      id: `${trek.id}-${toISO(start)}`,
-      startDate: toISO(start),
-      endDate: toISO(end),
-      label: formatRange(start, end),
-      monthLabel: `${MONTHS[start.getMonth()]} ${start.getFullYear()}`,
-      weekday: WEEKDAYS[start.getDay()],
-      seatsLeft,
-      capacity,
-      status,
-    });
+    batches.push(toTrekBatch(trek.id, start, end, seatsLeft, capacity, status));
   }
 
   return batches;
@@ -110,15 +180,18 @@ export function getMonthlyBatches(trek: Trek, count = 5): TrekBatch[] {
 /**
  * Builds several departures per month for the detail-page date picker, so each
  * month exposes a real choice of dates rather than a single batch.
+ * Treks with a published fixed calendar return the full upcoming schedule.
  */
 export function getDepartureBatches(trek: Trek, months = 4, perMonth = 3): TrekBatch[] {
+  const fixed = getFixedDepartureBatches(trek);
+  if (fixed) return fixed;
+
   const tripDays = Math.max(trek.days || 1, 1);
   const seed = hashId(trek.id);
   const startDayOptions = [3, 6, 9, 12, 15, 18, 21, 24, 27];
   const capacity = 20 + (seed % 5) * 2;
 
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+  const today = todayStart();
 
   const batches: TrekBatch[] = [];
 
@@ -134,17 +207,9 @@ export function getDepartureBatches(trek: Trek, months = 4, perMonth = 3): TrekB
       const end = addDays(start, tripDays - 1);
       const seatsLeft = Math.max(0, capacity - ((seed + batches.length * 7) % (capacity + 1)));
 
-      batches.push({
-        id: `${trek.id}-${toISO(start)}`,
-        startDate: toISO(start),
-        endDate: toISO(end),
-        label: formatRange(start, end),
-        monthLabel: `${MONTHS[start.getMonth()]} ${start.getFullYear()}`,
-        weekday: WEEKDAYS[start.getDay()],
-        seatsLeft,
-        capacity,
-        status: statusFromSeats(seatsLeft, capacity),
-      });
+      batches.push(
+        toTrekBatch(trek.id, start, end, seatsLeft, capacity, statusFromSeats(seatsLeft, capacity)),
+      );
       addedThisMonth++;
     }
   }

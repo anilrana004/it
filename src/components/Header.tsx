@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
-import { Menu, X, Phone, Search, ChevronDown, User, Sparkles, Star, Mail, Mountain, SunMedium, ArrowRight } from 'lucide-react';
+import { Menu, X, Phone, Search, ChevronDown, Sparkles, Star, Mail, Mountain, SunMedium, ArrowRight } from 'lucide-react';
 import { treks } from '@/lib/data';
 import BrandLogo from '@/components/BrandLogo';
 import { CONTACT, mailtoUrl, SOCIAL_LINKS, telUrl, whatsappUrl } from '@/lib/contact';
@@ -22,6 +22,7 @@ import {
   type RichNavItem,
 } from '@/lib/nav-rich-menu';
 import RichNavDropdown from '@/components/nav/RichNavDropdown';
+import HeaderAuthControls from '@/components/HeaderAuthControls';
 
 const TOP_STRIP_LINKS = [
   { label: 'Home', href: '/' },
@@ -532,13 +533,7 @@ export default function Header() {
               <i className="fa-brands fa-whatsapp text-[15px]" aria-hidden />
             </a>
 
-            <Link
-              href="/login"
-              className="inline-flex h-8 shrink-0 items-center gap-1.5 rounded-full border border-[#16a34a] bg-white px-2.5 text-[11px] font-bold text-[#16a34a] shadow-sm transition-colors hover:bg-[#f0fdf4] xl:px-3 xl:text-[12px]"
-            >
-              <User className="h-3.5 w-3.5 shrink-0" aria-hidden />
-              Login
-            </Link>
+            <HeaderAuthControls variant="desktop" />
           </div>
         </div>
       </header>
@@ -743,10 +738,9 @@ export default function Header() {
             </div>
 
             <div className="px-4 mt-4 space-y-3">
-              <Link href="/login" onClick={closeMobile}
-                className="flex items-center justify-center gap-2 bg-[#16a34a] text-white font-semibold px-6 py-3 rounded-full w-full">
-                <User className="w-4 h-4" /> Login / Sign Up
-              </Link>
+              <div className="rounded-full overflow-hidden border border-[#16a34a]">
+                <HeaderAuthControls variant="mobile" onNavigate={closeMobile} />
+              </div>
               <a href={telUrl()}
                 className="flex items-center justify-center gap-2 border-2 border-gray-200 text-gray-700 font-semibold px-6 py-3 rounded-full w-full">
                 <Phone className="w-4 h-4" /> {CONTACT.phoneDisplay}

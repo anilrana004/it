@@ -47,6 +47,7 @@ import TrekWhyChooseSection from '@/components/treks/TrekWhyChooseSection';
 import TrekRouteMapSection from '@/components/treks/TrekRouteMapSection';
 import TrekAltitudeChartSection from '@/components/treks/TrekAltitudeChartSection';
 import TrekGuestReviews from '@/components/treks/TrekGuestReviews';
+import PackageReviewsSidebar from '@/components/treks/PackageReviewsSidebar';
 import { DESK_HEADER_H, MOBILE_HEADER_H, CHROME_HIDDEN_CLASS } from '@/lib/layout';
 import './trek-detail.css';
 
@@ -199,17 +200,12 @@ const departureBadge: Record<
   { className: string; label: string; icon: string }
 > = {
   available: { className: 'fd-badge--open', label: 'Open', icon: 'fa-solid fa-circle-check' },
-  'filling-fast': { className: 'fd-badge--filling', label: 'Filling Fast', icon: 'fa-solid fa-bolt' },
-  'almost-full': { className: 'fd-badge--limited', label: 'Few Seats Left', icon: 'fa-solid fa-fire' },
+  'filling-fast': { className: 'fd-badge--filling', label: 'Filling', icon: 'fa-solid fa-bolt' },
+  'almost-full': { className: 'fd-badge--limited', label: 'Few left', icon: 'fa-solid fa-fire' },
   'sold-out': { className: 'fd-badge--full', label: 'Full', icon: 'fa-solid fa-ban' },
 };
 
 const MONTHS_SHORT = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-
-function seatFillPercent(batch: TrekBatch) {
-  if (batch.capacity <= 0) return 0;
-  return Math.round(((batch.capacity - batch.seatsLeft) / batch.capacity) * 100);
-}
 
 /** Builds a de-duplicated gallery for the hero grid and lightbox. */
 function galleryImages(trek: Trek): string[] {
@@ -259,7 +255,7 @@ function batchDateRange(batch: TrekBatch) {
 }
 
 /**
- * Fixed departures — month tabs + departure tile grid. Syncs with the booking card.
+ * Fixed departures — month tabs + compact scrollable date list. Syncs with booking.
  */
 function FixedDepartures({
   months,
@@ -286,9 +282,10 @@ function FixedDepartures({
   const spotlight = openBatches[0] ?? null;
   const activeGroup = months.find((group) => group.label === activeMonth) ?? months[0];
   const visibleItems = activeGroup?.items ?? [];
+  const dense = visibleItems.length > 8;
 
   return (
-    <section id="departures" className="fd-studio" aria-label="Fixed departures">
+    <section id="departures" className={`fd-studio${dense ? ' fd-studio--dense' : ''}`} aria-label="Fixed departures">
       <div className="fd-studio__ambient" aria-hidden />
       <div className="fd-studio__panel">
         <header className="fd-studio__head">
@@ -300,8 +297,8 @@ function FixedDepartures({
             <h2 className="fd-studio__title">Pick your trail date</h2>
             {totalBatches > 0 && (
               <p className="fd-studio__lede">
-                {openBatches.length} open {openBatches.length === 1 ? 'batch' : 'batches'} across{' '}
-                {months.length} {months.length === 1 ? 'month' : 'months'} — select once, book anytime.
+                {openBatches.length} open {openBatches.length === 1 ? 'batch' : 'batches'} · {months.length}{' '}
+                {months.length === 1 ? 'month' : 'months'}
               </p>
             )}
           </div>
@@ -342,7 +339,7 @@ function FixedDepartures({
                     {spotlight.weekday}, {spotlight.label}
                   </p>
                   <span className="fd-studio__spotlight-seats">
-                    {spotlight.seatsLeft} seats left · {spotlight.capacity - spotlight.seatsLeft} already booked
+                    {spotlight.seatsLeft} seats left
                   </span>
                 </div>
                 <button
@@ -358,7 +355,7 @@ function FixedDepartures({
                     </>
                   ) : (
                     <>
-                      Select date
+                      Select
                       <i className="fa-solid fa-arrow-right" aria-hidden />
                     </>
                   )}
@@ -384,80 +381,78 @@ function FixedDepartures({
                     >
                       <span className="fd-studio__month-short">{tab.short}</span>
                       <span className="fd-studio__month-year">{tab.year}</span>
-                      <span className="fd-studio__month-count">{openCount || group.items.length} dates</span>
+                      <span className="fd-studio__month-count">{openCount || group.items.length}</span>
                     </button>
                   );
                 })}
               </div>
             </div>
 
-            <div className="fd-studio__grid" role="tabpanel">
-              {visibleItems.map((batch) => {
-                const badge = departureBadge[batch.status];
-                const full = batch.status === 'sold-out';
-                const selected = selectedId === batch.id;
-                const range = batchDateRange(batch);
-                const fill = seatFillPercent(batch);
+            <div className="fd-studio__grid-shell">
+              <div className="fd-studio__grid" role="tabpanel">
+                {visibleItems.map((batch) => {
+                  const badge = departureBadge[batch.status];
+                  const full = batch.status === 'sold-out';
+                  const selected = selectedId === batch.id;
+                  const range = batchDateRange(batch);
 
-                return (
-                  <button
-                    type="button"
-                    key={batch.id}
-                    className={`fd-studio__tile${selected ? ' is-selected' : ''}${full ? ' is-full' : ''}`}
-                    onClick={() => onPick(batch)}
-                    disabled={full}
-                    aria-pressed={selected}
-                    aria-label={
-                      full ? `${batch.label} — batch full` : `Select departure ${batch.label}`
-                    }
-                  >
-                    {selected && (
-                      <span className="fd-studio__tile-check" aria-hidden>
-                        <i className="fa-solid fa-check" />
-                      </span>
-                    )}
+                  return (
+                    <button
+                      type="button"
+                      key={batch.id}
+                      className={`fd-studio__tile${selected ? ' is-selected' : ''}${full ? ' is-full' : ''}`}
+                      onClick={() => onPick(batch)}
+                      disabled={full}
+                      aria-pressed={selected}
+                      aria-label={
+                        full ? `${batch.label} — batch full` : `Select departure ${batch.label}`
+                      }
+                    >
+                      {selected && (
+                        <span className="fd-studio__tile-check" aria-hidden>
+                          <i className="fa-solid fa-check" />
+                        </span>
+                      )}
 
-                    <span className="fd-studio__tile-top">
                       <span className="fd-studio__tile-weekday">{batch.weekday}</span>
+
+                      <span className="fd-studio__tile-dates" aria-hidden>
+                        <span className="fd-studio__tile-day">{range.startDay}</span>
+                        <span className="fd-studio__tile-sep">
+                          <i className="fa-solid fa-arrow-right" />
+                        </span>
+                        <span className="fd-studio__tile-day fd-studio__tile-day--end">{range.endDay}</span>
+                        <span className="fd-studio__tile-month">
+                          {range.sameMonth
+                            ? range.startMonth
+                            : `${range.startMonth}–${range.endMonth}`}
+                        </span>
+                      </span>
+
                       <span className={`fd-studio__tile-status fd-studio__tile-status--${batch.status}`}>
                         <i className={badge.icon} aria-hidden />
-                        {badge.label}
+                        <span className="fd-studio__tile-status-label">{badge.label}</span>
                       </span>
-                    </span>
 
-                    <span className="fd-studio__tile-dates" aria-hidden>
-                      <span className="fd-studio__tile-day">{range.startDay}</span>
-                      <span className="fd-studio__tile-sep">
-                        {range.sameMonth ? (
-                          <i className="fa-solid fa-arrow-right" />
-                        ) : (
-                          range.endMonth
-                        )}
-                      </span>
-                      <span className="fd-studio__tile-day fd-studio__tile-day--end">{range.endDay}</span>
-                      <span className="fd-studio__tile-month">{range.startMonth}</span>
-                    </span>
-
-                    <span className="fd-studio__tile-range">{batch.label}</span>
-
-                    {!full && (
-                      <span className="fd-studio__tile-foot">
-                        <span className="fd-studio__tile-bar" aria-hidden>
-                          <span className="fd-studio__tile-bar-fill" style={{ width: `${fill}%` }} />
-                        </span>
-                        <span className="fd-studio__tile-seats">{batch.seatsLeft} seats left</span>
-                      </span>
-                    )}
-                  </button>
-                );
-              })}
+                      {!full && (
+                        <span className="fd-studio__tile-seats">{batch.seatsLeft} left</span>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+              {dense ? (
+                <p className="fd-studio__grid-hint" aria-hidden>
+                  Scroll for more dates in {activeGroup?.label}
+                </p>
+              ) : null}
             </div>
           </>
         )}
 
         <footer className="fd-studio__foot">
           <i className="fa-solid fa-route fd-studio__foot-icon" aria-hidden />
-          <span>Your date syncs to booking instantly — scroll freely, book when ready.</span>
+          <span>Your date syncs to booking instantly.</span>
         </footer>
       </div>
     </section>
@@ -1232,7 +1227,10 @@ export default function TrekDetailContent({
             kindLabel={kindLabel}
             enquiryHref={whatsappUrl(`Hi Indian Treks! When is the next ${trek.title} batch?`)}
           />
-          <BlogSidebar posts={relatedPosts} />
+          <div className="kg-departures-aside">
+            <BlogSidebar posts={relatedPosts} />
+            <PackageReviewsSidebar packageId={trek.id} kindLabel={kindLabel} />
+          </div>
         </div>
       </div>
 

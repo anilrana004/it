@@ -36,9 +36,14 @@ yarn-error.log*
 .env*
 !.env.example
 
+# local customer-auth file store + backups (when DATABASE_URL unset in dev)
+/data/
+
 # vercel
 .vercel
 
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+cookies.txt

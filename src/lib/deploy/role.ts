@@ -29,7 +29,8 @@ export function isStorefrontApiPath(pathname: string): boolean {
     pathname.startsWith('/api/newsletter') ||
     pathname.startsWith('/api/bookings') ||
     pathname.startsWith('/api/assistant') ||
-    pathname.startsWith('/api/public/')
+    pathname.startsWith('/api/public/') ||
+    pathname.startsWith('/api/user/')
   );
 }
 

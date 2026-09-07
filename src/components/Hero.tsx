@@ -357,7 +357,7 @@ export default function Hero() {
           <div className="relative h-[188px]">
             {mobBanners.map((slide, i) => (
               <Link
-                key={slide.href}
+                key={`${slide.href}-${slide.title}-${i}`}
                 href={slide.href}
                 className={`absolute inset-0 block transition-opacity duration-500 ${i === mobSlide ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'}`}
                 onClick={e => {

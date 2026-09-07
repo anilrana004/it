@@ -158,7 +158,7 @@ export default function Banners({
           const active = i === index;
           return (
             <Link
-              key={b.href}
+              key={`${b.href}-${b.title ?? i}-${i}`}
               href={b.href}
               aria-hidden={!active}
               tabIndex={active ? 0 : -1}
