@@ -183,37 +183,42 @@ export const ROUTE_TRACKS: Record<
     source: 'trail-corridor — Sari to Deoria Tal (Wikipedia / Indiahikes, Sep 2026)',
     coordinates: CHOPTA_DAY3_TREK_LINE,
   },
-  /** Kuari Pass — Day 1 drive Rishikesh → Joshimath */
+  /** Kuari Pass — Day 1 drive Dehradun/Rishikesh → Joshimath */
   'kuari-pass-day1-drive': {
-    source: 'road-corridor — Rishikesh → Joshimath via Panch Prayag (OSM anchors)',
+    source:
+      'road-corridor — Dehradun → Rishikesh Natraj Chowk → Devprayag → Srinagar → Rudraprayag → Karnaprayag → Nandaprayag → Joshimath (OSM anchors)',
     coordinates: KUARI_PASS_DAY1_DRIVE_LINE,
   },
   'kuari-pass-day2-drive': {
-    source: 'road-corridor — Joshimath → Dhak trailhead',
+    source: 'road-corridor — Joshimath → Tugasi Village trailhead (~15 km taxi)',
     coordinates: KUARI_PASS_DAY2_DRIVE_LINE,
   },
   'kuari-pass-day2-trek': {
-    source: 'trail-corridor — Dhak → Tugasi → Gulling Top',
+    source: 'trail-corridor — Tugasi Village → Gulling Campsite (~3 km)',
     coordinates: KUARI_PASS_DAY2_TREK_LINE,
   },
   'kuari-pass-day3-trek': {
-    source: 'trail-corridor — Gulling Top → Tali Forest Camp',
+    source:
+      'trail-corridor — Gulling Campsite → Tali corridor → Khullara Campsite (~5.5 km)',
     coordinates: KUARI_PASS_DAY3_TREK_LINE,
   },
   'kuari-pass-day4-summit': {
-    source: 'trail-corridor — Tali → Khullara → Kuari Pass summit',
+    source:
+      'trail-corridor — Khullara → Kuari Pass (12,516 ft) → return Khullara (~8 km out-and-back)',
     coordinates: KUARI_PASS_DAY4_SUMMIT_LINE,
   },
   'kuari-pass-day5-trek': {
-    source: 'trail-corridor — Khullara → Tugasi road head',
+    source:
+      'trail-corridor — Khullara → Tali → Gulling → Tugasi road head (~8.5 km; reverse Days 2–3)',
     coordinates: KUARI_PASS_DAY5_TREK_LINE,
   },
   'kuari-pass-day5-drive': {
-    source: 'road-corridor — Tugasi → Joshimath',
+    source: 'road-corridor — Tugasi → Joshimath (~15 km; reverse Day 2 drive)',
     coordinates: KUARI_PASS_DAY5_DRIVE_LINE,
   },
   'kuari-pass-day6-drive': {
-    source: 'road-corridor — Joshimath → Dehradun via Rishikesh (OSM anchors)',
+    source:
+      'road-corridor — Joshimath → Nandaprayag → Karnaprayag → Rudraprayag → Srinagar → Devprayag → Rishikesh Natraj Chowk → Dehradun (~280 km; reverse Day 1)',
     coordinates: KUARI_PASS_DAY6_DRIVE_LINE,
   },
   /** Brahmatal — Day 1 drive Rishikesh → Lohajung via Prayags, Tharali & Deval */

@@ -43,4 +43,16 @@ export type ItineraryDay = {
   altitude?: string;
   distance?: string;
   duration?: string;
+  /** Overnight stay — shown in itinerary fact cards. */
+  overnight?: string;
+  /** Pickup point — shown in itinerary fact cards. */
+  pickup?: string;
+  /** Drop-off point — shown in itinerary fact cards. */
+  dropoff?: string;
+  /** Departure time/window — shown in itinerary fact cards. */
+  departure?: string;
+  /** Trek difficulty — shown in itinerary fact cards. */
+  difficulty?: string;
+  /** Drive leg summary — shown in itinerary fact cards. */
+  drive?: string;
 };

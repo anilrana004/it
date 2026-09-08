@@ -3,6 +3,7 @@ import type { TrekRouteProfileData } from '@/lib/treks/route-profile-types';
 export type RichBlock =
   | { type: 'p'; text: string }
   | { type: 'h3'; text: string }
+  | { type: 'h4'; text: string }
   | { type: 'ul'; items: string[] }
   | { type: 'video'; youtubeId: string; title: string; caption?: string };
 
@@ -19,6 +20,8 @@ export type TrekExtendedContent = {
   overviewExtra?: RichBlock[];
   sections: TrekRichSection[];
   packingGroups?: { title: string; icon: string; items: string[] }[];
+  /** Optional intro under How to Reach heading — overrides the generic base-camp blurb. */
+  reachIntro?: string | string[];
   reachSteps?: { title: string; items: { label: string; text: string }[] }[];
   bookingPolicyRows?: [string, string][];
   cancellationPolicyRows?: [string, string][];

@@ -10,6 +10,9 @@ export function RichBlocks({ blocks }: { blocks: RichBlock[] }) {  return (
         if (block.type === 'h3') {
           return <h3 key={`${block.text}-${index}`}>{block.text}</h3>;
         }
+        if (block.type === 'h4') {
+          return <h4 key={`${block.text}-${index}`}>{block.text}</h4>;
+        }
         if (block.type === 'ul') {
           return (
             <ul key={`ul-${index}`} className="kg-rich-list">

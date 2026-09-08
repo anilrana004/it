@@ -8,7 +8,7 @@ import {
   KUARI_PASS_BOOKING_POLICY_ROWS,
   KUARI_PASS_CANCELLATION_POLICY_SECTION,
 } from '@/lib/content/treks/kuari-pass/policies-content';
-import { KUARI_PASS_REACH_STEPS } from '@/lib/content/treks/kuari-pass/reach-content';
+import { KUARI_PASS_REACH_INTRO, KUARI_PASS_REACH_STEPS } from '@/lib/content/treks/kuari-pass/reach-content';
 import { KUARI_PASS_SAFETY_SECTION } from '@/lib/content/treks/kuari-pass/safety-content';
 import { KUARI_PASS_STATS } from '@/lib/content/treks/kuari-pass/stats-content';
 
@@ -25,6 +25,7 @@ export function buildKuariPassExtended(trek: Trek): TrekExtendedContent {
     ...base,
     stats: KUARI_PASS_STATS,
     overviewExtra: KUARI_PASS_OVERVIEW,
+    reachIntro: KUARI_PASS_REACH_INTRO,
     reachSteps: KUARI_PASS_REACH_STEPS,
     packingSection: KUARI_PASS_PACKING_SECTION,
     bookingPolicyRows: KUARI_PASS_BOOKING_POLICY_ROWS,

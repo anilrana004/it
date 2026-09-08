@@ -514,6 +514,46 @@ function paragraphs(text: string): string[] {
     .map((s) => (/[.!?]$/.test(s) ? s : `${s}.`));
 }
 
+/** Section titles in itinerary copy — e.g. "Key Highlights Along the Route:" */
+function isItineraryHeading(part: string): boolean {
+  return /^[^:\n]{2,90}:\s*$/.test(part.trim());
+}
+
+/** Labelled lead lines that should use a heading + body — e.g. "Route: Dehradun → …" */
+function splitItineraryLead(part: string): { heading: string; body: string } | null {
+  const match = part.trim().match(/^(Route):\s*(.+)$/i);
+  if (!match) return null;
+  return { heading: match[1], body: match[2].trim() };
+}
+
+function ItineraryDescription({ text }: { text: string }) {
+  return (
+    <>
+      {text.split(/\n{2,}/).map((part, index) => {
+        const trimmed = part.trim();
+        if (!trimmed) return null;
+        if (isItineraryHeading(trimmed)) {
+          return (
+            <h3 className="kg-acc-heading" key={`h-${index}-${trimmed.slice(0, 24)}`}>
+              {trimmed.replace(/:\s*$/, '')}
+            </h3>
+          );
+        }
+        const lead = splitItineraryLead(trimmed);
+        if (lead) {
+          return (
+            <div className="kg-acc-lead" key={`lead-${index}-${lead.heading}`}>
+              <h3 className="kg-acc-heading">{lead.heading}</h3>
+              <p>{lead.body}</p>
+            </div>
+          );
+        }
+        return <p key={`p-${index}-${trimmed.slice(0, 24)}`}>{trimmed}</p>;
+      })}
+    </>
+  );
+}
+
 export default function TrekDetailContent({
   trek,
   type,
@@ -1442,7 +1482,13 @@ export default function TrekDetailContent({
                     day.distance && { icon: 'fa-solid fa-person-hiking', label: 'Distance', value: day.distance },
                     day.duration && { icon: 'fa-solid fa-compass', label: 'Duration', value: day.duration },
                     day.altitude && { icon: 'fa-solid fa-mountain', label: 'Altitude', value: day.altitude },
+                    day.difficulty && { icon: 'fa-solid fa-gauge-high', label: 'Difficulty', value: day.difficulty },
+                    day.drive && { icon: 'fa-solid fa-car', label: 'Drive', value: day.drive },
                     day.meals && { icon: 'fa-solid fa-utensils', label: 'Meals', value: day.meals },
+                    day.overnight && { icon: 'fa-solid fa-bed', label: 'Overnight', value: day.overnight },
+                    day.pickup && { icon: 'fa-solid fa-location-dot', label: 'Pickup', value: day.pickup },
+                    day.dropoff && { icon: 'fa-solid fa-location-dot', label: 'Drop-off', value: day.dropoff },
+                    day.departure && { icon: 'fa-solid fa-clock', label: 'Departure', value: day.departure },
                   ].filter(Boolean) as { icon: string; label: string; value: string }[];
 
                   return (
@@ -1473,9 +1519,7 @@ export default function TrekDetailContent({
                                 </div>
                               ))}
                             </div>
-                            {day.description.split(/\n{2,}/).map((part) => (
-                              <p key={part.slice(0, 40)}>{part}</p>
-                            ))}
+                            <ItineraryDescription text={day.description} />
                             <button
                               type="button"
                               className="kg-acc-maplink"
@@ -1703,10 +1747,17 @@ export default function TrekDetailContent({
                 </span>
                 <h2>How to Reach {trek.title} Base Camp</h2>
                 <div>
-                  <p>
-                    {trek.title} starts from {baseCamp(trek)}, reached through a multi-stage journey.
-                    Plan to arrive a night before your batch reporting time.
-                  </p>
+                  {(
+                    extended?.reachIntro
+                      ? Array.isArray(extended.reachIntro)
+                        ? extended.reachIntro
+                        : [extended.reachIntro]
+                      : [
+                          `${trek.title} starts from ${baseCamp(trek)}, reached through a multi-stage journey. Plan to arrive a night before your batch reporting time.`,
+                        ]
+                  ).map((paragraph) => (
+                    <p key={paragraph.slice(0, 48)}>{paragraph}</p>
+                  ))}
                 </div>
               </div>
 

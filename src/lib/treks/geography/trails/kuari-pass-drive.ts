@@ -18,8 +18,11 @@ export const KUARI_PASS_DRIVE_ANCHORS = {
   tugasi: [79.5585, 30.5055] as [number, number],
 };
 
-/** Day 1 — Rishikesh → Joshimath via Panch Prayag (Alaknanda highway). */
+/** Day 1 — Dehradun/Rishikesh → Joshimath via Alaknanda & Panch Prayag corridor. */
 export const KUARI_PASS_DAY1_DRIVE_LINE: [number, number][] = [
+  KUARI_PASS_DRIVE_ANCHORS.dehradun,
+  [78.12, 30.25],
+  [78.22, 30.18],
   KUARI_PASS_DRIVE_ANCHORS.rishikesh,
   [78.36, 30.12],
   [78.48, 30.13],
@@ -41,24 +44,27 @@ export const KUARI_PASS_DAY1_DRIVE_LINE: [number, number][] = [
   KUARI_PASS_DRIVE_ANCHORS.joshimath,
 ];
 
-/** Day 2 — Joshimath → Dhak trailhead (~12 km). */
+/** Day 2 — Joshimath → Tugasi Village trailhead (~15 km by taxi). */
 export const KUARI_PASS_DAY2_DRIVE_LINE: [number, number][] = [
   KUARI_PASS_DRIVE_ANCHORS.joshimath,
   [79.558, 30.545],
-  [79.552, 30.535],
-  KUARI_PASS_DRIVE_ANCHORS.dhak,
+  [79.554, 30.535],
+  [79.55, 30.525],
+  [79.552, 30.515],
+  KUARI_PASS_DRIVE_ANCHORS.tugasi,
 ];
 
-/** Day 5 — Tugasi road head → Joshimath (~15 km). */
+/** Day 5 — Tugasi road head → Joshimath (~15 km; reverse of Day 2 drive). */
 export const KUARI_PASS_DAY5_DRIVE_LINE: [number, number][] = [
   KUARI_PASS_DRIVE_ANCHORS.tugasi,
-  [79.555, 30.52],
-  [79.55, 30.535],
-  [79.556, 30.548],
+  [79.552, 30.515],
+  [79.55, 30.525],
+  [79.554, 30.535],
+  [79.558, 30.545],
   KUARI_PASS_DRIVE_ANCHORS.joshimath,
 ];
 
-/** Day 6 — Joshimath → Dehradun via Rishikesh (return corridor). */
+/** Day 6 — Joshimath → Rishikesh Natraj Chowk drop → Dehradun (~280 km; reverse of Day 1). */
 export const KUARI_PASS_DAY6_DRIVE_LINE: [number, number][] = [
   KUARI_PASS_DRIVE_ANCHORS.joshimath,
   [79.568, 30.56],

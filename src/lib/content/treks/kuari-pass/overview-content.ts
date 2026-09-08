@@ -18,7 +18,7 @@ export const KUARI_PASS_OVERVIEW: RichBlock[] = [
     youtubeId: 'rmuuxRaCSH0',
     title: 'Kuari Pass Trek — Lord Curzon Trail & views',
     caption:
-      'Walk the historic Curzon Trail — snow forests, alpine Bugyals, and Garhwal Himalayan panoramas with Indian Treks.',
+      'Walk the historic Curzon Trail — snow forests, alpine Bugyals, and Garhwal Himalayan panoramas with IndianTreks.',
   },
   {
     type: 'p',
@@ -30,7 +30,7 @@ export const KUARI_PASS_OVERVIEW: RichBlock[] = [
   },
   {
     type: 'p',
-    text: 'Whether you are a first-time trekker looking for your first Himalayan adventure, a family seeking an unforgettable mountain holiday, a student group planning an outdoor experience or an experienced trekker wanting to explore the Garhwal Himalayas, Kuari Pass offers a memorable journey through some of Uttarakhand’s most beautiful landscapes.',
+    text: "Whether you are a first-time trekker looking for your first Himalayan adventure, a family seeking an unforgettable mountain holiday, a student group planning an outdoor experience or an experienced trekker wanting to explore the Garhwal Himalayas, Kuari Pass offers a memorable journey through some of Uttarakhand's most beautiful landscapes.",
   },
   {
     type: 'p',
@@ -61,7 +61,7 @@ export const KUARI_PASS_OVERVIEW: RichBlock[] = [
     text: 'Kuari Pass Trek Highlights',
   },
   {
-    type: 'h3',
+    type: 'h4',
     text: 'Panoramic Himalayan Views',
   },
   {
@@ -73,7 +73,7 @@ export const KUARI_PASS_OVERVIEW: RichBlock[] = [
     text: 'The open ridges around the higher sections of the trail provide an excellent perspective of the surrounding mountain ranges.',
   },
   {
-    type: 'h3',
+    type: 'h4',
     text: 'Oak & Rhododendron Forests',
   },
   {
@@ -89,7 +89,7 @@ export const KUARI_PASS_OVERVIEW: RichBlock[] = [
     text: 'Walking through these quiet forests is one of the most peaceful parts of the trek.',
   },
   {
-    type: 'h3',
+    type: 'h4',
     text: 'Beautiful Alpine Bugyals',
   },
   {
@@ -105,7 +105,7 @@ export const KUARI_PASS_OVERVIEW: RichBlock[] = [
     text: 'The open Bugyals also provide some of the best opportunities to enjoy uninterrupted mountain views.',
   },
   {
-    type: 'h3',
+    type: 'h4',
     text: 'Winter Snow Experience',
   },
   {
@@ -121,7 +121,7 @@ export const KUARI_PASS_OVERVIEW: RichBlock[] = [
     text: 'Snow conditions vary from year to year, so the actual amount of snow depends on weather and seasonal conditions.',
   },
   {
-    type: 'h3',
+    type: 'h4',
     text: 'Scenic Campsites',
   },
   {
@@ -137,7 +137,7 @@ export const KUARI_PASS_OVERVIEW: RichBlock[] = [
     text: 'Spending evenings in these remote mountain camps, away from city lights and surrounded by the Himalayas, is an experience in itself.',
   },
   {
-    type: 'h3',
+    type: 'h4',
     text: 'Traditional Himalayan Villages',
   },
   {
@@ -150,11 +150,11 @@ export const KUARI_PASS_OVERVIEW: RichBlock[] = [
   },
   {
     type: 'h3',
-    text: 'Kuari Pass Trek with Indian Treks',
+    text: 'Kuari Pass Trek with IndianTreks',
   },
   {
     type: 'p',
-    text: 'At Indian Treks, we believe a Himalayan trek should be more than simply reaching a destination.',
+    text: 'At IndianTreks, we believe a Himalayan trek should be more than simply reaching a destination.',
   },
   {
     type: 'p',
@@ -170,22 +170,6 @@ export const KUARI_PASS_OVERVIEW: RichBlock[] = [
   },
   {
     type: 'p',
-    text: 'With an experienced ground team and local operational support, Indian Treks aims to make your Kuari Pass journey smooth from beginning to end.',
-  },
-  {
-    type: 'h3',
-    text: 'Trek at a glance',
-  },
-  {
-    type: 'ul',
-    items: [
-      'Altitude: approximately 12,516 ft (Kuari Pass high point)',
-      'Duration: 6 days',
-      'Base camp / gateway: Joshimath',
-      'Difficulty: Easy to Moderate',
-      'Historic Lord Curzon Trail with views of Nanda Devi, Dronagiri, Kamet, Chaukhamba, Hathi Parvat and Ghori Parbat (weather permitting)',
-      'Signature stretches: Tugasi, Gulling, Khullara, alpine Bugyals and the Kuari Pass ridge',
-      'Pickup: Rishikesh Natraj Chowk · Drop: Rishikesh Natraj Chowk (Dehradun onwards as arranged)',
-    ],
+    text: 'With an experienced ground team and local operational support, IndianTreks aims to make your Kuari Pass journey smooth from beginning to end.',
   },
 ];

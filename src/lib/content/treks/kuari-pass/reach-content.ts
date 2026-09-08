@@ -3,90 +3,188 @@ import type { TrekReachStep } from '@/lib/content/treks/types';
 /**
  * How to plan travel for Kuari Pass — Rishikesh pickup gateway and Joshimath base.
  */
+export const KUARI_PASS_REACH_INTRO: string[] = [
+  'Planning your journey properly is an important part of a successful Kuari Pass Trek. Your adventure begins with reaching the designated pickup point in Rishikesh, from where the IndianTreks team continues the journey towards Joshimath, the base location for the trek.',
+  'Whether you are travelling from Delhi, Mumbai, Bengaluru, Jaipur, Kolkata or another part of India, you can reach Rishikesh by flight, train, bus or road. We recommend planning your arrival and return journey with sufficient buffer time so that unexpected traffic, weather conditions or transport delays do not affect your trek.',
+];
+
 export const KUARI_PASS_REACH_STEPS: TrekReachStep[] = [
   {
-    title: 'How to Plan Your Travel for the Kuari Pass Trek',
+    title: 'Modes of Transport to Reach Rishikesh',
     items: [
       {
-        label: 'Overview',
-        text: 'Your adventure begins by reaching the designated pickup point in Rishikesh, from where the Indian Treks team continues towards Joshimath, the base for the trek. Whether you travel from Delhi, Mumbai, Bengaluru, Jaipur, Kolkata or elsewhere in India, plan arrival and return with buffer time so traffic, weather or transport delays do not affect your trek.',
+        label: 'Gateway city',
+        text: 'Rishikesh is one of the major gateways to the Garhwal Himalayas and serves as the primary pickup city for the Kuari Pass Trek.',
       },
       {
-        label: 'Modes of transport to Rishikesh',
-        text: 'Rishikesh is a major gateway to the Garhwal Himalayas and the primary pickup city for Kuari Pass. You can reach by flight, train, bus or road. Always check the latest timings before booking tickets.',
+        label: 'By flight',
+        text: 'Fast and convenient — fly into Dehradun (Jolly Grant Airport), then continue to Rishikesh by road.',
+      },
+      {
+        label: 'By train',
+        text: 'Comfortable and dependable — arrive at Rishikesh Railway Station, or via Haridwar with a short road transfer.',
+      },
+      {
+        label: 'By bus',
+        text: 'Economical and convenient — overnight and daytime buses connect Rishikesh with Delhi and other major cities.',
+      },
+      {
+        label: 'By road',
+        text: 'Flexible for private travellers — drive or hire a cab from Delhi, Haridwar, Dehradun, Chandigarh and nearby cities.',
+      },
+      {
+        label: 'Important',
+        text: 'Since transportation schedules can change, always check the latest timings before booking your tickets.',
       },
     ],
   },
   {
-    title: 'By Flight — Fastest Option',
+    title: '1. By Flight — Fastest Option',
     items: [
       {
-        label: 'Airport',
-        text: 'The nearest airport is Jolly Grant Airport (Dehradun Airport), approximately 20–25 km from Rishikesh depending on the destination point. Connectivity includes Delhi and other cities; schedules and direct connections vary by date and season.',
+        label: 'Nearest airport',
+        text: 'Jolly Grant Airport (Dehradun Airport) is located approximately 20–25 km from Rishikesh, depending on the destination point. The airport has air connectivity with major Indian cities, including Delhi and other metropolitan cities, although flight schedules and direct connections vary by date and season.',
       },
       {
         label: 'Airport to Rishikesh',
-        text: 'Continue by private taxi, app-based cab where available, airport taxi services or a pre-booked transfer.',
+        text: 'From the airport, you can reach Rishikesh by private taxi, app-based cab where available, airport taxi services, or a pre-booked transfer.',
       },
       {
         label: 'Travel tip',
-        text: 'Reach Rishikesh one day before trek departure whenever possible to allow for flight delays or traffic. Travellers arriving early can stay near the pickup area and report the next morning. Avoid booking a flight that arrives immediately before pickup time.',
+        text: 'If you are travelling by flight, we recommend reaching Rishikesh one day before the trek departure whenever possible. This gives you sufficient time in case of flight delays, traffic or other unforeseen circumstances.',
+      },
+      {
+        label: 'Early arrival',
+        text: 'Travellers arriving early can stay near the Rishikesh pickup area and report at the designated pickup point the following morning.',
+      },
+      {
+        label: 'Recommended',
+        text: 'Avoid booking a flight that arrives immediately before the trek departure time.',
       },
     ],
   },
   {
-    title: 'By Train — Comfortable & Dependable',
+    title: '2. By Train — Comfortable & Dependable',
     items: [
       {
         label: 'Stations',
-        text: 'Rishikesh Railway Station is convenient for train arrivals. Depending on origin, more frequent connections may exist to Haridwar, from where Rishikesh is a short road transfer. Overnight trains from Delhi and other major cities are often convenient.',
+        text: 'Rishikesh Railway Station is convenient for travellers arriving by train. Depending on your origin, you may also find more frequent train connections to Haridwar, from where Rishikesh can be reached by road.',
       },
       {
-        label: 'Train travel tips',
-        text: 'Book well in advance in peak season. Prefer AC or sleeper for overnight journeys. Keep buffer between train arrival and trek pickup. If you arrive late night or early morning, plan accommodation. Always verify the latest railway schedule.',
+        label: 'Connectivity',
+        text: 'Train services are available from Delhi and other major cities, with overnight options often being convenient for trekkers.',
+      },
+      {
+        label: 'Book early',
+        text: 'Book your ticket well in advance during peak trekking seasons.',
+      },
+      {
+        label: 'Class & timing',
+        text: 'AC or sleeper accommodation is recommended for overnight journeys. Keep sufficient time between your train arrival and trek pickup.',
+      },
+      {
+        label: 'Late / early arrivals',
+        text: 'If your train reaches late at night or early in the morning, plan your accommodation accordingly. Always verify the latest railway schedule before booking.',
       },
       {
         label: 'Recommended arrival',
-        text: 'For a stress-free experience—especially when travelling from another state—reaching Rishikesh one day before departure is the safest option.',
+        text: 'For a stress-free trek experience, reaching Rishikesh one day before departure is the safest option, particularly if you are travelling from another state.',
       },
     ],
   },
   {
-    title: 'By Bus — Affordable & Convenient',
+    title: '3. By Bus — Affordable & Convenient',
     items: [
       {
-        label: 'Connectivity',
-        text: 'Rishikesh is well connected by road with Delhi, Haridwar, Dehradun, Chandigarh, Jaipur and several other cities. From Delhi you may find Volvo, AC sleeper/seater, non-AC, private intercity and state transport buses. Overnight buses can arrive early morning.',
+        label: 'Road connectivity',
+        text: 'Rishikesh is well connected by road with Delhi, Haridwar, Dehradun, Chandigarh, Jaipur and several other cities.',
+      },
+      {
+        label: 'Bus options from Delhi',
+        text: 'Travellers from Delhi can choose Volvo buses, AC sleeper buses, AC seater buses, non-AC buses, private intercity buses and state transport buses.',
+      },
+      {
+        label: 'Overnight buses',
+        text: 'Overnight buses are particularly convenient because they can allow you to reach Rishikesh early in the morning.',
       },
       {
         label: 'Travel tip',
-        text: 'Choose a service that reaches Rishikesh before the scheduled pickup while still allowing delay buffer. Do not plan trek transportation around an exact bus arrival time—road traffic can affect actual arrival.',
+        text: 'If you are travelling by overnight bus, choose a service that reaches Rishikesh before the scheduled trek pickup time, while still allowing some buffer for delays.',
+      },
+      {
+        label: 'Important',
+        text: 'Do not book your onward trek transportation based on an exact bus arrival time, as road traffic can affect the actual arrival.',
       },
     ],
   },
   {
-    title: 'Rishikesh to Joshimath — Journey to Trek Base',
+    title: '4. By Road — Flexible for Private Travellers',
     items: [
       {
-        label: 'Distance & duration',
-        text: 'Rishikesh to Joshimath is approximately 250–270 km and typically takes about 9–11 hours depending on road and traffic conditions.',
+        label: 'Self-drive / private cab',
+        text: 'Private travellers can drive or hire a dedicated cab to Rishikesh from Delhi, Haridwar, Dehradun, Chandigarh and other nearby cities. This option offers the most flexibility on arrival timing.',
+      },
+      {
+        label: 'Planning tip',
+        text: 'Allow extra time for mountain traffic, weekend rush and weather-related slowdowns. Aim to reach Rishikesh the evening before trek departure whenever possible.',
+      },
+    ],
+  },
+  {
+    title: 'Rishikesh to Joshimath — Your Journey to the Trek Base',
+    items: [
+      {
+        label: 'Distance',
+        text: 'Rishikesh to Joshimath is approximately 250–270 km.',
+      },
+      {
+        label: 'Travel time',
+        text: 'Approximately 9–11 hours, depending on road and traffic conditions.',
       },
       {
         label: 'Typical route',
-        text: 'Rishikesh → Devprayag → Srinagar → Rudraprayag → Karnaprayag → Nandprayag → Chamoli → Joshimath. The route follows the Alaknanda River through important mountain towns and valleys—from foothills into the higher Garhwal Himalayas.',
+        text: 'Rishikesh → Devprayag → Srinagar → Rudraprayag → Karnaprayag → Nandprayag → Chamoli → Joshimath.',
+      },
+      {
+        label: 'Scenic corridor',
+        text: 'Along the way, you will travel beside the Alaknanda River and pass through several important mountain towns and river valleys. The journey itself is an important part of the Kuari Pass experience, with changing landscapes from the foothills to the higher Garhwal Himalayas.',
       },
     ],
   },
   {
-    title: 'Indian Treks Transportation (Rishikesh → Joshimath)',
+    title: 'IndianTreks Transportation from Rishikesh to Joshimath',
     items: [
       {
-        label: 'Vehicles',
-        text: 'If you selected Indian Treks transport, the team coordinates from the designated Rishikesh pickup to Joshimath. Depending on group size and operations, vehicles may include a Tempo Traveller, Traveller, SUV, Innova-type vehicle or other suitable group transport.',
+        label: 'Included transport',
+        text: 'If you have selected the IndianTreks transportation option, our team will coordinate the journey from the designated pickup point in Rishikesh to Joshimath.',
       },
       {
-        label: 'Pickup details',
-        text: 'Pickup city: Rishikesh · Pickup point: Natraj Chowk, Rishikesh · Reporting/pickup time: as communicated by Indian Treks before departure · Destination: Joshimath · Travel duration: approximately 9–11 hours. Reach the pickup point 10–15 minutes early. Pickup time may vary by batch—always follow the latest operations instructions.',
+        label: 'Vehicle types',
+        text: 'Depending on the group size and operational requirements, transportation may include Tempo Traveller, Traveller vehicle, SUV, Innova-type vehicle or other suitable group transportation. Vehicle allocation may vary depending on the number of trekkers in the batch.',
+      },
+      {
+        label: 'Pickup city',
+        text: 'Rishikesh',
+      },
+      {
+        label: 'Pickup point',
+        text: 'Natraj Chowk, Rishikesh',
+      },
+      {
+        label: 'Reporting / pickup time',
+        text: 'As communicated by IndianTreks before departure. Pickup time may vary depending on the departure batch — always follow the latest pickup instructions shared by the IndianTreks operations team.',
+      },
+      {
+        label: 'Destination',
+        text: 'Joshimath',
+      },
+      {
+        label: 'Travel duration',
+        text: 'Approximately 9–11 hours',
+      },
+      {
+        label: 'Reporting tip',
+        text: 'We recommend reaching the pickup point 10–15 minutes before the reporting time so that the group can depart on schedule.',
       },
     ],
   },
@@ -94,29 +192,53 @@ export const KUARI_PASS_REACH_STEPS: TrekReachStep[] = [
     title: 'Other Options to Reach Joshimath',
     items: [
       {
-        label: 'Public transport',
-        text: 'Local and state-run buses operate towards Joshimath, but mountain schedules can be limited and change with season, road conditions and operations. Check the latest schedule locally and keep buffer time.',
+        label: '1. Public transport',
+        text: 'Local and state-run buses operate towards Joshimath, but mountain-bus schedules can be limited and may change according to season, road conditions and operational factors. If you are planning to use public transport, check the latest departure schedule locally and keep sufficient buffer time.',
       },
       {
-        label: 'Shared taxi',
-        text: 'Shared taxis may be available from Rishikesh or other major points towards the Garhwal region. Availability and timings vary, especially early morning.',
+        label: '2. Shared taxi',
+        text: 'Shared taxis may be available from Rishikesh or other major points towards the Garhwal region. Availability and departure timings can vary, particularly during the early morning hours.',
       },
       {
-        label: 'Private taxi',
-        text: 'Useful for families, small private groups, travellers outside the scheduled pickup window, or anyone preferring a dedicated vehicle.',
+        label: '3. Private taxi',
+        text: 'A private cab is another convenient option for travellers who prefer flexibility and direct travel. Private taxis are especially useful for families, small private groups, travellers arriving outside the scheduled pickup window, and trekkers who prefer a dedicated vehicle.',
       },
     ],
   },
   {
-    title: 'Planning Your Return Journey (Joshimath → Rishikesh)',
+    title: 'Planning Your Return Journey from Joshimath to Rishikesh',
     items: [
       {
-        label: 'Typical return schedule (indicative)',
-        text: 'Morning tea/breakfast 6:30–7:30 AM · Vehicle preparation 7:30–8:30 AM · Departure from Joshimath around 8:00–9:00 AM · Travel towards Rishikesh 9–11 hours · Expected Rishikesh arrival around 5:00–7:00 PM. Timings may change with trek schedule, weather, road conditions, traffic and group movement.',
+        label: 'Flexibility',
+        text: 'After completing your Kuari Pass Trek, we recommend keeping your return travel flexible.',
+      },
+      {
+        label: 'Morning tea / breakfast',
+        text: 'Approximately 6:30–7:30 AM',
+      },
+      {
+        label: 'Vehicle preparation',
+        text: 'Approximately 7:30–8:30 AM',
+      },
+      {
+        label: 'Departure from Joshimath',
+        text: 'Around 8:00–9:00 AM',
+      },
+      {
+        label: 'Travel towards Rishikesh',
+        text: 'Approximately 9–11 hours',
+      },
+      {
+        label: 'Expected Rishikesh arrival',
+        text: 'Around 5:00–7:00 PM',
+      },
+      {
+        label: 'Important',
+        text: 'These timings are indicative and may change according to the actual trek schedule, weather, road conditions, traffic and group movement.',
       },
       {
         label: 'Return travel recommendation',
-        text: 'Book flights, trains or long-distance buses from Rishikesh after 8:00 PM, preferably with extra buffer. For important onward journeys, keep 2–3 hours of spare time rather than planning a tight connection.',
+        text: 'We strongly recommend booking your flight, train or long-distance bus from Rishikesh after 8:00 PM, preferably with additional buffer time. For important onward journeys, consider keeping 2–3 hours of extra buffer rather than planning a tight connection.',
       },
     ],
   },
