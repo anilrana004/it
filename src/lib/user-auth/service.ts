@@ -7,6 +7,7 @@ import { generateRawToken, hashPassword, hashToken, verifyPassword } from '@/lib
 import type { AuthUserRecord, PublicUser, RegisterUserInput } from '@/lib/user-auth/types';
 import type { Booking } from '@/lib/operations/types';
 
+/** Same Postgres as blog/CMS (`DATABASE_URL` → `getDb()`). JSON file is local-dev fallback only. */
 const { siteUsers, passwordResetTokens, authAuditEvents, bookings } = schema;
 
 const LOCAL_STORE_PATH = path.join(process.cwd(), 'data', 'customer-auth.json');

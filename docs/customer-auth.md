@@ -25,9 +25,11 @@ Public browsing (treks, blogs, contact, etc.) stays open without login.
 
 ## Storage
 
-- **Primary:** Postgres `site_users` (+ `password_reset_tokens`, `auth_audit_events`) via migration `0005_customer_auth.sql`
-- **Local fallback (non-production):** `data/customer-auth.json` when `DATABASE_URL` is unset
+- **Primary (same DB as blog):** Postgres via `DATABASE_URL` — tables `site_users`, `password_reset_tokens`, `auth_audit_events` live beside blog `posts` (migrations `0004`–`0006`)
+- **Local fallback (non-production only):** `data/customer-auth.json` when `DATABASE_URL` is unset
 - **Backup:** `npm run auth:backup` → `data/backups/`
+
+There is **no separate auth database**. On Vercel, set the **same** `DATABASE_URL` used by the blog/admin CMS.
 
 ## Env
 
