@@ -17,7 +17,13 @@ function clientMeta(req: Request) {
 
 export async function POST(req: Request) {
   if (!isCustomerAuthStoreReady()) {
-    return NextResponse.json({ error: 'Authentication store unavailable.' }, { status: 503 });
+    return NextResponse.json(
+      {
+        error:
+          'Authentication store unavailable. Set DATABASE_URL (or POSTGRES_URL) for Production on Vercel, then Redeploy.',
+      },
+      { status: 503 },
+    );
   }
 
   try {

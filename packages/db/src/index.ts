@@ -8,15 +8,30 @@ let client: ReturnType<typeof postgres> | null = null;
 let db: Db | null = null;
 
 function databaseUrl(): string | null {
-  const url = process.env.DATABASE_URL?.trim();
-  if (!url) return null;
+  const candidates = [
+    process.env.DATABASE_URL,
+    process.env.POSTGRES_URL,
+    process.env.POSTGRES_PRISMA_URL,
+    process.env.POSTGRES_URL_NON_POOLING,
+    process.env.DATABASE_URL_UNPOOLED,
+    process.env.NEON_DATABASE_URL,
+  ];
 
-  // Ignore local Postgres URLs on Vercel — they cannot connect and break builds.
-  if (process.env.VERCEL && /(?:localhost|127\.0\.0\.1)/i.test(url)) {
-    return null;
+  for (const candidate of candidates) {
+    const value = candidate?.trim().replace(/^['"]|['"]$/g, '');
+    if (!value) continue;
+    if (process.env.VERCEL && /(?:localhost|127\.0\.0\.1)/i.test(value)) continue;
+    try {
+      const parsed = new URL(value);
+      parsed.searchParams.delete('channel_binding');
+      if (!parsed.searchParams.has('sslmode')) parsed.searchParams.set('sslmode', 'require');
+      return parsed.toString();
+    } catch {
+      return value;
+    }
   }
 
-  return url;
+  return null;
 }
 
 export function isDbConfigured(): boolean {
@@ -30,9 +45,11 @@ export function getDb(): Db | null {
 
   if (!db) {
     client = postgres(url, {
-      max: 10,
+      max: 1,
       idle_timeout: 20,
       connect_timeout: 10,
+      ssl: 'require',
+      prepare: false,
     });
     db = drizzle(client, { schema });
   }

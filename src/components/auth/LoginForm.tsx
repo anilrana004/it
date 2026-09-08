@@ -13,7 +13,8 @@ const ERROR_MESSAGES: Record<string, string> = {
   google_failed: 'Google sign-in failed. Please try email login.',
   google_token:
     'Google could not verify this app redirect URL. In Google Cloud Console, add your current Vercel URL callback (https://YOUR-PROJECT.vercel.app/api/user/auth/google/callback), and set GOOGLE_CLIENT_ID / GOOGLE_CLIENT_SECRET on Vercel.',
-  google_store: 'Sign-in storage is unavailable. Set DATABASE_URL on Vercel and run migrations.',
+  google_store:
+    'Sign-in storage is unavailable. On Vercel → Project → Settings → Environment Variables, set DATABASE_URL (or POSTGRES_URL) for Production, then Redeploy.',
   google_unverified: 'Your Google email is not verified. Use a verified Google account or email login.',
 };
 
