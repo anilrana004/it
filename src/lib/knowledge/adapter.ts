@@ -38,9 +38,16 @@ import { getBlogTopic, type BlogTopicId } from '@/lib/blog-taxonomy';
 import { mergeCanonicalBlogPost } from '@/lib/knowledge/static-blog-canonical';
 import { unstable_cache } from 'next/cache';
 
+/** True while `next build` is generating pages (Vercel SSG). */
+function isNextProductionBuild(): boolean {
+  return process.env.NEXT_PHASE === 'phase-production-build';
+}
+
 /** Run a storefront DB read; fall back when unset, admin-only build, or connection fails. */
 async function withStorefrontDb<T>(query: () => Promise<T>): Promise<T | null> {
-  if (!isDbConfigured() || isAdminOnlyDeploy()) return null;
+  // Never hit Neon during SSG — remote DB latency/hangs exceed Vercel's 60s page budget.
+  // Runtime + ISR still use Postgres; build uses static catalog fallbacks.
+  if (!isDbConfigured() || isAdminOnlyDeploy() || isNextProductionBuild()) return null;
   try {
     return await query();
   } catch {

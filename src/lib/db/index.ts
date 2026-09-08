@@ -87,11 +87,13 @@ export function getDb(): Db | null {
   if (!url) return null;
 
   if (!db) {
+    const needsSsl =
+      Boolean(process.env.VERCEL) || /neon\.tech|sslmode=require/i.test(url);
     client = postgres(url, {
       max: 1,
       idle_timeout: 20,
       connect_timeout: 10,
-      ssl: 'require',
+      ...(needsSsl ? { ssl: true as const } : {}),
       prepare: false,
     });
     db = drizzle(client, { schema });

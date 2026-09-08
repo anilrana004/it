@@ -6,13 +6,13 @@ import BlogSidebar from '@/components/blog/BlogSidebar';
 import Breadcrumbs from '@/components/seo/Breadcrumbs';
 import JsonLd from '@/components/seo/JsonLd';
 import {
-  fetchAllPublishedTravelNewsSlugs,
   fetchPublishedBlogPosts,
   fetchPublishedTravelNews,
   fetchPublishedTravelNewsPost,
   travelNewsDateLong,
   travelNewsPath,
 } from '@/lib/knowledge/adapter';
+import { travelNewsItems } from '@/lib/content/travel-news';
 import { PUBLIC_ROUTES } from '@/lib/knowledge/config';
 import { buildPageMetadata } from '@/lib/seo/metadata';
 import { buildArticleJsonLd, buildBreadcrumbJsonLd, type BreadcrumbItem } from '@/lib/seo/json-ld';
@@ -22,9 +22,9 @@ type Props = { params: Promise<{ slug: string }> };
 
 export const revalidate = 300;
 
-export async function generateStaticParams() {
-  const slugs = await fetchAllPublishedTravelNewsSlugs();
-  return slugs.map((slug) => ({ slug }));
+/** Prebuild static travel-news catalog only — DB-backed slugs use on-demand ISR. */
+export function generateStaticParams() {
+  return travelNewsItems.map((item) => ({ slug: item.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

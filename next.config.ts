@@ -5,6 +5,9 @@ const nextConfig: NextConfig = {
   env: {
     NEXT_PUBLIC_MAPBOX_TOKEN: process.env.NEXT_PUBLIC_MAPBOX_TOKEN ?? "",
   },
+  // Keep SSG workers from serializing forever on large route trees.
+  staticGenerationMaxConcurrency: 4,
+  staticGenerationRetryCount: 1,
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "images.unsplash.com" },

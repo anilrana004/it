@@ -5,7 +5,6 @@ import BlogPostPageView from '@/components/BlogPostPageView';
 import JsonLd from '@/components/seo/JsonLd';
 import { blogPath } from '@/lib/blog';
 import {
-  fetchAllPublishedBlogSlugs,
   fetchPublishedBlogPost,
   fetchPublishedBlogPosts,
   fetchRelatedBlogPostsForArticle,
@@ -17,9 +16,9 @@ import { buildArticleJsonLd, buildBreadcrumbJsonLd, buildFaqPageJsonLd, type Bre
 
 export const revalidate = 300;
 
-export async function generateStaticParams() {
-  const slugs = await fetchAllPublishedBlogSlugs();
-  return slugs.map((slug) => ({ slug }));
+/** CMS posts are rendered on-demand (ISR). Prebuild only the static catalog to keep Vercel builds fast. */
+export function generateStaticParams() {
+  return blogPosts.map((post) => ({ slug: post.slug }));
 }
 
 export async function generateMetadata({
