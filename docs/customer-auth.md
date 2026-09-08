@@ -36,18 +36,20 @@ USER_SESSION_SECRET=
 GOOGLE_CLIENT_ID=
 GOOGLE_CLIENT_SECRET=
 GOOGLE_REDIRECT_URI=   # optional; never localhost on Vercel
-NEXT_PUBLIC_SITE_URL=  # production canonical origin for OAuth callback
 DATABASE_URL=
+NEXT_PUBLIC_SITE_URL=  # optional for now — use your *.vercel.app URL until custom domain
 ```
 
-### Production (Vercel) Google checklist
+### Production (Vercel, no custom domain yet) Google checklist
 
-1. Set `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `USER_SESSION_SECRET`, `DATABASE_URL`, `NEXT_PUBLIC_SITE_URL` on the storefront project.
-2. Do **not** set `GOOGLE_REDIRECT_URI` to localhost on Vercel.
-3. In Google Cloud Console → OAuth Web client, add:
-   - Authorized JavaScript origins: `https://www.indiantreks.in` (and apex if used)
-   - Authorized redirect URIs: `https://www.indiantreks.in/api/user/auth/google/callback`
-4. Run `npm run db:migrate` against the production database once.
+1. Set on the storefront project: `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `USER_SESSION_SECRET`, `DATABASE_URL`.
+2. Optionally set `NEXT_PUBLIC_SITE_URL=https://YOUR-PROJECT.vercel.app` (SEO/canonical). OAuth uses the live request host automatically.
+3. Do **not** set `GOOGLE_REDIRECT_URI` to localhost, and do **not** point it at a domain that is not connected yet.
+4. In Google Cloud Console → OAuth Web client, add your **current Vercel URL**:
+   - Authorized JavaScript origins: `https://YOUR-PROJECT.vercel.app`
+   - Authorized redirect URIs: `https://YOUR-PROJECT.vercel.app/api/user/auth/google/callback`
+5. When you attach a custom domain later, add that origin + callback too (keep the vercel.app entries if still used).
+6. Run `npm run db:migrate` against the production database once.
 
 ## Tests
 

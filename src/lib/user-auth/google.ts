@@ -19,9 +19,9 @@ export function isGoogleAuthConfigured(): boolean {
 }
 
 /**
- * Canonical Google redirect URI.
- * Production prefers GOOGLE_REDIRECT_URI (non-localhost) or NEXT_PUBLIC_SITE_URL
- * so authorize + token exchange stay identical behind Vercel proxies.
+ * Canonical Google redirect URI for this request.
+ * Uses the live host (e.g. *.vercel.app) so OAuth works before a custom domain is attached.
+ * Optional GOOGLE_REDIRECT_URI wins when set (never a localhost value in production).
  */
 export function googleRedirectUri(origin: string): string {
   const configured = process.env.GOOGLE_REDIRECT_URI?.trim();
@@ -33,13 +33,9 @@ export function googleRedirectUri(origin: string): string {
     }
   }
 
-  if (isProd) {
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim().replace(/\/$/, '');
-    if (siteUrl && !isLocalhostUri(siteUrl)) {
-      return `${siteUrl}/api/user/auth/google/callback`;
-    }
-  }
-
+  // Prefer the host the user is actually on (Vercel preview/production URL today,
+  // custom domain later). Do not force NEXT_PUBLIC_SITE_URL — it may still be the
+  // future custom domain while traffic is only on *.vercel.app.
   return `${origin.replace(/\/$/, '')}/api/user/auth/google/callback`;
 }
 
