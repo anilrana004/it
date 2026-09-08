@@ -1,9 +1,12 @@
 import { NextResponse } from 'next/server';
-import { googleRedirectUri, isGoogleAuthConfigured } from '@/lib/user-auth/google';
+import {
+  googleRedirectUri,
+  isGoogleAuthConfigured,
+  resolveRequestOrigin,
+} from '@/lib/user-auth/google';
 
 export async function GET(req: Request) {
-  const url = new URL(req.url);
-  const origin = `${url.protocol}//${url.host}`;
+  const origin = resolveRequestOrigin(req);
   return NextResponse.json({
     google: isGoogleAuthConfigured(),
     emailPassword: true,

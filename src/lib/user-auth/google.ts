@@ -1,12 +1,45 @@
 import { createHash, randomBytes } from 'node:crypto';
 
+function isLocalhostUri(value: string): boolean {
+  return /^(https?:\/\/)?(localhost|127\.0\.0\.1)(:\d+)?(\/|$)/i.test(value);
+}
+
+/** Public browser origin (Vercel-safe: honors x-forwarded-*). */
+export function resolveRequestOrigin(req: Request): string {
+  const url = new URL(req.url);
+  const forwardedHost = req.headers.get('x-forwarded-host')?.split(',')[0]?.trim();
+  const host = forwardedHost || req.headers.get('host') || url.host;
+  const forwardedProto = req.headers.get('x-forwarded-proto')?.split(',')[0]?.trim();
+  const proto = (forwardedProto || url.protocol.replace(':', '') || 'https').replace(/:$/, '');
+  return `${proto}://${host}`;
+}
+
 export function isGoogleAuthConfigured(): boolean {
   return Boolean(process.env.GOOGLE_CLIENT_ID?.trim() && process.env.GOOGLE_CLIENT_SECRET?.trim());
 }
 
+/**
+ * Canonical Google redirect URI.
+ * Production prefers GOOGLE_REDIRECT_URI (non-localhost) or NEXT_PUBLIC_SITE_URL
+ * so authorize + token exchange stay identical behind Vercel proxies.
+ */
 export function googleRedirectUri(origin: string): string {
   const configured = process.env.GOOGLE_REDIRECT_URI?.trim();
-  if (configured) return configured;
+  const isProd = process.env.NODE_ENV === 'production';
+
+  if (configured) {
+    if (!(isProd && isLocalhostUri(configured))) {
+      return configured.replace(/\/$/, '');
+    }
+  }
+
+  if (isProd) {
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim().replace(/\/$/, '');
+    if (siteUrl && !isLocalhostUri(siteUrl)) {
+      return `${siteUrl}/api/user/auth/google/callback`;
+    }
+  }
+
   return `${origin.replace(/\/$/, '')}/api/user/auth/google/callback`;
 }
 
@@ -21,13 +54,13 @@ export function createPkcePair(): { verifier: string; challenge: string } {
 }
 
 export function buildGoogleAuthorizeUrl(input: {
-  origin: string;
+  redirectUri: string;
   state: string;
   codeChallenge: string;
 }): string {
   const params = new URLSearchParams({
     client_id: process.env.GOOGLE_CLIENT_ID!.trim(),
-    redirect_uri: googleRedirectUri(input.origin),
+    redirect_uri: input.redirectUri,
     response_type: 'code',
     scope: 'openid email profile',
     state: input.state,
@@ -51,7 +84,7 @@ async function readGoogleError(res: Response, fallback: string): Promise<string>
 }
 
 export async function exchangeGoogleCode(input: {
-  origin: string;
+  redirectUri: string;
   code: string;
   codeVerifier: string;
 }): Promise<{
@@ -61,7 +94,6 @@ export async function exchangeGoogleCode(input: {
   picture?: string;
   email_verified?: boolean;
 }> {
-  const redirectUri = googleRedirectUri(input.origin);
   const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -71,7 +103,7 @@ export async function exchangeGoogleCode(input: {
       code: input.code,
       code_verifier: input.codeVerifier,
       grant_type: 'authorization_code',
-      redirect_uri: redirectUri,
+      redirect_uri: input.redirectUri,
     }),
   });
 

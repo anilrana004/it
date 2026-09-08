@@ -11,6 +11,10 @@ const ERROR_MESSAGES: Record<string, string> = {
   google_denied: 'Google sign-in was cancelled.',
   google_state: 'Google sign-in expired. Please try again.',
   google_failed: 'Google sign-in failed. Please try email login.',
+  google_token:
+    'Google could not verify this app redirect URL. Add your production callback URI in Google Cloud Console, and set GOOGLE_CLIENT_ID / GOOGLE_CLIENT_SECRET / NEXT_PUBLIC_SITE_URL on Vercel.',
+  google_store: 'Sign-in storage is unavailable. Set DATABASE_URL on Vercel and run migrations.',
+  google_unverified: 'Your Google email is not verified. Use a verified Google account or email login.',
 };
 
 export default function LoginForm() {

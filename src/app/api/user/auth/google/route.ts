@@ -3,7 +3,9 @@ import {
   buildGoogleAuthorizeUrl,
   createOAuthState,
   createPkcePair,
+  googleRedirectUri,
   isGoogleAuthConfigured,
+  resolveRequestOrigin,
 } from '@/lib/user-auth/google';
 
 export async function GET(req: Request) {
@@ -14,37 +16,33 @@ export async function GET(req: Request) {
     );
   }
 
+  const origin = resolveRequestOrigin(req);
   const url = new URL(req.url);
-  const origin = `${url.protocol}//${url.host}`;
   const returnTo = url.searchParams.get('returnTo') || '/user-dashboard';
   const state = createOAuthState();
   const { verifier, challenge } = createPkcePair();
+  const redirectUri = googleRedirectUri(origin);
 
   const response = NextResponse.redirect(
-    buildGoogleAuthorizeUrl({ origin, state, codeChallenge: challenge }),
+    buildGoogleAuthorizeUrl({ redirectUri, state, codeChallenge: challenge }),
   );
 
-  response.cookies.set('google_oauth_state', state, {
+  const cookieBase = {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
+    sameSite: 'lax' as const,
     path: '/',
     maxAge: 600,
-  });
-  response.cookies.set('google_oauth_verifier', verifier, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
-    path: '/',
-    maxAge: 600,
-  });
-  response.cookies.set('google_oauth_return', returnTo.startsWith('/') ? returnTo : '/user-dashboard', {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
-    path: '/',
-    maxAge: 600,
-  });
+  };
+
+  response.cookies.set('google_oauth_state', state, cookieBase);
+  response.cookies.set('google_oauth_verifier', verifier, cookieBase);
+  response.cookies.set('google_oauth_redirect', redirectUri, cookieBase);
+  response.cookies.set(
+    'google_oauth_return',
+    returnTo.startsWith('/') ? returnTo : '/user-dashboard',
+    cookieBase,
+  );
 
   return response;
 }

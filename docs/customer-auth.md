@@ -35,9 +35,19 @@ Public browsing (treks, blogs, contact, etc.) stays open without login.
 USER_SESSION_SECRET=
 GOOGLE_CLIENT_ID=
 GOOGLE_CLIENT_SECRET=
-GOOGLE_REDIRECT_URI=   # optional
+GOOGLE_REDIRECT_URI=   # optional; never localhost on Vercel
+NEXT_PUBLIC_SITE_URL=  # production canonical origin for OAuth callback
 DATABASE_URL=
 ```
+
+### Production (Vercel) Google checklist
+
+1. Set `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `USER_SESSION_SECRET`, `DATABASE_URL`, `NEXT_PUBLIC_SITE_URL` on the storefront project.
+2. Do **not** set `GOOGLE_REDIRECT_URI` to localhost on Vercel.
+3. In Google Cloud Console → OAuth Web client, add:
+   - Authorized JavaScript origins: `https://www.indiantreks.in` (and apex if used)
+   - Authorized redirect URIs: `https://www.indiantreks.in/api/user/auth/google/callback`
+4. Run `npm run db:migrate` against the production database once.
 
 ## Tests
 
