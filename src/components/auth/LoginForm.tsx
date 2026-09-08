@@ -22,6 +22,7 @@ export default function LoginForm() {
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
   const [googleReady, setGoogleReady] = useState(false);
+  const [googleRedirectUri, setGoogleRedirectUri] = useState('');
   const [returnTo, setReturnTo] = useState('/user-dashboard');
   const [resetNotice, setResetNotice] = useState(false);
 
@@ -45,8 +46,9 @@ export default function LoginForm() {
     fetch('/api/user/auth/providers')
       .then(async (res) => {
         if (!res.ok) return;
-        const body = (await res.json()) as { google?: boolean };
+        const body = (await res.json()) as { google?: boolean; redirectUri?: string };
         setGoogleReady(Boolean(body.google));
+        if (body.redirectUri) setGoogleRedirectUri(body.redirectUri);
       })
       .catch(() => setGoogleReady(false));
   }, [router]);
@@ -193,6 +195,15 @@ export default function LoginForm() {
         </svg>
         Continue with Google
       </a>
+
+      {process.env.NODE_ENV !== 'production' && googleReady && googleRedirectUri ? (
+        <p className="mt-3 break-all rounded-lg border border-amber-100 bg-amber-50 px-3 py-2 text-xs text-amber-900">
+          If Google shows <span className="font-semibold">redirect_uri_mismatch</span>, add this exact URI under
+          Authorized redirect URIs in Google Cloud Console, then Save (wait ~1–2 min):
+          <br />
+          <code className="mt-1 inline-block font-mono text-[11px] text-slate-800">{googleRedirectUri}</code>
+        </p>
+      ) : null}
     </AuthShell>
   );
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ChevronDown, Eye, EyeOff, Loader2 } from 'lucide-react';
@@ -48,6 +48,17 @@ export default function SignupForm() {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [googleReady, setGoogleReady] = useState(false);
+
+  useEffect(() => {
+    fetch('/api/user/auth/providers')
+      .then(async (res) => {
+        if (!res.ok) return;
+        const body = (await res.json()) as { google?: boolean };
+        setGoogleReady(Boolean(body.google));
+      })
+      .catch(() => setGoogleReady(false));
+  }, []);
 
   const set = (key: keyof typeof form, value: string) => {
     setForm((f) => ({ ...f, [key]: value }));
@@ -104,6 +115,34 @@ export default function SignupForm() {
 
   return (
     <AuthShell title="New to Indian Treks? Register" titleInsideCard tagline="Treks that transform lives">
+      <a
+        href={googleReady ? '/api/user/auth/google?returnTo=%2Fuser-dashboard' : undefined}
+        aria-disabled={!googleReady}
+        onClick={(e) => {
+          if (!googleReady) {
+            e.preventDefault();
+            setError(
+              'Google sign-in is not configured yet. Use email registration, or set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET.',
+            );
+          }
+        }}
+        className="mb-5 inline-flex w-full items-center justify-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+      >
+        <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden>
+          <path
+            fill="#EA4335"
+            d="M12 10.2v3.6h5.1c-.2 1.2-1.5 3.6-5.1 3.6-3.1 0-5.6-2.5-5.6-5.6S8.9 6.2 12 6.2c1.8 0 3 .7 3.7 1.4l2.5-2.4C16.7 3.7 14.5 2.7 12 2.7 6.9 2.7 2.7 6.9 2.7 12S6.9 21.3 12 21.3c5.2 0 8.6-3.6 8.6-8.7 0-.6-.1-1.1-.2-1.6H12z"
+          />
+        </svg>
+        Continue with Google
+      </a>
+
+      <div className="mb-5 flex items-center gap-3">
+        <div className="h-px flex-1 bg-slate-200" />
+        <span className="text-xs font-medium uppercase tracking-wide text-slate-400">Or</span>
+        <div className="h-px flex-1 bg-slate-200" />
+      </div>
+
       <form onSubmit={onSubmit} className="space-y-4">
         {error ? (
           <div className="rounded border border-red-100 bg-red-50 px-3 py-2 text-sm text-red-700">{error}</div>

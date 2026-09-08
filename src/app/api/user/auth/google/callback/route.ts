@@ -59,7 +59,8 @@ export async function GET(req: Request) {
     });
 
     return res;
-  } catch {
+  } catch (err) {
+    console.error('[google-oauth] callback failed', err);
     const res = NextResponse.redirect(new URL(`/login?error=google_failed`, origin));
     clearOauthCookies(res);
     return res;

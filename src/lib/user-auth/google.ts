@@ -39,6 +39,17 @@ export function buildGoogleAuthorizeUrl(input: {
   return `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`;
 }
 
+async function readGoogleError(res: Response, fallback: string): Promise<string> {
+  try {
+    const body = (await res.json()) as { error?: string; error_description?: string };
+    const parts = [body.error, body.error_description].filter(Boolean);
+    if (parts.length) return `${fallback}: ${parts.join(' — ')}`;
+  } catch {
+    // ignore non-JSON error bodies
+  }
+  return `${fallback} (HTTP ${res.status})`;
+}
+
 export async function exchangeGoogleCode(input: {
   origin: string;
   code: string;
@@ -50,6 +61,7 @@ export async function exchangeGoogleCode(input: {
   picture?: string;
   email_verified?: boolean;
 }> {
+  const redirectUri = googleRedirectUri(input.origin);
   const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -59,12 +71,12 @@ export async function exchangeGoogleCode(input: {
       code: input.code,
       code_verifier: input.codeVerifier,
       grant_type: 'authorization_code',
-      redirect_uri: googleRedirectUri(input.origin),
+      redirect_uri: redirectUri,
     }),
   });
 
   if (!tokenRes.ok) {
-    throw new Error('Google token exchange failed');
+    throw new Error(await readGoogleError(tokenRes, 'Google token exchange failed'));
   }
 
   const tokenJson = (await tokenRes.json()) as { access_token?: string; id_token?: string };
@@ -73,7 +85,9 @@ export async function exchangeGoogleCode(input: {
   const profileRes = await fetch('https://openidconnect.googleapis.com/v1/userinfo', {
     headers: { Authorization: `Bearer ${tokenJson.access_token}` },
   });
-  if (!profileRes.ok) throw new Error('Google profile fetch failed');
+  if (!profileRes.ok) {
+    throw new Error(await readGoogleError(profileRes, 'Google profile fetch failed'));
+  }
 
   const profile = (await profileRes.json()) as {
     sub: string;
@@ -84,6 +98,9 @@ export async function exchangeGoogleCode(input: {
   };
 
   if (!profile.sub || !profile.email) throw new Error('Incomplete Google profile');
+  if (profile.email_verified === false) {
+    throw new Error('Google account email is not verified');
+  }
 
   return {
     sub: profile.sub,
