@@ -65,13 +65,13 @@ function readLocalStore(): LocalStore {
     return {
       users: Array.isArray(parsed.users)
         ? parsed.users.map((u) => ({
-            firstName: null,
-            lastName: null,
-            phoneCountryCode: '+91',
-            dateOfBirth: null,
-            gender: null,
-            nationality: null,
             ...u,
+            firstName: u.firstName ?? null,
+            lastName: u.lastName ?? null,
+            phoneCountryCode: u.phoneCountryCode ?? '+91',
+            dateOfBirth: u.dateOfBirth ?? null,
+            gender: u.gender ?? null,
+            nationality: u.nationality ?? null,
           }))
         : [],
       resetTokens: Array.isArray(parsed.resetTokens) ? parsed.resetTokens : [],
