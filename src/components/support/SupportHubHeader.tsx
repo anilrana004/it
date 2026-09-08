@@ -82,11 +82,18 @@ export default function SupportHubHeader() {
     }
 
     const HIDE_AFTER = 72;
+    const DESKTOP_MQ = '(min-width: 980px)';
     let last = window.scrollY;
     let frame = 0;
 
     const update = () => {
       frame = 0;
+      // Mobile chrome stays fixed — never mark it "hidden" or sticky FAQ cats slide under it.
+      if (!window.matchMedia(DESKTOP_MQ).matches) {
+        setHidden(false);
+        last = Math.max(0, window.scrollY);
+        return;
+      }
       const current = Math.max(0, window.scrollY);
       const delta = current - last;
       if (current <= HIDE_AFTER) setHidden(false);

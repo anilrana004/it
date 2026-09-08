@@ -20,7 +20,6 @@ export default function FaqsPageView() {
   const [openId, setOpenId] = useState<string | null>(FAQ_ITEMS[0]?.id ?? null);
   const [query, setQuery] = useState('');
   const tileRefs = useRef<Partial<Record<FaqCategoryId, HTMLButtonElement>>>({});
-  const listRef = useRef<HTMLDivElement>(null);
   const [catsStuck, setCatsStuck] = useState(false);
 
   const items = useMemo(() => {
@@ -66,9 +65,6 @@ export default function FaqsPageView() {
   const selectCategory = (next: FaqCategoryId) => {
     setCategory(next);
     setOpenId(null);
-    requestAnimationFrame(() => {
-      listRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
   };
 
   return (
@@ -129,7 +125,7 @@ export default function FaqsPageView() {
                   className={`it-faq__cat-ico it-faq__cat-ico--${cat.id}`}
                   aria-hidden
                 >
-                  <Icon size={28} strokeWidth={2.15} />
+                  <Icon size={22} strokeWidth={2.15} className="it-faq__cat-svg" />
                 </span>
                 <span className="it-faq__cat-label">{displayLabel}</span>
               </button>
@@ -139,7 +135,7 @@ export default function FaqsPageView() {
         </div>
       </div>
 
-      <div ref={listRef} className="it-faq__list" role="list">
+      <div className="it-faq__list" role="list">
         {items.length === 0 ? (
           <div className="it-faq__empty">
             <i className="fa-regular fa-circle-question" aria-hidden />
