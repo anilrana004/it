@@ -1,17 +1,14 @@
 import { Check } from 'lucide-react';
-import { treksWhyNorms } from '@/lib/treks-landing-content';
+import { treksWhyCopy, treksWhyNorms } from '@/lib/treks-landing-content';
 
 export default function TreksWhySection() {
   return (
     <section className="it-treks-why" aria-labelledby="it-treks-why-title">
       <div className="it-treks-why__container">
         <div className="it-treks-why__heading">
-          <p className="it-treks-why__kicker">Our standards</p>
-          <h2 id="it-treks-why-title">Why Trekkers Love Trekking With Us</h2>
-          <p>
-            Safety, small groups, clean camps, and leaders who know the Himalayas — the norms behind
-            every Indian Treks departure, from weekend trails to high-altitude expeditions.
-          </p>
+          <p className="it-treks-why__kicker">{treksWhyCopy.kicker}</p>
+          <h2 id="it-treks-why-title">{treksWhyCopy.title}</h2>
+          <p>{treksWhyCopy.intro}</p>
         </div>
 
         <div className="it-treks-why__grid">

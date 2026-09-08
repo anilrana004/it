@@ -5,6 +5,7 @@ import {
   useEffect,
   useMemo,
   useState,
+  useSyncExternalStore,
   useTransition,
   type FormEvent,
   type ReactNode,
@@ -20,6 +21,7 @@ import {
   Sparkles,
 } from 'lucide-react';
 import TrekCuratedSection from '@/components/treks/TrekCuratedSection';
+import WinterTreksLanding from '@/components/treks/WinterTreksLanding';
 import { DESK_HEADER_H, MOBILE_HEADER_H } from '@/lib/layout';
 import {
   CURATED_SECTIONS,
@@ -42,12 +44,24 @@ import {
   getFilterView,
   resolveFilterTreks,
 } from '@/lib/trek-filter-views';
+import {
+  WINTER_FILTER_TREKS,
+  WINTER_TOP_TREK_IDS,
+} from '@/lib/content/winter-treks-guide';
 import type { SpecialProgramId } from '@/lib/special-programs-content';
 import type { Trek } from '@/lib/data';
 import { CONTACT, telUrl } from '@/lib/contact';
+import { winterTrekReviews } from '@/lib/content/winter-trek-reviews';
 import { treksArticles, treksReviews, type LandingArticle } from '@/lib/landing-social-content';
+import LandingBlogSection from '@/components/landing/LandingBlogSection';
 import LandingReviewsBlog from '@/components/landing/LandingReviewsBlog';
 import TreksWhySection from '@/components/treks/TreksWhySection';
+import {
+  WinterPackingSection,
+  WinterSafetySection,
+} from '@/components/treks/WinterPackingSafety';
+import WinterTreksFaq from '@/components/treks/WinterTreksFaq';
+import WinterTreksReviews from '@/components/treks/WinterTreksReviews';
 import TreksDesktopHero from '@/components/treks/TreksDesktopHero';
 import './treks-explorer.css';
 
@@ -149,6 +163,20 @@ function Chip({
   );
 }
 
+function subscribeDesktop(onStoreChange: () => void) {
+  const mq = window.matchMedia('(min-width: 1024px)');
+  mq.addEventListener('change', onStoreChange);
+  return () => mq.removeEventListener('change', onStoreChange);
+}
+
+function getDesktopSnapshot() {
+  return window.matchMedia('(min-width: 1024px)').matches;
+}
+
+function getDesktopServerSnapshot() {
+  return false;
+}
+
 export default function AllTreksExplorer({
   treks,
   categories,
@@ -168,6 +196,11 @@ export default function AllTreksExplorer({
   const [filters, setFilters] = useState<Filters>(() => parseInitial(searchParams));
   const [mobileFilters, setMobileFilters] = useState(false);
   const [searchDraft, setSearchDraft] = useState(filters.q);
+  const isDesktop = useSyncExternalStore(
+    subscribeDesktop,
+    getDesktopSnapshot,
+    getDesktopServerSnapshot,
+  );
 
   useEffect(() => {
     setFilters(parseInitial(searchParams));
@@ -303,7 +336,12 @@ export default function AllTreksExplorer({
         list = list.filter((t) => t.openMonths.includes(filters.month!));
       }
     }
-    if (filters.season) list = list.filter((t) => t.seasons.includes(filters.season!));
+    if (filters.season === 'winter') {
+      const winterIds = new Set<string>(WINTER_TOP_TREK_IDS);
+      list = list.filter((t) => winterIds.has(t.id));
+    } else if (filters.season) {
+      list = list.filter((t) => t.seasons.includes(filters.season!));
+    }
     if (filters.experience) {
       list = list.filter((t) => t.experiences.includes(filters.experience!));
     }
@@ -338,7 +376,23 @@ export default function AllTreksExplorer({
   const filterView = isFilterFocus ? getFilterView(filters) : null;
   const showBrowseExtras = !isFilterFocus;
 
+  const isWinterFocus =
+    filters.season === 'winter' &&
+    !filters.q &&
+    filters.month === null &&
+    !filters.difficulty &&
+    !filters.experience &&
+    !filters.duration &&
+    !filters.region;
+
+  const winterLandingTreks = useMemo(() => {
+    if (!isWinterFocus) return [] as ListingTrek[];
+    return resolveFilterTreks(filters, filtered);
+  }, [isWinterFocus, filters, filtered]);
+
   const curatedBlocks = useMemo(() => {
+    if (isWinterFocus) return [];
+
     if (isFilterFocus && filterView) {
       const list = resolveFilterTreks(filters, filtered);
       if (list.length === 0) return [];
@@ -352,7 +406,7 @@ export default function AllTreksExplorer({
         month: filters.month,
       }),
     })).filter((b) => b.treks.length > 0);
-  }, [filtered, filterView, filters, isFilterFocus]);
+  }, [filtered, filterView, filters, isFilterFocus, isWinterFocus]);
 
   const curatedOnOpen = (section: CuratedSection) => {
     if (isFilterFocus) return undefined;
@@ -425,16 +479,87 @@ export default function AllTreksExplorer({
         ))}
       </FilterSection>
 
-      <FilterSection title="Treks by Season" defaultOpen={false}>
+      <FilterSection title="Treks by Season" defaultOpen={filters.season === 'winter'}>
         {SEASONS.map((s) => (
           <Chip
             key={s.id}
             active={filters.season === s.id}
-            onClick={() => toggleFilter('season', s.id, filters.season)}
+            onClick={() => {
+              if (s.id === 'winter' && filters.season !== 'winter') {
+                update({
+                  season: 'winter',
+                  q: '',
+                  month: null,
+                  difficulty: null,
+                  experience: null,
+                  duration: null,
+                  region: null,
+                });
+                scrollToTreks();
+                return;
+              }
+              toggleFilter('season', s.id, filters.season);
+            }}
           >
             {s.label}
           </Chip>
         ))}
+      </FilterSection>
+
+      <FilterSection
+        title="Best Winter Treks 2026–27"
+        defaultOpen={filters.season === 'winter'}
+      >
+        <Chip
+          active={filters.season === 'winter'}
+          onClick={() => {
+            if (filters.season !== 'winter') {
+              update({
+                season: 'winter',
+                q: '',
+                month: null,
+                difficulty: null,
+                experience: null,
+                duration: null,
+                region: null,
+              });
+              scrollToTreks();
+            } else {
+              toggleFilter('season', 'winter', filters.season);
+            }
+          }}
+        >
+          All winter snow treks
+        </Chip>
+        <div className="it-treks-filter-section__grid mt-2">
+          {WINTER_FILTER_TREKS.map((t) => (
+            <button
+              key={t.id}
+              type="button"
+              className="it-treks-filter-chip it-treks-filter-chip--link is-compact"
+              onClick={() => {
+                update({
+                  season: 'winter',
+                  q: '',
+                  month: null,
+                  difficulty: null,
+                  experience: null,
+                  duration: null,
+                  region: null,
+                });
+                scrollToTreks();
+                window.setTimeout(() => {
+                  document.getElementById(`trek-${t.id}`)?.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start',
+                  });
+                }, 120);
+              }}
+            >
+              {t.label}
+            </button>
+          ))}
+        </div>
       </FilterSection>
 
       <FilterSection title="Treks by Duration" defaultOpen={false}>
@@ -527,7 +652,26 @@ export default function AllTreksExplorer({
               {[
                 { label: 'All', on: !isFilterFocus, go: () => clearAll() },
                 { label: 'Beginner', on: filters.experience === 'beginner', go: () => toggleFilter('experience', 'beginner', filters.experience) },
-                { label: 'Winter', on: filters.season === 'winter', go: () => toggleFilter('season', 'winter', filters.season) },
+                {
+                  label: 'Winter',
+                  on: isWinterFocus || filters.season === 'winter',
+                  go: () => {
+                    if (filters.season === 'winter') {
+                      toggleFilter('season', 'winter', filters.season);
+                      return;
+                    }
+                    update({
+                      season: 'winter',
+                      q: '',
+                      month: null,
+                      difficulty: null,
+                      experience: null,
+                      duration: null,
+                      region: null,
+                    });
+                    scrollToTreks();
+                  },
+                },
                 { label: 'Uttarakhand', on: filters.region === 'uttarakhand', go: () => toggleFilter('region', 'uttarakhand', filters.region) },
                 { label: 'Himachal', on: filters.region === 'himachal', go: () => toggleFilter('region', 'himachal', filters.region) },
                 { label: 'Easy', on: filters.difficulty === 'Easy', go: () => toggleFilter('difficulty', 'Easy', filters.difficulty) },
@@ -588,6 +732,14 @@ export default function AllTreksExplorer({
           )}
 
           <div id="curated-treks" className="scroll-mt-28">
+            {isWinterFocus && filterView && !isDesktop && (
+              <WinterTreksLanding
+                title={filterView.sectionTitle}
+                info={filterView.info}
+                treks={winterLandingTreks}
+                shareHref={filterView.href}
+              />
+            )}
             {curatedBlocks.map(({ section, treks: sectionTreks }, i) => (
               <div key={section.id}>
                 <TrekCuratedSection
@@ -614,7 +766,9 @@ export default function AllTreksExplorer({
             ))}
           </div>
 
-          {activeCount > 0 && curatedBlocks.every((b) => b.treks.length === 0) && (
+          {activeCount > 0 &&
+            !isWinterFocus &&
+            curatedBlocks.every((b) => b.treks.length === 0) && (
             <div className="mt-4 rounded-2xl border border-dashed border-gray-300 bg-white px-5 py-12 text-center">
               <Mountain className="mx-auto mb-2 h-9 w-9 text-gray-300" />
               <p className="text-sm font-semibold text-gray-900">No treks match</p>
@@ -756,6 +910,14 @@ export default function AllTreksExplorer({
                 </div>
               )}
               <div className="space-y-1">
+                {isWinterFocus && filterView && isDesktop && (
+                  <WinterTreksLanding
+                    title={filterView.sectionTitle}
+                    info={filterView.info}
+                    treks={winterLandingTreks}
+                    shareHref={filterView.href}
+                  />
+                )}
                 {curatedBlocks.map(({ section, treks: sectionTreks }) => (
                   <TrekCuratedSection
                     key={section.id}
@@ -769,7 +931,9 @@ export default function AllTreksExplorer({
                   />
                 ))}
               </div>
-              {activeCount > 0 && curatedBlocks.every((b) => b.treks.length === 0) && (
+              {activeCount > 0 &&
+                !isWinterFocus &&
+                curatedBlocks.every((b) => b.treks.length === 0) && (
                 <div className="rounded-2xl border border-dashed border-gray-300 bg-white px-6 py-16 text-center">
                   <Mountain className="mx-auto mb-3 h-10 w-10 text-gray-300" />
                   <h3 className="text-lg font-bold text-gray-900">No treks match these filters</h3>
@@ -789,20 +953,35 @@ export default function AllTreksExplorer({
 
       <TreksWhySection />
 
-      <LandingReviewsBlog
-        reviews={{
-          kicker: 'Trekker reviews',
-          title: 'Stories from the trail',
-          intro:
-            'Real notes from hikers who summited Kedarkantha, crossed Hampta Pass, and found their first Himalayan views with Indian Treks.',
-          items: treksReviews,
-        }}
-        articles={{
-          kicker: 'From the blog',
-          title: 'Trek guides & tips',
-          items: blogArticles ?? treksArticles,
-        }}
-      />
+      {isWinterFocus && <WinterPackingSection />}
+      {isWinterFocus && <WinterSafetySection />}
+      {isWinterFocus && <WinterTreksFaq />}
+
+      {isWinterFocus ? (
+        <>
+          <WinterTreksReviews items={winterTrekReviews} />
+          <LandingBlogSection
+            kicker="From the blog"
+            title="Trek guides & tips"
+            items={blogArticles ?? treksArticles}
+          />
+        </>
+      ) : (
+        <LandingReviewsBlog
+          reviews={{
+            kicker: 'Trekker reviews',
+            title: 'Stories from the trail',
+            intro:
+              'Real notes from hikers who summited Kedarkantha, crossed Hampta Pass, and found their first Himalayan views with Indian Treks.',
+            items: treksReviews,
+          }}
+          articles={{
+            kicker: 'From the blog',
+            title: 'Trek guides & tips',
+            items: blogArticles ?? treksArticles,
+          }}
+        />
+      )}
 
       {mobileFilters && (
         <div className="it-treks-mob-filters fixed inset-0 z-[80] lg:hidden">

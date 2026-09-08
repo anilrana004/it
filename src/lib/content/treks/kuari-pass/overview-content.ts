@@ -6,91 +6,171 @@ import type { RichBlock } from '@/lib/content/treks/types';
  */
 export const KUARI_PASS_OVERVIEW: RichBlock[] = [
   {
+    type: 'h3',
+    text: 'Experience the Legendary Lord Curzon Trail in the Garhwal Himalayas',
+  },
+  {
     type: 'p',
-    text: 'During the time when the British governed India, the Kuari Pass Trek was explored by Lord Curzon. At an elevation of 4,264 metres (12,516 ft), it is an ideal trek for novice hikers in the Garhwal Himalayas. If you are beginning your mountaineering journey in the mountains, Kuari Pass is an excellent first walk of your Himalayan expedition.',
+    text: 'The Kuari Pass Trek is one of the most rewarding Himalayan trekking experiences in Uttarakhand. Located in the Chamoli district of the Garhwal Himalayas, this beautiful trail takes trekkers through dense oak and rhododendron forests, traditional Himalayan villages, expansive alpine meadows, dramatic mountain ridges and high-altitude landscapes.',
   },
   {
     type: 'video',
     youtubeId: 'rmuuxRaCSH0',
     title: 'Kuari Pass Trek — Lord Curzon Trail & views',
     caption:
-      'Walk the historic Curzon Trail — snow forests, Gorson Bugyal meadows, and Nanda Devi panoramas with Indian Treks.',
+      'Walk the historic Curzon Trail — snow forests, alpine Bugyals, and Garhwal Himalayan panoramas with Indian Treks.',
   },
   {
     type: 'p',
-    text: 'It is equally ideal for nature lovers thanks to its unspoiled surroundings, picturesque landscapes, and views of towering peaks. Whether you go in winter or summer, the Kuari Pass climb is a stunningly beautiful journey in the Uttarakhand Himalayas.',
+    text: 'Popularly known as the Lord Curzon Trail, Kuari Pass has been admired for more than a century for its spectacular Himalayan views. The trail offers an exceptional opportunity to experience the mountains from close range, with panoramic views of some of the most impressive peaks of the Garhwal region, including Nanda Devi, Dronagiri, Kamet, Chaukhamba, Hathi Parvat and Ghori Parbat, depending on weather and visibility.',
   },
   {
     type: 'p',
-    text: 'This trek suits travellers who have a strong love for mountaineering and want the mountains to play a meaningful role in their lives. Even though the pass sits at a relatively approachable height, we advise solid physical endurance and a proven fitness base. From Dehradun to Joshimath and back you cover about 544 km by road, then walk roughly 32–33 km from Dhak Village to Kuari Pass (12,516 ft) and return toward Joshimath. The days are doable rather than extreme — Indian Treks has led this route for decades, welcoming trekkers of many fitness levels who complete the hike successfully.',
+    text: 'What makes Kuari Pass particularly special is its balance of adventure and accessibility. The trek offers the feeling of a true high-altitude Himalayan expedition while remaining achievable for trekkers with reasonable fitness and proper preparation. The route combines gradual ascents, forest trails, open Bugyals, mountain ridges and snow-covered landscapes during winter.',
   },
   {
     type: 'p',
-    text: 'Don’t overthink the climb. Focus on the natural world around you, stay close to your trek leader, rise early on trail days, and practise a little yoga or pranayam each morning — the pass comes more easily that way.',
+    text: 'Whether you are a first-time trekker looking for your first Himalayan adventure, a family seeking an unforgettable mountain holiday, a student group planning an outdoor experience or an experienced trekker wanting to explore the Garhwal Himalayas, Kuari Pass offers a memorable journey through some of Uttarakhand’s most beautiful landscapes.',
+  },
+  {
+    type: 'p',
+    text: 'Walk through ancient Himalayan forests, cross vast alpine meadows and reach the high ridges of Kuari Pass for unforgettable views of the Garhwal Himalayas.',
   },
   {
     type: 'h3',
-    text: 'Major Attractions of the Kuari Pass Trek',
+    text: 'Why is Kuari Pass Trek Famous?',
+  },
+  {
+    type: 'p',
+    text: 'Kuari Pass is famous not only because of its altitude but because of the extraordinary landscape that surrounds the trail.',
+  },
+  {
+    type: 'p',
+    text: 'Unlike treks where the main attraction appears only near the summit, Kuari Pass continuously changes scenery throughout the journey. The trail begins among Himalayan villages and forested slopes, gradually climbs through oak and rhododendron forests, opens into vast alpine meadows and finally reaches high mountain terrain where the Himalayan giants dominate the horizon.',
+  },
+  {
+    type: 'p',
+    text: 'The route is also historically associated with Lord Curzon, the former Viceroy of India, giving the trail its popular name—the Lord Curzon Trail.',
+  },
+  {
+    type: 'p',
+    text: 'The combination of history, mountain scenery, forests, Bugyals, traditional villages and high-altitude landscapes makes Kuari Pass one of the classic trekking routes of Uttarakhand.',
   },
   {
     type: 'h3',
-    text: 'Tugasi',
-  },
-  {
-    type: 'p',
-    text: 'The adventure truly begins around Tugasi. As you climb, the trail winds gently through ancient oaks — in winter, branches heavy with snow. You’ll first see snow-covered paths ahead, with wide mountain views peeking through the trees. The soft crunch of snow under your boots sets the tone for the days ahead.',
+    text: 'Kuari Pass Trek Highlights',
   },
   {
     type: 'h3',
-    text: 'Talli Forest',
+    text: 'Panoramic Himalayan Views',
   },
   {
     type: 'p',
-    text: 'Next you enter the Talli Forest, a stretch that feels like wandering into a snowy kingdom. Tall pine and oak trees surround you, trunks dusted with snow. Sunlight sometimes filters through the canopy, casting patterns on the ground. The quiet here is deep — broken only by footsteps and the occasional bird. Pause, breathe, and enjoy the peace of the wilderness.',
+    text: 'One of the biggest attractions of the Kuari Pass Trek is its expansive mountain panorama. On clear days, trekkers can witness spectacular views of the surrounding Garhwal Himalayas, including prominent peaks such as Nanda Devi, Dronagiri, Kamet and Chaukhamba.',
+  },
+  {
+    type: 'p',
+    text: 'The open ridges around the higher sections of the trail provide an excellent perspective of the surrounding mountain ranges.',
   },
   {
     type: 'h3',
-    text: 'Kuari Pass',
+    text: 'Oak & Rhododendron Forests',
   },
   {
     type: 'p',
-    text: 'Higher up, the trail opens to Kuari Pass — a viewpoint that feels like the roof of the world. The Himalayas stretch in all directions, peaks rising majestically. Rest here and take in a view that makes every step of the climb worthwhile.',
+    text: 'The lower and middle sections of the trek pass through beautiful Himalayan forests dominated by oak, rhododendron and other native mountain trees.',
+  },
+  {
+    type: 'p',
+    text: 'During spring, rhododendron flowers add vibrant colour to the forest, while in winter these sections can remain covered in snow depending on seasonal conditions.',
+  },
+  {
+    type: 'p',
+    text: 'Walking through these quiet forests is one of the most peaceful parts of the trek.',
   },
   {
     type: 'h3',
-    text: 'Gorson Bugyal',
+    text: 'Beautiful Alpine Bugyals',
   },
   {
     type: 'p',
-    text: 'On the return, Indian Treks includes Gorson Bugyal — a vast alpine meadow. In winter it is blanketed in snow, sparkling under the sun, a stunning contrast to the dense forests below. From here you get some of the finest views of Nanda Devi. Standing among snow and sky, it is hard not to feel deeply at ease.',
+    text: 'As you gain altitude, dense forests gradually give way to open alpine meadows known as Bugyals.',
+  },
+  {
+    type: 'p',
+    text: 'These high-altitude grasslands are among the most beautiful landscapes in Uttarakhand. During the warmer months, they become lush and green, while winter transforms them into expansive snow-covered slopes.',
+  },
+  {
+    type: 'p',
+    text: 'The open Bugyals also provide some of the best opportunities to enjoy uninterrupted mountain views.',
   },
   {
     type: 'h3',
-    text: 'Witness the Mighty Nanda Devi Peak',
+    text: 'Winter Snow Experience',
   },
   {
     type: 'p',
-    text: 'The headline attraction of the Kuari Pass Trek is Nanda Devi — the highest peak in Uttarakhand — along with other famous summits such as Dronagiri, Chaukhamba, and Hathi Parbat. Seeing Nanda Devi up close is an unforgettable Himalayan moment.',
+    text: 'Kuari Pass becomes particularly attractive during the winter months when snowfall transforms the trail into a spectacular Himalayan winter landscape.',
+  },
+  {
+    type: 'p',
+    text: 'Snow-covered forests, frozen sections of the trail, white meadows and snow-covered mountain ridges create a completely different trekking experience.',
+  },
+  {
+    type: 'p',
+    text: 'Snow conditions vary from year to year, so the actual amount of snow depends on weather and seasonal conditions.',
   },
   {
     type: 'h3',
-    text: 'Winter Kuari Pass — Lord Curzon’s Trail',
+    text: 'Scenic Campsites',
   },
   {
     type: 'p',
-    text: 'The Kuari Pass Trek is known as the “Curzon Trail” because Lord Curzon, Viceroy of India from 1899 to 1905, popularised it. An enthusiastic trekker and explorer, he travelled extensively in the Himalayas. During his time in office he trekked through Kuari Pass and was so taken by its beauty that he recommended it as an important trekking route.',
+    text: 'The campsites are an important part of the Kuari Pass experience.',
   },
   {
     type: 'p',
-    text: 'His exploration boosted the pass’s popularity and led to the trek being named in his honour — a historical thread that links today’s trail to British-era Himalayan exploration in India.',
+    text: 'Gulling offers a peaceful forested camping environment, while Khullara opens into a more expansive mountain landscape and provides an excellent base for the high-point excursion.',
+  },
+  {
+    type: 'p',
+    text: 'Spending evenings in these remote mountain camps, away from city lights and surrounded by the Himalayas, is an experience in itself.',
   },
   {
     type: 'h3',
-    text: 'Why is Kuari Pass Considered the Best Winter Trek in India?',
+    text: 'Traditional Himalayan Villages',
   },
   {
     type: 'p',
-    text: 'Winter is quieter than peak trekking months, which makes Kuari Pass one of India’s top winter adventures. The trail is less crowded; trekkers enjoy a more peaceful experience. Fresh snow turns forests and ridges into a white wonderland, with Himalayan peaks at every turn. The Easy-to-Moderate grade keeps the trek accessible while still delivering high-altitude excitement — walking on fresh snow, camping under starry skies, and panoramic views of Nanda Devi and Dronagiri. That is why Kuari Pass is often called one of the best winter treks in India.',
+    text: 'The approach to the trail passes through traditional Garhwali settlements where trekkers get a glimpse of life in the mountains.',
+  },
+  {
+    type: 'p',
+    text: 'The villages, terraced fields, traditional houses and surrounding forests provide a cultural dimension to the trek beyond the natural scenery.',
+  },
+  {
+    type: 'h3',
+    text: 'Kuari Pass Trek with Indian Treks',
+  },
+  {
+    type: 'p',
+    text: 'At Indian Treks, we believe a Himalayan trek should be more than simply reaching a destination.',
+  },
+  {
+    type: 'p',
+    text: 'It should be about experiencing the journey—from the first mountain road to the final trail, from the quiet forest sections to the open Bugyals, from evenings around the campsite to the first view of the Himalayan peaks.',
+  },
+  {
+    type: 'p',
+    text: 'Our Kuari Pass itinerary is designed to provide trekkers with a balanced experience of adventure, nature, comfort and local Himalayan hospitality.',
+  },
+  {
+    type: 'p',
+    text: 'From the initial transfer to Joshimath and the trekking route through Tugasi, Gulling and Khullara to the return journey, our team focuses on keeping the experience organised and comfortable while allowing you to enjoy the mountains.',
+  },
+  {
+    type: 'p',
+    text: 'With an experienced ground team and local operational support, Indian Treks aims to make your Kuari Pass journey smooth from beginning to end.',
   },
   {
     type: 'h3',
@@ -99,13 +179,13 @@ export const KUARI_PASS_OVERVIEW: RichBlock[] = [
   {
     type: 'ul',
     items: [
-      'Altitude: 4,264 m (12,516 ft) at Kuari Pass',
+      'Altitude: approximately 12,516 ft (Kuari Pass high point)',
       'Duration: 6 days',
-      'Trek length: ~32 km',
       'Base camp / gateway: Joshimath',
-      'Difficulty: Easy to Moderate — strong for first Himalayan winter walks',
-      'Historic Lord Curzon Trail with Nanda Devi, Dronagiri, Chaukhamba & Hathi Parbat views',
-      'Signature stretches: Tugasi, Talli Forest, Kuari Pass viewpoint & Gorson Bugyal',
+      'Difficulty: Easy to Moderate',
+      'Historic Lord Curzon Trail with views of Nanda Devi, Dronagiri, Kamet, Chaukhamba, Hathi Parvat and Ghori Parbat (weather permitting)',
+      'Signature stretches: Tugasi, Gulling, Khullara, alpine Bugyals and the Kuari Pass ridge',
+      'Pickup: Rishikesh Natraj Chowk · Drop: Rishikesh Natraj Chowk (Dehradun onwards as arranged)',
     ],
   },
 ];

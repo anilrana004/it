@@ -7,6 +7,10 @@ import {
   type SpecialProgramId,
 } from '@/lib/special-programs-content';
 import { photos } from '@/lib/media';
+import {
+  WINTER_CURATED_SECTION,
+  WINTER_TOP_TREK_IDS,
+} from '@/lib/content/winter-treks-guide';
 
 export const MONTHS = [
   'January',
@@ -215,7 +219,7 @@ export function getTopCategories(listings: ListingTrek[]): TopCategory[] {
   const high = listings.filter((t) => altitudeFt(t.maxAltitude) >= 14000).length;
   const autumn = listings.filter((t) => t.seasons.includes('autumn')).length;
   const winter = listings.filter((t) =>
-    DECEMBER_TOP_TREK_IDS.includes(t.id as (typeof DECEMBER_TOP_TREK_IDS)[number]),
+    WINTER_TOP_TREK_IDS.includes(t.id as (typeof WINTER_TOP_TREK_IDS)[number]),
   ).length;
   const uk = listings.filter((t) => t.region === 'uttarakhand').length;
   const hp = listings.filter((t) => t.region === 'himachal').length;
@@ -247,9 +251,9 @@ export function getTopCategories(listings: ListingTrek[]): TopCategory[] {
     },
     {
       id: 'winter',
-      title: 'Top Winter Treks',
-      subtitle: 'Dec · Jan · Feb snow trails',
-      href: '/treks?month=11',
+      title: 'Best Winter Treks',
+      subtitle: '2026–27 snow · Dec–Mar',
+      href: '/treks?season=winter',
       image: photos.snow,
       countLabel: `${winter} treks`,
     },
@@ -303,16 +307,11 @@ export const AUTUMN_TOP_TREK_IDS = [
   'ali-bedni-bugyal',
 ] as const;
 
-/** Featured December / peak-winter departures on the treks listing. */
-export const DECEMBER_TOP_TREK_IDS = [
-  'kedarkantha',
-  'chopta-tungnath',
-  'dayara-bugyal',
-  'kuari-pass',
-  'mcleodganj-trek',
-  'nag-tibba',
-  'pangarchulla',
-] as const;
+/**
+ * Featured December / peak-winter departures on the treks listing.
+ * Alias of the 2026–27 winter editorial shortlist.
+ */
+export const DECEMBER_TOP_TREK_IDS = WINTER_TOP_TREK_IDS;
 
 /** Per-month display order — varied so each autumn month feels fresh in filters. */
 export const AUTUMN_MONTH_ORDERS: Record<number, readonly string[]> = {
@@ -537,12 +536,11 @@ export const CURATED_SECTIONS: CuratedSection[] = [
     ],
   },
   {
-    id: 'winter',
-    title: 'Top Treks in December, January & February',
-    info:
-      'Winter trekking in the Indian Himalayas has become a mainstream favourite. Kedarkantha, Chopta–Tungnath, Dayara Bugyal, Kuari Pass, Triund–Mcleodganj, Nag Tibba, and Pangarchulla are our top December departures — snow trails, frozen meadows, and clear ridgeline views.',
-    href: '/treks?month=11',
-    trekIds: [...DECEMBER_TOP_TREK_IDS],
+    id: WINTER_CURATED_SECTION.id,
+    title: WINTER_CURATED_SECTION.title,
+    info: WINTER_CURATED_SECTION.info,
+    href: WINTER_CURATED_SECTION.href,
+    trekIds: [...WINTER_TOP_TREK_IDS],
   },
   {
     id: 'himachal',
@@ -575,7 +573,7 @@ export function resolveCuratedTreks(
     preserveOrder = true;
   } else if (section.id === 'winter') {
     const map = new Map(all.map((t) => [t.id, t]));
-    list = DECEMBER_TOP_TREK_IDS.map((id) => map.get(id)).filter(Boolean) as ListingTrek[];
+    list = WINTER_TOP_TREK_IDS.map((id) => map.get(id)).filter(Boolean) as ListingTrek[];
     preserveOrder = true;
   } else if (section.trekIds?.length) {
     const map = new Map(all.map((t) => [t.id, t]));

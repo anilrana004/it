@@ -51,7 +51,7 @@ export const GROUP_TRIPS_RICH: RichNavItem[] = [
   {
     id: 'treks',
     title: 'Treks',
-    subtitle: 'Himalayan fixed departures',
+    subtitle: 'Snow, summits & Himalayan departures',
     href: '/treks',
     Icon: Mountain,
     iconTile: 'border-teal-200 bg-teal-50',

@@ -3,7 +3,7 @@ import { ArrowRight, Users, Mountain, Bike, Heart } from 'lucide-react';
 import { photos } from '@/lib/media';
 
 const categories = [
-  { title: 'Himalayan Treks', desc: 'Valley of Flowers, Kedarkantha, Hampta & more', href: '/treks', img: photos.uttarakhand, icon: Mountain },
+  { title: 'Himalayan Treks', desc: 'Best winter snow treks 2026–27 — Kedarkantha, Brahmatal & more', href: '/treks?season=winter', img: photos.uttarakhand, icon: Mountain },
   { title: 'Sacred Yatras', desc: 'Kedarnath, Do Dham, Char Dham pilgrimages', href: '/yatra', img: photos.yatra, icon: Heart },
   { title: 'Backpacking Trips', desc: 'Kasol, Manali, Spiti & Nepal circuits', href: '/backpacking', img: photos.himachal, icon: Users },
   { title: 'Biking Expeditions', desc: 'Mountain roads, group rides & scenic routes', href: '/biking', img: photos.snow, icon: Bike },

@@ -5,7 +5,6 @@ import {
 } from '@/lib/special-programs-content';
 import {
   AUTUMN_TOP_TREK_IDS,
-  DECEMBER_TOP_TREK_IDS,
   DURATIONS,
   EXPERIENCES,
   MONTHS,
@@ -17,6 +16,10 @@ import {
   type ListingTrek,
   type SeasonId,
 } from '@/lib/treks-listing';
+import {
+  WINTER_FILTER_VIEW,
+  WINTER_TOP_TREK_IDS,
+} from '@/lib/content/winter-treks-guide';
 
 export type TrekListingFilters = {
   q: string;
@@ -129,12 +132,17 @@ export function getFilterView(filters: TrekListingFilters): FilterViewContent | 
 
     if (filters.season) {
       const label = seasonLabel(filters.season);
+      if (filters.season === 'winter') {
+        return {
+          id: 'season-winter',
+          heading: WINTER_FILTER_VIEW.heading,
+          sectionTitle: WINTER_FILTER_VIEW.sectionTitle,
+          info: WINTER_FILTER_VIEW.info,
+          href,
+        };
+      }
       const sectionTitle =
-        filters.season === 'winter'
-          ? 'Best winter treks'
-          : filters.season === 'autumn'
-            ? 'Best treks in Autumn'
-            : `Best treks in ${label}`;
+        filters.season === 'autumn' ? 'Best treks in Autumn' : `Best treks in ${label}`;
       return {
         id: `season-${filters.season}`,
         heading: label,
@@ -210,7 +218,7 @@ export function resolveFilterTreks(
   }
 
   if (filters.season === 'winter') {
-    const ordered = orderByIds(DECEMBER_TOP_TREK_IDS, filtered);
+    const ordered = orderByIds(WINTER_TOP_TREK_IDS, filtered);
     if (ordered.length > 0) return ordered;
   }
 
